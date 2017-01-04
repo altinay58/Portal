@@ -10,6 +10,7 @@ namespace Portal.Controllers
 {
     public class IslerController : Controller
     {
+        private PortalEntities db = new PortalEntities();
         // GET: Isler
         public ActionResult Index(bool kontrolBekleyenIsler, bool onaylananIsler, int? RefBolgeID, int? SayfaNo)
         {
@@ -33,6 +34,30 @@ namespace Portal.Controllers
         public ActionResult IcerikFormu()
         {
             return View();
+        }
+        public ActionResult FirmalariGetir(string firmaAdi)
+        {
+
+
+            var firmalar = new List<object>();
+
+            foreach (Firma firmalarim in db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) || a.YetkiliTelefon.Contains(firmaAdi)))
+            {
+                firmalar.Add(new { value = firmalarim.FirmaID, label = firmalarim.FirmaAdi });
+            }
+
+            var diziArayanlar = db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi) || a.arayanTelefonNo.Contains(firmaAdi)).GroupBy(g => g.arayanFirmaAdi).Select(o => new { ArayanAdi = o.Key, Arayan = o.OrderBy(c => c.arayanFirmaAdi).ToList() }).ToList();
+
+            foreach (var aramaYapan in diziArayanlar)
+            {
+                Arayanlar arayanFirma = db.Arayanlars.FirstOrDefault(a => a.arayanFirmaAdi == aramaYapan.ArayanAdi);
+                if (arayanFirma != null)
+                {
+                    firmalar.Add(new { value = "kayitliDegil" + arayanFirma.arayanID, label = arayanFirma.arayanFirmaAdi + " - Kayıtlı Değil" });
+                }
+            }
+
+            return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
     }
 }

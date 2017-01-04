@@ -464,6 +464,7 @@
     <Content Include="Views\StandartProjeIsleris\Details.cshtml" />
     <Content Include="Views\StandartProjeIsleris\Edit.cshtml" />
     <Content Include="Views\StandartProjeIsleris\Index.cshtml" />
+    <Content Include="Views\Isler\IcerikFormu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
