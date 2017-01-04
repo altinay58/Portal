@@ -7,6 +7,9 @@
       <Diagram DiagramId="5807e76d4da146d0b033f6692acfa5bd" Name="Diagram1">
         <EntityTypeShape EntityType="PortalModel.Ayar" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PortalModel.Konum" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PortalModel.isler" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PortalModel.IsiYapacakKisi" Width="1.5" PointX="3" PointY="5.25" />
+        <AssociationConnector Association="PortalModel.FK_IsiYapacakKisi_isler" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

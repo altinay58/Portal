@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PortalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PortalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Ayar">
           <Key>
             <PropertyRef Name="AyarID" />
@@ -12,6 +12,38 @@
           <Property Name="AyarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AyarAdi" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="AyarDeger" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IsiYapacakKisi">
+          <Key>
+            <PropertyRef Name="IsiYapacakKisiID" />
+          </Key>
+          <Property Name="IsiYapacakKisiID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefIsiYapacakKisiUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RefIsID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="isler">
+          <Key>
+            <PropertyRef Name="islerID" />
+          </Key>
+          <Property Name="islerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="islerAdi" Type="nvarchar" MaxLength="250" />
+          <Property Name="islerAciklama" Type="nvarchar(max)" />
+          <Property Name="islerRefKategoriID" Type="int" />
+          <Property Name="islerRefDomainID" Type="int" />
+          <Property Name="islerRefFirmaID" Type="int" />
+          <Property Name="islerisiYapacakKisi" Type="nvarchar" MaxLength="128" />
+          <Property Name="islerisiVerenKisi" Type="nvarchar" MaxLength="128" />
+          <Property Name="islerTarih" Type="datetime" />
+          <Property Name="islerTamamlanmaTarihi" Type="datetime" />
+          <Property Name="islerOncelikSiraID" Type="int" />
+          <Property Name="islerisinTamamlanmaDurumu" Type="bit" />
+          <Property Name="islerinisinOnayDurumu" Type="bit" />
+          <Property Name="islerisYorumID" Type="int" />
+          <Property Name="islerRefArayanID" Type="int" />
+          <Property Name="islerRefIstekTipiID" Type="int" />
+          <Property Name="islerCalisanTipi" Type="varchar" MaxLength="50" />
+          <Property Name="islerDosyaAdi" Type="nvarchar" MaxLength="250" />
+          <Property Name="islerSira" Type="int" />
         </EntityType>
         <EntityType Name="Konum">
           <Key>
@@ -21,12 +53,29 @@
           <Property Name="Konum" Type="nvarchar" MaxLength="250" />
           <Property Name="KonumAciklama" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <Association Name="FK_IsiYapacakKisi_isler">
+          <End Role="isler" Type="Self.isler" Multiplicity="1" />
+          <End Role="IsiYapacakKisi" Type="Self.IsiYapacakKisi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="isler">
+              <PropertyRef Name="islerID" />
+            </Principal>
+            <Dependent Role="IsiYapacakKisi">
+              <PropertyRef Name="RefIsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="PortalModelStoreContainer">
           <EntitySet Name="Ayar" EntityType="Self.Ayar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IsiYapacakKisi" EntityType="Self.IsiYapacakKisi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="isler" EntityType="Self.isler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Konum" EntityType="Self.Konum" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_IsiYapacakKisi_isler" Association="Self.FK_IsiYapacakKisi_isler">
+            <End Role="isler" EntitySet="isler" />
+            <End Role="IsiYapacakKisi" EntitySet="IsiYapacakKisi" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PortalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -49,7 +98,59 @@
         <EntityContainer Name="PortalEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Ayars" EntityType="Self.Ayar" />
           <EntitySet Name="Konums" EntityType="Self.Konum" />
+          <EntitySet Name="islers" EntityType="PortalModel.isler" />
+          <EntitySet Name="IsiYapacakKisis" EntityType="PortalModel.IsiYapacakKisi" />
+          <AssociationSet Name="FK_IsiYapacakKisi_isler" Association="PortalModel.FK_IsiYapacakKisi_isler">
+            <End Role="isler" EntitySet="islers" />
+            <End Role="IsiYapacakKisi" EntitySet="IsiYapacakKisis" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="isler">
+          <Key>
+            <PropertyRef Name="islerID" />
+          </Key>
+          <Property Name="islerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="islerAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="islerAciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="islerRefKategoriID" Type="Int32" />
+          <Property Name="islerRefDomainID" Type="Int32" />
+          <Property Name="islerRefFirmaID" Type="Int32" />
+          <Property Name="islerisiYapacakKisi" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="islerisiVerenKisi" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="islerTarih" Type="DateTime" Precision="3" />
+          <Property Name="islerTamamlanmaTarihi" Type="DateTime" Precision="3" />
+          <Property Name="islerOncelikSiraID" Type="Int32" />
+          <Property Name="islerisinTamamlanmaDurumu" Type="Boolean" />
+          <Property Name="islerinisinOnayDurumu" Type="Boolean" />
+          <Property Name="islerisYorumID" Type="Int32" />
+          <Property Name="islerRefArayanID" Type="Int32" />
+          <Property Name="islerRefIstekTipiID" Type="Int32" />
+          <Property Name="islerCalisanTipi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="islerDosyaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="islerSira" Type="Int32" />
+          <NavigationProperty Name="IsiYapacakKisis" Relationship="PortalModel.FK_IsiYapacakKisi_isler" FromRole="isler" ToRole="IsiYapacakKisi" />
+        </EntityType>
+        <EntityType Name="IsiYapacakKisi">
+          <Key>
+            <PropertyRef Name="IsiYapacakKisiID" />
+          </Key>
+          <Property Name="IsiYapacakKisiID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefIsiYapacakKisiUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RefIsID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="isler" Relationship="PortalModel.FK_IsiYapacakKisi_isler" FromRole="IsiYapacakKisi" ToRole="isler" />
+        </EntityType>
+        <Association Name="FK_IsiYapacakKisi_isler">
+          <End Type="PortalModel.isler" Role="isler" Multiplicity="1" />
+          <End Type="PortalModel.IsiYapacakKisi" Role="IsiYapacakKisi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="isler">
+              <PropertyRef Name="islerID" />
+            </Principal>
+            <Dependent Role="IsiYapacakKisi">
+              <PropertyRef Name="RefIsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -71,6 +172,40 @@
                 <ScalarProperty Name="KonumID" ColumnName="KonumID" />
                 <ScalarProperty Name="Konum1" ColumnName="Konum" />
                 <ScalarProperty Name="KonumAciklama" ColumnName="KonumAciklama" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="islers">
+            <EntityTypeMapping TypeName="PortalModel.isler">
+              <MappingFragment StoreEntitySet="isler">
+                <ScalarProperty Name="islerSira" ColumnName="islerSira" />
+                <ScalarProperty Name="islerDosyaAdi" ColumnName="islerDosyaAdi" />
+                <ScalarProperty Name="islerCalisanTipi" ColumnName="islerCalisanTipi" />
+                <ScalarProperty Name="islerRefIstekTipiID" ColumnName="islerRefIstekTipiID" />
+                <ScalarProperty Name="islerRefArayanID" ColumnName="islerRefArayanID" />
+                <ScalarProperty Name="islerisYorumID" ColumnName="islerisYorumID" />
+                <ScalarProperty Name="islerinisinOnayDurumu" ColumnName="islerinisinOnayDurumu" />
+                <ScalarProperty Name="islerisinTamamlanmaDurumu" ColumnName="islerisinTamamlanmaDurumu" />
+                <ScalarProperty Name="islerOncelikSiraID" ColumnName="islerOncelikSiraID" />
+                <ScalarProperty Name="islerTamamlanmaTarihi" ColumnName="islerTamamlanmaTarihi" />
+                <ScalarProperty Name="islerTarih" ColumnName="islerTarih" />
+                <ScalarProperty Name="islerisiVerenKisi" ColumnName="islerisiVerenKisi" />
+                <ScalarProperty Name="islerisiYapacakKisi" ColumnName="islerisiYapacakKisi" />
+                <ScalarProperty Name="islerRefFirmaID" ColumnName="islerRefFirmaID" />
+                <ScalarProperty Name="islerRefDomainID" ColumnName="islerRefDomainID" />
+                <ScalarProperty Name="islerRefKategoriID" ColumnName="islerRefKategoriID" />
+                <ScalarProperty Name="islerAciklama" ColumnName="islerAciklama" />
+                <ScalarProperty Name="islerAdi" ColumnName="islerAdi" />
+                <ScalarProperty Name="islerID" ColumnName="islerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IsiYapacakKisis">
+            <EntityTypeMapping TypeName="PortalModel.IsiYapacakKisi">
+              <MappingFragment StoreEntitySet="IsiYapacakKisi">
+                <ScalarProperty Name="RefIsID" ColumnName="RefIsID" />
+                <ScalarProperty Name="RefIsiYapacakKisiUserID" ColumnName="RefIsiYapacakKisiUserID" />
+                <ScalarProperty Name="IsiYapacakKisiID" ColumnName="IsiYapacakKisiID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
