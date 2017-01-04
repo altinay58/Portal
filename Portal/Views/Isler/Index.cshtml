@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Portal.Models.isler>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.islerAdi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerAciklama)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerRefKategoriID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerRefDomainID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerRefFirmaID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerisiYapacakKisi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerisiVerenKisi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerTarih)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerTamamlanmaTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerOncelikSiraID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerisinTamamlanmaDurumu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerinisinOnayDurumu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerisYorumID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerRefArayanID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerRefIstekTipiID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerCalisanTipi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerDosyaAdi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.islerSira)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerAdi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerAciklama)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerRefKategoriID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerRefDomainID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerRefFirmaID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerisiYapacakKisi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerisiVerenKisi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerTarih)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerTamamlanmaTarihi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerOncelikSiraID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerisinTamamlanmaDurumu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerinisinOnayDurumu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerisYorumID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerRefArayanID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerRefIstekTipiID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerCalisanTipi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerDosyaAdi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.islerSira)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.islerID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.islerID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.islerID })
+        </td>
+    </tr>
+}
+
+</table>

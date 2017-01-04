@@ -27,5 +27,7 @@ namespace Portal.Models
     
         public virtual DbSet<Ayar> Ayars { get; set; }
         public virtual DbSet<Konum> Konums { get; set; }
+        public virtual DbSet<isler> islers { get; set; }
+        public virtual DbSet<IsiYapacakKisi> IsiYapacakKisis { get; set; }
     }
 }
