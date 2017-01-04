@@ -30,5 +30,9 @@ namespace Portal.Controllers
             }
 
         }
+        public ActionResult IcerikFormu()
+        {
+            return View();
+        }
     }
 }

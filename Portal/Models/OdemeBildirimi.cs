@@ -12,13 +12,16 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IsiYapacakKisi
+    public partial class OdemeBildirimi
     {
-        public int IsiYapacakKisiID { get; set; }
-        public string RefIsiYapacakKisiUserID { get; set; }
-        public int RefIsID { get; set; }
+        public int ObID { get; set; }
+        public Nullable<System.DateTime> ObTarih { get; set; }
+        public string ObNot { get; set; }
+        public Nullable<int> RefFirmaID { get; set; }
+        public Nullable<bool> Durum { get; set; }
+        public string ObKapanisNotu { get; set; }
+        public Nullable<int> ObAlacak { get; set; }
     
-        public virtual isler isler { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

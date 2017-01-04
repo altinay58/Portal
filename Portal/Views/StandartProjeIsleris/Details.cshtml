@@ -1,0 +1,58 @@
+﻿@model Portal.Models.StandartProjeIsleri
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>StandartProjeIsleri</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StandartProjeIsleriSirasi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StandartProjeIsleriSirasi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StandartProjeIsleriIsAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StandartProjeIsleriIsAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StandartProjeIsleriTarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StandartProjeIsleriTarih)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser1.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.StandartProjeIsleriId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

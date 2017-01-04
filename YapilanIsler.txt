@@ -1,0 +1,2 @@
+04.01.2017
+-database de StandartProjeIsleri table acildi

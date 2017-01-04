@@ -10,6 +10,117 @@
         <EntityTypeShape EntityType="PortalModel.isler" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="PortalModel.IsiYapacakKisi" Width="1.5" PointX="3" PointY="5.25" />
         <AssociationConnector Association="PortalModel.FK_IsiYapacakKisi_isler" />
+        <EntityTypeShape EntityType="PortalModel.StandartProjeIsleri" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PortalModel.Arama" Width="1.5" PointX="18.125" PointY="9.25" />
+        <EntityTypeShape EntityType="PortalModel.ArayanGrup" Width="1.5" PointX="3" PointY="10.625" />
+        <EntityTypeShape EntityType="PortalModel.Arayanlar" Width="1.5" PointX="8.25" PointY="7.5" />
+        <EntityTypeShape EntityType="PortalModel.AspNetRole" Width="1.5" PointX="11.25" PointY="16.625" />
+        <EntityTypeShape EntityType="PortalModel.AspNetUserClaim" Width="1.5" PointX="11.25" PointY="54.25" />
+        <EntityTypeShape EntityType="PortalModel.AspNetUserLogin" Width="1.5" PointX="11.25" PointY="51.625" />
+        <EntityTypeShape EntityType="PortalModel.AspNetUser" Width="1.5" PointX="6" PointY="6.875" />
+        <EntityTypeShape EntityType="PortalModel.CariHareket" Width="1.5" PointX="12.75" PointY="34.5" />
+        <EntityTypeShape EntityType="PortalModel.Chat" Width="1.5" PointX="20.125" PointY="5.25" />
+        <EntityTypeShape EntityType="PortalModel.Domain" Width="1.5" PointX="8.25" PointY="17.125" />
+        <EntityTypeShape EntityType="PortalModel.DomainKategori" Width="1.5" PointX="6" PointY="15.25" />
+        <EntityTypeShape EntityType="PortalModel.Firma" Width="1.5" PointX="3" PointY="13.625" />
+        <EntityTypeShape EntityType="PortalModel.GelinmeyenGun" Width="1.5" PointX="11.25" PointY="48.875" />
+        <EntityTypeShape EntityType="PortalModel.GidilenMusteri" Width="1.5" PointX="15.75" PointY="8.875" />
+        <EntityTypeShape EntityType="PortalModel.Hosting" Width="1.5" PointX="9" PointY="32.125" />
+        <EntityTypeShape EntityType="PortalModel.Istekler" Width="1.5" PointX="10.5" PointY="19.5" />
+        <EntityTypeShape EntityType="PortalModel.IstekTipi" Width="1.5" PointX="10.5" PointY="27" />
+        <EntityTypeShape EntityType="PortalModel.isKategori" Width="1.5" PointX="10.5" PointY="24.125" />
+        <EntityTypeShape EntityType="PortalModel.isOncelikSira" Width="1.5" PointX="10.5" PointY="29.375" />
+        <EntityTypeShape EntityType="PortalModel.isYorum" Width="1.5" PointX="12.75" PointY="13.25" />
+        <EntityTypeShape EntityType="PortalModel.KayitliFirma" Width="1.5" PointX="9" PointY="34.625" />
+        <EntityTypeShape EntityType="PortalModel.Koordinat" Width="1.5" PointX="12.75" PointY="23.75" />
+        <EntityTypeShape EntityType="PortalModel.MailKontrol" Width="1.5" PointX="20.125" PointY="8.25" />
+        <EntityTypeShape EntityType="PortalModel.MailSablonu" Width="1.5" PointX="20.125" PointY="11.25" />
+        <EntityTypeShape EntityType="PortalModel.Makale" Width="1.5" PointX="8.25" PointY="4.125" />
+        <EntityTypeShape EntityType="PortalModel.MakaleKategori" Width="1.5" PointX="9" PointY="43.875" />
+        <EntityTypeShape EntityType="PortalModel.Notlar" Width="1.5" PointX="21.125" PointY="14.25" />
+        <EntityTypeShape EntityType="PortalModel.OdemeBildirimi" Width="1.5" PointX="12.75" PointY="26.5" />
+        <EntityTypeShape EntityType="PortalModel.Proje" Width="1.5" PointX="9" PointY="40.75" />
+        <EntityTypeShape EntityType="PortalModel.ProjeIsi" Width="1.5" PointX="11.25" PointY="0.75" />
+        <EntityTypeShape EntityType="PortalModel.Randevu" Width="1.5" PointX="15.75" PointY="15.25" />
+        <EntityTypeShape EntityType="PortalModel.SanalPos" Width="1.5" PointX="12.75" PointY="20.375" />
+        <EntityTypeShape EntityType="PortalModel.Sati" Width="1.5" PointX="12.75" PointY="29.875" />
+        <EntityTypeShape EntityType="PortalModel.SatisNotu" Width="1.5" PointX="11.25" PointY="57" />
+        <EntityTypeShape EntityType="PortalModel.Sektorler" Width="1.5" PointX="0.75" PointY="14.375" />
+        <EntityTypeShape EntityType="PortalModel.Seo" Width="1.5" PointX="10.5" PointY="37.25" />
+        <EntityTypeShape EntityType="PortalModel.Sifre" Width="1.5" PointX="22.125" PointY="5.25" />
+        <EntityTypeShape EntityType="PortalModel.SiteKontrol" Width="1.5" PointX="11.25" PointY="45.125" />
+        <EntityTypeShape EntityType="PortalModel.SiteKontrolDomainBirlestir" Width="1.5" PointX="13.5" PointY="16.875" />
+        <EntityTypeShape EntityType="PortalModel.Teklif" Width="1.5" PointX="16.5" PointY="20.125" />
+        <EntityTypeShape EntityType="PortalModel.TeklifDetay" Width="1.5" PointX="18.75" PointY="14.75" />
+        <EntityTypeShape EntityType="PortalModel.TeklifSonuc" Width="1.5" PointX="14.25" PointY="40.75" />
+        <EntityTypeShape EntityType="PortalModel.TeklifTuru" Width="1.5" PointX="14.25" PointY="38.375" />
+        <EntityTypeShape EntityType="PortalModel.Tema" Width="1.5" PointX="11.25" PointY="41.25" />
+        <EntityTypeShape EntityType="PortalModel.WebLog" Width="1.5" PointX="22.125" PointY="10.25" />
+        <EntityTypeShape EntityType="PortalModel.YorumDurum" Width="1.5" PointX="17.75" PointY="5.75" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_ArayanGrup" />
+        <AssociationConnector Association="PortalModel.FK_Firma_ArayanGrup" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_Konum" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_Sektorler" />
+        <AssociationConnector Association="PortalModel.FK_Firma_Arayanlar" />
+        <AssociationConnector Association="PortalModel.FK_isler_Arayanlar" />
+        <AssociationConnector Association="PortalModel.FK_Randevu_Arayanlar" />
+        <AssociationConnector Association="PortalModel.FK_Teklif_Arayanlar" />
+        <AssociationConnector Association="PortalModel.FK_TeklifDetay_TeklifDetay" />
+        <AssociationConnector Association="PortalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" />
+        <AssociationConnector Association="PortalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="PortalModel.FK_GelinmeyenGun_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_GidilenMusteri_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_IsiYapacakKisi_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_Makale_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_ProjeIsi_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_SatisNotu_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_SiteKontrolDomainBirlestir_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_StandartProjeIsleri_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_StandartProjeIsleri_AspNetUsers1" />
+        <AssociationConnector Association="PortalModel.FK_YorumDurum_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_CariHareket_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Domain_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_Domain_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Domain_Hosting" />
+        <AssociationConnector Association="PortalModel.FK_Domain_KayitliFirma" />
+        <AssociationConnector Association="PortalModel.FK_Istekler_Domain" />
+        <AssociationConnector Association="PortalModel.FK_isKategori_Domain" />
+        <AssociationConnector Association="PortalModel.FK_isler_Domain" />
+        <AssociationConnector Association="PortalModel.FK_Seo_Domain" />
+        <AssociationConnector Association="PortalModel.FK_SiteKontrolDomainBirlestir_Domain" />
+        <AssociationConnector Association="PortalModel.FK_Firma_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_GidilenMusteri_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_Tema_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_Firma_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Firma_Konum" />
+        <AssociationConnector Association="PortalModel.FK_Firma_Sektorler" />
+        <AssociationConnector Association="PortalModel.FK_isler_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Koordinat_Firma" />
+        <AssociationConnector Association="PortalModel.FK_OdemeBildirimi_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Randevu_Firma" />
+        <AssociationConnector Association="PortalModel.FK_sanalpos_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Satis_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Satis_Satis" />
+        <AssociationConnector Association="PortalModel.FK_Teklif_Firma" />
+        <AssociationConnector Association="PortalModel.FK_GidilenMusteri_Konum" />
+        <AssociationConnector Association="PortalModel.FK_GidilenMusteri_Sektorler" />
+        <AssociationConnector Association="PortalModel.FK_isler_IstekTipi" />
+        <AssociationConnector Association="PortalModel.FK_isler_isKategori" />
+        <AssociationConnector Association="PortalModel.FK_isler_isOncelikSira" />
+        <AssociationConnector Association="PortalModel.FK_isYorum_isler" />
+        <AssociationConnector Association="PortalModel.FK_YorumDurum_isYorum" />
+        <AssociationConnector Association="PortalModel.FK_Randevu_Konum" />
+        <AssociationConnector Association="PortalModel.FK_Makale_MakaleKategori" />
+        <AssociationConnector Association="PortalModel.FK_ProjeIsi_Proje" />
+        <AssociationConnector Association="PortalModel.FK_Satis_Satis1" />
+        <AssociationConnector Association="PortalModel.FK_SiteKontrolDomainBirlestir_SiteKontrol" />
+        <AssociationConnector Association="PortalModel.FK_Teklif_TeklifSonuc" />
+        <AssociationConnector Association="PortalModel.FK_Teklif_TeklifTuru" />
+        <AssociationConnector Association="PortalModel.FK_TeklifDetay_Teklif" />
+        <AssociationConnector Association="PortalModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

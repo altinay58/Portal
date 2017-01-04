@@ -12,13 +12,15 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IsiYapacakKisi
+    public partial class Seo
     {
-        public int IsiYapacakKisiID { get; set; }
-        public string RefIsiYapacakKisiUserID { get; set; }
-        public int RefIsID { get; set; }
+        public int SeoID { get; set; }
+        public string SeoAdi { get; set; }
+        public Nullable<int> SeoRefDomainID { get; set; }
+        public Nullable<int> SeoGoogleSiralamasi { get; set; }
+        public Nullable<System.DateTime> SeoGoogleSiralamaTarihi { get; set; }
+        public string SeoGoogleSearchAdres { get; set; }
     
-        public virtual isler isler { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Domain Domain { get; set; }
     }
 }

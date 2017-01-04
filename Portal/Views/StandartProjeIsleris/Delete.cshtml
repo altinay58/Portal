@@ -1,0 +1,64 @@
+﻿@model Portal.Models.StandartProjeIsleri
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>StandartProjeIsleri</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StandartProjeIsleriSirasi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StandartProjeIsleriSirasi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StandartProjeIsleriIsAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StandartProjeIsleriIsAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StandartProjeIsleriTarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StandartProjeIsleriTarih)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser1.UserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

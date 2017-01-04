@@ -12,28 +12,21 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Konum
+    public partial class ArayanGrup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Konum()
+        public ArayanGrup()
         {
             this.Arayanlars = new HashSet<Arayanlar>();
             this.Firmas = new HashSet<Firma>();
-            this.GidilenMusteris = new HashSet<GidilenMusteri>();
-            this.Randevus = new HashSet<Randevu>();
         }
     
-        public int KonumID { get; set; }
-        public string Konum1 { get; set; }
-        public string KonumAciklama { get; set; }
+        public int arayanGrupID { get; set; }
+        public string arayanGrupAdi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arayanlar> Arayanlars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Firma> Firmas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GidilenMusteri> GidilenMusteris { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Randevu> Randevus { get; set; }
     }
 }

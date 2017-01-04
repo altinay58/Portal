@@ -12,13 +12,12 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IsiYapacakKisi
+    public partial class WebLog
     {
-        public int IsiYapacakKisiID { get; set; }
-        public string RefIsiYapacakKisiUserID { get; set; }
-        public int RefIsID { get; set; }
-    
-        public virtual isler isler { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
+        public int WebLogID { get; set; }
+        public string WebLogUserID { get; set; }
+        public string WebLogIP { get; set; }
+        public string WebLogWebSayfasi { get; set; }
+        public System.DateTime WebLogTarih { get; set; }
     }
 }

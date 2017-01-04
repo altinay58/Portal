@@ -12,13 +12,15 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IsiYapacakKisi
+    public partial class Arama
     {
-        public int IsiYapacakKisiID { get; set; }
-        public string RefIsiYapacakKisiUserID { get; set; }
-        public int RefIsID { get; set; }
-    
-        public virtual isler isler { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
+        public int AramaID { get; set; }
+        public string AramaKelime { get; set; }
+        public Nullable<int> AramaHit { get; set; }
+        public Nullable<bool> AramaOnay { get; set; }
+        public string AramaLink { get; set; }
+        public string AramaBolum { get; set; }
+        public Nullable<int> DilID { get; set; }
+        public Nullable<bool> Durum { get; set; }
     }
 }

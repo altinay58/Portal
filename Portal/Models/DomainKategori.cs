@@ -12,28 +12,30 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Konum
+    public partial class DomainKategori
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Konum()
+        public DomainKategori()
         {
             this.Arayanlars = new HashSet<Arayanlar>();
+            this.Domains = new HashSet<Domain>();
             this.Firmas = new HashSet<Firma>();
             this.GidilenMusteris = new HashSet<GidilenMusteri>();
-            this.Randevus = new HashSet<Randevu>();
+            this.Temas = new HashSet<Tema>();
         }
     
-        public int KonumID { get; set; }
-        public string Konum1 { get; set; }
-        public string KonumAciklama { get; set; }
+        public int DomainKategoriID { get; set; }
+        public string DomainKategoriAdi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arayanlar> Arayanlars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Domain> Domains { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Firma> Firmas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GidilenMusteri> GidilenMusteris { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Randevu> Randevus { get; set; }
+        public virtual ICollection<Tema> Temas { get; set; }
     }
 }

@@ -12,13 +12,11 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IsiYapacakKisi
+    public partial class Chat
     {
-        public int IsiYapacakKisiID { get; set; }
-        public string RefIsiYapacakKisiUserID { get; set; }
-        public int RefIsID { get; set; }
-    
-        public virtual isler isler { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
+        public int ChatID { get; set; }
+        public string ChatName { get; set; }
+        public string ChatMesaj { get; set; }
+        public System.DateTime ChatDateTime { get; set; }
     }
 }

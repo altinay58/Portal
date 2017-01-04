@@ -12,13 +12,16 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IsiYapacakKisi
+    public partial class Makale
     {
-        public int IsiYapacakKisiID { get; set; }
-        public string RefIsiYapacakKisiUserID { get; set; }
-        public int RefIsID { get; set; }
+        public int MakaleID { get; set; }
+        public string MakaleAdi { get; set; }
+        public string MakaleDetay { get; set; }
+        public Nullable<System.DateTime> MakaleTarih { get; set; }
+        public string MakaleYazanKullaniciID { get; set; }
+        public Nullable<int> MakaleRefKategoriID { get; set; }
     
-        public virtual isler isler { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual MakaleKategori MakaleKategori { get; set; }
     }
 }
