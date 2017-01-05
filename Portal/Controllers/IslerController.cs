@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Portal.Models;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 
 namespace Portal.Controllers
 {
@@ -35,6 +36,33 @@ namespace Portal.Controllers
         {
             return View();
         }
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult IcerikFormu(IcerikFormu icerik, FormCollection frm)
+        {
+            if (ModelState.IsValid)
+            {
+
+               
+                //repProje.Insert(proje);
+
+                TempData["Success"] = "Kaydedildi";
+                return RedirectToAction("ListProje");
+
+            }
+            ViewBag.Title = "Yeni Proje";
+
+            return View();
+        }
+        [ValidateInput(false)]
+        public ActionResult IcerikKaydet(string json)
+        {
+            IcerikFormu m = JsonConvert.DeserializeObject<IcerikFormu>(json);
+            JsonCevap cevap = new JsonCevap();
+            cevap.Basarilimi = true;
+
+            return Json(cevap, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult FirmalariGetir(string firmaAdi)
         {
 
@@ -60,5 +88,22 @@ namespace Portal.Controllers
             */
             return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult DomainGetir(string domainAdi,int firmaId)
+        {
+        
+
+            var listDomain = (from d in db.Domains
+                              where d.RefDomainFirmaID == firmaId && d.DomainAdi.Contains(domainAdi)
+                              select new { value= d.DomainID,label=d.DomainAdi}).ToList();
+
+          
+
+            return Json(listDomain, JsonRequestBehavior.AllowGet);
+        }
+    }
+    public class JsonCevap
+    {
+        public bool Basarilimi { get; set; }
+        public object Data { get; set; }
     }
 }

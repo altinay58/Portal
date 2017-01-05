@@ -255,6 +255,7 @@
     <Compile Include="Models\Hosting.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IcerikFormu.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IsiYapacakKisi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -465,6 +466,7 @@
     <Content Include="Views\StandartProjeIsleris\Edit.cshtml" />
     <Content Include="Views\StandartProjeIsleris\Index.cshtml" />
     <Content Include="Views\Isler\IcerikFormu.cshtml" />
+    <Content Include="Views\Shared\CKEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
