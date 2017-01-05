@@ -46,6 +46,7 @@ namespace Portal.Controllers
                 firmalar.Add(new { value = firmalarim.FirmaID, label = firmalarim.FirmaAdi });
             }
 
+            /*
             var diziArayanlar = db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi) || a.arayanTelefonNo.Contains(firmaAdi)).GroupBy(g => g.arayanFirmaAdi).Select(o => new { ArayanAdi = o.Key, Arayan = o.OrderBy(c => c.arayanFirmaAdi).ToList() }).ToList();
 
             foreach (var aramaYapan in diziArayanlar)
@@ -56,7 +57,7 @@ namespace Portal.Controllers
                     firmalar.Add(new { value = "kayitliDegil" + arayanFirma.arayanID, label = arayanFirma.arayanFirmaAdi + " - Kayıtlı Değil" });
                 }
             }
-
+            */
             return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
     }
