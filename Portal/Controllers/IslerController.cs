@@ -88,13 +88,13 @@ namespace Portal.Controllers
             */
             return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DomainGetir(string domainAdi,int firmaId)
+        public ActionResult DomainGetir(string domainAdi,int? firmaId)
         {
         
 
             var listDomain = (from d in db.Domains
-                              where d.RefDomainFirmaID == firmaId && d.DomainAdi.Contains(domainAdi)
-                              select new { value= d.DomainID,label=d.DomainAdi}).ToList();
+                              where (firmaId.HasValue ? d.RefDomainFirmaID == firmaId.Value : true) && d.DomainAdi.Contains(domainAdi)
+                              select new { value= d.DomainID,label=d.DomainAdi,firmaId=d.Firma.FirmaID,firmaAdi=d.Firma.FirmaAdi}).ToList();
 
           
 

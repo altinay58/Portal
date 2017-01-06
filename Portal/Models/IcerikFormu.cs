@@ -21,6 +21,12 @@ namespace Portal.Models
         public string GooglePlus { get; set; }
         public string Twitter { get; set; }
         public string LogoAlindi { get; set; }
+        public string KurumsalKimlikAlindi { get; set; }
+        public string SayfalarAlindi { get; set; }
+        public string UrunlerHizlerAlindi { get; set; }
+        public string FotograflarAlindi { get; set; }
+        public string KurumsalDokumanlarAlindi { get; set; }
+        public string ReferanslarAlindi { get; set; }
         public string Notlar { get; set; }
 
     }
