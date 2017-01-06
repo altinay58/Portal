@@ -69,9 +69,13 @@ namespace Portal.Controllers
 
             var firmalar = new List<object>();
 
-            foreach (Firma firmalarim in db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) || a.YetkiliTelefon.Contains(firmaAdi)))
+            foreach (Firma firma in db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) || a.YetkiliTelefon.Contains(firmaAdi)))
             {
-                firmalar.Add(new { value = firmalarim.FirmaID, label = firmalarim.FirmaAdi });
+                firmalar.Add(new
+                {
+                    value = firma.FirmaID, label = firma.FirmaAdi,Telefon1=firma.YetkiliTelefon,Telefon2=firma.YetkiliCepTelefon,
+                    Email=firma.Email,Adres=firma.FirmaAdres
+                });
             }
 
             /*
@@ -94,7 +98,14 @@ namespace Portal.Controllers
 
             var listDomain = (from d in db.Domains
                               where (firmaId.HasValue ? d.RefDomainFirmaID == firmaId.Value : true) && d.DomainAdi.Contains(domainAdi)
-                              select new { value= d.DomainID,label=d.DomainAdi,firmaId=d.Firma.FirmaID,firmaAdi=d.Firma.FirmaAdi}).ToList();
+                              select new
+                              {
+                                  value = d.DomainID,label=d.DomainAdi,firmaId=d.Firma.FirmaID,firmaAdi=d.Firma.FirmaAdi,
+                                  Telefon1 = d.Firma.YetkiliTelefon,
+                                  Telefon2 = d.Firma.YetkiliCepTelefon,
+                                  Email = d.Firma.Email,
+                                  Adres = d.Firma.FirmaAdres
+                              }).ToList();
 
           
 
