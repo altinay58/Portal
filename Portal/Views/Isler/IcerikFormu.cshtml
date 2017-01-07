@@ -422,9 +422,10 @@
                         url += '?domainAdi=' + encodeURIComponent($("#DomainAdi").val()) + '&firmaId=';
                         if ($('#FirmaAdi').val() == "") {
                             icerikFormu.firmaId = null;
+                            ilkDegerAta();
                         }
                         url += encodeURIComponent(icerikFormu.firmaId);
-                        ilkDegerAta();
+                        
                         console.log(url + " " + query);
                         return url;
                     },
