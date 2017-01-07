@@ -545,6 +545,9 @@
           <Property Name="StandartProjeIsleriIsAdi" Type="nvarchar" MaxLength="150" />
           <Property Name="StandartProjeIsleriTarih" Type="datetime" />
           <Property Name="RefStandartProjeIsleriKontrolEdecekKullaniciId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="StandartProjeIsleriAciklama" Type="nvarchar" MaxLength="250" />
+          <Property Name="StandartProjeIsleriIdAnahtarIsmi" Type="nvarchar" MaxLength="100" />
+          <Property Name="StandartProjeIsleriIdKontrol" Type="bit" />
         </EntityType>
         <EntityType Name="Teklif">
           <Key>
@@ -2141,6 +2144,9 @@
           <Property Name="RefStandartProjeIsleriKontrolEdecekKullaniciId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_StandartProjeIsleri_AspNetUsers" FromRole="StandartProjeIsleri" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="PortalModel.FK_StandartProjeIsleri_AspNetUsers1" FromRole="StandartProjeIsleri" ToRole="AspNetUser" />
+          <Property Name="StandartProjeIsleriAciklama" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="StandartProjeIsleriIdAnahtarIsmi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StandartProjeIsleriIdKontrol" Type="Boolean" />
         </EntityType>
         <EntityType Name="Arama">
           <Key>
@@ -3627,6 +3633,9 @@
           <EntitySetMapping Name="StandartProjeIsleris">
             <EntityTypeMapping TypeName="PortalModel.StandartProjeIsleri">
               <MappingFragment StoreEntitySet="StandartProjeIsleri">
+                <ScalarProperty Name="StandartProjeIsleriIdKontrol" ColumnName="StandartProjeIsleriIdKontrol" />
+                <ScalarProperty Name="StandartProjeIsleriIdAnahtarIsmi" ColumnName="StandartProjeIsleriIdAnahtarIsmi" />
+                <ScalarProperty Name="StandartProjeIsleriAciklama" ColumnName="StandartProjeIsleriAciklama" />
                 <ScalarProperty Name="RefStandartProjeIsleriKontrolEdecekKullaniciId" ColumnName="RefStandartProjeIsleriKontrolEdecekKullaniciId" />
                 <ScalarProperty Name="StandartProjeIsleriTarih" ColumnName="StandartProjeIsleriTarih" />
                 <ScalarProperty Name="StandartProjeIsleriIsAdi" ColumnName="StandartProjeIsleriIsAdi" />

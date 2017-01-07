@@ -43,16 +43,19 @@ namespace Portal.Controllers
             if (ModelState.IsValid)
             {
 
-               
+
                 //repProje.Insert(proje);
+                var listStandardIsler = db.StandartProjeIsleris.ToList();
+                var dinamiStandartIsler = listStandardIsler.Where(x=>x.StandartProjeIsleriIdAnahtarIsmi!=null);
 
                 TempData["Success"] = "Kaydedildi";
+
                 return RedirectToAction("ListProje");
 
             }
             ViewBag.Title = "Yeni Proje";
 
-            return View();
+            return RedirectToAction("Index");
         }
         [ValidateInput(false)]
         public ActionResult IcerikKaydet(string json)

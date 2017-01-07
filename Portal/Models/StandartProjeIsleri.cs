@@ -20,6 +20,9 @@ namespace Portal.Models
         public string StandartProjeIsleriIsAdi { get; set; }
         public Nullable<System.DateTime> StandartProjeIsleriTarih { get; set; }
         public string RefStandartProjeIsleriKontrolEdecekKullaniciId { get; set; }
+        public string StandartProjeIsleriAciklama { get; set; }
+        public string StandartProjeIsleriIdAnahtarIsmi { get; set; }
+        public Nullable<bool> StandartProjeIsleriIdKontrol { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
