@@ -2,12 +2,12 @@
 @{
     ViewBag.Title = "İçerik Formu";
 }
+<<<<<<< HEAD
 @{
     var listStandardIsler = Database.Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
     var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
 }
-
-
+=======
 
 <!--İlhami - Page Level Plugins Start-->
 <link href="/Content/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
@@ -16,6 +16,7 @@
 <link href="/Content/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css" />
 <link href="/Content/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css" rel="stylesheet" type="text/css" />
 <!--İlhami - Page Level Plugins End-->
+>>>>>>> 48e9c89bc3d0ca1b204fdfeb1332e9af4c790025
 
 <div class="portlet light portlet-fit portlet-form bordered" id="form_wizard_1">
 
@@ -111,12 +112,75 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <div class="form-group">
                     <label class="control-label col-md-3">
                         Instagram
                     </label>
                     <div class="col-md-4">
                         <input name="Instagram"  type="text" class="form-control" />
+=======
+                @*   @Html.Partial("CKEditor")*@
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <label class="mt-checkbox">
+
+                                    @Html.CheckBoxFor(x => x.SosyalMedyaAlindi, new { data_toggle = "collapse", data_target = "#SosyalMedaya" }) Sosyal Medya
+                                    @*<input data-toggle="collapse" data-target="#sosyalMedya" id="chbSosyalMedya" type="checkbox"  name="sosyalMedyaAlindi" /> Sosyal Medya*@
+                                    <span></span>
+                                </label>
+                            </label>
+                            <div class="col-md-10">
+                                <textarea class="ckeditor form-control" name="SosyalMedaya" id="SosyalMedaya" rows="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <label class="mt-checkbox">
+                                    @Html.CheckBoxFor(x => x.LogoAlindi, new { data_toggle = "collapse", data_target = "#Logo" }) Logo
+                                    <input id="chbLogo" type="checkbox" value="1" name="service" /> Logo
+                                    <span></span>
+                                </label>
+                            </label>
+                            <div class="col-md-10">
+                                <textarea class="ckeditor form-control" name="Logo" id="Logo" rows="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <label class="mt-checkbox">
+                                    @Html.CheckBoxFor(x => x.KurumsalKimlikAlindi, new { data_toggle = "collapse", data_target = "#KurumsalKimlik" }) Kurumsal Kimlik
+                                    <span></span>
+                                </label>
+                            </label>
+                            <div class="col-md-10">
+                                <textarea class="ckeditor form-control" name="KurumsalKimlik" id="KurumsalKimlik" rows="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <label class="mt-checkbox">
+                                    @Html.CheckBoxFor(x => x.SayfalarAlindi, new { data_toggle = "collapse", data_target = "#Sayfalar" })Sayfalar
+                                    <span></span>
+                                </label>
+                            </label>
+                            <div class="col-md-10">
+                                <textarea class="ckeditor form-control" name="Sayfalar" id="sayfalar" rows="6"></textarea>
+                            </div>
+                        </div>
+>>>>>>> 48e9c89bc3d0ca1b204fdfeb1332e9af4c790025
                     </div>
                 </div>
                 <div class="form-group">
@@ -157,11 +221,18 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 }
              
+            
+             
+              
+=======
+                </div>
 
 
 
+>>>>>>> 48e9c89bc3d0ca1b204fdfeb1332e9af4c790025
             </div>
             <div class="form-actions">
                 <div class="row">
