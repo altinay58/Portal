@@ -9,9 +9,9 @@ using Newtonsoft.Json;
 
 namespace Portal.Controllers
 {
-    public class IslerController : Controller
+    public class IslerController : BaseController
     {
-        private PortalEntities db = new PortalEntities();
+       
         // GET: Isler
         public ActionResult Index(bool kontrolBekleyenIsler, bool onaylananIsler, int? RefBolgeID, int? SayfaNo)
         {
@@ -34,6 +34,7 @@ namespace Portal.Controllers
         }
         public ActionResult IcerikFormu()
         {
+           
             return View();
         }
         [ValidateInput(false)]
@@ -44,17 +45,20 @@ namespace Portal.Controllers
             {
 
 
-                //repProje.Insert(proje);
-                var listStandardIsler = db.StandartProjeIsleris.ToList();
-                var dinamiStandartIsler = listStandardIsler.Where(x=>x.StandartProjeIsleriIdAnahtarIsmi!=null);
 
+
+                var si = new StandartProjeIsleri();
+                //si.StandartProjeIsleriIdAnahtarIsmi
                 TempData["Success"] = "Kaydedildi";
 
                 return RedirectToAction("ListProje");
 
             }
-            ViewBag.Title = "Yeni Proje";
+            var listStandardIsler = Database.Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
+            var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
 
+
+            TempData["Error"] = "Lütfen zorunlu alanları doldurunuz.";
             return RedirectToAction("Index");
         }
         [ValidateInput(false)]
@@ -72,7 +76,7 @@ namespace Portal.Controllers
 
             var firmalar = new List<object>();
 
-            foreach (Firma firma in db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) || a.YetkiliTelefon.Contains(firmaAdi)))
+            foreach (Firma firma in Database.Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) || a.YetkiliTelefon.Contains(firmaAdi)))
             {
                 firmalar.Add(new
                 {
@@ -99,7 +103,7 @@ namespace Portal.Controllers
         {
         
 
-            var listDomain = (from d in db.Domains
+            var listDomain = (from d in Database.Db.Domains
                               where (firmaId.HasValue ? d.RefDomainFirmaID == firmaId.Value : true) && d.DomainAdi.Contains(domainAdi)
                               select new
                               {

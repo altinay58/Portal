@@ -1622,6 +1622,8 @@
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
+                    <span class="success">@(TempData["Success"] == null ? "" : @Html.Encode(TempData["Success"]))</span>
+                    <span class="error">@(TempData["Error"] == null ? "" : @Html.Encode(TempData["Error"]))</span>
                     @RenderBody()
                 </div>
                 <!-- END CONTENT BODY -->

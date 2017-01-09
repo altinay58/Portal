@@ -30,7 +30,7 @@ namespace Portal.Models
         public string KurumsalDokumanlar { get; set; }
         public string Referanslar { get; set; }
         public string Notlar { get; set; }
-
+        /*
         public bool SosyalMedyaAlindi { get; set; }
         public bool LogoAlindi { get; set; }
         public bool KurumsalKimlikAlindi { get; set; }
@@ -40,6 +40,7 @@ namespace Portal.Models
         public bool KurumsalDokumanlarAlindi { get; set; }
         public bool ReferanslarAlindi { get; set; }
         public bool NotlarAlindi { get; set; }
+        */
 
     }
 }
