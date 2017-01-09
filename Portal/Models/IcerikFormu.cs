@@ -21,15 +21,15 @@ namespace Portal.Models
         public string Instagram { get; set; }
         public string GooglePlus { get; set; }
         public string Twitter { get; set; }
-        public string SosyalMedaya { get; set; }
-        public string Logo { get; set; }
-        public string KurumsalKimlik { get; set; }
-        public string Sayfalar { get; set; }
-        public string UrunlerHizmetler { get; set; }
-        public string Fotograflar { get; set; }
-        public string KurumsalDokumanlar { get; set; }
-        public string Referanslar { get; set; }
-        public string Notlar { get; set; }
+        //public string SosyalMedaya { get; set; }
+        //public string Logo { get; set; }
+        //public string KurumsalKimlik { get; set; }
+        //public string Sayfalar { get; set; }
+        //public string UrunlerHizmetler { get; set; }
+        //public string Fotograflar { get; set; }
+        //public string KurumsalDokumanlar { get; set; }
+        //public string Referanslar { get; set; }
+        //public string Notlar { get; set; }
         /*
         public bool SosyalMedyaAlindi { get; set; }
         public bool LogoAlindi { get; set; }

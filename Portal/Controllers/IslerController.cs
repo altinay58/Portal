@@ -41,25 +41,61 @@ namespace Portal.Controllers
         [HttpPost]
         public ActionResult IcerikFormu(IcerikFormu icerik, FormCollection frm)
         {
-            if (ModelState.IsValid)
+            // is atanacak ve kontrol edecek kullanici ayar tablosundaki kayitlara gore belirleniyor
+            // Ayar table da IcerikFormuIsAtanacakKullanici ve IcerikFormuIsKontrolEdenKullanici kayitlari yok ise ekranda uyari gosteriyor
+            var isAtanacakKullanici = Database.Db.Ayars.Where(x=>x.AyarAdi== "IcerikFormuIsAtanacakKullanici").SingleOrDefault();
+            var isKontrolEdenKullanici = Database.Db.Ayars.Where(x=>x.AyarAdi== "IcerikFormuIsKontrolEdenKullanici").SingleOrDefault();
+            if (ModelState.IsValid && (isAtanacakKullanici!=null && isKontrolEdenKullanici!=null) &&
+                (!string.IsNullOrEmpty(isAtanacakKullanici.AyarDeger) && !(string.IsNullOrEmpty(isKontrolEdenKullanici.AyarDeger)) ))
             {
+                var listStandardIsler = Database.Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
+                var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
+                var isHtml = string.Format("<p>Firma Adı:{0}</p>",icerik.FirmaAdi);
+                isHtml += string.Format("<p>Domain Adı:{0}</p>", icerik.DomainAdi);
+                isHtml += string.Format("<p>Telefon 1:{0}</p>", icerik.Telefon1);
+                isHtml += string.Format("<p>Telefon 2:{0}</p>", icerik.Telefon2);
+                isHtml += string.Format("<p>Email:{0}</p>", icerik.Email);
+                isHtml += string.Format("<p>Adres:{0}</p>", icerik.Adres);
+                isHtml += string.Format("<p>Konum Adı:{0}</p>", icerik.Konum);
+                isHtml += string.Format("<p>Instagram Adı:{0}</p>", icerik.Instagram);
+                isHtml += string.Format("<p>Google Plus Adı:{0}</p>", icerik.GooglePlus);
+                isHtml += string.Format("<p>Twitter:{0}</p>", icerik.Twitter);
+                foreach (var dinamikIs in dinamiStandartIsler)
+                {
+                    string anahtar = dinamikIs.StandartProjeIsleriIdAnahtarIsmi + "Alindi";
+                    if (frm[anahtar].Contains("true"))
+                    {
+                        isHtml += string.Format("<p>{0} Alındı:{1}</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi,frm[anahtar]);
+                    }else
+                    {
+                        isHtml += string.Format("<p>{0} Alınmadı</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi);
+                    }
+                }
 
-
-
-
-                var si = new StandartProjeIsleri();
-                //si.StandartProjeIsleriIdAnahtarIsmi
+                isler ilkIs = new isler();
+                ilkIs.islerAciklama = string.Format("Domain:{0}-Firma:{1}", icerik.DomainAdi, icerik.FirmaAdi);
+                ilkIs.islerAdi=icerik.DomainAdi+" bilgileri";
+                ilkIs.islerRefDomainID = icerik.DomainId;
+                ilkIs.islerRefFirmaID = icerik.FirmaId;
+                ilkIs.islerisiYapacakKisi = isAtanacakKullanici.AyarDeger;
+                //degişebilir
+                ilkIs.islerisiVerenKisi = isKontrolEdenKullanici.AyarDeger;
+                ilkIs.islerTarih = DateTime.Now;
+                //ilkIs.islerOncelikSiraID
                 TempData["Success"] = "Kaydedildi";
 
                 return RedirectToAction("ListProje");
 
             }
-            var listStandardIsler = Database.Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
-            var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
+            else
+            {
+                TempData["Error"] = "Ayar tablosuna IcerikFormuIsAtanacakKullanici ve IcerikFormuIsKontrolEdenKullanici kayıtlarnı giriniz .";
+                return View();
+            }
+          
 
 
-            TempData["Error"] = "Lütfen zorunlu alanları doldurunuz.";
-            return RedirectToAction("Index");
+         
         }
         [ValidateInput(false)]
         public ActionResult IcerikKaydet(string json)
