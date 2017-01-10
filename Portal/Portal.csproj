@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DomainController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IslerController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Models\DomainKategori.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Extension.cs" />
     <Compile Include="Models\Firma.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -469,6 +471,7 @@
     <Content Include="Views\StandartProjeIsleris\Index.cshtml" />
     <Content Include="Views\Isler\IcerikFormu.cshtml" />
     <Content Include="Views\Shared\CKEditor.cshtml" />
+    <Content Include="Views\Domain\Ekle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

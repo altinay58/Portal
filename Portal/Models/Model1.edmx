@@ -301,6 +301,7 @@
           <Property Name="islerCalisanTipi" Type="varchar" MaxLength="50" />
           <Property Name="islerDosyaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="islerSira" Type="int" />
+          <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="isOncelikSira">
           <Key>
@@ -2109,6 +2110,7 @@
           <NavigationProperty Name="isOncelikSira" Relationship="PortalModel.FK_isler_isOncelikSira" FromRole="isler" ToRole="isOncelikSira" />
           <NavigationProperty Name="isYorums" Relationship="PortalModel.FK_isYorum_isler" FromRole="isler" ToRole="isYorum" />
           <NavigationProperty Name="YorumDurums" Relationship="PortalModel.FK_YorumDurum_isYorum" FromRole="isler" ToRole="YorumDurum" />
+          <Property Name="islerIsinDurumu" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="IsiYapacakKisi">
           <Key>
@@ -3599,6 +3601,7 @@
           <EntitySetMapping Name="islers">
             <EntityTypeMapping TypeName="PortalModel.isler">
               <MappingFragment StoreEntitySet="isler">
+                <ScalarProperty Name="islerIsinDurumu" ColumnName="islerIsinDurumu" />
                 <ScalarProperty Name="islerSira" ColumnName="islerSira" />
                 <ScalarProperty Name="islerDosyaAdi" ColumnName="islerDosyaAdi" />
                 <ScalarProperty Name="islerCalisanTipi" ColumnName="islerCalisanTipi" />

@@ -11,5 +11,9 @@ namespace Portal.Models
         {
             return source.Where(a => a.LockoutEnabled == false);
         }
+        public static IEnumerable<T> TumFirmalar<T>(this IQueryable<T> source) where T : Firma
+        {
+            return source.Where(a => a.FirmaSilindi == false);
+        }
     }
 }

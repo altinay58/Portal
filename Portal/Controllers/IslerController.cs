@@ -81,10 +81,27 @@ namespace Portal.Controllers
                 //degişebilir
                 ilkIs.islerisiVerenKisi = isKontrolEdenKullanici.AyarDeger;
                 ilkIs.islerTarih = DateTime.Now;
-                //ilkIs.islerOncelikSiraID
+                ilkIs.islerOncelikSiraID =(int) IslerOncelikSira.Ikinci;
+                List<isler> isler = new List<Models.isler>();
+                isler.Add(ilkIs);
+                foreach(var standardIs in listStandardIsler)
+                {
+                    isler job = new isler();
+                    job.islerAciklama = string.Format("{0}", standardIs.StandartProjeIsleriAciklama);
+                    job.islerAdi =standardIs.StandartProjeIsleriIsAdi;
+                    job.islerRefDomainID = icerik.DomainId;
+                    job.islerRefFirmaID = icerik.FirmaId;
+                    job.islerisiYapacakKisi = standardIs.RefStandartProjeIsleriYapacakKullaniciId;
+                    job.islerOncelikSiraID = (int)IslerOncelikSira.Ikinci;
+                    job.islerisiVerenKisi = standardIs.RefStandartProjeIsleriKontrolEdecekKullaniciId;
+                    job.islerTarih = DateTime.Now;
+                    isler.Add(job);
+                }
+                Database.Db.islers.AddRange(isler);
+                Database.Db.SaveChanges();
                 TempData["Success"] = "Kaydedildi";
 
-                return RedirectToAction("ListProje");
+                return RedirectToAction("Index",new { kontrolBekleyenIsler=false,  onaylananIsler=false });
 
             }
             else
@@ -112,7 +129,7 @@ namespace Portal.Controllers
 
             var firmalar = new List<object>();
 
-            foreach (Firma firma in Database.Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) || a.YetkiliTelefon.Contains(firmaAdi)))
+            foreach (Firma firma in Database.Db.Firmas.TumFirmalar().Where(a => a.FirmaAdi.Contains(firmaAdi) ))
             {
                 firmalar.Add(new
                 {
