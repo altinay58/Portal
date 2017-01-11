@@ -129,7 +129,7 @@ namespace Portal.Controllers
 
             var firmalar = new List<object>();
 
-            foreach (Firma firma in Database.Db.Firmas.TumFirmalar().Where(a => a.FirmaAdi.Contains(firmaAdi) ))
+            foreach (Firma firma in Database.Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) ))
             {
                 firmalar.Add(new
                 {

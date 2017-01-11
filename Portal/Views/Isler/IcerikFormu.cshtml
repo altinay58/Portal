@@ -376,7 +376,7 @@
             $('#FirmaAdi').on('typeahead:selected', function (event, datum) {
                 icerikFormu.firmaId = datum.value;
 
-                $('#FirmaId').val(datum.firmaId);
+                $('#FirmaId').val(datum.value);
                 $('#DomainId').val("");
                 $('#DomainAdi').val("");
                 ilkDegerAta();
@@ -432,7 +432,8 @@
                 icerikFormu.firmaId = datum.firmaId;
                 ilkDegerAta();
                 yukleData(datum);
-
+                $('#FirmaAdi').val(datum.firmaAdi);
+                $('#FirmaId').val(datum.firmaId);
             });
 
         })
@@ -443,8 +444,7 @@
             $("#Adres").val("");
         }
         function yukleData(data) {
-            $('#FirmaAdi').val(data.firmaAdi);
-            $('#FirmaId').val(data.firmaId);
+           
             $("#Telefon1").val(data.Telefon1);
             $("#Telefon2").val(data.Telefon2);
             $("#Email").val(data.Email);

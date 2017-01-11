@@ -18,6 +18,13 @@ namespace Portal.Models
 
 
         }
+        public static bool DomainEklimi(this IEnumerable<Domain> kaynakTablo, string domainAdi)
+        {
+            if (kaynakTablo.FirstOrDefault(q => q.DomainAdi == domainAdi) == null)
+                return false;
+            else
+                return true;
+        }
 
 
     }

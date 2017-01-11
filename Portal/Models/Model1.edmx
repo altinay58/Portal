@@ -162,6 +162,7 @@
           <Property Name="SilindimiGoogleBusiness" Type="bit" Nullable="false" />
           <Property Name="SilindimiYedekAlindimi" Type="bit" Nullable="false" />
           <Property Name="SilindimiVeriTabani" Type="bit" Nullable="false" />
+          <Property Name="RefDomainKayitliFirmaId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -169,6 +170,14 @@
           </Key>
           <Property Name="DomainKategoriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DomainKategoriAdi" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="DomainKayitliFirma">
+          <Key>
+            <PropertyRef Name="DomainKayitliFirmaId" />
+          </Key>
+          <Property Name="DomainKayitliFirmaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DomainKayitliFirmaAdi" Type="nvarchar" MaxLength="250" />
+          <Property Name="Aciklama" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="Firma">
           <Key>
@@ -772,6 +781,18 @@
             </Principal>
             <Dependent Role="Domain">
               <PropertyRef Name="RefDomainKategori" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Domain_DomainKayitliFirma">
+          <End Role="DomainKayitliFirma" Type="Self.DomainKayitliFirma" Multiplicity="1" />
+          <End Role="Domain" Type="Self.Domain" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DomainKayitliFirma">
+              <PropertyRef Name="DomainKayitliFirmaId" />
+            </Principal>
+            <Dependent Role="Domain">
+              <PropertyRef Name="RefDomainKayitliFirmaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1437,6 +1458,7 @@
           <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Domain" EntityType="Self.Domain" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DomainKategori" EntityType="Self.DomainKategori" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DomainKayitliFirma" EntityType="Self.DomainKayitliFirma" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Firma" EntityType="Self.Firma" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GelinmeyenGun" EntityType="Self.GelinmeyenGun" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GidilenMusteri" EntityType="Self.GidilenMusteri" Schema="dbo" store:Type="Tables" />
@@ -1522,6 +1544,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Domain_DomainKategori" Association="Self.FK_Domain_DomainKategori">
             <End Role="DomainKategori" EntitySet="DomainKategori" />
+            <End Role="Domain" EntitySet="Domain" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Domain_DomainKayitliFirma" Association="Self.FK_Domain_DomainKayitliFirma">
+            <End Role="DomainKayitliFirma" EntitySet="DomainKayitliFirma" />
             <End Role="Domain" EntitySet="Domain" />
           </AssociationSet>
           <AssociationSet Name="FK_Domain_Firma" Association="Self.FK_Domain_Firma">
@@ -2077,6 +2103,11 @@
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="DomainKayitliFirmas" EntityType="PortalModel.DomainKayitliFirma" />
+          <AssociationSet Name="FK_Domain_DomainKayitliFirma" Association="PortalModel.FK_Domain_DomainKayitliFirma">
+            <End Role="DomainKayitliFirma" EntitySet="DomainKayitliFirmas" />
+            <End Role="Domain" EntitySet="Domains" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2331,6 +2362,8 @@
           <NavigationProperty Name="islers" Relationship="PortalModel.FK_isler_Domain" FromRole="Domain" ToRole="isler" />
           <NavigationProperty Name="Seos" Relationship="PortalModel.FK_Seo_Domain" FromRole="Domain" ToRole="Seo" />
           <NavigationProperty Name="SiteKontrolDomainBirlestirs" Relationship="PortalModel.FK_SiteKontrolDomainBirlestir_Domain" FromRole="Domain" ToRole="SiteKontrolDomainBirlestir" />
+          <Property Name="RefDomainKayitliFirmaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DomainKayitliFirma" Relationship="PortalModel.FK_Domain_DomainKayitliFirma" FromRole="Domain" ToRole="DomainKayitliFirma" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -3574,6 +3607,27 @@
           <End Type="PortalModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
+        <EntityType Name="DomainKayitliFirma">
+          <Key>
+            <PropertyRef Name="DomainKayitliFirmaId" />
+          </Key>
+          <Property Name="DomainKayitliFirmaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DomainKayitliFirmaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Aciklama" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Domains" Relationship="PortalModel.FK_Domain_DomainKayitliFirma" FromRole="DomainKayitliFirma" ToRole="Domain" />
+        </EntityType>
+        <Association Name="FK_Domain_DomainKayitliFirma">
+          <End Type="PortalModel.DomainKayitliFirma" Role="DomainKayitliFirma" Multiplicity="1" />
+          <End Type="PortalModel.Domain" Role="Domain" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DomainKayitliFirma">
+              <PropertyRef Name="DomainKayitliFirmaId" />
+            </Principal>
+            <Dependent Role="Domain">
+              <PropertyRef Name="RefDomainKayitliFirmaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3777,6 +3831,7 @@
           <EntitySetMapping Name="Domains">
             <EntityTypeMapping TypeName="PortalModel.Domain">
               <MappingFragment StoreEntitySet="Domain">
+                <ScalarProperty Name="RefDomainKayitliFirmaId" ColumnName="RefDomainKayitliFirmaId" />
                 <ScalarProperty Name="SilindimiVeriTabani" ColumnName="SilindimiVeriTabani" />
                 <ScalarProperty Name="SilindimiYedekAlindimi" ColumnName="SilindimiYedekAlindimi" />
                 <ScalarProperty Name="SilindimiGoogleBusiness" ColumnName="SilindimiGoogleBusiness" />
@@ -4247,6 +4302,15 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="DomainKayitliFirmas">
+            <EntityTypeMapping TypeName="PortalModel.DomainKayitliFirma">
+              <MappingFragment StoreEntitySet="DomainKayitliFirma">
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+                <ScalarProperty Name="DomainKayitliFirmaAdi" ColumnName="DomainKayitliFirmaAdi" />
+                <ScalarProperty Name="DomainKayitliFirmaId" ColumnName="DomainKayitliFirmaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
