@@ -253,6 +253,7 @@
     <Compile Include="Models\Firma.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Fonksiyonlar.cs" />
     <Compile Include="Models\GelinmeyenGun.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -475,6 +476,8 @@
     <Content Include="Views\Isler\IcerikFormu.cshtml" />
     <Content Include="Views\Shared\CKEditor.cshtml" />
     <Content Include="Views\Domain\Ekle.cshtml" />
+    <Content Include="Views\Domain\Domainler.cshtml" />
+    <Content Include="Views\Shared\_DomainSatiri.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

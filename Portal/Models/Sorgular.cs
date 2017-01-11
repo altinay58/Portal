@@ -25,7 +25,78 @@ namespace Portal.Models
             else
                 return true;
         }
+        public static IEnumerable<Domain> GetirSilinenDomainler(this IEnumerable<Domain> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
+        {
+            return (from q in kaynakTablo
+                    where q.DomainDurum == false
+                    orderby q.SilmeTarihi descending
+                    select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+        }
+        public static IEnumerable<Domain> GetirSilinenDomainler(this IEnumerable<Domain> kaynakTablo)
+        {
+            return from q in kaynakTablo
+                   where q.DomainDurum == false
+                   orderby q.DomainID descending
+                   select q;
+        }
+        public static IEnumerable<Firma> GetirFirmalar(this IEnumerable<Firma> kaynakTablo, string durum)
+        {
+            if (durum == "personel")
+            {
+                return from q in kaynakTablo
+                       where q.Personel == true && q.FirmaSilindi == false
+                       orderby q.FirmaAdi ascending
+                       select q;
+            }
+            if (durum == "kasa")
+            {
+                return from q in kaynakTablo
+                       where q.Kasa == true && q.FirmaSilindi == false
+                       orderby q.FirmaAdi ascending
+                       select q;
+            }
+            else if (durum == "araci")
+            {
+                return from q in kaynakTablo
+                       where q.Araci == true && q.FirmaSilindi == false
+                       orderby q.FirmaAdi ascending
+                       select q;
+            }
+            else if (durum == "musteri")
+            {
+                return from q in kaynakTablo
+                       where q.Musteri == true && q.FirmaSilindi == false
+                       orderby q.FirmaAdi ascending
+                       select q;
+            }
+            else
+            {
+                return from q in kaynakTablo
+                       where q.FirmaSilindi == false
+                       orderby q.FirmaAdi ascending
+                       select q;
+            }
 
-
+        }
+        public static IEnumerable<DomainKategori> GetirDomainKategorileri(this IEnumerable<DomainKategori> kaynakTablo)
+        {
+            return from d in kaynakTablo
+                   orderby d.DomainKategoriAdi ascending
+                   select d;
+        }
+        public static IEnumerable<Domain> GetirDomainler(this IEnumerable<Domain> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
+        {
+            return (from q in kaynakTablo
+                    where q.DomainDurum == true
+                    orderby q.DomainID descending
+                    select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+        }
+        public static IEnumerable<Domain> GetirDomainler(this IEnumerable<Domain> kaynakTablo)
+        {
+            return from q in kaynakTablo
+                   where q.DomainDurum == true
+                   orderby q.DomainID descending
+                   select q;
+        }
     }
 }

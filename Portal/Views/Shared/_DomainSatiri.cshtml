@@ -1,0 +1,92 @@
+﻿
+@model Portal.Models.Domain
+@using Portal.Models;
+@{
+    string renk = "";
+    if (!Model.DomainDurum ?? false)
+    {
+        renk = "Silindi";
+    }
+}
+<tr class="domainSiralama @(renk)" data-ip="@(Model.IpAdres)">
+    <td>@String.Format("{0:dd MMMM yyyy}", Model.Tarih)</td>
+    <td>@String.Format("{0:dd MMMM yyyy}", Model.UzatmaTarihi)</td>
+    <td>
+        @if (Model.DomainDurum ?? false)
+        { @Fonksiyonlar.DomainUzatmaSuresineKalanGun(Model.UzatmaTarihi)}
+        else
+        {<a class="btn btn-danger" href="@Url.Action("DomainDuzenle", new { controller = "Web", id = Model.DomainID })">
+            Silindi
+        </a>}
+    </td>
+    <td>
+        <a class="various" data-fancybox-type="iframe" href="@Url.Action("DomainSorgula", "Web", new { domain = Model.DomainAdi })">@Model.DomainAdi</a>
+    </td>
+    <td>
+        <a href="http://www.@(Model.DomainAdi)" target="_blank">
+            <span class="icon-stack">
+                <i class="icon-link"></i>
+            </span>
+        </a>
+    </td>
+    <td>
+        @Model.Hosting.HostingAdi
+    </td>
+    <td>
+        <span id="@Model.DomainID" class="ipGetir domain@(Model.DomainID)">
+            @if (!String.IsNullOrEmpty(Model.IpAdres))
+            {@Model.IpAdres}
+            else
+            { <text>İp Adresi Kayıtlı Değil</text> }
+        </span>
+    </td>
+    <td>
+        @Model.KayitliFirma.KayitliFirmaAdi
+    </td>
+    <td>
+        @Model.DomainKategori.DomainKategoriAdi
+    </td>
+    <td>
+        <a href="@Url.Action("CariHareketDetay", "Web", new { firmaID = Model.RefDomainFirmaID })">
+            @Model.Firma.FirmaAdi
+        </a>
+    </td>
+    <td>
+       
+            @if (Model.DomainDurum ?? false)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="btn btn-warning" href="@Url.Action("DomainDuzenle", new { controller = "Web", id = Model.DomainID })">
+                            Düzenle
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn  btn-info" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak  Maili Gönderilecek Emin misiniz?'))location.href='@Url.Action("DomainUzatmaMailiGonder", "MailSablonlari", new { controller = "Web", domainID = Model.DomainID })'"> Mail Gönder  </a>
+                    </div>
+                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="btn btn-success" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Web", new { controller = "Web", domainID = Model.DomainID })'"> Uzat  </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a class="btn  btn-danger" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Web", new { controller = "Web", id = Model.DomainID })'"> Domaini Sil </a>
+                    </div>
+                </div>
+            }
+
+            else
+            {
+
+                <a class="btn btn-danger" href="@Url.Action("DomainDuzenle", new { controller = "Web", id = Model.DomainID })">
+                    Silindi
+                </a>
+
+            }
+
+
+
+
+</td>
+</tr>
