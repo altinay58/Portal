@@ -50,6 +50,14 @@
         <link href="/Content/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
+        <style>
+           .current-page {
+    z-index: 2;
+    color: #23527c !important;
+    background-color: #eee !important;
+    border-color: #ddd !important;
+}
+        </style>
         @RenderSection("css", required: false)
     </head>
     <!-- END HEAD -->
@@ -1125,6 +1133,7 @@
                         </ul>
                   
                     </div>
+                    <h3 class="page-title"></h3>
                     <div class="alert alert-success @(TempData["Success"]==null ? "display-hide" :"")">
                         <button class="close" data-close="alert"></button> @TempData["Success"]
                     </div>

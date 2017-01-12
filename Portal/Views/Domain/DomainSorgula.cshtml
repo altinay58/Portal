@@ -1,0 +1,28 @@
+﻿@using System.Collections.Generic;
+@using Portal.Controllers;
+@{
+    List<string> liste = (List<string>)ViewBag.Mesaj;
+
+    Layout = "";
+
+}
+<html>
+<head>
+</head>
+<body>
+    <div class="row" style="background-color:white;padding:10px;">
+        <div class="col-lg-12">
+            <div class="widget-container fluid-height clearfix">
+                <div class="col-md-12">
+                    <div class="widget-content padded">
+                        @foreach (string list in liste)
+                        {
+                            @WhoisController.Duzelt(list) <br />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

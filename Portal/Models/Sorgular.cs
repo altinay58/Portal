@@ -98,5 +98,11 @@ namespace Portal.Models
                    orderby q.DomainID descending
                    select q;
         }
+        public static IEnumerable<Hosting> GetirHosting(this IEnumerable<Hosting> kaynakTablo)
+        {
+            return from d in kaynakTablo
+                   orderby d.HostingAdi ascending
+                   select d;
+        }
     }
 }

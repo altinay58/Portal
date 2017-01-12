@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Portal.Models;
+using System.Threading.Tasks;
+
 namespace Portal.Controllers
 {
     public class DomainController : BaseController
     {
-        const int  sayfada_gosterilecek_domain_sayisi = 50;
+        const int  sayfada_gosterilecek_domain_sayisi = 10;
         // GET: Domain
         public ActionResult Index()
         {
@@ -28,7 +30,7 @@ namespace Portal.Controllers
             if (Database.Db.Domains.DomainEklimi(domain.DomainAdi))
             {
                 SetViewBagEkle();
-                TempData["Error"] = "Domain daha önce eklenmiş!";
+                TempData[ERROR] = "Domain daha önce eklenmiş!";
                 return View(domain);
             }
 
@@ -39,90 +41,93 @@ namespace Portal.Controllers
                 Database.Db.Domains.Add(domain);
                 Database.Db.SaveChanges();
                 SetViewBagEkle();
-                TempData["Success"] = "Domain Kaydedildi";
+                TempData[SUCESS] = "Domain Kaydedildi";
                 return View(domain);
             }
             
             return View();
         }
-        public ActionResult Domainler(int? sayfaNo)
+        public ActionResult Domainler(int? page)
         {
-            ViewBag.SayfaAdi = "Domainler";
-            int SayfaNo = sayfaNo ?? 0;
-
-            int domainBaslangic = 0;
-            if (SayfaNo > 1)
-            {
-                domainBaslangic = (SayfaNo - 1) * sayfada_gosterilecek_domain_sayisi;
-            }
-
-            var viewData = Database.Db.Domains.GetirDomainler(sayfada_gosterilecek_domain_sayisi, domainBaslangic);
-
-            //sayfalama
-            if (SayfaNo == 0)
-            {
-                SayfaNo = 1;
-            }
-
-            string sayfalama = "";
-            //sayfa numarası 0 dan büyükse yani birinci sayfada değilse ilk sayfaya link verdik.
-            if (SayfaNo > 6)
-            {
-                sayfalama = sayfalama + " <a  class=\"page\" href=\"/domain/liste\"> İlk </a> ";
-            }
-
-
-            int sayi = Database.Db.Domains.GetirDomainler().Count();
-            double sayfa = (double)sayi / sayfada_gosterilecek_domain_sayisi;
-            sayfa = Math.Ceiling(sayfa);
-
-            // sayfa ilk sayfa değilse sayfadan önceki 5 sayfaya link verdik 
-            // sayfamız 5 ise 1-2-3-4 nolu sayfalar linklenecek sonra 5 gelecek
-
-            for (int i = SayfaNo - 5; i < SayfaNo; i++)
-            {
-                if (i == 1)
-                {
-                    sayfalama = sayfalama + " <a  class=\"page\" href=\"/domain/liste/\"> 1 </a> ";
-                }
-                else if (i > 0)
-                {
-                    sayfalama = sayfalama + " <a  class=\"page\" href=\"/domain/liste/" + i + "\">" + i + "</a> ";
-                }
-            }
-
-            if (SayfaNo > 0)
-            {
-                sayfalama = sayfalama + " " + SayfaNo + " ";
-            }
-            // sayfadan sonraki 5 sayfa
-            for (int i = SayfaNo + 1; i < SayfaNo + 6; i++)
-            {
-                if (i <= sayfa)
-                {
-                    sayfalama = sayfalama + " <a  class=\"page\" href=\"/domain/liste/" + i + "\">" + i + "</a> ";
-                }
-            }
-
-            //sayfa numarası 0 dan büyükse yani birinci sayfada değilse ilk sayfaya link verdik.
-            if (SayfaNo < sayfa - 5)
-            {
-                sayfalama = sayfalama + " <a  class=\"page\" href=\"/domain/liste/" + (sayfa).ToString() + "\"> Son </a> ";
-            }
-
+           
+            int domainBaslangic = ((page ?? 1) - 1) * PagerCount;
+            var viewData = Database.Db.Domains.GetirDomainler(PagerCount, domainBaslangic);
+            int totalCount = Database.Db.Domains.GetirDomainler().Count();
             ViewBag.Firmalar = Database.Db.Firmas.GetirFirmalar("");
             ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
-            ViewBag.Sayfalama = sayfalama;
+            
+            PaginatedList pager = new PaginatedList((page ?? 1), PagerCount, totalCount);
             //sayfalama
-
+            ViewBag.Sayfalama = pager;
             return View(viewData);
 
+        }
+        public ActionResult Duzenle(int?id)
+        {
+            Domain d = new Domain();
+            //d.Kontrol
+            var viewData =  Database.Db.Domains.FirstOrDefault(a => a.DomainID == id);
+            ViewBag.DomainKayitliFirma = Database.Db.DomainKayitliFirmas.OrderBy(x=>x.DomainKayitliFirmaAdi);
+            ViewBag.HostingDetay = Database.Db.Hostings.GetirHosting();
+            ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+            return View(viewData);
+        }
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult Duzenle(Domain domain,int id)
+        {
+            if (ModelState.IsValid)
+            {
+                domain.DomainAdi = Temizle(domain.DomainAdi);
+                Domain entity = Database.Db.Domains.SingleOrDefault(x=>x.DomainID==domain.DomainID);
+
+                entity.DomainAdi = domain.DomainAdi;
+                entity.Tarih = domain.Tarih;
+                entity.UzatmaTarihi = domain.UzatmaTarihi;
+                entity.RefDomainKayitliFirmaId = domain.RefDomainKayitliFirmaId;
+                entity.RefHostingID = domain.RefHostingID;
+                entity.RefDomainFirmaID = domain.RefDomainFirmaID;
+                entity.IpAdres = domain.IpAdres;
+                entity.RefDomainKategori = domain.RefDomainKategori;
+                entity.DomainDurum = domain.DomainDurum;
+                entity.Kontrol = domain.Kontrol;
+                Database.Db.SaveChanges();
+                TempData[SUCESS] = "Kaydedildi";
+                return RedirectToAction("Domainler");
+            }
+            else
+            {
+                var viewData = Database.Db.Domains.FirstOrDefault(a => a.DomainID == id);
+                ViewBag.DomainKayitliFirma = Database.Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);
+                ViewBag.HostingDetay = Database.Db.Hostings.GetirHosting();
+                ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+                TempData["Error"] = "Domain daha önce eklenmiş!";
+                return View();
+            }
+        }
+        public ActionResult DomainSorgula(string domain)
+        {
+            List<string> info = WhoisController.Whois.lookup(domain, WhoisController.Whois.RecordType.domain, "whois.internic.net");
+
+            ViewBag.Mesaj = info;
+            return View();
+            
         }
         private void SetViewBagEkle()
         {
             ViewBag.DomainKayitliFirmalar = Database.Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);
             ViewBag.Hostingler = Database.Db.Hostings.OrderBy(x => x.HostingAdi);
             ViewBag.DomainKategorileri = Database.Db.DomainKategoris.OrderBy(x => x.DomainKategoriAdi);
+        }
+        public static string Temizle(string Kelime)
+        {
+            if (!String.IsNullOrEmpty(Kelime))
+            {
+                while (Kelime.Contains("  "))
+                    Kelime = Kelime.Replace("  ", " ");
+                Kelime = Kelime.Trim();
+            }
+            return Kelime;
         }
     }
 }

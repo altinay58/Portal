@@ -56,21 +56,25 @@
             @if (Model.DomainDurum ?? false)
             {
                 <div class="row">
-                    <div class="col-md-6">
-                        <a class="btn btn-warning" href="@Url.Action("DomainDuzenle", new { controller = "Web", id = Model.DomainID })">
+                    <div class="col-md-3">
+                        <a class="btn btn-warning" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">
                             Düzenle
                         </a>
+                        
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
                         <a class="btn  btn-info" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak  Maili Gönderilecek Emin misiniz?'))location.href='@Url.Action("DomainUzatmaMailiGonder", "MailSablonlari", new { controller = "Web", domainID = Model.DomainID })'"> Mail Gönder  </a>
                     </div>
-                 </div>
+                </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <a class="btn btn-success" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Web", new { controller = "Web", domainID = Model.DomainID })'"> Uzat  </a>
                     </div>
-
-                    <div class="col-md-6">
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
                         <a class="btn  btn-danger" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Web", new { controller = "Web", id = Model.DomainID })'"> Domaini Sil </a>
                     </div>
                 </div>

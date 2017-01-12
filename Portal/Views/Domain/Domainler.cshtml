@@ -1,9 +1,13 @@
 ﻿@model IEnumerable<Portal.Models.Domain>
+@using Portal.Extensions;
+@using Portal.Controllers;
+@using Portal.Extensions;
+@using Portal.Models;
 @{
     ViewBag.Title = "Domainler";
 }
 
-<h3 class="page-title"></h3>
+
 <div class="row">
     <div class="col-md-3">
         <input type="text" class="form-control" name="txtAra" placeholder="Domain Ara..." />
@@ -24,8 +28,8 @@
     </div>
 </div>
 
-<div class="table-scrollable">
-    <table class="table table-striped table-bordered table-hover">
+<div class="portlet-body flip-scroll">
+    <table class="table table-bordered table-striped table-condensed flip-content">
         <thead class="flip-content">
             <tr>
                 <th>Tarih</th>
@@ -49,4 +53,13 @@
             }
         </tbody>
     </table>
+</div>
+<div class="pagination">
+    @*@MvcHtmlString.Create(ViewBag.Sayfalama)*@
+    @if (ViewBag.Sayfalama.TotalCount > 0)
+    {
+        @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<DomainController>(c => c.Domainler(page))))
+    }
+    
 </div>
