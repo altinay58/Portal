@@ -57,7 +57,7 @@ namespace Portal.Controllers
             ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
             
             PaginatedList pager = new PaginatedList((page ?? 1), PagerCount, totalCount);
-            //sayfalama
+       
             ViewBag.Sayfalama = pager;
             return View(viewData);
 
@@ -65,11 +65,20 @@ namespace Portal.Controllers
         public ActionResult Duzenle(int?id)
         {
             Domain d = new Domain();
-            //d.Kontrol
+       
             var viewData =  Database.Db.Domains.FirstOrDefault(a => a.DomainID == id);
             ViewBag.DomainKayitliFirma = Database.Db.DomainKayitliFirmas.OrderBy(x=>x.DomainKayitliFirmaAdi);
             ViewBag.HostingDetay = Database.Db.Hostings.GetirHosting();
             ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+            if (Request.UrlReferrer != null)
+            {
+                var ary = Request.UrlReferrer.ToString().Split('/');
+                if (ary.Length >= 4)
+                {
+                    ViewBag.oncekiSayfa = Request.UrlReferrer.ToString().Split('/')[4];
+                }
+            }
+            
             return View(viewData);
         }
         [ValidateInput(false)]
@@ -93,7 +102,16 @@ namespace Portal.Controllers
                 entity.Kontrol = domain.Kontrol;
                 Database.Db.SaveChanges();
                 TempData[SUCESS] = "Kaydedildi";
-                return RedirectToAction("Domainler");
+                if (Request["oncekiSayfa"] != "")
+                {
+                    string rd = Request["oncekiSayfa"].Trim();
+                    return RedirectToAction(rd);
+                }
+                else
+                {
+                    return RedirectToAction("Domainler");
+                }
+               
             }
             else
             {
@@ -112,6 +130,158 @@ namespace Portal.Controllers
             ViewBag.Mesaj = info;
             return View();
             
+        }
+        //Eski yeri MailSablonlariController
+        public ActionResult DomainUzatmaMailiGonder(int domainID, string ucret)
+        {
+            JsonCevap jsn = new JsonCevap();
+            try
+            {
+
+
+                Domain domainduzenle = Database.Db.Domains.GetirDomain(domainID);
+
+                string mesaj = Database.Db.MailSablonus.Find(1).MailSablonu1;
+
+                mesaj = mesaj.Replace("{FirmaAdi}", domainduzenle.Firma.FirmaAdi);
+                mesaj = mesaj.Replace("{MusteriAdiSoyadi}", domainduzenle.Firma.YetkiliAdi + " " + domainduzenle.Firma.YetkiliSoyAdi);
+                mesaj = mesaj.Replace("{AlanAdi}", domainduzenle.DomainAdi);
+                mesaj = mesaj.Replace("{UzatmaTarihi}", domainduzenle.UzatmaTarihi.ToString());
+                mesaj = mesaj.Replace("{FirmaAdi}", domainduzenle.Firma.FirmaAdi);
+                mesaj = mesaj.Replace("{MusteriNo}", domainduzenle.Firma.FirmaID.ToString());
+                mesaj = mesaj.Replace("{Ucret}", ucret);
+
+                Fonksiyonlar.MailGonder("info@karayeltasarim.com,satis@karayeltasarim.com", domainduzenle.DomainAdi + " Domain Süresi Dolum Bildirimi", mesaj);
+                jsn.Basarilimi = true;
+            }
+            catch
+            {
+                jsn.Basarilimi = false;
+                
+            }
+            return Json(jsn,JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DomainUzat(int domainID)
+        {
+            Domain domainduzenle = Database.Db.Domains.GetirDomain(domainID);
+
+            DateTime yeniTarih = new DateTime(domainduzenle.UzatmaTarihi.AddYears(1).Year, domainduzenle.UzatmaTarihi.Month, domainduzenle.UzatmaTarihi.Day);
+
+            domainduzenle.UzatmaTarihi = yeniTarih;
+            Database.Db.SaveChanges();
+
+            TempData[SUCESS] = domainduzenle.DomainAdi + " Domain Uzatıldı !!!";
+
+
+            return Redirect(Request.UrlReferrer.AbsoluteUri); // Nereden gelindiyse oraya geri gönder
+
+        }
+        //Eski yeri WebController,eski adi UzatmaSuresiGelenler Uzatılacak Domainler
+        public ActionResult UzatilacakDomainler()
+        {
+            var viewData = Database.Db.Domains.GetirUzatmasiGelenler();
+
+            return View(viewData);
+        }
+        public ActionResult SilinenDomainler(int? page,string domain)
+        {
+          
+            return SilinenDomainler(page,domain,null);
+        }
+        //Ara
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult SilinenDomainler(int?page,string domain,FormCollection frm)
+        {
+            int domainBaslangic = ((page ?? 1) - 1) * PagerCount;
+            var viewData = (from q in Database.Db.Domains
+                            where string.IsNullOrEmpty(domain) ? true : q.DomainAdi.Contains(domain)
+                            orderby q.SilmeTarihi descending
+                            select q).Skip(domainBaslangic).Take(PagerCount);
+
+            int totalCount = Database.Db.Domains.Where(dp => dp.DomainAdi != null ? (dp.DomainAdi.Contains(domain)) : (1 == 1) && dp.DomainDurum == false)
+                             .Count();
+            ViewBag.Firmalar = Database.Db.Firmas.GetirFirmalar("");
+            ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+
+            PaginatedList pager = new PaginatedList((page ?? 1), PagerCount, totalCount);
+            //sayfalama
+            ViewData["queryData"] = domain;
+            ViewBag.Sayfalama = pager;
+            return View(viewData);
+        }
+        // Eski yeri WebController
+        public ActionResult DomainSil(int id)
+        {
+            Domain domainduzenle = Database.Db.Domains.Find(id);
+
+            domainduzenle.SilmeTarihi = DateTime.Now;
+            domainduzenle.DomainDurum = false;
+            Database.Db.SaveChanges();
+
+            TempData[SUCESS] = domainduzenle.DomainAdi + " Domain Silindi !!!";
+
+
+            return Redirect(Request.UrlReferrer.AbsoluteUri);
+        }
+
+        public ActionResult DomainKategorileri()
+        {           
+            var viewData = Database.Db.DomainKategoris.GetirDomainKategorileri();
+
+            return View(viewData);
+        }
+        [HttpPost]
+        public ActionResult DomainKategorileri(string kategoriAdi)
+        {
+            kategoriAdi = Temizle(kategoriAdi);
+
+            if (!String.IsNullOrEmpty(kategoriAdi))
+            {
+                if (Db.DomainKategoris.DomainKategoriEklimi(kategoriAdi))
+                {
+                    TempData[ERROR] = "Domain Kategorisi Daha Önce Eklenmiş!! ";
+                }
+                else
+                {
+                    DomainKategori DomainKategoriekle = new DomainKategori()
+                    {
+                        DomainKategoriAdi = kategoriAdi
+                    };
+                    Db.DomainKategoris.Add(DomainKategoriekle);
+                    Db.SaveChanges();
+
+                    TempData[SUCESS] = "Domain Kategori Eklendi!! ";
+                }
+            }
+            else
+            {
+                TempData[ERROR] = "Domain Kategori İsmini Yazmadınız!! ";
+            }
+
+
+
+            return RedirectToAction("DomainKategorileri");
+        }
+        public ActionResult DomainKategoriSil(int id)
+        {
+
+
+            if (Db.Domains.KategorideDomainVarmi(id))
+            {
+                TempData[ERROR] = "Önce kategoriye ekli olan domainleri silin.";
+            }
+            else
+            {
+                DomainKategori domanainKategoriDetay = Db.DomainKategoris.GetirDomainKategori(id);
+                Db.DomainKategoris.Remove(domanainKategoriDetay);
+                Db.SaveChanges();
+                TempData[SUCESS] = "Kategori silindi.";
+
+            }
+
+            return RedirectToAction("DomainKategorileri");
         }
         private void SetViewBagEkle()
         {

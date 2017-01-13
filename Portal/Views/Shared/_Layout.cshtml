@@ -1094,12 +1094,33 @@
                                         <span class="title">Domainler</span>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("UzatilacakDomainler","Domain")" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Uzatılacak Domainler</span>
+                                       
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a href="@Url.Action("SilinenDomainler","Domain")" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Silinen Domainler</span>
+
+                                    </a>
+                                </li>
                                 <li class="nav-item  ">
                                     <a href="@Url.Action("Ekle", "Domain")" class="nav-link ">
                                         <span class="title">Domain Ekle</span>
                                     </a>
                                 </li>
-                               
+                                <li class="nav-item">
+                                    <a href="@Url.Action("DomainKategorileri","Domain")" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Domain Kategorileri</span>
+
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                        
@@ -1779,6 +1800,7 @@
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         @RenderSection("scripts", required: false)
+        <script src="/Scripts/ajaxService.js"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="/Content/assets//layouts/layout/scripts/layout.min.js" type="text/javascript"></script>

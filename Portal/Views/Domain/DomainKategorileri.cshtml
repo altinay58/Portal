@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Portal.Models.DomainKategori>
+@{
+    ViewBag.Title = "DomainKategorileri";
+}
+<form action="@Url.Action("DomainKategorileri","Domain")" name="form1" id="form1" method="post">
+
+<div class="row" style="margin-bottom:5px">
+        <div class="col-md-2">
+            <label>
+                Domain Kategori Adı
+            </label>
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" name="kategoriAdi" id="kategoriAdi" />
+        </div>
+        <div class="col-md-2">
+            <input type="submit"  class="btn btn-default green" value="Kaydet" />
+        </div>
+    </div>
+    
+</form>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Kategori
+                </th>
+                <th>
+                    Sil
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ foreach (Portal.Models.DomainKategori domainKategoriVerisi in ViewData.Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="field">
+                                <div class="display-label" id="@(domainKategoriVerisi.DomainKategoriID)">@domainKategoriVerisi.DomainKategoriAdi</div>
+                            </div>
+                        </td>
+                        <td>
+                            <a>
+                               
+                            </a>
+                            <a  href="javascript:if(confirm('Emin misiniz?'))location.href='@Url.Action("DomainKategoriSil", "Domain", new { id = domainKategoriVerisi.DomainKategoriID })'" class="btn btn-sm red ">
+                               
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                }
+            }
+            
+        </tbody>
+    </table>
+</div>
+@section scripts{
+<script>
+    $(function () {
+        $('#form1').submit(function (e) {
+            if (!kontrol()) {
+                return false; // or e.preventDefault();
+            }
+        })
+
+    })
+    function kontrol() {
+        if ($("#kategoriAdi").val() == "") {
+            alert("Lütfen kategori adi giriniz");
+            $("#kategoriAdi").focus();
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+}
+
+

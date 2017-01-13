@@ -21,6 +21,7 @@ namespace Portal.Controllers
             //daha sonra aktif edilecek
             //WebLoguEkle(Request.RawUrl);
         }
+        protected Models.PortalEntities Db { get { return Database.Db; } private set { } }
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             base.OnActionExecuted(filterContext);

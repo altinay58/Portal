@@ -104,5 +104,37 @@ namespace Portal.Models
                    orderby d.HostingAdi ascending
                    select d;
         }
+        public static Domain GetirDomain(this IEnumerable<Domain> kaynakTablo, int id)
+        {
+            return kaynakTablo.FirstOrDefault(q => q.DomainID == id && q.DomainDurum == true);
+        }
+        public static IEnumerable<Domain> GetirUzatmasiGelenler(this IEnumerable<Domain> kaynakTablo)
+        {
+
+            return from a in kaynakTablo
+                   where a.DomainDurum == true && a.UzatmaTarihi <= DateTime.Now.AddMonths(2)
+                   orderby a.UzatmaTarihi ascending
+                   select a;
+
+
+        }
+        public static bool KategorideDomainVarmi(this IEnumerable<Domain> kaynakTablo, int kategoriID)
+        {
+            if (kaynakTablo.FirstOrDefault(q => q.RefDomainKategori == kategoriID) == null)
+                return false;
+            else
+                return true;
+        }
+        public static DomainKategori GetirDomainKategori(this IEnumerable<DomainKategori> kaynakTablo, int id)
+        {
+            return kaynakTablo.FirstOrDefault(q => q.DomainKategoriID == id);
+        }
+        public static bool DomainKategoriEklimi(this IEnumerable<DomainKategori> kaynakTablo, string domainKateogriAdi)
+        {
+            if (kaynakTablo.FirstOrDefault(q => q.DomainKategoriAdi == domainKateogriAdi) == null)
+                return false;
+            else
+                return true;
+        }
     }
 }

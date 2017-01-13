@@ -20,7 +20,7 @@
         </a>}
     </td>
     <td>
-        <a class="various" data-fancybox-type="iframe" href="@Url.Action("DomainSorgula", "Web", new { domain = Model.DomainAdi })">@Model.DomainAdi</a>
+        <a onclick="gosterDomain('@Model.DomainAdi')" data-toggle="domainInfo" href="javascript:void(0)">@Model.DomainAdi</a>
     </td>
     <td>
         <a href="http://www.@(Model.DomainAdi)" target="_blank">
@@ -47,6 +47,7 @@
         @Model.DomainKategori.DomainKategoriAdi
     </td>
     <td>
+       
         <a href="@Url.Action("CariHareketDetay", "Web", new { firmaID = Model.RefDomainFirmaID })">
             @Model.Firma.FirmaAdi
         </a>
@@ -65,21 +66,21 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="btn  btn-info" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak  Maili Gönderilecek Emin misiniz?'))location.href='@Url.Action("DomainUzatmaMailiGonder", "MailSablonlari", new { controller = "Web", domainID = Model.DomainID })'"> Mail Gönder  </a>
+                        <a class="btn  btn-info" onclick="domainUzatmaMailiGonder(this,'@Model.DomainAdi',@Model.DomainID)" href="javascript:void(0)"> Mail Gönder  </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="btn btn-success" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Web", new { controller = "Web", domainID = Model.DomainID })'"> Uzat  </a>
+                        <a class="btn btn-success" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Domain", new {  domainID = Model.DomainID })'"> Uzat  </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="btn  btn-danger" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Web", new { controller = "Web", id = Model.DomainID })'"> Domaini Sil </a>
+                        <a class="btn  btn-danger" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Domain", new {  id = Model.DomainID })'"> Domaini Sil </a>
                     </div>
                 </div>
             }
-
+           
             else
             {
 
@@ -94,3 +95,38 @@
 
 </td>
 </tr>
+@Html.Partial("_Modal")
+<script>
+
+    function gosterDomain(domain) {
+        commonAjaxService.getDomainInfo(domain).done(function (data) {
+            $("#domainInfo .modal-title").html("Domain Sorgula")
+            $("#domainInfo .modal-body").html(data);
+            $("#domainInfo").modal("show");
+        });
+    }
+    function domainUzatmaMailiGonder(btn, domainAdi, domainId) {
+      
+        
+        if (confirm( domainAdi +' Domain Uzatılacak  Maili Gönderilecek Emin misiniz?'))
+        {
+            $(btn).addClass("disabled");
+            $(btn).html("Gönderiliyor..");
+            commonAjaxService.domainUzatmaMailiGonder(domainId).done(function (data) {
+                $("#domainInfo").modal("show");
+                $("#domainInfo .modal-title").html("Mail Cevap");
+                $(btn).removeClass("disabled");
+                $(btn).html("Mail Gönder");
+                if (data.Basarilimi) {
+                    
+                    $("#domainInfo .modal-body").html('Gönderildi');
+                   
+                } else {
+                    $("#domainInfo .modal-body").html('Hata oldu,gönderilemedi');
+                }
+            });
+        }
+           
+    }
+  
+</script>

@@ -172,9 +172,5 @@ namespace Portal.Controllers
             return Json(listDomain, JsonRequestBehavior.AllowGet);
         }
     }
-    public class JsonCevap
-    {
-        public bool Basarilimi { get; set; }
-        public object Data { get; set; }
-    }
+   
 }
