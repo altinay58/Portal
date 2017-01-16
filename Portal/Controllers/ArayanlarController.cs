@@ -17,6 +17,9 @@ namespace Portal.Controllers
             ViewBag.arayanGrupID = new SelectList(Db.ArayanGrups, "arayanGrupID", "arayanGrupAdi");
             ViewBag.arayanRefKonumID = new SelectList(Db.Konums, "KonumID", "Konum1");
             ViewBag.arayanDomainKategoriID = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi");
+            ViewBag.arayanSektorID = new SelectList(Db.Sektorlers, "sektorID", "sektorAdi");
+            ViewBag.mailSablonlari = new SelectList(Db.MailSablonus, "MailSablonuID", "MailSablonuAdi");
+            ViewBag.islerisiYapacakKisi = new SelectList(Db.AspNetUsers, "Id", "UserName");
             return View(FrmView.Data.WithArayanlar(arayanlar).WithIsler(isler));
         }
     }
