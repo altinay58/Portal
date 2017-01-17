@@ -42,6 +42,9 @@ namespace Portal.Models
         public string islerDosyaAdi { get; set; }
         public Nullable<int> islerSira { get; set; }
         public int islerIsinDurumu { get; set; }
+        public string islerGelisYontemi { get; set; }
+        public bool islerBitisTarihiVarmi { get; set; }
+        public Nullable<System.DateTime> islerBitisTarihi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IsiYapacakKisi> IsiYapacakKisis { get; set; }

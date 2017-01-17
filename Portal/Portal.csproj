@@ -225,6 +225,7 @@
     <Compile Include="Models\Arayanlar.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ArayanlarModels\ArayanModel.cs" />
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

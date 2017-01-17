@@ -54,6 +54,7 @@
           <Property Name="arayanFirmaKayitDurum" Type="bit" />
           <Property Name="arayanKayitliMusterimi" Type="bit" />
           <Property Name="arayanKayitliRefFirmaID" Type="int" />
+          <Property Name="ArayanAraciAdi" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -311,6 +312,9 @@
           <Property Name="islerDosyaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="islerSira" Type="int" />
           <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
+          <Property Name="islerGelisYontemi" Type="nvarchar" MaxLength="100" />
+          <Property Name="islerBitisTarihiVarmi" Type="bit" Nullable="false" />
+          <Property Name="islerBitisTarihi" Type="date" />
         </EntityType>
         <EntityType Name="isOncelikSira">
           <Key>
@@ -2142,6 +2146,9 @@
           <NavigationProperty Name="isYorums" Relationship="PortalModel.FK_isYorum_isler" FromRole="isler" ToRole="isYorum" />
           <NavigationProperty Name="YorumDurums" Relationship="PortalModel.FK_YorumDurum_isYorum" FromRole="isler" ToRole="YorumDurum" />
           <Property Name="islerIsinDurumu" Type="Int32" Nullable="false" />
+          <Property Name="islerGelisYontemi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="islerBitisTarihiVarmi" Type="Boolean" Nullable="false" />
+          <Property Name="islerBitisTarihi" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="IsiYapacakKisi">
           <Key>
@@ -2243,6 +2250,7 @@
           <NavigationProperty Name="Randevus" Relationship="PortalModel.FK_Randevu_Arayanlar" FromRole="Arayanlar" ToRole="Randevu" />
           <NavigationProperty Name="Teklifs" Relationship="PortalModel.FK_Teklif_Arayanlar" FromRole="Arayanlar" ToRole="Teklif" />
           <NavigationProperty Name="TeklifDetays" Relationship="PortalModel.FK_TeklifDetay_TeklifDetay" FromRole="Arayanlar" ToRole="TeklifDetay" />
+          <Property Name="ArayanAraciAdi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -3655,6 +3663,9 @@
           <EntitySetMapping Name="islers">
             <EntityTypeMapping TypeName="PortalModel.isler">
               <MappingFragment StoreEntitySet="isler">
+                <ScalarProperty Name="islerBitisTarihi" ColumnName="islerBitisTarihi" />
+                <ScalarProperty Name="islerBitisTarihiVarmi" ColumnName="islerBitisTarihiVarmi" />
+                <ScalarProperty Name="islerGelisYontemi" ColumnName="islerGelisYontemi" />
                 <ScalarProperty Name="islerIsinDurumu" ColumnName="islerIsinDurumu" />
                 <ScalarProperty Name="islerSira" ColumnName="islerSira" />
                 <ScalarProperty Name="islerDosyaAdi" ColumnName="islerDosyaAdi" />
@@ -3727,6 +3738,7 @@
           <EntitySetMapping Name="Arayanlars">
             <EntityTypeMapping TypeName="PortalModel.Arayanlar">
               <MappingFragment StoreEntitySet="Arayanlar">
+                <ScalarProperty Name="ArayanAraciAdi" ColumnName="ArayanAraciAdi" />
                 <ScalarProperty Name="arayanKayitliRefFirmaID" ColumnName="arayanKayitliRefFirmaID" />
                 <ScalarProperty Name="arayanKayitliMusterimi" ColumnName="arayanKayitliMusterimi" />
                 <ScalarProperty Name="arayanFirmaKayitDurum" ColumnName="arayanFirmaKayitDurum" />

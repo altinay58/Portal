@@ -1,5 +1,5 @@
-﻿@model FrmViewData
-@using Portal.Models;
+﻿@model ArayanModel
+@using Portal.Models.ArayanlarModels;
 @{
     ViewBag.Title = "ArayanEkle";
 }
@@ -12,66 +12,87 @@
 
                 <label class="control-label col-md-2">Firma Adı</label>
                 <div class="col-md-4">
-                    <input type="text" name="firmaAdi" id="firmaAdi" class="form-control" />
-                    <input type="hidden" name="firmaId" id="firmaId" />
+                  
+                    @Html.TextBoxFor(x=>x.arayanFirmaAdi,new {@class="form-control" })
+                    <input type="hidden" name="arayanKayitliRefFirmaID" id="arayanKayitliRefFirmaID" />
+                    <input type="hidden" name="Kayitlimi" />
                 </div>
                 <label class="control-label col-md-2">Adı</label>
                 <div class="col-md-4">
-                    <input type="text" name="adi" class="form-control" />
+                   @Html.TextBoxFor(x => x.arayanAdi, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
 
                 <label class="control-label col-md-2">Soyadı</label>
                 <div class="col-md-4">
-                    <input type="text" name="soyadi" class="form-control" />
+                    @Html.TextBoxFor(x => x.arayanSoyadi, new { @class = "form-control" })
                    
                 </div>
-                <label class="control-label col-md-2">Firma Sahi Özellik</label>
+                <label class="control-label col-md-2">Firma Sahibi Özellik</label>
                 <div class="col-md-4">
-                    <input type="text" name="firmaOzellik" class="form-control" />
+                    @Html.TextBoxFor(x => x.arayanFirmaSahibiOzelligi, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
+                <label class="control-label col-md-2">Aracı Varmı</label>
+                <div class="col-md-4">
 
-                <label class="control-label col-md-2">Arayan Grubu</label>
-                <div class="col-md-4">
-                    @Html.DropDownList("arayanGrupID",ViewBag.arayanGrupID as SelectList,new { @class= "form-control select2" })
-                 </div>
-                <label class="control-label col-md-2">Telefon No</label>
-                <div class="col-md-4">
-                    <input type="text" name="firmaOzellik" class="form-control" />
+                
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <label class="input-group-btn mt-checkbox mt-checkbox-outline" >
+                              @Html.CheckBoxFor(x=>x.araciVarmi,new { id = "cbAraciVarmi", onchange = "degistiAraci()" })
+                              
+                                <span></span>
+                            </label>
+                        </span>
+                        <div id="wrpAraci">
+                            <label class="control-label" style="float:left;padding-right:3px">Aracı Adı</label>
+                            <input type="text" name="ArayanAraciAdi" id="ArayanAraciAdi" class="form-control" style="width:77%" >
+                        </div>
+                       
+                       
+                           
+                           
+                     </div>
                 </div>
+                <label class="control-label col-md-2">Telefon No</label>
+                <div class="col-md-3">
+                    <input type="text" name="arayanTelefonNo" class="form-control" />
+                </div>
+
+
             </div>
             <div class="form-group">
 
                 <label class="control-label col-md-2">Cep Tel No</label>
                 <div class="col-md-4">
-                    @Html.TextBoxFor(x=>x.Arayanlar.arayanCepTelNo,new {@class="form-control" })
+                    @Html.TextBoxFor(x=>x.arayanCepTelNo,new {@class="form-control" })
                 </div>
                 <label class="control-label col-md-2">Mail Adresi</label>
                 <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.Arayanlar.arayanMailAdresi, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.arayanMailAdresi, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">Web Adresi</label>
                 <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.Arayanlar.arayanWebAdresi, new { @class = "form-control" })
+                    @Html.TextAreaFor(x => x.arayanWebAdresi, new { @class = "form-control" })
                 </div>
                 <label class="control-label col-md-2">Tam Adresi</label>
                 <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.Arayanlar.arayanAdres, new { @class = "form-control" })
+                    @Html.TextAreaFor(x => x.arayanAdres, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">Şehir</label>
                 <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.Arayanlar.arayanSehir, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.arayanSehir, new { @class = "form-control" })
                 </div>
                 <label class="control-label col-md-2">İlçe</label>
                 <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.Arayanlar.arayanilce, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.arayanilce, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
@@ -81,26 +102,26 @@
                 </div>
                 <label class="control-label col-md-2">Konu</label>
                 <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.Arayanlar.arayanKonu, new { @class = "form-control" })
+                    @Html.TextAreaFor(x => x.arayanKonu, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">Not</label>
                 <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.Arayanlar.arayanNot, new { @class = "form-control" })
+                    @Html.TextAreaFor(x => x.arayanNot, new { @class = "form-control" })
                 </div>
-                <label class="control-label col-md-2">Konu</label>
+                <label class="control-label col-md-2">Beğenilen Web Siteleri</label>
                 <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.Arayanlar.arayanBegendigiWebSiteleri, new { @class = "form-control" })
+                    @Html.TextAreaFor(x => x.arayanBegendigiWebSiteleri, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">Tarih</label>
                 <div class="col-md-4">
 
-                    @*@Html.TextBoxFor(x => x.Arayanlar.arayanKayitTarih, new { @class = "form-control",id="Tarih" })*@
+                
                     <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
-                        <input type="text" is-date="1" class="form-control" name="Arayanlar.arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
+                        <input type="text" is-date="1" class="form-control" name="arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
                         <span class="input-group-btn">
                             <button class="btn default" type="button">
                                 <i class="fa fa-calendar"></i>
@@ -108,14 +129,14 @@
                            
                         </span>
                         <div class="input-group">
-                            <input type="text" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">
+                            <input type="text" name="SaatDakika" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">
                             <span class="input-group-btn">
                                 <button class="btn default" type="button">
                                     <i class="fa fa-clock-o"></i>
                                 </button>
                             </span>
                         </div>
-                        @*<input type="text" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">*@
+                    
                     </div>
                 </div>
                 <label class="control-label col-md-2">Proje Tipi</label>
@@ -136,13 +157,20 @@
                 </div>
             </div>
            
-            <div class="form-group">
-                <label class="col-md-offset-2 col-md-2 isEkle">                   
-                        <input type="checkbox" value="" class="iCheck" id="cbIsEkle">İş ekle                       
-                    </label>
-
+            <div class="form-group" style="margin-left:2px">               
+                <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline">                  
+                    <input type="checkbox" name="isEkle"   id="cbIsEkle">İş ekle  
+                    <span></span>
+                </label>
+             
             </div>
             <div id="divIs" style="display:block">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-3">
+                        <input name="isAdi" class="form-control" />
+                    </div>
+
+                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <textarea class="ckeditor form-control" name="isAciklama" rows="6"></textarea>
@@ -161,23 +189,27 @@
                                 </div>
                                 <div class="col-md-3 box">
                                     <div class="form-group">
-                                        <label class="">Yapacak Kişi</label>
-                                        @Html.DropDownList("islerisiYapacakKisi", ViewBag.islerisiYapacakKisi as SelectList, new { @class = "form-control select2" })
+                                        <label class="">Kontrol Eden</label>
+                                        @Html.DropDownList("kontrolEdecekKisi", ViewBag.islerisiYapacakKisi as SelectList, new { @class = "form-control select2" })
                                     </div>
                                 </div>
                                 <div class="col-md-3 box">
                                     <div class="form-group">
-                                        <label class="">Yapacak Kişi</label>
-                                        @Html.DropDownList("islerisiYapacakKisi", ViewBag.islerisiYapacakKisi as SelectList, new { @class = "form-control select2" })
+                                        <label class="">Domain</label>
+                                        <input type="text" name="domainId" id="domainId" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-3 box">
                                     <div class="form-group">
-                                      <label class="">                   
-                        <input type="checkbox" value="" class="iCheck" id="cbDeadline">İş ekle                       
-                    </label>
+                                      @*<label class="">                   
+                        <input type="checkbox" value="" class="iCheck" id="cbDeadline" name="deadline">Bitirme Tarihi                      
+                    </label>*@
+                                        <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom:6px">
+                                            <input type="checkbox" name="BitirmeTarihiVarmi">Bitirme Tarihi
+                                            <span></span>
+                                        </label>
                                         <div class="input-group">
-                                            <input type="text" is-date="1" class="form-control" name="deadline" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+                                            <input type="text" is-date="1" class="form-control" name="bitirmeTarihi" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
                                             <span class="input-group-btn">
                                                 <button class="btn default" type="button">
                                                     <i class="fa fa-calendar"></i>
@@ -241,7 +273,7 @@
             font-size: 10px;
         }
     </style>
-}1
+}
 @section scripts{
 <script src="/Content/assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script> 
 <script src="/Content/assets/global/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
@@ -261,163 +293,236 @@
     <script>
         window.onload = function () {
             $("#divIs").css("display", "none");
+            $("#wrpAraci").css("display", "none");
         }
-                $(function () {                  
-                    $('.iCheck').iCheck({
-                        checkboxClass: 'icheckbox_minimal-red',
-                        radioClass: 'iradio_minimal-red',
-                        increaseArea: '20%'  // optional</span>
-                    })
-                    $('.isEkle .iCheck').on('ifChecked', function (event) {
-                        $(this).closest("input").attr('checked', true);
-                        $("#divIs").css("display", "block");
-                    });
-                    $('.isEkle .iCheck').on('ifUnchecked', function (event) {
-                        $(this).closest("input").attr('checked', false);
-                        $("#divIs").css("display", "none");
-                    });
-                   
-                    validateForm();
-                    $(".select2").select2();
-                   
-                    $.fn.datepicker.dates['tr'] = {
-                        days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                        daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
-                        daysMin: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
-                        months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
-                        monthsShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-                        today: "Bugün"
-                    };
-                 
-                  
-                    $("input[is-date='1']").datepicker({
-                        autoclose: true,
-                        language: 'tr'
-                    });
-                    $(".timepicker-24").timepicker({
-                        autoclose: true,
-                        minuteStep: 5,
-                        showSeconds: false,
-                        showMeridian: false
-                    })
-                    //$(".timepicker-24").click(function (t) {
-                       
-                    //    t.preventDefault();
-                    //    $(this).timepicker("showWidget")
-                    //})
-                    $(".timepicker").parent(".input-group").on("click", ".input-group-btn", function (t) {
-                        t.preventDefault(), $(this).parent(".input-group").find(".timepicker").timepicker("showWidget")
-                    })
-                    $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
-                    $("input[is-date='1']").datepicker('update');
-                    $("input[is-date='1']").parent('.input-group').on('click', '.input-group-btn', function (e) {
-                        e.preventDefault();
-                        $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
-                    });
-                    var firmas = new Bloodhound({
-                        datumTokenizer: function (datum) {
-                            return Bloodhound.tokenizers.whitespace(datum.label);
-                        },
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        remote: {
-                            wildcard: '',
-                            url: '/Isler/FirmalariGetir',
-                            replace: function (url, query) {
+        function degistiAraci() {
+            if ($("#cbAraciVarmi").is(":checked")) {
+                $("#wrpAraci").css("display", "block");
+            } else {
+                $("#wrpAraci").css("display", "none");
+            }
+        }
+        $(function () {
 
-                                url += "?firmaAdi=" + $("#FirmaAdi").val();
-
-                                return url;
-                            },
-                            transform: function (response) {
-                                return response;
-
-                            }
-                        }
-                    });
-                    $('#FirmaAdi').typeahead(null, {
-                        display: 'label',
-                        displayKey: 'value',
-                        hint: true,
-                        minLength: 1,
-                        source: firmas
-                    });
-
-                    $('#FirmaAdi').on('typeahead:selected', function (event, datum) {
-
-                        $('#RefDomainFirmaID').val(datum.value);
-
-                    });
-                    //Firma autocomplete
-                })
-                function validateForm() {
-                    //**validation
-                    var form1 = $('#form1');
-                    var error1 = $('.alert-danger', form1);
-                    var success1 = $('.alert-success', form1);
-
-                    form1.validate({
-                        errorElement: 'span', //default input error message container
-                        errorClass: 'help-block help-block-error', // default input error message class
-                        focusInvalid: false, // do not focus the last invalid input
-                        ignore: "",  // validate all fields including form hidden input
-                        messages: {
-                            FirmaAdi: "Lütfen firma ismi giriniz.",
-                            DomainAdi: "Lütfen Domain adi giriniz.",
-                            Tarih: "Lütfen tarih seçiniz.",
-                            IpAdres: "Lütfen ip adresi giriniz."
-                        },
-                        rules: {
-                            FirmaAdi: {
-                                minlength: 2,
-                                required: true
-                            },
-                            DomainAdi: {
-                                minlength: 2,
-                                required: true
-                            },
-                            Tarih: {
-                                minlength: 9,
-                                required: true
-                            },
-                            IpAdres: {
-                                minlength: 9,
-                                required: true
-                            }
-
-                        },
-
-                        invalidHandler: function (event, validator) { //display error alert on form submit
-                            success1.hide();
-                            error1.show();
-                            App.scrollTo(error1, -200);
-                        },
-
-                        highlight: function (element) { // hightlight error inputs
-                            $(element)
-                                .closest('.form-group').addClass('has-error'); // set error class to the control group
-                        },
-
-                        unhighlight: function (element) { // revert the change done by hightlight
-                            $(element)
-                                .closest('.form-group').removeClass('has-error'); // set error class to the control group
-                        },
-
-                        success: function (label) {
-                            label
-                                .closest('.form-group').removeClass('has-error'); // set success class to the control group
-                        },
-
-                        submitHandler: function (form) {
-                            //success1.show();
-                            //error1.hide();
-                            $('#form1')[0].submit();
-                        }
-                    });
-
-
-
-
-                    //**end validation
+            $("#cbIsEkle").change(function () {
+                if ($(this).is(":checked")) {
+                    $("#divIs").css("display", "block");
+                } else {
+                    $("#divIs").css("display", "none");
                 }
+            });
+            validateForm();
+            $(".select2").select2();
+
+            $.fn.datepicker.dates['tr'] = {
+                days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+                daysMin: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+                months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                monthsShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+                today: "Bugün"
+            };
+
+
+            $("input[is-date='1']").datepicker({
+                autoclose: true,
+                language: 'tr'
+            });
+            $(".timepicker-24").timepicker({
+                autoclose: true,
+                minuteStep: 5,
+                showSeconds: false,
+                showMeridian: false
+            })
+
+            $(".timepicker").parent(".input-group").on("click", ".input-group-btn", function (t) {
+                t.preventDefault(), $(this).parent(".input-group").find(".timepicker").timepicker("showWidget")
+            })
+            $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
+            $("input[is-date='1']").datepicker('update');
+            $("input[is-date='1']").parent('.input-group').on('click', '.input-group-btn', function (e) {
+                e.preventDefault();
+                $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
+            });
+            var aryElm = ["arayanFirmaAdi", "arayanTelefonNo", "arayanCepTelNo", "arayanMailAdresi"];
+           
+            var firmas = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.label);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    wildcard: '',
+                    url: '/Isler/FirmalariGetir',
+                    replace: function (url, query) {
+                        var fid = $(':focus').attr("id");
+                       
+                        if (aryElm.indexOf(fid) >= 0) {
+                            url += "?firmaAdi=" + $("#" + fid).val();
+                            
+                            return url;
+                        } else {
+                            console.log(" 2," + url);
+                            return "";
+                        }
+                       
+                    },
+                    transform: function (response) {
+                        return response;
+
+                    }
+                }
+            });
+          
+          
+            aryElm.forEach(function (e) {
+                $("#" + e).typeahead(null, {
+                    display: 'label',
+                    displayKey: 'value',
+                    hint: true,
+                    minLength: 1,
+                    source: firmas
+                });
+                $("#" + e).on('typeahead:selected', function (event, datum) {
+                    setData(datum);                    
+                });
+               
+            });
+          
+
+          
+            var domains = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.label);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    wildcard: '%domainAdi',
+                    url: '/Isler/DomainGetir',
+                    replace: function (url, query) {
+                        url += '?domainAdi=' + encodeURIComponent($("#domainId").val()) + '&firmaId=';
+                      
+                        url += encodeURIComponent($('#arayanKayitliRefFirmaID').val());
+
+                       
+                        return url;
+                    },
+
+                    transform: function (response) {
+
+                        return response;
+                       
+                    }
+                }
+            });
+
+            // Instantiate the Typeahead UI
+            $('#domainId').typeahead(null, {
+                display: 'label',
+                displayKey: 'value',
+                hint: true,
+                minLength: 1,
+                source: domains
+            });
+        });
+        function setData(datum) {
+            $("#divIs").css("display", "none");
+            $('#cbIsEkle').removeAttr("disabled");
+            if (datum.Kayitlimi) {
+                $('#arayanKayitliRefFirmaID').val(datum.value);
+                $('#cbIsEkle').removeAttr("disabled");
+            } else {
+                $('#cbIsEkle').attr("disabled", "disabled");
+            }
+            $("#arayanFirmaAdi").val(datum.label.split("/")[0]);
+            $('#arayanAdi').val(datum.Adi);
+            $('#arayanSoyadi').val(datum.Adi);
+            $('#arayanFirmaSahibiOzelligi').val(datum.Adi);
+            $('#arayanTelefonNo').val(datum.Telefon1);
+            $('#arayanCepTelNo').val(datum.Telefon2);
+            $('#arayanMailAdresi').val(datum.Email);
+            $('#arayanWebAdresi').val(datum.WebAdresi);
+            $('#arayanAdres').val(datum.Adres);
+
+            $('#arayanSehir').val(datum.Sehir);
+            $('#arayanilce').val(datum.ilce);
+
+            $('#arayanRefKonumID').val(datum.KonumId).change();
+            //$('#arayanKonu').val(datum.Adres);
+            $('#arayanDomainKategoriID').val(datum.DomainKategoriId).change();
+
+            $('#arayanSektorID').val(datum.SektorId).change();
+            $('#arayanSektorID').val(datum.Kayitlimi);
+        }
+        function validateForm() {
+            //**validation
+            var form1 = $('#arayanEkle');
+            var error1 = $('.alert-danger', form1);
+            var success1 = $('.alert-success', form1);
+
+            form1.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                messages: {
+                    arayanFirmaAdi: "Lütfen firma ismi giriniz.",
+                    arayanAdi: "Lütfen arayan adi giriniz.",
+                    arayanCepTelNo: "Lütfen telefon numarası  giriniz.",
+                    arayanTelefonNo: "Lütfen telefon numarası  giriniz."
+                },
+                rules: {
+                    FirmaAdi: {
+                        minlength: 2,
+                        required: true
+                    },
+                    arayanAdi: {
+                        minlength: 2,
+                        required: true
+                    },
+                    arayanCepTelNo: {
+                        minlength: 9,
+                        required: true
+                    },
+                    arayanTelefonNo: {
+                        minlength: 9,
+                        required: true
+                    }
+
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    success1.hide();
+                    error1.show();
+                    App.scrollTo(error1, -200);
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                },
+
+                submitHandler: function (form) {
+                    //success1.show();
+                    //error1.hide();
+                    $('#arayanEkle')[0].submit();
+                }
+            });
+
+
+
+
+            //**end validation
+        }
     </script>
 }

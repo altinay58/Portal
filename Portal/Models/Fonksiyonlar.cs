@@ -84,5 +84,39 @@ namespace Portal.Models
             }
             return "";
         }
+        public static string KarakterDuzenle(string metin)
+        {
+            string Duzenlenmis = metin;
+
+            if (String.IsNullOrEmpty(Duzenlenmis))
+                return "";
+
+            Duzenlenmis = Duzenlenmis.Replace("&#304;", "I");
+            Duzenlenmis = Duzenlenmis.Replace("&#305;", "i");
+            Duzenlenmis = Duzenlenmis.Replace("&#214;", "Ö");
+            Duzenlenmis = Duzenlenmis.Replace("&#246;", "ö");
+            Duzenlenmis = Duzenlenmis.Replace("&Ouml;", "Ö");
+            Duzenlenmis = Duzenlenmis.Replace("&ouml;", "ö");
+            Duzenlenmis = Duzenlenmis.Replace("&#220;", "Ü");
+            Duzenlenmis = Duzenlenmis.Replace("&#252;", "ü");
+            Duzenlenmis = Duzenlenmis.Replace("&Uuml;", "Ü");
+            Duzenlenmis = Duzenlenmis.Replace("&uuml;", "ü");
+            Duzenlenmis = Duzenlenmis.Replace("&#199;", "Ç");
+            Duzenlenmis = Duzenlenmis.Replace("&#231;", "ç");
+            Duzenlenmis = Duzenlenmis.Replace("&Ccedil;", "Ç");
+            Duzenlenmis = Duzenlenmis.Replace("&ccedil;", "ç");
+            Duzenlenmis = Duzenlenmis.Replace("&#286;", "G");
+            Duzenlenmis = Duzenlenmis.Replace("&#287;", "g");
+            Duzenlenmis = Duzenlenmis.Replace("&#350;", "S");
+            Duzenlenmis = Duzenlenmis.Replace("&#351;", "s");
+            Duzenlenmis = Duzenlenmis.Replace("&hellip;", "...");
+            Duzenlenmis = Duzenlenmis.Replace("&rsquo;", "'");
+            Duzenlenmis = Duzenlenmis.Replace("&ldquo;", "“");
+            Duzenlenmis = Duzenlenmis.Replace("&rdquo;", "”");
+            Duzenlenmis = Duzenlenmis.Replace("&#39;", "'");
+
+
+            return Duzenlenmis;
+        }
     }
 }
