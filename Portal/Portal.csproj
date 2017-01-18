@@ -409,6 +409,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\controllers\arayanEkleCtrl.js" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -422,6 +423,7 @@
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\ajaxService.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -499,6 +501,7 @@
     <Content Include="Views\Shared\_Modal.cshtml" />
     <Content Include="Views\Domain\DomainKategorileri.cshtml" />
     <Content Include="Views\Arayanlar\ArayanEkle.cshtml" />
+    <Content Include="Views\Arayanlar\ArayanListesi.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

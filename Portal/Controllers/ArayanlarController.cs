@@ -12,6 +12,10 @@ namespace Portal.Controllers
     public class ArayanlarController : BaseController
     {
         // GET: Arayanlar
+        public ActionResult ArayanListesi()
+        {
+            return View();
+        }
         public ActionResult ArayanEkle()
         {
             ArayanModel arayanlar = new ArayanModel();
@@ -147,12 +151,8 @@ namespace Portal.Controllers
             {
                 isE.islerBitisTarihi = vmodel.bitirmeTarihi;
             }
-
-
-
+            isE.islerGelisYontemi = vmodel.gelisYonetemi;
             Db.islers.Add(isE);
-
-
 
             int sonDetayID = Db.islers.Max(item => item.islerID);
             sonDetayID++;
