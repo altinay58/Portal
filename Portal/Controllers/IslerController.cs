@@ -135,7 +135,7 @@ namespace Portal.Controllers
             {
                 firmalar.Add(new
                 {
-                    value = firma.FirmaID, label = firma.FirmaAdi+" / Kayıtlı Firma",Telefon1=firma.YetkiliTelefon,Telefon2=firma.YetkiliCepTelefon,
+                    value = firma.FirmaID, label = firma.FirmaAdi,Telefon1=firma.YetkiliTelefon,Telefon2=firma.YetkiliCepTelefon,
                     Email=firma.Email,Adres=firma.FirmaAdres,Kayitlimi=true,Adi=firma.YetkiliAdi,Soyadi=firma.YetkiliSoyAdi,
                     FirmaSahibiOzellik="",Sehir=firma.firmaSehir,ilce=firma.firmailce,WebAdresi="",
                     KonumId =firma.RefKonumID,SektorId=firma.firmaSektorID,DomainKategoriId=firma.firmaDomainKategoriID
@@ -159,7 +159,7 @@ namespace Portal.Controllers
                 //}
                 if (!listTemp.Contains(arayan.arayanID))
                 {
-                    firmalar.Add(new { value = arayan.arayanID, label = arayan.arayanFirmaAdi+" / Yeni Firma",Telefon1=arayan.arayanTelefonNo,Telefon2=arayan.arayanCepTelNo,
+                    firmalar.Add(new { value = arayan.arayanID, label = arayan.arayanFirmaAdi,Telefon1=arayan.arayanTelefonNo,Telefon2=arayan.arayanCepTelNo,
                         Email = arayan.arayanMailAdresi,Adres = arayan.arayanAdres,Kayitlimi = false,
                         Adi = arayan.arayanAdi,Soyadi = arayan.arayanSoyadi,FirmaSahibiOzellik = arayan.arayanFirmaSahibiOzelligi,
                         Sehir = arayan.arayanSehir,ilce = arayan.arayanilce, WebAdresi = arayan.arayanWebAdresi,

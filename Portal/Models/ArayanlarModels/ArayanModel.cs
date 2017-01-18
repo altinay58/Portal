@@ -34,9 +34,9 @@ namespace Portal.Models.ArayanlarModels
         public Nullable<int> arayanKayitliRefFirmaID { get; set; }
         public string ArayanAraciAdi { get; set; }
         //iş için
-        public int? islerisiYapacakKisi { get; set; }
+        public string islerisiYapacakKisi { get; set; }
         public string gelisYonetemi { get; set; }
-        public int? kontrolEdecekKisi { get; set; }
+        public string kontrolEdecekKisi { get; set; }
         public bool BitirmeTarihiVarmi { get; set; }
         public DateTime? bitirmeTarihi { get; set; }
         public int? domainId { get; set; }
@@ -48,7 +48,7 @@ namespace Portal.Models.ArayanlarModels
         public bool isEkle { get; set; }
        
 
-        public bool Kayitlimi { get; set; }
+        public bool? Kayitlimi { get; set; }
        
     }
 }

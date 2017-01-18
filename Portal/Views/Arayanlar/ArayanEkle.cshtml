@@ -59,7 +59,7 @@
                 </div>
                 <label class="control-label col-md-2">Telefon No</label>
                 <div class="col-md-3">
-                    <input type="text" name="arayanTelefonNo" class="form-control" />
+                    <input type="text" name="arayanTelefonNo" class="form-control phone_us" />
                 </div>
 
 
@@ -68,7 +68,7 @@
 
                 <label class="control-label col-md-2">Cep Tel No</label>
                 <div class="col-md-4">
-                    @Html.TextBoxFor(x=>x.arayanCepTelNo,new {@class="form-control" })
+                    @Html.TextBoxFor(x=>x.arayanCepTelNo,new {@class= "form-control phone_us" })
                 </div>
                 <label class="control-label col-md-2">Mail Adresi</label>
                 <div class="col-md-4">
@@ -158,8 +158,9 @@
             </div>
            
             <div class="form-group" style="margin-left:2px">               
-                <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline">                  
-                    <input type="checkbox" name="isEkle"   id="cbIsEkle">İş ekle  
+                <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline">  
+                    @Html.CheckBoxFor(x=>x.isEkle,new { id= "cbIsEkle" })İş Ekle                
+                    @*<input type="checkbox" name="isEkle"   id="cbIsEkle">İş ekle*@  
                     <span></span>
                 </label>
              
@@ -167,7 +168,7 @@
             <div id="divIs" style="display:block">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-3">
-                        <input name="isAdi" class="form-control" />
+                        <input name="isAdi" class="form-control" placeholder="iş adı" />
                     </div>
 
                 </div>
@@ -196,7 +197,8 @@
                                 <div class="col-md-3 box">
                                     <div class="form-group">
                                         <label class="">Domain</label>
-                                        <input type="text" name="domainId" id="domainId" class="form-control" />
+                                        <input type="text" name="domainAdi" id="domainAdi" class="form-control" />
+                                        <input type="hidden" name="domainId" id="domainId"  />
                                     </div>
                                 </div>
                                 <div class="col-md-3 box">
@@ -205,7 +207,8 @@
                         <input type="checkbox" value="" class="iCheck" id="cbDeadline" name="deadline">Bitirme Tarihi                      
                     </label>*@
                                         <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom:6px">
-                                            <input type="checkbox" name="BitirmeTarihiVarmi">Bitirme Tarihi
+                                            @*<input type="checkbox" name="BitirmeTarihiVarmi">Bitirme Tarihi*@
+                                            @Html.CheckBoxFor(x => x.BitirmeTarihiVarmi)Bitirme Tarihi
                                             <span></span>
                                         </label>
                                         <div class="input-group">
@@ -283,14 +286,13 @@
 <script src="/Content/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
 <script src="/Content/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
     <script src="/Content/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
-    <script src="/Content/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-   
-
-   
+    <script src="/Content/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script> 
     <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
-
-  
+<script src="/Content/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+@*<script src="/Content/assets/pages/scripts/ui-bootstrap-growl.min.js" type="text/javascript"></script>*@
+<script src="http://ifightcrime.github.io/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
     <script>
+        var aryAutoKeys = {};
         window.onload = function () {
             $("#divIs").css("display", "none");
             $("#wrpAraci").css("display", "none");
@@ -303,7 +305,10 @@
             }
         }
         $(function () {
-
+           
+            $('.phone_us').inputmask("mask", {
+                "mask": "(9999) 999-99-99", autoUnmask: true
+            });
             $("#cbIsEkle").change(function () {
                 if ($(this).is(":checked")) {
                     $("#divIs").css("display", "block");
@@ -345,24 +350,29 @@
                 $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
             });
             var aryElm = ["arayanFirmaAdi", "arayanTelefonNo", "arayanCepTelNo", "arayanMailAdresi"];
-           
+            aryAutoKeys = {
+                "arayanFirmaAdi": { val: "value", lab: "label" },
+                "arayanTelefonNo": { val: "Telefon1", lab: "Telefon1" },
+                "arayanCepTelNo": { val: "Telefon2", lab: "Telefon2" },
+                "arayanMailAdresi": { val: "Email", lab: "Email" }
+            }
             var firmas = new Bloodhound({
                 datumTokenizer: function (datum) {
-                    return Bloodhound.tokenizers.whitespace(datum.label);
+                    return Bloodhound.tokenizers.whitespace(aryAutoKeys[$(':focus').attr("name")].lab); //(datum.label);
                 },
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
                     wildcard: '',
                     url: '/Isler/FirmalariGetir',
                     replace: function (url, query) {
-                        var fid = $(':focus').attr("id");
+                        var fid = $(':focus').attr("name");
                        
                         if (aryElm.indexOf(fid) >= 0) {
-                            url += "?firmaAdi=" + $("#" + fid).val();
+                            url += "?firmaAdi=" + $("input[name='" + fid+"']").val();
                             
                             return url;
                         } else {
-                            console.log(" 2," + url);
+                           
                             return "";
                         }
                        
@@ -376,14 +386,18 @@
           
           
             aryElm.forEach(function (e) {
-                $("#" + e).typeahead(null, {
-                    display: 'label',
-                    displayKey: 'value',
+                var ekey = $("input[name='" + e+"']").attr("name");
+                console.log(ekey + ":" + aryAutoKeys[ekey].lab);
+                var elabel = aryAutoKeys[ekey].lab;
+                var evalue = aryAutoKeys[ekey].val;
+                $("input[name='" + e + "']").typeahead(null, {
+                    display: elabel, //'label',
+                    displayKey: evalue,// 'value',
                     hint: true,
                     minLength: 1,
                     source: firmas
                 });
-                $("#" + e).on('typeahead:selected', function (event, datum) {
+                $("input[name='" + e + "']").on('typeahead:selected', function (event, datum) {
                     setData(datum);                    
                 });
                
@@ -400,7 +414,7 @@
                     wildcard: '%domainAdi',
                     url: '/Isler/DomainGetir',
                     replace: function (url, query) {
-                        url += '?domainAdi=' + encodeURIComponent($("#domainId").val()) + '&firmaId=';
+                        url += '?domainAdi=' + encodeURIComponent($("#domainAdi").val()) + '&firmaId=';
                       
                         url += encodeURIComponent($('#arayanKayitliRefFirmaID').val());
 
@@ -417,23 +431,38 @@
             });
 
             // Instantiate the Typeahead UI
-            $('#domainId').typeahead(null, {
+            $('#domainAdi').typeahead(null, {
                 display: 'label',
                 displayKey: 'value',
                 hint: true,
                 minLength: 1,
                 source: domains
             });
+            $('#domainAdi').on('typeahead:selected', function (event, datum) {
+                $('#domainId').val(datum.value);
+            });
         });
         function setData(datum) {
             $("#divIs").css("display", "none");
             $('#cbIsEkle').removeAttr("disabled");
+            var msj = "Yeni Firma";
             if (datum.Kayitlimi) {
                 $('#arayanKayitliRefFirmaID').val(datum.value);
                 $('#cbIsEkle').removeAttr("disabled");
+                msj = "Kayıtlı Firma";
             } else {
                 $('#cbIsEkle').attr("disabled", "disabled");
             }
+            $.bootstrapGrowl(msj, {
+                ele: 'body', // which element to append to
+                type: 'info', // (null, 'info', 'danger', 'success')
+                offset: { from: 'top', amount: 50 }, // 'top', or 'bottom'
+                align: 'right', // ('left', 'right', or 'center')
+                width: 250, // (integer, or 'auto')
+                delay: 1500, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
+                allow_dismiss: true, // If true then will display a cross to close the popup.
+                stackup_spacing: 10 // spacing between consecutively stacked growls.
+            });
             $("#arayanFirmaAdi").val(datum.label.split("/")[0]);
             $('#arayanAdi').val(datum.Adi);
             $('#arayanSoyadi').val(datum.Adi);
@@ -454,7 +483,23 @@
             $('#arayanSektorID').val(datum.SektorId).change();
             $('#arayanSektorID').val(datum.Kayitlimi);
         }
+        function addRule() {
+            $.validator.addMethod('isEkli', function (value, element, param) {
+                
+                if ($("#cbIsEkle").is(":checked")) {
+                    if ($(element).val().length >= 3) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+                return isValid; 
+            }, 'Zorunlu alan.');
+        }
         function validateForm() {
+            addRule();
             //**validation
             var form1 = $('#arayanEkle');
             var error1 = $('.alert-danger', form1);
@@ -470,6 +515,7 @@
                     arayanAdi: "Lütfen arayan adi giriniz.",
                     arayanCepTelNo: "Lütfen telefon numarası  giriniz.",
                     arayanTelefonNo: "Lütfen telefon numarası  giriniz."
+                  
                 },
                 rules: {
                     FirmaAdi: {
@@ -487,6 +533,15 @@
                     arayanTelefonNo: {
                         minlength: 9,
                         required: true
+                    },
+                    isAdi: {
+                        isEkli: true
+                    },
+                    isAciklama: {
+                        isEkli: true
+                    },
+                    domainAdi: {
+                        isEkli: true
                     }
 
                 },

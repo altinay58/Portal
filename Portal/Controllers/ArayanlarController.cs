@@ -30,13 +30,13 @@ namespace Portal.Controllers
         public ActionResult ArayanEkle(ArayanModel vmodel)
         {
             const int ARACI_VAR = 1;
-            const int ARACI_YOK = 1;
+            const int ARACI_YOK = 2;
             if (ModelState.IsValid)
             {
                 Arayanlar arayan = new Arayanlar();
                 arayan.arayanilkArama = vmodel.arayanKayitliRefFirmaID.HasValue ? false : true;
                 //TODO: login giris tamamlaninca aktif edilecek
-                //arayan.arayanTelefonaBakanKisiID = User.Identity.GetUserId();
+                arayan.arayanTelefonaBakanKisiID = User.Identity.GetUserId();
                 arayan.arayanAdi = vmodel.arayanAdi;
                 arayan.arayanSoyadi = vmodel.arayanSoyadi;
                 arayan.arayanFirmaAdi = vmodel.arayanFirmaAdi;
@@ -142,7 +142,11 @@ namespace Portal.Controllers
             isE.islerisinTamamlanmaDurumu = false;
             isE.islerinisinOnayDurumu = false;
             isE.islerOncelikSiraID = (int)IslerOncelikSira.Ikinci;//yeni.isler.islerOncelikSiraID;
-
+            isE.islerBitisTarihiVarmi = vmodel.BitirmeTarihiVarmi;
+            if (vmodel.BitirmeTarihiVarmi)
+            {
+                isE.islerBitisTarihi = vmodel.bitirmeTarihi;
+            }
 
 
 
