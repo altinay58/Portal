@@ -31,7 +31,11 @@ namespace Portal.Controllers
         {
             if (disposing)
             {
-                Database.Db.Dispose();
+                if(Database.Db!=null)
+                {
+                   Database.Db.Dispose();
+                }
+               
             }
             base.Dispose(disposing);
         }

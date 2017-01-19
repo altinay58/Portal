@@ -33,6 +33,7 @@ namespace Portal.Models.ArayanlarModels
         public Nullable<bool> arayanKayitliMusterimi { get; set; }
         public Nullable<int> arayanKayitliRefFirmaID { get; set; }
         public string ArayanAraciAdi { get; set; }
+        public Nullable<int> arayanMailSablonuId { get; set; }
         //iş için
         public string islerisiYapacakKisi { get; set; }
         public string gelisYonetemi { get; set; }

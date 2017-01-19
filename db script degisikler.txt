@@ -1,0 +1,112 @@
+ALTER TABLE [dbo].[StandartProjeIsleri]
+	ADD StandartProjeIsleriAciklama nvarchar(250) NULL
+
+ALTER TABLE [dbo].[StandartProjeIsleri]
+	ADD StandartProjeIsleriIdAnahtarIsmi nvarchar(100) NULL
+
+ALTER TABLE [dbo].[StandartProjeIsleri]
+	ADD StandartProjeIsleriIdKontrol bit NULL
+--------------------------------------------------------
+ALTER TABLE [dbo].[isler]
+	ADD islerIsinDurumu int not NULL default(1)
+	
+---------------------------------------------------------
+--[17:53, 11.1.2017] +90 545 871 3724: SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DomainKayitliFirma](
+	[DomainKayitliFirmaId] [int] IDENTITY(1,1) NOT NULL,
+	[DomainKayitliFirmaAdi] [nvarchar](250) NULL,
+	[Aciklama] [nvarchar](250) NULL,
+ CONSTRAINT [PK_DomainKayitliFirma] PRIMARY KEY CLUSTERED 
+(
+	[DomainKayitliFirmaId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+--insert
+insert into DomainKayitliFirma
+           (DomainKayitliFirmaAdi,Aciklama)
+     select KayitliFirmaAdi,Aciklama from KayitliFirma                        
+--[19:00, 11.1.2017] +90 545 871 3724: Domain table yeni kolumn eklendi script assagida                        
+--[19:00, 11.1.2017] +90 545 871 3724: 
+alter table Domain add RefDomainKayitliFirmaId int not null default(1)
+
+
+ALTER TABLE [dbo].[Domain]  WITH CHECK ADD  CONSTRAINT [FK_Domain_DomainKayitliFirma] FOREIGN KEY([RefDomainKayitliFirmaId])
+REFERENCES [dbo].[DomainKayitliFirma] ([DomainKayitliFirmaId])
+GO
+
+ALTER TABLE [dbo].[Domain] CHECK CONSTRAINT [FK_Domain_DomainKayitliFirma]
+GO
+
+ALTER TABLE [dbo].[Domain]  WITH CHECK ADD  CONSTRAINT [FK_Domain_DomainKayitliFirma] FOREIGN KEY([RefDomainKayitliFirmaId])
+REFERENCES [dbo].[DomainKayitliFirma] ([DomainKayitliFirmaId])
+GO
+
+ALTER TABLE [dbo].[Domain] CHECK CONSTRAINT [FK_Domain_DomainKayitliFirma]
+GO
+
+update Domain set RefKayitliFirmaID = RefDomainKayitliFirmaId
+----------------------------------------------------------
+ALTER TABLE [dbo].[Arayanlar]
+	ADD ArayanAraciAdi nvarchar(100) NULL
+----------------------------------------------------------
+
+ALTER TABLE [dbo].[isler]
+	ADD islerGelisYontemi nvarchar(100) NULL
+ALTER TABLE [dbo].[isler]
+	ADD islerBitisTarihiVarmi bit not null default(0)
+
+ALTER TABLE [dbo].[isler]
+	ADD islerBitisTarihi date null 
+----------------------------------------------------------
+ALTER TABLE [dbo].[Arayanlar]
+	ADD arayanRefislerId int  NULL
+
+ALTER TABLE [dbo].[Arayanlar]  WITH CHECK ADD  CONSTRAINT [FK_Arayanlar_isler] FOREIGN KEY([arayanRefislerId])
+REFERENCES [dbo].[isler] ([islerID])
+GO
+
+ALTER TABLE [dbo].[Arayanlar] CHECK CONSTRAINT [FK_Arayanlar_isler]
+GO
+-----------------------------------------------------------
+ALTER TABLE [dbo].[Arayanlar]   drop  CONSTRAINT [FK_Arayanlar_isler] 
+GO
+ALTER TABLE [dbo].[Arayanlar]
+	drop column arayanRefislerId 
+----------------------------------------------------------
+ALTER TABLE [dbo].[Arayanlar]
+	ADD arayanMailSablonuId int  NULL
+
+ALTER TABLE [dbo].[Arayanlar]  WITH CHECK ADD  CONSTRAINT [FK_Arayanlar_MailSablanlari] FOREIGN KEY([arayanMailSablonuId])
+REFERENCES [dbo].[MailSablonu] ([MailSablonuID])
+GO
+
+ALTER TABLE [dbo].[Arayanlar] CHECK CONSTRAINT [FK_Arayanlar_MailSablanlari]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ArayanListesi]
+AS
+
+select *
+from
+(
+SELECT top 1000   Extent1.arayanID AS Id, CASE WHEN ([Extent1].[arayanAdi] IS NULL) THEN N'' ELSE [Extent1].[arayanAdi] END + N' ' + CASE WHEN ([Extent1].[arayanSoyadi] IS NULL) THEN N'' ELSE [Extent1].[arayanSoyadi] END AS AdSoyad, 
+                Extent1.arayanFirmaAdi AS Firma, Extent1.arayanTelefonNo AS Tel, Extent1.arayanCepTelNo AS CepTel, Extent1.arayanNot AS Note, Extent3.MailSablonuAdi AS MailDurum, Extent2.islerID AS Ticket,
+				Extent1.arayanKayitTarih as Tarih,FORMAT(Extent1.arayanKayitTarih, 'dd.MM.yyyy HH:mm') as StrTarih,Extent1.arayanFirmaKayitDurum as KayitDurum,k.Konum as Bolge
+
+FROM      dbo.Arayanlar AS Extent1 LEFT OUTER JOIN
+                dbo.isler AS Extent2 ON Extent1.arayanID = Extent2.islerRefArayanID LEFT OUTER JOIN
+                dbo.MailSablonu AS Extent3 ON Extent1.arayanMailSablonuId = Extent3.MailSablonuID LEFT OUTER JOIN
+                dbo.Firma AS Extent4 ON Extent1.arayanKayitliRefFirmaID = Extent4.FirmaID LEFT OUTER JOIN
+				dbo.Konum as k on Extent1.arayanRefKonumID=k.KonumID
+order by Tarih desc
+ ) T
+GO

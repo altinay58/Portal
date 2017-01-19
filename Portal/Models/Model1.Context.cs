@@ -77,5 +77,6 @@ namespace Portal.Models
         public virtual DbSet<WebLog> WebLogs { get; set; }
         public virtual DbSet<YorumDurum> YorumDurums { get; set; }
         public virtual DbSet<DomainKayitliFirma> DomainKayitliFirmas { get; set; }
+        public virtual DbSet<ArayanListesi> ArayanListesis { get; set; }
     }
 }

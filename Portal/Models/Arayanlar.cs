@@ -50,6 +50,7 @@ namespace Portal.Models
         public Nullable<bool> arayanKayitliMusterimi { get; set; }
         public Nullable<int> arayanKayitliRefFirmaID { get; set; }
         public string ArayanAraciAdi { get; set; }
+        public Nullable<int> arayanMailSablonuId { get; set; }
     
         public virtual ArayanGrup ArayanGrup { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
@@ -67,5 +68,6 @@ namespace Portal.Models
         public virtual ICollection<Teklif> Teklifs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeklifDetay> TeklifDetays { get; set; }
+        public virtual MailSablonu MailSablonu { get; set; }
     }
 }

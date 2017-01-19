@@ -1,4 +1,5 @@
 ﻿
+@using Portal.Models;
 @{
     ViewBag.Title = "ArayanListesi";
 }
@@ -6,7 +7,7 @@
     <form class="form-inline" role="form">
         <div class="form-group">
             <div class="input-group">
-                <input type="text" is-date="1" class="form-control" name="basTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+                <input type="text" is-date="1" class="form-control" name="basTarih" ng-model="basTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
                 <span class="input-group-btn">
                     <button class="btn default" type="button">
                         <i class="fa fa-calendar"></i>
@@ -17,7 +18,7 @@
         </div>
         <div class="form-group">
             <div class="input-group">
-                <input type="text" is-date="1" class="form-control" name="bitisTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+                <input type="text" is-date="1" class="form-control" name="bitisTarih" ng-model="bitisTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
                 <span class="input-group-btn">
                     <button class="btn default" type="button">
                         <i class="fa fa-calendar"></i>
@@ -27,10 +28,10 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-default green">Filtrele</button>
+        <button type="button" class="btn btn-default green" ng-click="getirData()">Filtrele</button>
         <button type="button" class="btn btn-default red clearfix" style="float:right">Yazdır</button>
     </form>
-    <div class="row" style="margin-top:10px;margin-bottom:5px">
+    @*<div class="row" style="margin-top:10px;margin-bottom:5px">
         <div class="col-md-2">
             <input type="text" name="telNo" ng-model="telNo" placeholder="Telefon No" class="form-control" />
         </div>
@@ -47,8 +48,8 @@
             <input type="text" name="bolge" ng-model="bolge" placeholder="Bölge" class="form-control" />
         </div>
 
-    </div>
-    <div class="portlet-body flip-scroll">
+    </div>*@
+    <div class="portlet-body flip-scroll" style="margin-top:15px">
         <table class="table table-bordered table-striped table-condensed flip-content">
             <thead class="flip-content">
                 <tr>
@@ -60,47 +61,42 @@
                     <th> Görüşme Notu </th>
                     <th> Mail Durumu </th>
                     <th> Ticket </th>
+                    <th> Tarih </th>
                     <th> Kayıt Durumu </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td> AAC </td>
-                    <td> AUSTRALIAN AGRICULTURAL COMPANY LIMITED. </td>
+                    <td> </td>
+                    <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData()" placeholder="Ad / Soyad" class="form-control" /></td>
+                    <td> <input type="text" name="firma" ng-model="firma" ng-keyup="getirData()" placeholder="Firma" class="form-control" /></td>
+                    <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData()" placeholder="Telefon No" class="form-control" /> </td>
                     <td> &nbsp; </td>
-                    <td> -0.01 </td>
-                    <td> -0.36% </td>
-                    <td> $1.39 </td>
-                    <td> $1.39 </td>
+                    <td><input type="text" name="not" ng-model="note" ng-keyup="getirData()" placeholder="Not" class="form-control" />  </td>
+                    <td> </td>
                     <td> &nbsp; </td>
-                    <td> 9,395 </td>
-                    <td> Düzenler </td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td>  </td>
                 </tr>
-                <tr>
-                    <td> AAC </td>
-                    <td> AUSTRALIAN AGRICULTURAL COMPANY LIMITED. </td>
-                    <td> &nbsp; </td>
-                    <td> -0.01 </td>
-                    <td> -0.36% </td>
-                    <td> $1.39 </td>
-                    <td> $1.39 </td>
-                    <td> &nbsp; </td>
-                    <td> 9,395 </td>
-                    <td> Düzenler </td>
-                </tr>
-                <tr>
-                    <td> AAC </td>
-                    <td> AUSTRALIAN AGRICULTURAL COMPANY LIMITED. </td>
-                    <td> &nbsp; </td>
-                    <td> -0.01 </td>
-                    <td> -0.36% </td>
-                    <td> $1.39 </td>
-                    <td> $1.39 </td>
-                    <td> &nbsp; </td>
-                    <td> 9,395 </td>
-                    <td> Düzenler </td>
-                </tr>
+               
+                    <tr ng-repeat="x in arayanlar">
+                        <td>{{x.Id}} </td>
+                        <td> {{x.AdSoyad}} </td>
+                        <td> {{x.Firma}} </td>
+                        <td> {{x.Tel}} </td>
+                        <td> {{x.CepTel}} </td>
+                        <td>{{x.Note }}</td>
+                        <td> {{x.MailDurum}} </td>
+                        <td><div ng-bind-html="kontrolTicket(x.Ticket) | to_trusted"></div></td>
+                        <td> {{x.StrTarih}} </td>
+                        <td><div ng-bind-html="kontrolKayitDurumu(x) | to_trusted"></div> </td>
+                        <td> <span><a href="#">Düzenle</a><span>&nbsp;/&nbsp;</span><span><a href="#">Detay</a></span></span> </td>
+                    </tr>
+                
+               
+               
 
             </tbody>
         </table>
@@ -123,16 +119,20 @@
         .datepicker.dropdown-menu {
             z-index: 9999 !important;
         }
+        .flip-content a{
+    color: #32c5d2 !important;
+    font-weight: 600 !important;
+        }
     </style> 
 }
 @section scripts{
 <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 
-@*<script src="/Content/assets/global/plugins/angularjs/angular.min.js" type="text/javascript"></script>*@
-<script src="/scripts/angular.min.js"></script>
-@*<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>*@
-<script src="/js/controllers/arayaneklectrl.js"></script>
+
+<script src="/js/services/arayanListService.js?v=1.0.4"></script>
+<script src="/js/controllers/arayanListeCtrl.js?v=1.0.4"></script>
+
 <script>
     $(function () {
         $.fn.datepicker.dates['tr'] = {

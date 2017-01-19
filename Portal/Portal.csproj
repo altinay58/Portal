@@ -226,6 +226,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ArayanlarModels\ArayanModel.cs" />
+    <Compile Include="Models\ArayanListesi.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -409,7 +412,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="js\controllers\arayanEkleCtrl.js" />
+    <Content Include="js\angModule.js" />
+    <Content Include="js\controllers\arayanListeCtrl.js" />
+    <Content Include="js\extensions.js" />
+    <Content Include="js\services\arayanListService.js" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>

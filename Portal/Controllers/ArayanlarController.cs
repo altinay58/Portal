@@ -9,12 +9,44 @@ using System.Web.Mvc;
 
 namespace Portal.Controllers
 {
+    //public class ArayanListeModel
+    //{
+    //    public int Id { get; set; }
+    //    public string AdSoyad { get; set; }
+    //    public string Firma { get; set; }
+    //    public string Tel { get; set; }
+    //    public string CepTel { get; set; }
+    //    public string Not { get; set; }
+    //    public string MailDurumu { get; set; }
+    //    public int? Ticket { get; set; }
+    //}
     public class ArayanlarController : BaseController
     {
         // GET: Arayanlar
         public ActionResult ArayanListesi()
         {
+            //var liste = Db.ArayanListesis.ToList();
+            //var liste = (from ary in Db.Arayanlars
+            //             join q in Db.islers on ary  equals q.Arayanlar into jobs
+            //             from j in jobs.DefaultIfEmpty()
+            //             join ms in Db.MailSablonus.DefaultIfEmpty() on ary.arayanMailSablonuId equals ms.MailSablonuID
+            //             where j.islerRefArayanID!=null
+            //             select new ArayanListeModel {Id=ary.arayanID,AdSoyad=ary.arayanAdi+" "+ary.arayanSoyadi,Firma=ary.Firma.FirmaAdi,
+            //                 Tel =ary.arayanTelefonNo,CepTel=ary.arayanCepTelNo,Not=ary.arayanNot,MailDurumu=ms.MailSablonuAdi,Ticket=j.islerID}
+            //           );
             return View();
+        }
+        public ActionResult ArayanListesiParametre(string basTarih,string bitisTarih,string firma,string telNo
+            ,string note,string adSoyad)
+        {
+            DateTime tBas = DateTime.Parse(basTarih);
+            DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
+            var query = Db.ArayanListesis.Where(x =>x.Tarih >= tBas && x.Tarih <= tBit
+            && (!string.IsNullOrEmpty(firma)?x.Firma.Contains(firma):true) && (!string.IsNullOrEmpty(telNo) ? x.Tel.Contains(telNo) : true)
+             && (!string.IsNullOrEmpty(note) ? x.Note.Contains(note) : true) &&  (!string.IsNullOrEmpty(adSoyad) ? x.AdSoyad.Contains(adSoyad) : true)
+            ).OrderByDescending(x => x.Tarih);
+            var ls = query.ToList();
+            return Json(query, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ArayanEkle()
         {
@@ -66,25 +98,25 @@ namespace Portal.Controllers
                 arayan.arayanBegendigiWebSiteleri = vmodel.arayanBegendigiWebSiteleri;
                 if (vmodel.arayanKayitTarih.HasValue)
                 {
-                    vmodel.arayanKayitTarih = new DateTime(vmodel.arayanKayitTarih.Value.Year, vmodel.arayanKayitTarih.Value.Month, 
+                    arayan.arayanKayitTarih = new DateTime(vmodel.arayanKayitTarih.Value.Year, vmodel.arayanKayitTarih.Value.Month, 
                         vmodel.arayanKayitTarih.Value.Day, 0, 0, 0);
                     if (!string.IsNullOrEmpty(vmodel.SaatDakika))
                     {
                         string[] ary = vmodel.SaatDakika.Split(':');
-                        vmodel.arayanKayitTarih = new DateTime(vmodel.arayanKayitTarih.Value.Year, vmodel.arayanKayitTarih.Value.Month, vmodel.arayanKayitTarih.Value.Day,
+                        arayan.arayanKayitTarih = new DateTime(vmodel.arayanKayitTarih.Value.Year, vmodel.arayanKayitTarih.Value.Month, vmodel.arayanKayitTarih.Value.Day,
                             Convert.ToInt32(ary[0]), Convert.ToInt32(ary[1]), 0);
                     }
                 }
                 else
                 {
-                    vmodel.arayanKayitTarih = DateTime.Now;
+                    arayan.arayanKayitTarih = DateTime.Now;
                 }
 
                 arayan.arayanDomainKategoriID = vmodel.arayanDomainKategoriID;
 
                 arayan.arayanSektorID = vmodel.arayanSektorID;
                 arayan.arayanGrupID = vmodel.araciVarmi?ARACI_VAR:ARACI_YOK;
-
+                arayan.arayanMailSablonuId = vmodel.arayanMailSablonuId;
                 if (vmodel.arayanKayitliRefFirmaID.HasValue)
                 {
                     arayan.arayanKayitliRefFirmaID = vmodel.arayanKayitliRefFirmaID;
@@ -100,7 +132,9 @@ namespace Portal.Controllers
                 }
                 if (vmodel.isEkle)
                 {
-                    YeniIsEkle(vmodel);
+                    isler yeni = YeniIsEkle(vmodel);
+                    yeni.Arayanlar = arayan;
+                    Db.islers.Add(yeni);                
                 }
                 Db.Arayanlars.Add(arayan);
                 Db.SaveChanges();
@@ -111,20 +145,21 @@ namespace Portal.Controllers
             return RedirectToAction("ArayanEkle");
         }
 
-        private void YeniIsEkle(ArayanModel vmodel)
+        private isler YeniIsEkle(ArayanModel vmodel)
         {
             isler isE = new isler();
             if (vmodel.arayanKayitliRefFirmaID.HasValue)
             {
                 isE.islerRefFirmaID = vmodel.arayanKayitliRefFirmaID.Value;
             }
-            else
-            {
-                int sonArayanID = Db.Arayanlars.Max(item => item.arayanID);
-                sonArayanID++;
+            //else
+            //{
+            //    int sonArayanID = Db.Arayanlars.Max(item => item.arayanID);
+            //    sonArayanID++;
 
-                isE.islerRefArayanID = sonArayanID;
-            }
+            //    isE.islerRefArayanID = sonArayanID;
+            //}
+            
             //islerim.islerDosyaAdi = filename;
             isE.islerRefDomainID = vmodel.domainId;
             //isE.islerRefKategoriID = vmodel.islerRefKategoriID;
@@ -152,10 +187,12 @@ namespace Portal.Controllers
                 isE.islerBitisTarihi = vmodel.bitirmeTarihi;
             }
             isE.islerGelisYontemi = vmodel.gelisYonetemi;
-            Db.islers.Add(isE);
+            //Db.islers.Add(isE);
 
-            int sonDetayID = Db.islers.Max(item => item.islerID);
-            sonDetayID++;
+            //int sonDetayID = Db.islers.Max(item => item.islerID);
+            //sonDetayID++;
+            
+            return isE;
             //string mailAdres = Fonksiyonlar.KullaniciMailAdresGetir(yeni.isler.islerisiYapacakKisi);
             //Fonksiyonlar.MailGonder(mailAdres, "is", sonDetayID);
         }

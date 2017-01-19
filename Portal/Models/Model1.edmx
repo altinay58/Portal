@@ -55,6 +55,7 @@
           <Property Name="arayanKayitliMusterimi" Type="bit" />
           <Property Name="arayanKayitliRefFirmaID" Type="int" />
           <Property Name="ArayanAraciAdi" Type="nvarchar" MaxLength="100" />
+          <Property Name="arayanMailSablonuId" Type="int" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -636,6 +637,25 @@
           <Property Name="RefUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Durum" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ArayanListesi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AdSoyad" Type="nvarchar" MaxLength="501" />
+          <Property Name="Firma" Type="nvarchar" MaxLength="250" />
+          <Property Name="Tel" Type="nvarchar" MaxLength="250" />
+          <Property Name="CepTel" Type="nvarchar" MaxLength="250" />
+          <Property Name="Note" Type="nvarchar" MaxLength="500" />
+          <Property Name="MailDurum" Type="nvarchar" MaxLength="250" />
+          <Property Name="Ticket" Type="int" />
+          <Property Name="Tarih" Type="datetime" />
+          <Property Name="StrTarih" Type="nvarchar" MaxLength="4000" />
+          <Property Name="KayitDurum" Type="bit" />
+          <Property Name="Bolge" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <Association Name="FK_Arayanlar_ArayanGrup">
           <End Role="ArayanGrup" Type="Self.ArayanGrup" Multiplicity="0..1" />
           <End Role="Arayanlar" Type="Self.Arayanlar" Multiplicity="*" />
@@ -693,6 +713,18 @@
             </Principal>
             <Dependent Role="Arayanlar">
               <PropertyRef Name="arayanRefKonumID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arayanlar_MailSablanlari">
+          <End Role="MailSablonu" Type="Self.MailSablonu" Multiplicity="0..1" />
+          <End Role="Arayanlar" Type="Self.Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MailSablonu">
+              <PropertyRef Name="MailSablonuID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanMailSablonuId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1502,6 +1534,22 @@
           <EntitySet Name="Tema" EntityType="Self.Tema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WebLog" EntityType="Self.WebLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YorumDurum" EntityType="Self.YorumDurum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArayanListesi" EntityType="Self.ArayanListesi" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ArayanListesi].[Id] AS [Id], 
+    [ArayanListesi].[AdSoyad] AS [AdSoyad], 
+    [ArayanListesi].[Firma] AS [Firma], 
+    [ArayanListesi].[Tel] AS [Tel], 
+    [ArayanListesi].[CepTel] AS [CepTel], 
+    [ArayanListesi].[Note] AS [Note], 
+    [ArayanListesi].[MailDurum] AS [MailDurum], 
+    [ArayanListesi].[Ticket] AS [Ticket], 
+    [ArayanListesi].[Tarih] AS [Tarih], 
+    [ArayanListesi].[StrTarih] AS [StrTarih], 
+    [ArayanListesi].[KayitDurum] AS [KayitDurum], 
+    [ArayanListesi].[Bolge] AS [Bolge]
+    FROM [dbo].[ArayanListesi] AS [ArayanListesi]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Arayanlar_ArayanGrup" Association="Self.FK_Arayanlar_ArayanGrup">
             <End Role="ArayanGrup" EntitySet="ArayanGrup" />
             <End Role="Arayanlar" EntitySet="Arayanlar" />
@@ -1520,6 +1568,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Arayanlar_Konum" Association="Self.FK_Arayanlar_Konum">
             <End Role="Konum" EntitySet="Konum" />
+            <End Role="Arayanlar" EntitySet="Arayanlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_MailSablanlari" Association="Self.FK_Arayanlar_MailSablanlari">
+            <End Role="MailSablonu" EntitySet="MailSablonu" />
             <End Role="Arayanlar" EntitySet="Arayanlar" />
           </AssociationSet>
           <AssociationSet Name="FK_Arayanlar_Sektorler" Association="Self.FK_Arayanlar_Sektorler">
@@ -2112,6 +2164,11 @@
             <End Role="DomainKayitliFirma" EntitySet="DomainKayitliFirmas" />
             <End Role="Domain" EntitySet="Domains" />
           </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_MailSablanlari" Association="PortalModel.FK_Arayanlar_MailSablanlari">
+            <End Role="MailSablonu" EntitySet="MailSablonus" />
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <EntitySet Name="ArayanListesis" EntityType="PortalModel.ArayanListesi" />
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2251,6 +2308,8 @@
           <NavigationProperty Name="Teklifs" Relationship="PortalModel.FK_Teklif_Arayanlar" FromRole="Arayanlar" ToRole="Teklif" />
           <NavigationProperty Name="TeklifDetays" Relationship="PortalModel.FK_TeklifDetay_TeklifDetay" FromRole="Arayanlar" ToRole="TeklifDetay" />
           <Property Name="ArayanAraciAdi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="arayanMailSablonuId" Type="Int32" />
+          <NavigationProperty Name="MailSablonu" Relationship="PortalModel.FK_Arayanlar_MailSablanlari" FromRole="Arayanlar" ToRole="MailSablonu" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -2571,6 +2630,7 @@
           <Property Name="MailSablonuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MailSablonuAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="MailSablonu1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_MailSablanlari" FromRole="MailSablonu" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="Makale">
           <Key>
@@ -3636,6 +3696,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Arayanlar_MailSablanlari">
+          <End Type="PortalModel.MailSablonu" Role="MailSablonu" Multiplicity="0..1" />
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MailSablonu">
+              <PropertyRef Name="MailSablonuID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanMailSablonuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ArayanListesi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AdSoyad" Type="String" MaxLength="501" FixedLength="false" Unicode="true" />
+          <Property Name="Firma" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Tel" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CepTel" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MailDurum" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Ticket" Type="Int32" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <Property Name="KayitDurum" Type="Boolean" />
+          <Property Name="Bolge" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="StrTarih" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3738,6 +3827,7 @@
           <EntitySetMapping Name="Arayanlars">
             <EntityTypeMapping TypeName="PortalModel.Arayanlar">
               <MappingFragment StoreEntitySet="Arayanlar">
+                <ScalarProperty Name="arayanMailSablonuId" ColumnName="arayanMailSablonuId" />
                 <ScalarProperty Name="ArayanAraciAdi" ColumnName="ArayanAraciAdi" />
                 <ScalarProperty Name="arayanKayitliRefFirmaID" ColumnName="arayanKayitliRefFirmaID" />
                 <ScalarProperty Name="arayanKayitliMusterimi" ColumnName="arayanKayitliMusterimi" />
@@ -4320,6 +4410,24 @@
                 <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
                 <ScalarProperty Name="DomainKayitliFirmaAdi" ColumnName="DomainKayitliFirmaAdi" />
                 <ScalarProperty Name="DomainKayitliFirmaId" ColumnName="DomainKayitliFirmaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArayanListesis">
+            <EntityTypeMapping TypeName="PortalModel.ArayanListesi">
+              <MappingFragment StoreEntitySet="ArayanListesi">
+                <ScalarProperty Name="StrTarih" ColumnName="StrTarih" />
+                <ScalarProperty Name="Bolge" ColumnName="Bolge" />
+                <ScalarProperty Name="KayitDurum" ColumnName="KayitDurum" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="Ticket" ColumnName="Ticket" />
+                <ScalarProperty Name="MailDurum" ColumnName="MailDurum" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="CepTel" ColumnName="CepTel" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Firma" ColumnName="Firma" />
+                <ScalarProperty Name="AdSoyad" ColumnName="AdSoyad" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
