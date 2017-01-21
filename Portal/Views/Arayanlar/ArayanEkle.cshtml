@@ -104,17 +104,7 @@
                 <div class="col-md-4">
                     @Html.TextAreaFor(x => x.arayanKonu, new { @class = "form-control" })
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Not</label>
-                <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.arayanNot, new { @class = "form-control" })
-                </div>
-                <label class="control-label col-md-2">Beğenilen Web Siteleri</label>
-                <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.arayanBegendigiWebSiteleri, new { @class = "form-control" })
-                </div>
-            </div>
+            </div>            
             <div class="form-group">
                 <label class="control-label col-md-2">Tarih</label>
                 <div class="col-md-4">
@@ -156,7 +146,16 @@
                     @Html.DropDownList("arayanMailSablonuId", ViewBag.mailSablonlari as SelectList,String.Empty, new { @class = "form-control select2" })
                 </div>
             </div>
-           
+            <div class="form-group">
+                <label class="control-label col-md-2">Not</label>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(x => x.arayanNot, new { @class = "ckeditor form-control" })
+                </div>
+                @*<label class="control-label col-md-2">Beğenilen Web Siteleri</label>
+                <div class="col-md-4">
+                    @Html.TextAreaFor(x => x.arayanBegendigiWebSiteleri, new { @class = "form-control" })
+                </div>*@
+            </div>
             <div class="form-group" style="margin-left:2px">               
                 <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline">  
                     @Html.CheckBoxFor(x=>x.isEkle,new { id= "cbIsEkle" })İş Ekle                
@@ -275,6 +274,12 @@
          .mt-checkbox, .mt-radio {
             font-size: 10px;
         }
+ .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
     </style>
 }
 @section scripts{
@@ -291,11 +296,15 @@
 <script src="/Content/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
 @*<script src="/Content/assets/pages/scripts/ui-bootstrap-growl.min.js" type="text/javascript"></script>*@
 <script src="http://ifightcrime.github.io/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
+<script src="/Scripts/jquery.autocomplete.min.js"></script>
     <script>
+        //auto complete olacak input name lerini tutar
         var aryAutoKeys = {};
+        //auto complete gelen degerleri tutar
+        var firmalar = [];
+   
         window.onload = function () {
-            $("#divIs").css("display", "none");
-            $("#wrpAraci").css("display", "none");
+           // init();
         }
         function degistiAraci() {
             if ($("#cbAraciVarmi").is(":checked")) {
@@ -304,8 +313,37 @@
                 $("#wrpAraci").css("display", "none");
             }
         }
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
+        function init() {
+            //mail adresi girilmedigi surece aktif olmayacak
+            $("#arayanMailSablonuId").val(null).change();
+            $("#arayanMailSablonuId").select2("enable",false);
+
+            $("#divIs").css("display", "none");
+            $("#wrpAraci").css("display", "none");
+            $("#cbIsEkle").removeAttr("checked")
+        }
         $(function () {
-           
+            //$("input[type='text']").focus(function () {
+            //    var input = this;
+            //    setTimeout(function () { input.selectionStart = input.selectionEnd; }, 1);
+            //});
+            $(".select2").select2();
+            $("#arayanMailAdresi").on("blur", function () {
+               
+                if (isEmail($(this).val())) {
+                    //2 tanıtım maili
+                    $("#arayanMailSablonuId").val("2").change();
+                    $("#arayanMailSablonuId").select2("enable", true);
+                } else {
+                  
+                    $("#arayanMailSablonuId").val(null).change();
+                    $("#arayanMailSablonuId").select2("enable", false);
+                }
+            });
             $('.phone_us').inputmask("mask", {
                 "mask": "(9999) 999-99-99", autoUnmask: true
             });
@@ -316,8 +354,9 @@
                     $("#divIs").css("display", "none");
                 }
             });
+            init();
             validateForm();
-            $(".select2").select2();
+           
 
             $.fn.datepicker.dates['tr'] = {
                 days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -356,53 +395,37 @@
                 "arayanCepTelNo": { val: "Telefon2", lab: "Telefon2" },
                 "arayanMailAdresi": { val: "Email", lab: "Email" }
             }
-            var firmas = new Bloodhound({
-                datumTokenizer: function (datum) {
-                    return Bloodhound.tokenizers.whitespace(aryAutoKeys[$(':focus').attr("name")].lab); //(datum.label);
-                },
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                remote: {
-                    wildcard: '',
-                    url: '/Isler/FirmalariGetir',
-                    replace: function (url, query) {
-                        var fid = $(':focus').attr("name");
-                       
-                        if (aryElm.indexOf(fid) >= 0) {
-                            url += "?firmaAdi=" + $("input[name='" + fid+"']").val();
-                            
-                            return url;
-                        } else {
-                           
-                            return "";
-                        }
-                       
-                    },
-                    transform: function (response) {
-                        return response;
-
-                    }
-                }
-            });
-          
-          
+        
+            
             aryElm.forEach(function (e) {
-                var ekey = $("input[name='" + e+"']").attr("name");
-                console.log(ekey + ":" + aryAutoKeys[ekey].lab);
+                var ekey = $("input[name='" + e + "']").attr("name");
                 var elabel = aryAutoKeys[ekey].lab;
                 var evalue = aryAutoKeys[ekey].val;
-                $("input[name='" + e + "']").typeahead(null, {
-                    display: elabel, //'label',
-                    displayKey: evalue,// 'value',
-                    hint: true,
-                    minLength: 1,
-                    source: firmas
-                });
-                $("input[name='" + e + "']").on('typeahead:selected', function (event, datum) {
-                    setData(datum);                    
-                });
+                var elm = $("input[name='" + e + "']");
+                $(elm).autocomplete({
+                    minChars: 2,
+                    transformResult: function (response) {
+                        firmalar = response;
+                        return {
+                            suggestions: $.map(response, function (dataItem) {
+                                return { value: dataItem[elabel], data: dataItem[evalue] };
+                            })
+                        };
+                    },
+                    onSearchStart: function (query) {
+
+                    },
+                    paramName: 'firmaAdi',
+                    serviceUrl: '/Isler/FirmalariGetir',
+                    onSelect: function (suggestion) {                      
+                        var data = firmalar.find(function (f) { return f[evalue] == suggestion.data });
+                        setData(data);                       
+                    },
+                    dataType: "json"
+                })
                
-            });
-          
+
+            });       
 
           
             var domains = new Bloodhound({
@@ -414,18 +437,12 @@
                     wildcard: '%domainAdi',
                     url: '/Isler/DomainGetir',
                     replace: function (url, query) {
-                        url += '?domainAdi=' + encodeURIComponent($("#domainAdi").val()) + '&firmaId=';
-                      
-                        url += encodeURIComponent($('#arayanKayitliRefFirmaID').val());
-
-                       
+                        url += '?domainAdi=' + encodeURIComponent($("#domainAdi").val()) + '&firmaId=';                      
+                        url += encodeURIComponent($('#arayanKayitliRefFirmaID').val());                      
                         return url;
                     },
-
-                    transform: function (response) {
-
-                        return response;
-                       
+                    transform: function (response) {                       
+                        return response;                       
                     }
                 }
             });
@@ -439,6 +456,7 @@
                 source: domains
             });
             $('#domainAdi').on('typeahead:selected', function (event, datum) {
+                console.log(datum);
                 $('#domainId').val(datum.value);
             });
         });
@@ -465,7 +483,7 @@
             });
             $("#arayanFirmaAdi").val(datum.label.split("/")[0]);
             $('#arayanAdi').val(datum.Adi);
-            $('#arayanSoyadi').val(datum.Adi);
+            $('#arayanSoyadi').val(datum.Soyadi);
             $('#arayanFirmaSahibiOzelligi').val(datum.Adi);
             $('#arayanTelefonNo').val(datum.Telefon1);
             $('#arayanCepTelNo').val(datum.Telefon2);
@@ -519,8 +537,8 @@
                     arayanFirmaAdi: "Lütfen firma ismi giriniz.",
                     arayanAdi: "Lütfen arayan adi giriniz.",
                     arayanCepTelNo: "Lütfen telefon numarası  giriniz.",
-                    arayanTelefonNo: "Lütfen telefon numarası  giriniz."
-                  
+                    arayanTelefonNo: "Lütfen telefon numarası  giriniz.",
+                    arayanMailAdresi:"Email geçerli değil."
                 },
                 rules: {
                     FirmaAdi: {
@@ -547,6 +565,10 @@
                     },
                     domainAdi: {
                         isEkli: true
+                    },
+                    arayanMailAdresi: {
+                        required: false,
+                        email:true
                     }
 
                 },
