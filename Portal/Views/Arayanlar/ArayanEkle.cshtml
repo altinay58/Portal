@@ -59,7 +59,7 @@
                 </div>
                 <label class="control-label col-md-2">Telefon No</label>
                 <div class="col-md-3">
-                    <input type="text" name="arayanTelefonNo" class="form-control phone_us" />
+                    <input type="text" name="arayanTelefonNo" id="arayanTelefonNo" class="form-control phone_us" />
                 </div>
 
 
@@ -156,13 +156,25 @@
                     @Html.TextAreaFor(x => x.arayanBegendigiWebSiteleri, new { @class = "form-control" })
                 </div>*@
             </div>
+            <div class="form-group clearfix" style="margin-left:2px">
+                <label class="tanitim-label col-md-offset-2 mt-checkbox mt-checkbox-outline">
+                    @Html.CheckBoxFor(x => x.TanitimMailiGonder,new { id="tanitimMail"})Tanıtım Maili Gönder                   
+                    <span></span>
+                </label>
+                <div id="divTanitimMail" class="div-tanitim-mail" style="">
+                    <label class="control-label">Mail Başılık</label>
+                    <div class="" style="display:inline-block">
+                        @Html.TextBoxFor(x => x.MailBaslik,new {id="MailBaslik" })
+                    </div>
+                </div>
+                
+            </div>
             <div class="form-group" style="margin-left:2px">               
-                <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline">  
+                <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline" style="float:left">  
                     @Html.CheckBoxFor(x=>x.isEkle,new { id= "cbIsEkle" })İş Ekle                
                     @*<input type="checkbox" name="isEkle"   id="cbIsEkle">İş ekle*@  
                     <span></span>
-                </label>
-             
+                </label>             
             </div>
             <div id="divIs" style="display:block">
                 <div class="form-group">
@@ -273,6 +285,8 @@
         }
          .mt-checkbox, .mt-radio {
             font-size: 10px;
+            font-weight: 600;
+            margin-bottom:0px !important;     
         }
  .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
@@ -280,6 +294,22 @@
 .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+    @@media(min-width:768px){
+        .div-tanitim-mail{
+            float:left;bottom: 7px;margin-left: 15px;position: relative;display:none;
+        }
+         .tanitim-label{
+            float:left;
+        }
+    }
+    @@media(max-width:1024px){
+        .div-tanitim-mail{
+            margin: 7px 0 2px 0;;position: relative;display:none;
+        }
+        .tanitim-label{
+            display:block;
+        }
+    }
     </style>
 }
 @section scripts{
@@ -296,10 +326,11 @@
 <script src="/Content/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
 @*<script src="/Content/assets/pages/scripts/ui-bootstrap-growl.min.js" type="text/javascript"></script>*@
 <script src="http://ifightcrime.github.io/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
-<script src="/Scripts/jquery.autocomplete.min.js"></script>
+@*<script src="/Scripts/jquery.autocomplete.min.js"></script>*@
+<script src="/js/jquery.autocomplete.js?v=1.0.9"></script>
     <script>
         //auto complete olacak input name lerini tutar
-        var aryAutoKeys = {};
+        var aryAutoKeys = {},ff;
         //auto complete gelen degerleri tutar
         var firmalar = [];
    
@@ -324,7 +355,9 @@
 
             $("#divIs").css("display", "none");
             $("#wrpAraci").css("display", "none");
-            $("#cbIsEkle").removeAttr("checked")
+            $("#cbIsEkle").removeAttr("checked");
+            $("#tanitimMail").removeAttr("checked");
+            $("#divTanitimMail").css("display", "none");
         }
         $(function () {
             //$("input[type='text']").focus(function () {
@@ -352,6 +385,13 @@
                     $("#divIs").css("display", "block");
                 } else {
                     $("#divIs").css("display", "none");
+                }
+            });
+            $("#tanitimMail").change(function () {
+                if ($(this).is(":checked")) {
+                    $("#divTanitimMail").css("display", "block");
+                } else {
+                    $("#divTanitimMail").css("display", "none");
                 }
             });
             init();
@@ -419,9 +459,13 @@
                     serviceUrl: '/Isler/FirmalariGetir',
                     onSelect: function (suggestion) {                      
                         var data = firmalar.find(function (f) { return f[evalue] == suggestion.data });
-                        setData(data);                       
+                        ff = data;
+                        setData(data);
+                        init();
                     },
-                    dataType: "json"
+                    dataType: "json",
+                    noCache: true,
+                    tabDisabled:true
                 })
                
 
@@ -520,6 +564,19 @@
                 }
                 return isValid; 
             }, 'Zorunlu alan.');
+            $.validator.addMethod('mailBaslikEkli', function (value, element, param) {
+
+                if ($("#tanitimMail").is(":checked")) {                   
+                    if ($(element).val().length >= 3) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+                
+            }, 'Lütfen Mail Başlik giriniz.');
         }
         function validateForm() {
             addRule();
@@ -569,6 +626,9 @@
                     arayanMailAdresi: {
                         required: false,
                         email:true
+                    },
+                    MailBaslik: {
+                        mailBaslikEkli:true
                     }
 
                 },

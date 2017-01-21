@@ -44,8 +44,7 @@ namespace Portal.Controllers
             var query = Db.ArayanListesis.Where(x =>x.Tarih >= tBas && x.Tarih <= tBit
             && (!string.IsNullOrEmpty(firma)?x.Firma.Contains(firma):true) && (!string.IsNullOrEmpty(telNo) ? x.Tel.Contains(telNo) : true)
              && (!string.IsNullOrEmpty(note) ? x.Note.Contains(note) : true) &&  (!string.IsNullOrEmpty(adSoyad) ? x.AdSoyad.Contains(adSoyad) : true)
-            ).OrderByDescending(x => x.Tarih);
-            var ls = query.ToList();
+            ).OrderByDescending(x => x.Tarih);         
             return Json(query, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ArayanEkle()
@@ -53,7 +52,7 @@ namespace Portal.Controllers
             ArayanModel arayanlar = new ArayanModel();
           
             ViewBag.arayanGrupID = new SelectList(Db.ArayanGrups, "arayanGrupID", "arayanGrupAdi");
-            ViewBag.arayanRefKonumID = new SelectList(Db.Konums, "KonumID", "Konum1");
+            ViewBag.arayanRefKonumID = new SelectList(Db.Konums.OrderBy(x=>x.Konum1), "KonumID", "Konum1");
             ViewBag.arayanDomainKategoriID = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi");
             ViewBag.arayanSektorID = new SelectList(Db.Sektorlers, "sektorID", "sektorAdi");
             ViewBag.mailSablonlari = new SelectList(Db.MailSablonus, "MailSablonuID", "MailSablonuAdi");
@@ -136,6 +135,10 @@ namespace Portal.Controllers
                     yeni.Arayanlar = arayan;
                     Db.islers.Add(yeni);                
                 }
+                if (vmodel.TanitimMailiGonder)
+                {
+                    TanitimMailiGonder(vmodel.arayanMailAdresi, vmodel.MailBaslik);
+                }
                 Db.Arayanlars.Add(arayan);
                 Db.SaveChanges();
                 TempData[SUCESS] = "Kayıt eklendi";
@@ -143,8 +146,7 @@ namespace Portal.Controllers
 
             }
             return RedirectToAction("ArayanEkle");
-        }
-
+        }        
         private isler YeniIsEkle(ArayanModel vmodel)
         {
             isler isE = new isler();
@@ -195,6 +197,20 @@ namespace Portal.Controllers
             return isE;
             //string mailAdres = Fonksiyonlar.KullaniciMailAdresGetir(yeni.isler.islerisiYapacakKisi);
             //Fonksiyonlar.MailGonder(mailAdres, "is", sonDetayID);
+        }
+        private void TanitimMailiGonder(string mailAdres,string baslik)
+        {
+            MailKontrol yeniKontrol = new MailKontrol();
+            yeniKontrol.MailBaslik = baslik;
+            yeniKontrol.MailAdresi = mailAdres;
+            yeniKontrol.MailOkundumu = false;
+            yeniKontrol.MailGondermeTarihi = DateTime.Now;
+            Db.MailKontrols.Add(yeniKontrol);
+            Db.SaveChanges();
+            string mesaj= Db.MailSablonus.FirstOrDefault(a => a.MailSablonuAdi == "Tanitim").MailSablonu1;
+            mesaj = mesaj + "<img src=\"http://is.karayeltasarim.com/mail/oku/" + yeniKontrol.MailKontrolID + "\" width=\"1\" height=\"1\" />";
+            Fonksiyonlar.MailGonder(mailAdres, baslik, mesaj);
+           
         }
     }
 }

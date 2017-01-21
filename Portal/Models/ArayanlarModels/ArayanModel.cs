@@ -50,6 +50,8 @@ namespace Portal.Models.ArayanlarModels
        
 
         public bool? Kayitlimi { get; set; }
+        public bool TanitimMailiGonder { get; set; }
+        public string MailBaslik { get; set; }
        
     }
 }
