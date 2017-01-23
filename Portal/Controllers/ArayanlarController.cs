@@ -36,7 +36,7 @@ namespace Portal.Controllers
             //           );
             return View();
         }
-        public ActionResult ArayanListesiParametre(string basTarih,string bitisTarih,string firma,string telNo
+        public JsonResult ArayanListesiParametre(string basTarih,string bitisTarih,string firma,string telNo
             ,string note,string adSoyad)
         {
             DateTime tBas = DateTime.Parse(basTarih);

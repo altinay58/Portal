@@ -1,31 +1,217 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    <h1>@ViewBag.Title</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started saat 11:46</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    <div class="col-md-6 col-sm-6">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption caption-md">
+                    <i class="icon-bar-chart font-dark hide"></i>
+                    <span class="caption-subject font-dark bold uppercase">Projeler</span>
+                    <span class="caption-helper">16 Görev</span>
+                </div>
+                <div class="page-toolbar" style="float:right">
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            Aksiyon Al
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-pause" aria-hidden="true"></i> Beklemeye Al
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-play" aria-hidden="true"></i> Yayına Al
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-stop" aria-hidden="true"></i> Yayını Durdur
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-comment" aria-hidden="true"></i> Domain Notları
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="modal" href="#large">
+                                    <i class="fa fa-user"></i> Cari Bilgileri
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+                    <div class="general-item-list">
+                        <div class="item">
+                            <div class="item-head">
+                                <div class="item-details">
+                                    <label class="mt-checkbox mt-checkbox-outline">                                       
+                                        <input type="checkbox" name="isEkle"   id="cbIsEkle">
+                                        <span></span>
+                                    </label> 
+                                    <a href="" class="item-name primary-link">guleryuzteam.com</a>
+                                    @*<span class="item-label">3 hrs ago</span>*@
+                                </div>
+                                <div class="item-status" style="top:2px">
+                                    <div class="page-toolbar toolbar-ext">
+                                        <div class="btn-group pull-right">
+                                            <button type="button" class="btn default btn-sm icon-only dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                <i class="fa fa-cog"></i>
+                                                <i class="fa fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="fa fa-check" aria-hidden="true"></i> Sonraki Aşama
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i> Beklemeye Al
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i> Pasifleştir
+                                                    </a>
+                                                </li>
+                                               
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <span class="label label-primary label-durum"> İçerik Temini </span>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="item">
+                            <div class="item-head">
+                                <div class="item-details">
+                                    <label class="mt-checkbox mt-checkbox-outline">
+                                        <input type="checkbox" name="isEkle" id="cbIsEkle">
+                                        <span></span>
+                                    </label>
+                                    <a href="" class="item-name primary-link">guleryuzteam.com</a>
+                                   
+                                </div>
+                                <div class="item-status" style="top:2px">
+                                    <div class="page-toolbar toolbar-ext">
+                                        <div class="btn-group pull-right">
+                                            <button type="button" class="btn default btn-sm icon-only dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                <i class="fa fa-cog"></i>
+                                                <i class="fa fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="fa fa-check" aria-hidden="true"></i> Sonraki Aşama
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i> Beklemeye Al
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="fa fa-trash-o" aria-hidden="true"></i> Pasifleştir
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <span class="label label-primary label-durum"> İçerik Temini </span>
+                                </div>
+                            </div>
+
+                        </div>
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="col-md-6 col-sm-6">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption caption-md">
+                    <i class="icon-bar-chart font-dark hide"></i>
+                    <span class="caption-subject font-dark bold uppercase">Proje Yorumları</span>
+                    <span class="caption-helper">45</span>
+                </div>
+               
+            </div>
+            <div class="portlet-body">
+                <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+                    <div class="general-item-list">
+                        <div class="item">
+                            <div class="item-head">
+                                <div class="item-details">
+                                    <img class="item-pic rounded" src="/Content/assets/pages/media/users/avatar4.jpg">
+                                    <a href="" class="item-name primary-link">Nick Larson</a>
+                                    <span class="item-label">3 hrs ago</span>
+                                    <span class="badge badge-empty badge-success"></span> Open
+                                </div>
+                                @*<span class="item-status">
+                                    <span class="badge badge-empty badge-success"></span> Open
+                                </span>*@
+                            </div>
+                            <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </div>
+                        </div>
+                        <div class="item">
+                            <div class="item-head">
+                                <div class="item-details">
+                                    <img class="item-pic rounded" src="/Content/assets/pages/media/users/avatar3.jpg">
+                                    <a href="" class="item-name primary-link">Mark</a>
+                                    <span class="item-label">5 hrs ago</span>
+                                    <span class="badge badge-empty badge-warning"></span> Pending
+                                </div>
+                                @*<span class="item-status">
+                                    <span class="badge badge-empty badge-warning"></span> Pending
+                                </span>*@
+                            </div>
+                            <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat tincidunt ut laoreet. </div>
+                        </div>                       
+                        <div class="item">
+                            <div class="item-head">
+                                <div class="item-details">
+                                    <img class="item-pic rounded" src="/Content/assets/pages/media/users/avatar2.jpg">
+                                    <a href="" class="item-name primary-link">Larry</a>
+                                    <span class="item-label">4 hrs ago</span>
+                                    <span class="badge badge-empty badge-success"></span> Open
+                                </div>
+                                @*<span class="item-status">
+                                    <span class="badge badge-empty badge-success"></span> Open
+                                </span>*@
+                            </div>
+                            <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+@section css{
+    <style>
+    .toolbar-ext 
+    {
+    float: left;
+    margin-right: 2px;
+    } 
+    .label-durum{
+        display: inline-block;
+        float: right;
+        height:25px
+    }
+    </style>
+ 
+ }

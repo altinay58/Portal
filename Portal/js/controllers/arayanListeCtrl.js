@@ -4,11 +4,10 @@
 
 
 
-angModule.controller('arayanListeCtrl', function ($scope) {
+angModule.controller('arayanListeCtrl', function ($scope,arayanListService) {
       var self = $scope; 
       self.arayanlar = [];
-      angular.element(document).ready(function () {
-          console.log("csdcds");
+      angular.element(document).ready(function () {        
           self.getirData();
       });
       self.init = function () {
@@ -16,11 +15,11 @@ angModule.controller('arayanListeCtrl', function ($scope) {
       }
       self.getirData = function () {
         
-          aryanListService.getListData(self.basTarih, self.bitisTarih,self.firma,self.telNo,self.note,self.adSoyad)
-              .done(function (data) {               
+          arayanListService.getListData(self.basTarih, self.bitisTarih, self.firma, self.telNo, self.note, self.adSoyad)
+              .then(function (data) {               
                   self.arayanlar = data;
                 
-                  self.$apply();
+                  //self.$apply();
               });
       }
       self.kontrolTicket = function (ticket) {

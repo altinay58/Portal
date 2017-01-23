@@ -6,7 +6,8 @@ using System.Web.Mvc;
 using Portal.Models;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-
+using Portal.Models.IslerModels;
+using System.Data.Entity;
 namespace Portal.Controllers
 {
     public class IslerController : BaseController
@@ -31,6 +32,47 @@ namespace Portal.Controllers
                 return View(islerim);
             }
 
+        }
+        
+        // Summary:
+        //     Domain e ait is bilgileri goserilen sayfa
+        // Parameters:
+        //   id:domain id
+        //     
+        public ActionResult DomainIsler(int? id)
+        {
+            ViewBag.domainId = id ?? 287;
+            return View();
+        }
+        // Summary:
+        //     domain ait butun isleri geri döner
+        // Parameters:
+        //   domainId:domain id
+        //     
+        public JsonResult DomainAitIsler(int domainId)
+        {
+            var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis)
+                        join a in Db.AspNetUsers on p.islerisiVerenKisi equals a.Id
+                        where p.islerRefDomainID == domainId && p.islerIsinDurumu==1
+                        orderby p.islerTarih descending
+                        select new DomainIs
+                        {
+                            IsId = p.islerID,
+                            IsAd = p.islerAdi,
+                            IsAciklama = p.islerAciklama,
+                            FirmaId = p.islerRefFirmaID.Value,
+                            IsiVerenKullanici=new Kullanici { Id=p.islerisiVerenKisi,AdSoyad=a.Isim+" "+a.SoyIsim},
+                            IsiYapacakKullanicilar = (from pf in p.IsiYapacakKisis
+                                                      join q in Db.AspNetUsers on pf.RefIsiYapacakKisiUserID equals q.Id
+                                                      where pf.RefIsID == p.islerID
+                                                      select new Kullanici {
+                                                          Id = pf.RefIsiYapacakKisiUserID,AdSoyad=q.Isim+" "+q.SoyIsim
+                                                      }
+                                                    ).ToList()
+                        }
+                        );               
+            
+            return Json(list,JsonRequestBehavior.AllowGet);
         }
         public ActionResult IcerikFormu()
         {

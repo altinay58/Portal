@@ -1,0 +1,1029 @@
+﻿
+@{
+    ViewBag.Title = "DomainIsler";
+}
+
+<div style="margin-top:5px" ng-controller="domainIslerCtrl" ng-init="init(@ViewBag.domainId)">
+    <div class="clearfix" style="margin-bottom:5px">
+        <div class="" style="display:inline-block;float:left;margin:0;">
+            karayeltasarim.com 
+            <span>
+                <i class="fa fa-star sari" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satış Öncelikli"></i>
+                <i class="fa fa-file-text kirmizi" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Güncelleme Sözleşmesi Yok"></i>
+                <i class="fa fa-money turkuaz" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ödemesi Alındı"></i>
+            </span>
+        </div>
+        <div class="page-toolbar" style="float:right">
+            <div class="btn-group pull-right">
+                <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown">
+                    Aksiyon Al
+                    <i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-pause" aria-hidden="true"></i> Beklemeye Al
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-play" aria-hidden="true"></i> Yayına Al
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-stop" aria-hidden="true"></i> Yayını Durdur
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-comment" aria-hidden="true"></i> Domain Notları
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="modal" href="#" ng-click="gosterCariBilgi()">
+                            <i class="fa fa-user"></i> Cari Bilgileri
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @*Detay*@
+    <div class="portlet light portlet-fit bordered">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-code font-green" aria-hidden="true"></i>
+                <span class="caption-subject bold font-green uppercase"> Yapılacak İş: 6</span>
+                <span class="caption-helper"><i class="fa fa-clock-o" aria-hidden="true"></i> Toplam Proje Süresi: 146sa 35dk 16s</span>
+            </div>
+            <div class="actions">
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn red btn-sm btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        Yapacak Kişi
+                        <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li>
+                            <a href="#0">
+                                <i class="icon-user"></i> Özcan Bayğuş
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#0">
+                                <i class="icon-user"></i> İlhami Yılmaz
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#0">
+                                <i class="icon-user"></i> Leyla Kesik
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group pull-right" style="margin-right: 15px;">
+                    <button type="button" class="btn blue btn-sm btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        İşin Durumu
+                        <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li>
+                            <a href="#0" class="font-blue">
+                                <i class="fa fa-code" aria-hidden="true"></i> Yapılacak
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#0" class="font-blue">
+                                <i class="fa fa-code" aria-hidden="true"></i> Yapılacak (Deadline)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#0" class="font-green-jungle">
+                                <i class="fa fa-code" aria-hidden="true"></i> Yapılıyor
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#0" class="font-yellow">
+                                <i class="fa fa-code" aria-hidden="true"></i> Onay Bekliyor
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#0">
+                                <i class="fa fa-code" aria-hidden="true"></i> Tamamlandı
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="well text-center">
+                <h3>Yayın Durduruldu</h3><h4>- 02.01.2018 -</h4><h5>Müşteri Başka Firmaya Gitti</h5>
+            </div>
+            <div class="timeline">
+                <!-- TIMELINE ITEM DOMAIN BEKLEMEDE -->
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <div class="timeline-icon bg-black">
+                            <i class="fa fa-code font-white"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-body bg-black">
+                        <div class="timeline-body-arrow" style="border-color: transparent #222222 transparent transparent;"> </div>
+                        <div class="timeline-body-head">
+                            <div class="timeline-body-head-caption">
+                                <a href="javascript:;" class="timeline-body-title font-red">Domain Beklemede (İçerikten Dolayı) - Beklemeye Alan: Leyla Kesik</a>
+                                <span class="timeline-body-time font-red">06.01.2017</span>
+                            </div>
+                            <div class="timeline-body-head-actions font-red">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> 4 Gün
+                            </div>
+                        </div>
+                        <div class="timeline-body-content">
+                            <span class="font-white">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            </span>
+                            <p>
+                            </p><div class="btn-group pull-left">
+                                <label class="mt-checkbox font-white" style="margin-top: 5px;">
+                                    <input data-toggle="collapse" data-target="#yorum0" id="edit1" type="checkbox" value="1" name="service"> Yorumlar (2)
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-circle red btn-sm">
+                                    Aktif Et
+                                </button>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-sm-12 collapse" id="yorum0">
+                                    <div class="portlet light portlet-fit bordered">
+                                        <div class="portlet-body">
+                                            <div class="timeline">
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_1.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 08:35</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Leyla Kesik</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 14:05</span>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <div class="timeline-icon">
+                                                            <i class="fa fa-code font-black"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Yorum Yaz</a>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <div class="col-sm-10">
+                                                                <textarea name="Adres" id="Adres" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button class="btn btn-circle green btn-sm">
+                                                                    Gönder
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END TIMELINE ITEM -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TIMELINE DOMAIN BEKLEMEDE -->
+                <!-- TIMELINE ITEM YAPILACAK (WITH DEADLINE) -->
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <div class="timeline-icon">
+                            <i class="fa fa-code font-blue"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-body bg-blue">
+                        <div class="timeline-body-arrow" style="border-color: transparent #3598dc transparent transparent;"> </div>
+                        <div class="timeline-body-head">
+                            <div class="timeline-body-head-caption">
+                                <a href="javascript:;" class="timeline-body-title font-white">#1456 - Yapan: Leyla Kesik / Kontrol: İlhami Yılmaz</a>
+                                <span class="timeline-body-time font-black">06.01.2017</span>
+                                <span class="timeline-body-time font-black"><i class="fa fa-calendar" aria-hidden="true"></i> <strong>06.01.2017</strong></span>
+                            </div>
+                            <div class="timeline-body-head-actions">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> 00:46:58
+                                <button class="btn btn-circle green btn-sm" type="button">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-body-content">
+                            <span class="font-white">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            </span>
+                            <p>
+                            </p><div class="btn-group pull-left">
+                                <label class="mt-checkbox font-white" style="margin-top: 5px;">
+                                    <input data-toggle="collapse" data-target="#yorum1" id="edit1" type="checkbox" value="1" name="service"> Yorumlar (2)
+                                    <span></span>
+                                </label>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-sm-12 collapse" id="yorum1">
+                                    <div class="portlet light portlet-fit bordered">
+                                        <div class="portlet-body">
+                                            <div class="timeline">
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_1.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 08:35</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Leyla Kesik</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 14:05</span>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <div class="timeline-icon">
+                                                            <i class="fa fa-code font-black"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Yorum Yaz</a>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <div class="col-sm-10">
+                                                                <textarea name="Adres" id="Adres" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button class="btn btn-circle green btn-sm">
+                                                                    Gönder
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END TIMELINE ITEM -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TIMELINE ITEM (WITH DEADLINE) -->
+                <!-- TIMELINE ITEM YAPILACAK (WITHOUT DEADLINE) -->
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <div class="timeline-icon">
+                            <i class="fa fa-code font-blue"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-body bg-blue">
+                        <div class="timeline-body-arrow" style="border-color: transparent #3598dc transparent transparent;"> </div>
+                        <div class="timeline-body-head">
+                            <div class="timeline-body-head-caption">
+                                <a href="javascript:;" class="timeline-body-title font-white">#1456 - Yapan: Leyla Kesik / Kontrol: İlhami Yılmaz</a>
+                                <span class="timeline-body-time font-black">06.01.2017</span>
+                            </div>
+                            <div class="timeline-body-head-actions">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> 00:46:58
+                                <button class="btn btn-circle green btn-sm" type="button">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-body-content">
+                            <span class="font-white">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            </span>
+                            <p>
+                            </p><div class="btn-group pull-left">
+                                <label class="mt-checkbox font-white" style="margin-top: 5px;">
+                                    <input data-toggle="collapse" data-target="#yorum2" id="edit1" type="checkbox" value="1" name="service"> Yorumlar (2)
+                                    <span></span>
+                                </label>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-sm-12 collapse" id="yorum2">
+                                    <div class="portlet light portlet-fit bordered">
+                                        <div class="portlet-body">
+                                            <div class="timeline">
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_1.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 08:35</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Leyla Kesik</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 14:05</span>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <div class="timeline-icon">
+                                                            <i class="fa fa-code font-black"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Yorum Yaz</a>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <div class="col-sm-10">
+                                                                <textarea name="Adres" id="Adres" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button class="btn btn-circle green btn-sm">
+                                                                    Gönder
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END TIMELINE ITEM -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TIMELINE ITEM YAPILACAK (WITHOUT DEADLINE) -->
+                <!-- TIMELINE ITEM YAPILIYOR [IN PROGRESS] -->
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <div class="timeline-icon">
+                            <i class="fa fa-code font-green-jungle"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-body bg-green-jungle">
+                        <div class="timeline-body-arrow" style="border-color: transparent #26c281 transparent transparent;"> </div>
+                        <div class="timeline-body-head">
+                            <div class="timeline-body-head-caption">
+                                <a href="javascript:;" class="timeline-body-title font-white">#1456 - Yapan: Leyla Kesik / Kontrol: İlhami Yılmaz</a>
+                                <span class="timeline-body-time font-black">06.01.2017</span>
+                            </div>
+                            <div class="timeline-body-head-actions">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> 00:46:58
+                                <button class="btn btn-circle black btn-sm" type="button">
+                                    <i class="fa fa-pause" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-body-content">
+                            <span class="font-white">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            </span>
+                            <p>
+                            </p><div class="btn-group pull-left">
+                                <label class="mt-checkbox font-white" style="margin-top: 5px;">
+                                    <input data-toggle="collapse" data-target="#yorum3" id="edit1" type="checkbox" value="1" name="service"> Yorumlar (2)
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-circle black btn-sm">
+                                    Tamamla
+                                </button>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-sm-12 collapse" id="yorum3">
+                                    <div class="portlet light portlet-fit bordered">
+                                        <div class="portlet-body">
+                                            <div class="timeline">
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_1.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 08:35</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END TIMELINE ITEM -->
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Leyla Kesik</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 14:05</span>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END TIMELINE ITEM -->
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <div class="timeline-icon">
+                                                            <i class="fa fa-code font-black"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Yorum Yaz</a>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <div class="col-sm-10">
+                                                                <textarea name="Adres" id="Adres" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button class="btn btn-circle green btn-sm">
+                                                                    Gönder
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END TIMELINE ITEM -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TIMELINE ITEM  YAPILIYOR [IN PROGRESS] -->
+                <!-- TIMELINE ITEM KONTROL BEKLİYOR -->
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <div class="timeline-icon">
+                            <i class="fa fa-code font-yellow"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-body bg-yellow">
+                        <div class="timeline-body-arrow" style="border-color: transparent #c49f47 transparent transparent;"> </div>
+                        <div class="timeline-body-head">
+                            <div class="timeline-body-head-caption">
+                                <a href="javascript:;" class="timeline-body-title font-white">#1456 - Yapan: Leyla Kesik / Kontrol: İlhami Yılmaz</a>
+                                <span class="timeline-body-time font-black"><i class="fa fa-flag-o" aria-hidden="true"></i> 06.01.2017</span>
+                                <span class="timeline-body-time font-black"><i class="fa fa-flag-checkered" aria-hidden="true"></i> 09.01.2017</span>
+                            </div>
+                            <div class="timeline-body-head-actions">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> 00:46:58
+                            </div>
+                        </div>
+                        <div class="timeline-body-content">
+                            <span class="font-white">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            </span>
+                            <p>
+                            </p><div class="btn-group pull-left">
+                                <label class="mt-checkbox font-white" style="margin-top: 5px;">
+                                    <input data-toggle="collapse" data-target="#yorum4" id="edit1" type="checkbox" value="1" name="service"> Yorumlar (2)
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="btn-group pull-right">
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-circle white btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                        Onay İşlemleri
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li>
+                                            <a href="javascript:;">İşi Onayla </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="javascript:;">Revize İste </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-sm-12 collapse" id="yorum4">
+                                    <div class="portlet light portlet-fit bordered">
+                                        <div class="portlet-body">
+                                            <div class="timeline">
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_1.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 08:35</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END TIMELINE ITEM -->
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Leyla Kesik</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 14:05</span>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END TIMELINE ITEM -->
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <div class="timeline-icon">
+                                                            <i class="fa fa-code font-black"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Yorum Yaz</a>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <div class="col-sm-10">
+                                                                <textarea name="Adres" id="Adres" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button class="btn btn-circle green btn-sm">
+                                                                    Gönder
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END TIMELINE ITEM -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TIMELINE KONTROL BEKLİYOR -->
+                <!-- TIMELINE ITEM TAMAMLANDI -->
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <div class="timeline-icon">
+                            <i class="fa fa-code"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-body">
+                        <div class="timeline-body-arrow"> </div>
+                        <div class="timeline-body-head">
+                            <div class="timeline-body-head-caption">
+                                <a href="javascript:;" class="timeline-body-title">#1456 - Yapan: Leyla Kesik / Kontrol: İlhami Yılmaz</a>
+                                <span class="timeline-body-time font-black"><i class="fa fa-flag-o" aria-hidden="true"></i> 06.01.2017</span>
+                                <span class="timeline-body-time font-black"><i class="fa fa-flag-checkered" aria-hidden="true"></i> 09.01.2017</span>
+                            </div>
+                            <div class="timeline-body-head-actions">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> 00:46:58
+                            </div>
+                        </div>
+                        <div class="timeline-body-content">
+                            <span>
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            </span>
+                            <p>
+                            </p><div class="btn-group pull-left">
+                                <label class="mt-checkbox" style="margin-top: 5px;">
+                                    <input data-toggle="collapse" data-target="#yorum5" id="edit1" type="checkbox" value="1" name="service"> Yorumlar (2)
+                                    <span></span>
+                                </label>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-sm-12 collapse" id="yorum5">
+                                    <div class="portlet light portlet-fit bordered">
+                                        <div class="portlet-body">
+                                            <div class="timeline">
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_1.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 08:35</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END TIMELINE ITEM -->
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Leyla Kesik</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 14:05</span>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END TIMELINE ITEM -->
+                                                <!-- TIMELINE ITEM -->
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <div class="timeline-icon">
+                                                            <i class="fa fa-code font-black"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Yorum Yaz</a>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <div class="col-sm-10">
+                                                                <textarea name="Adres" id="Adres" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button class="btn btn-circle green btn-sm">
+                                                                    Gönder
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END TIMELINE ITEM -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TIMELINE TAMAMLANDI -->
+            </div>
+            <div class="well text-center">
+                <h3>Yayına Alındı</h3><h4>- Planlanan: 29.12.2015 / Uygulanan: 02.01.2016 -</h4><h5>4 Gün Geç Yayınlandı</h5>
+            </div>
+            <div class="timeline">
+                <!-- TIMELINE ITEM YAPILACAK (STANDART/BAŞLANGIÇ) -->
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <div class="timeline-icon">
+                            <i class="fa fa-code font-red"></i>
+                        </div>
+                    </div>
+                    <div class="timeline-body bg-red">
+                        <div class="timeline-body-arrow" style="border-color: transparent #e7505a transparent transparent;"> </div>
+                        <div class="timeline-body-head">
+                            <div class="timeline-body-head-caption">
+                                <a href="javascript:;" class="timeline-body-title font-white">#1456 - Yapan: Leyla Kesik / Kontrol: İlhami Yılmaz</a>
+                                <span class="timeline-body-time font-black">06.01.2017</span>
+                            </div>
+                            <div class="timeline-body-head-actions">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> 00:46:58
+                                <button class="btn btn-circle green btn-sm" type="button">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-body-content">
+                            <span class="font-white">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            </span>
+                            <p>
+                            </p><div class="btn-group pull-left">
+                                <label class="mt-checkbox font-white" style="margin-top: 5px;">
+                                    <input data-toggle="collapse" data-target="#yorum6" id="edit1" type="checkbox" value="1" name="service"> Yorumlar (2)
+                                    <span></span>
+                                </label>
+                            </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-sm-12 collapse" id="yorum6">
+                                    <div class="portlet light portlet-fit bordered">
+                                        <div class="portlet-body">
+                                            <div class="timeline">
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_1.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 08:35</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Leyla Kesik</a>
+                                                                <span class="timeline-body-time font-grey-cascade">06.01.2017 14:05</span>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <span class="font-grey-cascade">
+                                                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                                                                ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-badge">
+                                                        <div class="timeline-icon">
+                                                            <i class="fa fa-code font-black"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-body-arrow"> </div>
+                                                        <div class="timeline-body-head">
+                                                            <div class="timeline-body-head-caption">
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">Yorum Yaz</a>
+                                                            </div>
+                                                            <div class="timeline-body-head-actions"> </div>
+                                                        </div>
+                                                        <div class="timeline-body-content">
+                                                            <div class="col-sm-10">
+                                                                <textarea name="Adres" id="Adres" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button class="btn btn-circle green btn-sm">
+                                                                    Gönder
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END TIMELINE ITEM -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TIMELINE ITEM YAPILACAK (STANDART/BAŞLANGIÇ) -->
+            </div>
+        </div>
+    </div>
+    @*Detay Son*@
+    </div>
+<div class="modal fade bs-modal-lg" id="modalCari" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Karayel AR-GE Tasarım Ltd. Şti. Cari Bilgileri</h4>
+            </div>
+            <div class="modal-body">
+                <p>Buraya iletişim bilgileri vs gibi cari bilgileri gelecek.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn red" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section css{
+<style>
+.bg-black {
+    background: #222222 !important;
+}
+
+.sari {
+    color: #F1C40F;
+}
+
+.kirmizi {
+    color: #e7505a;
+}
+
+.turkuaz {
+    color: #36c6d3;
+}
+</style>
+}
+@section scripts{
+<script src="/js/services/domainIslerService.js"></script>
+<script src="/js/controllers/domainIslerCtrl.js"></script>
+<script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+     }
+
