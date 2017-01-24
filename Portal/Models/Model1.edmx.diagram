@@ -125,6 +125,10 @@
         <AssociationConnector Association="PortalModel.FK_Domain_DomainKayitliFirma" />
         <AssociationConnector Association="PortalModel.FK_Arayanlar_MailSablanlari" />
         <EntityTypeShape EntityType="PortalModel.ArayanListesi" Width="1.5" PointX="10.375" PointY="5.75" />
+        <EntityTypeShape EntityType="PortalModel.DomainNot" Width="1.5" PointX="8.25" PointY="25.5" />
+        <EntityTypeShape EntityType="PortalModel.ZamanI" Width="1.5" PointX="12.375" PointY="5.75" />
+        <AssociationConnector Association="PortalModel.FK_Domain_RefKayitYapanKullanici" />
+        <AssociationConnector Association="PortalModel.FK_Domain_RefIsId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -18,6 +18,11 @@ namespace Portal.Models.IslerModels
         public int FirmaId { get; set; }
         public List<Kullanici> IsiYapacakKullanicilar { get; set; }
         public Kullanici IsiVerenKullanici { get; set; }
+        public int IsDurum { get; set; }
+        public int SiraNo { get; set; }
+        public bool BitisTarihiVarmi { get; set; }
+        public DateTime? BitisTarihi { get; set; }
+        public DateTime? Tarih { get; set; }
         public DomainIs()
         {
             IsiYapacakKullanicilar = new List<Kullanici>();

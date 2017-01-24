@@ -41,7 +41,7 @@ namespace Portal.Controllers
         //     
         public ActionResult DomainIsler(int? id)
         {
-            ViewBag.domainId = id ?? 287;
+            ViewBag.domainId = id ?? 13448;
             return View();
         }
         // Summary:
@@ -53,8 +53,8 @@ namespace Portal.Controllers
         {
             var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis)
                         join a in Db.AspNetUsers on p.islerisiVerenKisi equals a.Id
-                        where p.islerRefDomainID == domainId && p.islerIsinDurumu==1
-                        orderby p.islerTarih descending
+                        where p.islerRefDomainID == domainId 
+                        orderby p.islerSiraNo descending
                         select new DomainIs
                         {
                             IsId = p.islerID,
@@ -62,6 +62,11 @@ namespace Portal.Controllers
                             IsAciklama = p.islerAciklama,
                             FirmaId = p.islerRefFirmaID.Value,
                             IsiVerenKullanici=new Kullanici { Id=p.islerisiVerenKisi,AdSoyad=a.Isim+" "+a.SoyIsim},
+                            IsDurum=p.islerIsinDurumu,
+                            SiraNo=p.islerSiraNo ?? 1,
+                            BitisTarihiVarmi=p.islerBitisTarihiVarmi,
+                            BitisTarihi=p.islerBitisTarihi,
+                            Tarih=p.islerTarih,
                             IsiYapacakKullanicilar = (from pf in p.IsiYapacakKisis
                                                       join q in Db.AspNetUsers on pf.RefIsiYapacakKisiUserID equals q.Id
                                                       where pf.RefIsID == p.islerID
@@ -124,9 +129,13 @@ namespace Portal.Controllers
                 ilkIs.islerisiVerenKisi = isKontrolEdenKullanici.AyarDeger;
                 ilkIs.islerTarih = DateTime.Now;
                 ilkIs.islerOncelikSiraID =(int) IslerOncelikSira.Ikinci;
-                List<isler> isler = new List<Models.isler>();
-                isler.Add(ilkIs);
-                foreach(var standardIs in listStandardIsler)
+                //List<isler> isler = new List<Models.isler>();
+                //isler.Add(ilkIs);
+                ilkIs.islerSiraNo = 1;
+                ilkIs.islerIsinDurumu = (int)IsinDurumu.Yapilacak;
+                Db.islers.Add(ilkIs);
+                int siraNo = 2;
+                foreach (var standardIs in listStandardIsler)
                 {
                     isler job = new isler();
                     job.islerAciklama = string.Format("{0}", standardIs.StandartProjeIsleriAciklama);
@@ -137,9 +146,16 @@ namespace Portal.Controllers
                     job.islerOncelikSiraID = (int)IslerOncelikSira.Ikinci;
                     job.islerisiVerenKisi = standardIs.RefStandartProjeIsleriKontrolEdecekKullaniciId;
                     job.islerTarih = DateTime.Now;
-                    isler.Add(job);
+                    job.islerSiraNo = siraNo;
+                    job.islerIsinDurumu = (int)IsinDurumu.Yapilacak;
+                    siraNo = siraNo + 1;
+                    IsiYapacakKisi kisi = new IsiYapacakKisi();
+                    kisi.RefIsiYapacakKisiUserID = standardIs.RefStandartProjeIsleriYapacakKullaniciId;
+                    kisi.isler = job;
+                    Db.IsiYapacakKisis.Add(kisi);
+                    Db.islers.Add(job);
                 }
-                Database.Db.islers.AddRange(isler);
+                //Database.Db.islers.AddRange(isler);
                 Database.Db.SaveChanges();
                 TempData["Success"] = "Kaydedildi";
 
@@ -165,7 +181,7 @@ namespace Portal.Controllers
 
             return Json(cevap, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult FirmalariGetir(string firmaAdi)
+        public JsonResult FirmalariGetir(string firmaAdi)
         {
 
 
@@ -215,7 +231,7 @@ namespace Portal.Controllers
 
             return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DomainGetir(string domainAdi,int? firmaId)
+        public JsonResult DomainGetir(string domainAdi,int? firmaId)
         {
         
 

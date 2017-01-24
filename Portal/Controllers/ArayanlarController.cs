@@ -154,21 +154,21 @@ namespace Portal.Controllers
             {
                 isE.islerRefFirmaID = vmodel.arayanKayitliRefFirmaID.Value;
             }
-            //else
-            //{
-            //    int sonArayanID = Db.Arayanlars.Max(item => item.arayanID);
-            //    sonArayanID++;
+            else
+            {
+                int sonArayanID = Db.Arayanlars.Max(item => item.arayanID);
+                sonArayanID++;
 
-            //    isE.islerRefArayanID = sonArayanID;
-            //}
-            
+                isE.islerRefArayanID = sonArayanID;
+            }
+
             //islerim.islerDosyaAdi = filename;
             isE.islerRefDomainID = vmodel.domainId;
             //isE.islerRefKategoriID = vmodel.islerRefKategoriID;
             isE.islerAdi = vmodel.isAdi;
             isE.islerAciklama = Fonksiyonlar.KarakterDuzenle(vmodel.isAciklama);
             //TODO: login ekrani yapilinca aktif edilecek
-            isE.islerisiVerenKisi = User.Identity.GetUserId();
+            isE.islerisiVerenKisi = vmodel.kontrolEdecekKisi ?? User.Identity.GetUserId();
 
             //if (!string.IsNullOrEmpty(islerim.islerTarih.ToString()))
             //{
@@ -193,7 +193,14 @@ namespace Portal.Controllers
 
             //int sonDetayID = Db.islers.Max(item => item.islerID);
             //sonDetayID++;
-            
+            isE.islerIsinDurumu = (int)IsinDurumu.Yapilacak;
+            isE.islerSiraNo = Db.islers.Where(x => x.islerRefDomainID == vmodel.domainId).Max(x=>x.islerSiraNo)+1;
+            IsiYapacakKisi kisi = new IsiYapacakKisi();
+            kisi.RefIsiYapacakKisiUserID = vmodel.islerisiYapacakKisi;
+            kisi.isler = isE;
+            Db.IsiYapacakKisis.Add(kisi);
+
+           
             return isE;
             //string mailAdres = Fonksiyonlar.KullaniciMailAdresGetir(yeni.isler.islerisiYapacakKisi);
             //Fonksiyonlar.MailGonder(mailAdres, "is", sonDetayID);

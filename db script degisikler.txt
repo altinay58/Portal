@@ -110,3 +110,68 @@ FROM      dbo.Arayanlar AS Extent1 LEFT OUTER JOIN
 order by Tarih desc
  ) T
 GO
+--------------------------------------------------------------
+--24.01.2017
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DomainNot](
+	[DomainNotId] [int] IDENTITY(1,1) NOT NULL,
+	[DomainNotNot] [nvarchar](300) NULL,
+	[DomainNotTarih] [datetime] NULL,
+	[RefNotKullaniciId] [nvarchar](128) NULL,
+ CONSTRAINT [PK_DomainNot] PRIMARY KEY CLUSTERED 
+(
+	[DomainNotId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[DomainNot] ADD  CONSTRAINT [DF_DomainNot_DomainNotTarih]  DEFAULT (getdate()) FOR [DomainNotTarih]
+GO
+
+ALTER TABLE [dbo].[DomainNot]  WITH CHECK ADD  CONSTRAINT [FK_Domain_RefKayitYapanKullanici] FOREIGN KEY([RefNotKullaniciId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+
+ALTER TABLE [dbo].[DomainNot] CHECK CONSTRAINT [FK_Domain_RefKayitYapanKullanici]
+GO
+
+/****** Object:  Table [dbo].[ZamanIs]    Script Date: 24.01.2017 13:44:13 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ZamanIs](
+	[ZamanIsId] [int] IDENTITY(1,1) NOT NULL,
+	[RefIsId] [int] NOT NULL,
+	[ZamanIsBasTarih] [datetime] NOT NULL,
+	[GecenZamanSaniye] [bigint] NULL,
+ CONSTRAINT [PK_ZamanIs] PRIMARY KEY CLUSTERED 
+(
+	[ZamanIsId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[ZamanIs]  WITH CHECK ADD  CONSTRAINT [FK_Domain_RefIsId] FOREIGN KEY([RefIsId])
+REFERENCES [dbo].[isler] ([islerID])
+GO
+
+ALTER TABLE [dbo].[ZamanIs] CHECK CONSTRAINT [FK_Domain_RefIsId]
+GO
+
+ALTER TABLE [dbo].[isler]
+	ADD islerSiraNo int NULL
+GO
+
+
+
+

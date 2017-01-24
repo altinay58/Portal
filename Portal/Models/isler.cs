@@ -20,6 +20,7 @@ namespace Portal.Models
             this.IsiYapacakKisis = new HashSet<IsiYapacakKisi>();
             this.isYorums = new HashSet<isYorum>();
             this.YorumDurums = new HashSet<YorumDurum>();
+            this.ZamanIs = new HashSet<ZamanI>();
         }
     
         public int islerID { get; set; }
@@ -45,6 +46,7 @@ namespace Portal.Models
         public string islerGelisYontemi { get; set; }
         public bool islerBitisTarihiVarmi { get; set; }
         public Nullable<System.DateTime> islerBitisTarihi { get; set; }
+        public Nullable<int> islerSiraNo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IsiYapacakKisi> IsiYapacakKisis { get; set; }
@@ -58,5 +60,7 @@ namespace Portal.Models
         public virtual ICollection<isYorum> isYorums { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<YorumDurum> YorumDurums { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ZamanI> ZamanIs { get; set; }
     }
 }

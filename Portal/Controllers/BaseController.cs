@@ -5,11 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
+using System.Web.Security;
 
 namespace Portal.Controllers
 {
     public abstract class BaseController : Controller
     {
+        public BaseController()
+        {
+            
+        }
         protected readonly int  PagerCount = 20;
         //basarili
         protected readonly string SUCESS = "Success";
@@ -18,6 +24,8 @@ namespace Portal.Controllers
         {
             base.OnActionExecuting(filterContext);
             Database.Db = new Models.PortalEntities();
+            //TODO: sonra iptal edilecek,login ekranindan giris olmadigi icin           
+            FormsAuthentication.SetAuthCookie("fatihgokce07@gmail.com",true);
             //daha sonra aktif edilecek
             //WebLoguEkle(Request.RawUrl);
         }
