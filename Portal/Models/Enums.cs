@@ -12,7 +12,7 @@ namespace Portal.Models
     public enum IsinDurumu:byte
     {
         Yapilacak=1,YapilacakDeadline,Yapiliyor,
-        OnayBekliyor,Tamamlandi
+        KontrolBekleyen,Biten
     }
     public enum DomainDurum : byte
     {
