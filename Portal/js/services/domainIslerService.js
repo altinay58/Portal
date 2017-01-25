@@ -11,7 +11,20 @@
                 dataType: "json"
             });
             return (request.then(handleSuccess, handleError));
+        },
+        IsDurumuDegistir: function (domainIs, yeniDurum) {
+            var request = $http({
+                method: "get",
+                url: "/Isler/IsDurumuDegistir",
+                params: {
+                    domainIs: JSON.stringify(domainIs),
+                    yeniDurum: yeniDurum
+                },
+                dataType: "json"
+            });
+            return (request.then(handleSuccess, handleError));
         }
+
     });
     /// private methods
     function handleError(response) {

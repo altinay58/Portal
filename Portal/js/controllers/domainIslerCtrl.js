@@ -1,14 +1,29 @@
 ﻿var ff;
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); 
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) { hours = "0" + hours; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    if (seconds < 10) { seconds = "0" + seconds; }
+    return hours + ':' + minutes + ':' + seconds;
+}
 angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     var self = $scope;
     self.guncelDomainId = 0;//287 karayeltasarim.com
     self.domainIsler = [];
+    let IsinDurumuEnum={
+        Yapilacak : 1, YapilacakDeadline:2, Yapiliyor:3,
+        KontrolBekleyen:4, Biten:5
+    }
     self.isDurum = {
         1: { ad: "Yapilacak", timelineIconClass: "font-blue", arrowClass: "arrow-yapilacak", bodyClass: "bg-blue" },
         2: { ad: "YapilacakDeadline", timelineIconClass: "font-blue", arrowClass: "arrow-yapilacak", bodyClass: "bg-blue" },
         3: { ad: "Yapiliyor", timelineIconClass: "font-green-jungle", arrowClass: "arrow-yapiliyor", bodyClass: "bg-green-jungle" },
         4: { ad: "KontrolBekleyen", timelineIconClass: "font-yellow", arrowClass: "arrow-yapilacak", bodyClass: "bg-yellow" },
-        5: { ad: "Biten", timelineIconClass: "", arrowClass: "", bodyClass:"" }
+        5: { ad: "Biten", timelineIconClass: "", arrowClass: "", bodyClass: "body-biten" }
     }
     angular.element(document).ready(function () {
         console.log(self.guncelDomainId);
@@ -23,20 +38,30 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         .then(function (res) {
             console.log(res);
             ff = res;
+            extendArray(res);
             self.domainIsler = res;
+            arrayZamanHesapla();           
         })
+    }
+   
+    self.timerBaslat = function () {
+
     }
     self.gosterCariBilgi = function () {
         $("#modalCari").modal("show");
     }
+  
     self.tarihFormatStr = function (tarih) {
-        let date = new Date(parseInt(tarih.replace("/Date(", "").replace(")/", ""), 10));       
-        let formattedDate = moment(date).format('DD.MM.YYYY');
-        return formattedDate;
+        if (tarih) {
+            let date = new Date(parseInt(tarih.replace("/Date(", "").replace(")/", ""), 10));
+            let formattedDate = moment(date).format('DD.MM.YYYY');
+            return formattedDate;
+        }else
+        {
+            return "";
+        }
     }
     self.timelineIconClassBelirleDurumaGore = function (durumId) {
-        let r = self.isDurum[durumId].timelineIconClass;
-        console.log(self.isDurum[durumId].timelineIconClass);
         return self.isDurum[durumId].timelineIconClass;
     }
     self.timelineArrowClassBelirleDurumaGore = function (durumId) {      
@@ -44,5 +69,84 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     }
     self.timelineBodyClassBelirleDurumaGore = function (durumId) {     
         return self.isDurum[durumId].bodyClass;
+    }
+    self.iseBaslaDurdur = function (domainIs) {
+        let yeniDurum = 0, iBtnClass="fa fa-play";
+        if (domainIs.IsDurum == IsinDurumuEnum.Yapilacak || domainIs.IsDurum == IsinDurumuEnum.YapilacakDeadline) {
+            yeniDurum = IsinDurumuEnum.Yapiliyor;
+            iBtnClass = "fa fa-pause";
+        }
+        else {
+            if (domainIs.BitisTarihiVarmi) {
+                yeniDurum = IsinDurumuEnum.YapilacakDeadline;
+            } else {
+                yeniDurum = IsinDurumuEnum.Yapilacak;
+            }
+        }
+        domainIslerService.IsDurumuDegistir(domainIs,yeniDurum)
+        .then(function (res) {
+            if (res.Basarilimi) {
+                domainIs.IsDurum = yeniDurum;
+                domainIs.iBtnClass = iBtnClass;
+                domainIs.IsGecenZaman = res.Data.IsGecenZaman;
+                zamanAyarla(domainIs);
+                //angular.copy(res.Data, domainIs);
+                //self.$apply();
+            }
+        })
+      
+    }
+    function getDate(jsnDate) {
+        let date = new Date(parseInt(jsnDate.replace("/Date(", "").replace(")/", ""), 10));
+       
+        return date;
+    }
+    function arrayZamanHesapla() {
+        self.domainIsler.forEach(function (e) {
+            zamanAyarla(e);
+        })
+    }
+    function zamanAyarla (domainIs) {
+        if (domainIs.IsDurum == IsinDurumuEnum.Yapiliyor) {
+            if (domainIs.IsGecenZaman.ZamanBasTarih) {
+                var now = moment(new Date());
+               
+                var end = moment(getDate(domainIs.IsGecenZaman.ZamanBasTarih));
+                var duration = moment.duration(now.diff(end));
+                domainIs.sec = now.diff(end,"seconds") + domainIs.IsGecenZaman.GecenZamanSaniye;
+                domainIs.timer = setInterval(function () {
+                    domainIs.sec++;
+                    domainIs.gecenZaman = String(domainIs.sec).toHHMMSS();
+                    self.$apply();
+                }, 1000);
+            }
+
+        } else {
+            clearInterval(domainIs.timer);
+            if (domainIs.IsGecenZaman.GecenZamanSaniye) {
+                domainIs.gecenZaman = String(domainIs.IsGecenZaman.GecenZamanSaniye).toHHMMSS();
+            } else {
+                domainIs.gecenZaman = "00:00:00";
+            }
+
+        }
+    }
+    function extendArray (ary) {
+        ary.forEach(function (e) {
+            e.iBtnClass = "";
+            if (e.IsDurum == IsinDurumuEnum.Yapilacak || e.IsDurum == IsinDurumuEnum.YapilacakDeadline
+                || e.IsDurum==IsinDurumuEnum.Yapiliyor)
+            {
+                e.GosterIseBaslaBtn = true;
+                e.iBtnClass = "fa fa-play";
+                if (e.IsDurum == IsinDurumuEnum.Yapiliyor) {                   
+                    e.iBtnClass = "fa fa-pause";
+                }
+            } else {
+                e.GosterIseBaslaBtn = false;
+            }
+           
+           
+        })
     }
 });

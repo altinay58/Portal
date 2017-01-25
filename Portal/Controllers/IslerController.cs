@@ -41,8 +41,10 @@ namespace Portal.Controllers
         //     
         public ActionResult DomainIsler(int? id)
         {
-            ViewBag.domainId = id ?? 13448;
-            return View();
+            id = id ?? 13448;
+            ViewBag.domainId = id;
+            var domain = Db.Domains.SingleOrDefault(x=>x.DomainID==id);
+            return View(domain);
         }
         // Summary:
         //     domain ait butun isleri geri döner
@@ -53,6 +55,8 @@ namespace Portal.Controllers
         {
             var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis)
                         join a in Db.AspNetUsers on p.islerisiVerenKisi equals a.Id
+                        join z in Db.ZamanIs on p.islerID equals z.RefIsId into temp
+                        from zz in temp.DefaultIfEmpty()
                         where p.islerRefDomainID == domainId 
                         orderby p.islerSiraNo descending
                         select new DomainIs
@@ -67,6 +71,7 @@ namespace Portal.Controllers
                             BitisTarihiVarmi=p.islerBitisTarihiVarmi,
                             BitisTarihi=p.islerBitisTarihi,
                             Tarih=p.islerTarih,
+                            IsGecenZaman=new GecenZaman { GecenZamanSaniye=zz.GecenZamanSaniye,ZamanBasTarih=zz.ZamanIsBasTarih},
                             IsiYapacakKullanicilar = (from pf in p.IsiYapacakKisis
                                                       join q in Db.AspNetUsers on pf.RefIsiYapacakKisiUserID equals q.Id
                                                       where pf.RefIsID == p.islerID
@@ -78,6 +83,59 @@ namespace Portal.Controllers
                         );               
             
             return Json(list,JsonRequestBehavior.AllowGet);
+        }
+        [ValidateInput(false)]
+        public JsonResult IsDurumuDegistir(string domainIs,byte yeniDurum)
+        {
+            IsinDurumu yeniisDurum = (IsinDurumu) yeniDurum;
+            var microsoftDateFormatSettings = new JsonSerializerSettings
+            {
+                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                DateTimeZoneHandling = DateTimeZoneHandling.Local
+            };
+            DomainIs obj = JsonConvert.DeserializeObject<DomainIs>(domainIs, microsoftDateFormatSettings);
+            JsonCevap jsn = new JsonCevap();
+            jsn.Basarilimi = true;
+            try
+            {
+                ZamanI zamanIs = Db.ZamanIs.SingleOrDefault(x => x.RefIsId == obj.IsId);
+                if(zamanIs!=null)
+                {
+                    if (yeniisDurum == IsinDurumu.Yapiliyor)
+                    {                       
+                        zamanIs.ZamanIsBasTarih = DateTime.Now;                        
+                        obj.IsGecenZaman.ZamanBasTarih = DateTime.Now;                      
+                    }
+                    else
+                    {
+                        //islerIsinDurumu Yapilacak veya YapilacakDeadline
+                        var diffInSeconds = (DateTime.Now - obj.IsGecenZaman.ZamanBasTarih.Value).TotalSeconds;
+                        zamanIs.GecenZamanSaniye = zamanIs.GecenZamanSaniye + (long)diffInSeconds;
+                        zamanIs.ZamanIsBasTarih = DateTime.Now;
+                        obj.IsGecenZaman.ZamanBasTarih = DateTime.Now;
+                        obj.IsGecenZaman.GecenZamanSaniye = zamanIs.GecenZamanSaniye;
+                    }
+                }else
+                {
+                    //zamanis kayit yok ise islerIsinDurumu Yapilacak veya YapilacakDeadline dir
+                    zamanIs = new ZamanI() { GecenZamanSaniye = 0, RefIsId = obj.IsId, ZamanIsBasTarih = DateTime.Now };
+                    Db.ZamanIs.Add(zamanIs);
+                    obj.IsGecenZaman.ZamanBasTarih = DateTime.Now;
+                    obj.IsGecenZaman.GecenZamanSaniye = 0;
+
+                }
+                isler job = Db.islers.SingleOrDefault(x => x.islerID == obj.IsId);
+                job.islerIsinDurumu = (int)yeniisDurum;
+                obj.IsDurum= (int)yeniisDurum;
+                jsn.Data = obj;
+                Db.SaveChanges();
+            }
+            catch
+            {
+                jsn.Basarilimi = false;
+            }
+          
+            return Json(jsn,JsonRequestBehavior.AllowGet);
         }
         public ActionResult IcerikFormu()
         {
