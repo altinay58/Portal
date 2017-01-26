@@ -165,6 +165,7 @@
           <Property Name="SilindimiYedekAlindimi" Type="bit" Nullable="false" />
           <Property Name="SilindimiVeriTabani" Type="bit" Nullable="false" />
           <Property Name="RefDomainKayitliFirmaId" Type="int" Nullable="false" />
+          <Property Name="DomainAksiyon" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -189,6 +190,7 @@
           <Property Name="DomainNotNot" Type="nvarchar" MaxLength="300" />
           <Property Name="DomainNotTarih" Type="datetime" />
           <Property Name="RefNotKullaniciId" Type="nvarchar" MaxLength="128" />
+          <Property Name="RefDomainId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Firma">
           <Key>
@@ -884,6 +886,18 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             </Principal>
             <Dependent Role="Domain">
               <PropertyRef Name="RefKayitliFirmaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Domain_RefDomainId">
+          <End Role="Domain" Type="Self.Domain" Multiplicity="1" />
+          <End Role="DomainNot" Type="Self.DomainNot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domain">
+              <PropertyRef Name="DomainID" />
+            </Principal>
+            <Dependent Role="DomainNot">
+              <PropertyRef Name="RefDomainId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1663,6 +1677,10 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             <End Role="KayitliFirma" EntitySet="KayitliFirma" />
             <End Role="Domain" EntitySet="Domain" />
           </AssociationSet>
+          <AssociationSet Name="FK_Domain_RefDomainId" Association="Self.FK_Domain_RefDomainId">
+            <End Role="Domain" EntitySet="Domain" />
+            <End Role="DomainNot" EntitySet="DomainNot" />
+          </AssociationSet>
           <AssociationSet Name="FK_Domain_RefIsId" Association="Self.FK_Domain_RefIsId">
             <End Role="isler" EntitySet="isler" />
             <End Role="ZamanIs" EntitySet="ZamanIs" />
@@ -2232,6 +2250,10 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             <End Role="isler" EntitySet="islers" />
             <End Role="ZamanI" EntitySet="ZamanIs" />
           </AssociationSet>
+          <AssociationSet Name="FK_Domain_RefDomainId" Association="PortalModel.FK_Domain_RefDomainId">
+            <End Role="Domain" EntitySet="Domains" />
+            <End Role="DomainNot" EntitySet="DomainNots" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2497,6 +2519,8 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <NavigationProperty Name="SiteKontrolDomainBirlestirs" Relationship="PortalModel.FK_SiteKontrolDomainBirlestir_Domain" FromRole="Domain" ToRole="SiteKontrolDomainBirlestir" />
           <Property Name="RefDomainKayitliFirmaId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DomainKayitliFirma" Relationship="PortalModel.FK_Domain_DomainKayitliFirma" FromRole="Domain" ToRole="DomainKayitliFirma" />
+          <Property Name="DomainAksiyon" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DomainNots" Relationship="PortalModel.FK_Domain_RefDomainId" FromRole="Domain" ToRole="DomainNot" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -3800,6 +3824,8 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <Property Name="DomainNotTarih" Type="DateTime" Precision="3" />
           <Property Name="RefNotKullaniciId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_Domain_RefKayitYapanKullanici" FromRole="DomainNot" ToRole="AspNetUser" />
+          <Property Name="RefDomainId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Domain" Relationship="PortalModel.FK_Domain_RefDomainId" FromRole="DomainNot" ToRole="Domain" />
         </EntityType>
         <EntityType Name="ZamanI">
           <Key>
@@ -3832,6 +3858,18 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             </Principal>
             <Dependent Role="ZamanI">
               <PropertyRef Name="RefIsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Domain_RefDomainId">
+          <End Type="PortalModel.Domain" Role="Domain" Multiplicity="1" />
+          <End Type="PortalModel.DomainNot" Role="DomainNot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domain">
+              <PropertyRef Name="DomainID" />
+            </Principal>
+            <Dependent Role="DomainNot">
+              <PropertyRef Name="RefDomainId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4044,6 +4082,7 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <EntitySetMapping Name="Domains">
             <EntityTypeMapping TypeName="PortalModel.Domain">
               <MappingFragment StoreEntitySet="Domain">
+                <ScalarProperty Name="DomainAksiyon" ColumnName="DomainAksiyon" />
                 <ScalarProperty Name="RefDomainKayitliFirmaId" ColumnName="RefDomainKayitliFirmaId" />
                 <ScalarProperty Name="SilindimiVeriTabani" ColumnName="SilindimiVeriTabani" />
                 <ScalarProperty Name="SilindimiYedekAlindimi" ColumnName="SilindimiYedekAlindimi" />
@@ -4545,6 +4584,7 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <EntitySetMapping Name="DomainNots">
             <EntityTypeMapping TypeName="PortalModel.DomainNot">
               <MappingFragment StoreEntitySet="DomainNot">
+                <ScalarProperty Name="RefDomainId" ColumnName="RefDomainId" />
                 <ScalarProperty Name="RefNotKullaniciId" ColumnName="RefNotKullaniciId" />
                 <ScalarProperty Name="DomainNotTarih" ColumnName="DomainNotTarih" />
                 <ScalarProperty Name="DomainNotNot" ColumnName="DomainNotNot" />

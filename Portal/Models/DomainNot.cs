@@ -18,7 +18,9 @@ namespace Portal.Models
         public string DomainNotNot { get; set; }
         public Nullable<System.DateTime> DomainNotTarih { get; set; }
         public string RefNotKullaniciId { get; set; }
+        public int RefDomainId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Domain Domain { get; set; }
     }
 }

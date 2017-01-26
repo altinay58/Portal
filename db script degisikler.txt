@@ -170,6 +170,17 @@ GO
 
 ALTER TABLE [dbo].[isler]
 	ADD islerSiraNo int NULL
+---------26.01.17
+GO
+ALTER TABLE [dbo].[DomainNot]
+ADD RefDomainId int not NULL
+
+GO
+ALTER TABLE [dbo].[DomainNot]  WITH CHECK ADD  CONSTRAINT [FK_Domain_RefDomainId] FOREIGN KEY([RefDomainId])
+REFERENCES [dbo].[Domain] ([DomainID])
+GO
+ALTER TABLE [dbo].[Domain]
+ADD DomainAksiyon int not null default(2)
 GO
 
 

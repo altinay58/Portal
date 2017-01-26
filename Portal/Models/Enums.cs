@@ -14,7 +14,7 @@ namespace Portal.Models
         Yapilacak=1,YapilacakDeadline,Yapiliyor,
         KontrolBekleyen,Biten
     }
-    public enum DomainDurum : byte
+    public enum DomainAksiyon : byte
     {
         BeklemeyeAl=1,YayinaAl,YayiniDurdur
     }

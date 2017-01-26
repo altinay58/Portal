@@ -25,7 +25,7 @@ namespace Portal.Controllers
             base.OnActionExecuting(filterContext);
             Database.Db = new Models.PortalEntities();
             //TODO: sonra iptal edilecek,login ekranindan giris olmadigi icin           
-            FormsAuthentication.SetAuthCookie("fatihgokce07@gmail.com",true);
+            //FormsAuthentication.SetAuthCookie("fatihgokce07@gmail.com",true);
             //daha sonra aktif edilecek
             //WebLoguEkle(Request.RawUrl);
         }

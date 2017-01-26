@@ -72,6 +72,7 @@ namespace Portal.Controllers
                             BitisTarihi=p.islerBitisTarihi,
                             Tarih=p.islerTarih,
                             IsGecenZaman=new GecenZaman { GecenZamanSaniye=zz.GecenZamanSaniye,ZamanBasTarih=zz.ZamanIsBasTarih},
+                            
                             IsiYapacakKullanicilar = (from pf in p.IsiYapacakKisis
                                                       join q in Db.AspNetUsers on pf.RefIsiYapacakKisiUserID equals q.Id
                                                       where pf.RefIsID == p.islerID
@@ -80,6 +81,7 @@ namespace Portal.Controllers
                                                       }
                                                     ).ToList()
                         }
+                        
                         );               
             
             return Json(list,JsonRequestBehavior.AllowGet);

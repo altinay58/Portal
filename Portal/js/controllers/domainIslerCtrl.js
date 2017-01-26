@@ -10,28 +10,43 @@ String.prototype.toHHMMSS = function () {
     if (seconds < 10) { seconds = "0" + seconds; }
     return hours + ':' + minutes + ':' + seconds;
 }
+String.prototype.toplamZamanFormat = function () {
+    var sec_num = parseInt(this, 10);
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) { hours = "0" + hours; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    if (seconds < 10) { seconds = "0" + seconds; }
+    return hours + 'sa ' + minutes + 'dk ' + seconds+'s';
+}
 angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     var self = $scope;
     self.guncelDomainId = 0;//287 karayeltasarim.com
-    self.domainIsler = [];
+    self.domainIsler = [], self.guncelKullanici, self.toplamZaman, self.toplamZamanStr;
+    self.filterdResults = [];
+    self.filterIsDurum = 0;
     let IsinDurumuEnum={
         Yapilacak : 1, YapilacakDeadline:2, Yapiliyor:3,
-        KontrolBekleyen:4, Biten:5
+        OnayBekleyen:4, Biten:5
     }
     self.isDurum = {
         1: { ad: "Yapilacak", timelineIconClass: "font-blue", arrowClass: "arrow-yapilacak", bodyClass: "bg-blue" },
         2: { ad: "YapilacakDeadline", timelineIconClass: "font-blue", arrowClass: "arrow-yapilacak", bodyClass: "bg-blue" },
         3: { ad: "Yapiliyor", timelineIconClass: "font-green-jungle", arrowClass: "arrow-yapiliyor", bodyClass: "bg-green-jungle" },
-        4: { ad: "KontrolBekleyen", timelineIconClass: "font-yellow", arrowClass: "arrow-yapilacak", bodyClass: "bg-yellow" },
+        4: { ad: "OnayBekleyen", timelineIconClass: "font-yellow", arrowClass: "arrow-onay", bodyClass: "bg-yellow" },
         5: { ad: "Biten", timelineIconClass: "", arrowClass: "", bodyClass: "body-biten" }
     }
     angular.element(document).ready(function () {
         console.log(self.guncelDomainId);
         self.getirDomainIsler();
     });
-    self.init = function (domainId) {
-        console.log(domainId);
+    self.init = function (domainId,guncelKullanici,toplamZaman) {
+        console.log(toplamZaman);
         self.guncelDomainId = domainId;
+        self.guncelKullanici = guncelKullanici;
+        self.toplamZaman = toplamZaman;
     }
     self.getirDomainIsler = function () {
         domainIslerService.getirDomaineAitIsleri(self.guncelDomainId)
@@ -40,12 +55,22 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
             ff = res;
             extendArray(res);
             self.domainIsler = res;
+            self.toplamZamanStr = String(self.toplamZaman).toplamZamanFormat();
             arrayZamanHesapla();           
         })
     }
-   
-    self.timerBaslat = function () {
-
+    self.filterByIsinDurumu = function (domainIs) {
+        if (self.filterIsDurum==0) {
+            return true;
+        }
+        else if (self.filterIsDurum === domainIs.IsDurum) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    self.degistirFilterIsDurum = function (isDurum) {
+        self.filterIsDurum = isDurum;
     }
     self.gosterCariBilgi = function () {
         $("#modalCari").modal("show");
@@ -72,29 +97,51 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     }
     self.iseBaslaDurdur = function (domainIs) {
         let yeniDurum = 0, iBtnClass="fa fa-play";
-        if (domainIs.IsDurum == IsinDurumuEnum.Yapilacak || domainIs.IsDurum == IsinDurumuEnum.YapilacakDeadline) {
+        if (domainIs.IsDurum === IsinDurumuEnum.Yapilacak || domainIs.IsDurum === IsinDurumuEnum.YapilacakDeadline) {
             yeniDurum = IsinDurumuEnum.Yapiliyor;
             iBtnClass = "fa fa-pause";
+            domainIs.GosterTamamlaBtn = true;
         }
         else {
+            domainIs.GosterTamamlaBtn = false;
             if (domainIs.BitisTarihiVarmi) {
                 yeniDurum = IsinDurumuEnum.YapilacakDeadline;
             } else {
                 yeniDurum = IsinDurumuEnum.Yapilacak;
             }
         }
-        domainIslerService.IsDurumuDegistir(domainIs,yeniDurum)
-        .then(function (res) {
-            if (res.Basarilimi) {
-                domainIs.IsDurum = yeniDurum;
-                domainIs.iBtnClass = iBtnClass;
-                domainIs.IsGecenZaman = res.Data.IsGecenZaman;
-                zamanAyarla(domainIs);
-                //angular.copy(res.Data, domainIs);
-                //self.$apply();
-            }
-        })
+        durumDegistir(domainIs,yeniDurum,iBtnClass);
+       
       
+    }
+    self.clickTamamlaBtn = function (domainIs) {
+        domainIs.GosterTamamlaBtn = false;
+        domainIs.GosterIseBaslaBtn = false;
+        domainIs.GosterOnaylaBtn = true;
+        let yeniDurum = IsinDurumuEnum.OnayBekleyen;       
+        durumDegistir(domainIs, yeniDurum, "");
+    }
+    self.clickOnayla = function (domainIs) {
+        domainIs.GosterTamamlaBtn = false;
+        domainIs.GosterIseBaslaBtn = false;
+        domainIs.GosterOnaylaBtn = false;
+        let yeniDurum = IsinDurumuEnum.Biten;
+        durumDegistir(domainIs, yeniDurum, "");
+    }
+    function durumDegistir(domainIs, yeniDurum, iBtnClass) {
+        domainIslerService.IsDurumuDegistir(domainIs, yeniDurum)
+       .then(function (res) {
+           if (res.Basarilimi) {
+               domainIs.IsDurum = yeniDurum;
+               domainIs.iBtnClass = iBtnClass;
+               domainIs.IsGecenZaman = res.Data.IsGecenZaman;
+               self.timelineBodyClassBelirleDurumaGore(domainIs.IsDurum);
+               self.timelineArrowClassBelirleDurumaGore(domainIs.IsDurum)
+               zamanAyarla(domainIs);
+               //angular.copy(res.Data, domainIs);
+               //self.$apply();
+           }
+       })
     }
     function getDate(jsnDate) {
         let date = new Date(parseInt(jsnDate.replace("/Date(", "").replace(")/", ""), 10));
@@ -107,7 +154,7 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         })
     }
     function zamanAyarla (domainIs) {
-        if (domainIs.IsDurum == IsinDurumuEnum.Yapiliyor) {
+        if (domainIs.IsDurum === IsinDurumuEnum.Yapiliyor) {
             if (domainIs.IsGecenZaman.ZamanBasTarih) {
                 var now = moment(new Date());
                
@@ -134,18 +181,24 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     function extendArray (ary) {
         ary.forEach(function (e) {
             e.iBtnClass = "";
-            if (e.IsDurum == IsinDurumuEnum.Yapilacak || e.IsDurum == IsinDurumuEnum.YapilacakDeadline
-                || e.IsDurum==IsinDurumuEnum.Yapiliyor)
+            e.GosterTamamlaBtn = false;
+            e.GosterOnaylaBtn = false;
+            e.GosterIseBaslaBtn = false;
+            if (e.IsDurum === IsinDurumuEnum.Yapilacak || e.IsDurum === IsinDurumuEnum.YapilacakDeadline
+                || e.IsDurum===IsinDurumuEnum.Yapiliyor)
             {
                 e.GosterIseBaslaBtn = true;
+              
                 e.iBtnClass = "fa fa-play";
-                if (e.IsDurum == IsinDurumuEnum.Yapiliyor) {                   
+                if (e.IsDurum === IsinDurumuEnum.Yapiliyor) {                   
                     e.iBtnClass = "fa fa-pause";
+                    e.GosterTamamlaBtn = true;
                 }
-            } else {
-                e.GosterIseBaslaBtn = false;
             }
-           
+            else if(e.IsDurum===IsinDurumuEnum.OnayBekleyen)
+            {
+                e.GosterOnaylaBtn = true;
+            }
            
         })
     }

@@ -22,6 +22,7 @@ namespace Portal.Models
             this.islers = new HashSet<isler>();
             this.Seos = new HashSet<Seo>();
             this.SiteKontrolDomainBirlestirs = new HashSet<SiteKontrolDomainBirlestir>();
+            this.DomainNots = new HashSet<DomainNot>();
         }
     
         public int DomainID { get; set; }
@@ -43,6 +44,7 @@ namespace Portal.Models
         public bool SilindimiYedekAlindimi { get; set; }
         public bool SilindimiVeriTabani { get; set; }
         public int RefDomainKayitliFirmaId { get; set; }
+        public int DomainAksiyon { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
         public virtual Firma Firma { get; set; }
@@ -59,5 +61,7 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SiteKontrolDomainBirlestir> SiteKontrolDomainBirlestirs { get; set; }
         public virtual DomainKayitliFirma DomainKayitliFirma { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DomainNot> DomainNots { get; set; }
     }
 }

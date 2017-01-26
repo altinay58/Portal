@@ -129,6 +129,7 @@
         <EntityTypeShape EntityType="PortalModel.ZamanI" Width="1.5" PointX="12.375" PointY="5.75" />
         <AssociationConnector Association="PortalModel.FK_Domain_RefKayitYapanKullanici" />
         <AssociationConnector Association="PortalModel.FK_Domain_RefIsId" />
+        <AssociationConnector Association="PortalModel.FK_Domain_RefDomainId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
