@@ -27,6 +27,7 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     self.domainIsler = [], self.guncelKullanici, self.toplamZaman, self.toplamZamanStr;
     self.filterdResults = [];
     self.filterIsDurum = 0;
+    self.filterUserId= "Hepsi";
     let IsinDurumuEnum={
         Yapilacak : 1, YapilacakDeadline:2, Yapiliyor:3,
         OnayBekleyen:4, Biten:5
@@ -50,8 +51,7 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     }
     self.getirDomainIsler = function () {
         domainIslerService.getirDomaineAitIsleri(self.guncelDomainId)
-        .then(function (res) {
-            console.log(res);
+        .then(function (res) {           
             ff = res;
             extendArray(res);
             self.domainIsler = res;
@@ -60,10 +60,26 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         })
     }
     self.filterByIsinDurumu = function (domainIs) {
-        if (self.filterIsDurum==0) {
-            return true;
+        if (self.filterIsDurum == 0 || self.filterIsDurum === domainIs.IsDurum) {
+            if (self.filterUserId === 'Hepsi') {
+                return true;
+            }
+            else
+            {
+                if (filterKullanici(domainIs)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
-        else if (self.filterIsDurum === domainIs.IsDurum) {
+        else {
+            return false;
+        }
+    }
+    function filterKullanici(domainIs) {
+        let ary = domainIs.IsiYapacakKullanicilar.filter(function (e) { return self.filterUserId == e.Id })
+        if (ary.length > 0) {
             return true;
         } else {
             return false;
@@ -71,6 +87,9 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     }
     self.degistirFilterIsDurum = function (isDurum) {
         self.filterIsDurum = isDurum;
+    }
+    self.degistirFilterUser = function (userId) {
+        self.filterUserId = userId;
     }
     self.gosterCariBilgi = function () {
         $("#modalCari").modal("show");

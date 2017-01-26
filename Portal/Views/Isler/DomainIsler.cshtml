@@ -68,20 +68,19 @@
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
                         <li>
-                            <a href="#0">
-                                <i class="icon-user"></i> Özcan Bayğuş
+                            <a href="#0" ng-click="degistirFilterUser('Hepsi')">
+                                <i class="icon-user"></i> <text>Hepsi
                             </a>
                         </li>
-                        <li>
-                            <a href="#0">
-                                <i class="icon-user"></i> İlhami Yılmaz
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#0">
-                                <i class="icon-user"></i> Leyla Kesik
-                            </a>
-                        </li>
+                        @foreach (AspNetUser user in ViewBag.kullanicilar)
+                        {
+                            <li>
+                                <a href="#0" ng-click="degistirFilterUser('@user.Id')">
+                                    <i class="icon-user"></i> <text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text>
+                                </a>
+                            </li>
+                        }
+                   
                     </ul>
                 </div>
                 <div class="btn-group pull-right" style="margin-right: 15px;">
@@ -331,8 +330,8 @@
 </style>
 }
 @section scripts{
-<script src="/js/services/domainIslerService.js?v=1.0.21"></script>
-<script src="/js/controllers/domainIslerCtrl.js?v=1.0.21"></script>
+<script src="/js/services/domainIslerService.js?v=1.0.22"></script>
+<script src="/js/controllers/domainIslerCtrl.js?v=1.0.22"></script>
 <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
     <script>
         $(function () {

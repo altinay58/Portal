@@ -44,6 +44,7 @@ namespace Portal.Controllers
             id = id ?? 13448;
             ViewBag.domainId = id;
             var domain = Db.Domains.SingleOrDefault(x=>x.DomainID==id);
+            ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList() ;
             return View(domain);
         }
         // Summary:
