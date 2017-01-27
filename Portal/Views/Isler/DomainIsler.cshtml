@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" ng-click="gosterDomainNotlari()">
                             <i class="fa fa-comment" aria-hidden="true"></i> Domain Notları
                         </a>
                     </li>
@@ -115,8 +115,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#0">
-                                <i class="fa fa-code" ng-click="degistirFilterIsDurum(5)" aria-hidden="true"></i> Tamamlandı
+                            <a href="#0" ng-click="degistirFilterIsDurum(5)">
+                                <i class="fa fa-code"  aria-hidden="true"></i> Tamamlandı
                             </a>
                         </li>
                     </ul>
@@ -278,23 +278,69 @@
         </div>
     </div>
     @*Detay Son*@
-    </div>
-<div class="modal fade bs-modal-lg" id="modalCari" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">Karayel AR-GE Tasarım Ltd. Şti. Cari Bilgileri</h4>
-            </div>
-            <div class="modal-body">
-                <p>Buraya iletişim bilgileri vs gibi cari bilgileri gelecek.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn red" data-dismiss="modal">Kapat</button>
+    <div class="modal fade bs-modal-lg" id="modalCari" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Karayel AR-GE Tasarım Ltd. Şti. Cari Bilgileri</h4>
+                </div>
+                <div class="modal-body">
+                 <p>cariler</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn red" data-dismiss="modal">Kapat</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="modal fade bs-modal-lg" id="modalDomainNotlari" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"><text>@Model.DomainAdi</text>&nbsp; domain Notlari</h4>
+                  
+                </div>
+                <div class="modal-body">
+                    <a href="@Url.Action("DomainNoteEkle","Domain")" target="_blank" class="btn btn-default red clearfix" style="float:right;margin-bottom:5px">Yeni Ekle</a>
+                    <div class="table-scrollable">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="flip-content">
+                                <tr>
+                                    <th> Id </th>
+                                    <th> Note </th>
+                                    <th> Firma Adı </th>
+                                    <th> Kayıt Yapan </th>
+                                    <th> Tarih </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr ng-repeat="x in domainNotlari">
+                                    <td>{{x.Id}} </td>
+                                    <td> {{x.Note}} </td>
+                                    <td> {{x.FirmaAdi}} </td>
+                                    <td>{{x.AdSoyad }}</td>
+                                    <td> {{tarihFormatStr(x.Tarih)}} </td>
+                                </tr>
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn red" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
 @section css{
 <style>
 .bg-black {

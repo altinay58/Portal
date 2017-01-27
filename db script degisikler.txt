@@ -182,6 +182,37 @@ GO
 ALTER TABLE [dbo].[Domain]
 ADD DomainAksiyon int not null default(2)
 GO
+/****** Object:  Table [dbo].[FirmaKisi]    Script Date: 27.01.2017 23:33:59 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[FirmaKisi](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Ad] [nvarchar](50) NULL,
+	[Soyad] [nvarchar](50) NULL,
+	[Departman] [nvarchar](50) NULL,
+	[Tel] [nvarchar](50) NULL,
+	[Email] [nvarchar](50) NULL,
+	[FirmaId] [int] NOT NULL,
+ CONSTRAINT [PK_FirmaKisi] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[FirmaKisi]  WITH CHECK ADD  CONSTRAINT [FK_FirmaKisi_Firma] FOREIGN KEY([FirmaId])
+REFERENCES [dbo].[Firma] ([FirmaID])
+GO
+
+ALTER TABLE [dbo].[FirmaKisi] CHECK CONSTRAINT [FK_FirmaKisi_Firma]
+GO
+
+
 
 
 

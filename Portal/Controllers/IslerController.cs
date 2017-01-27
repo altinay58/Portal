@@ -33,12 +33,13 @@ namespace Portal.Controllers
             }
 
         }
-        
+
         // Summary:
         //     Domain e ait is bilgileri goserilen sayfa
         // Parameters:
         //   id:domain id
-        //     
+        //  
+        #region domain isler   
         public ActionResult DomainIsler(int? id)
         {
             id = id ?? 13448;
@@ -46,12 +47,7 @@ namespace Portal.Controllers
             var domain = Db.Domains.SingleOrDefault(x=>x.DomainID==id);
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList() ;
             return View(domain);
-        }
-        // Summary:
-        //     domain ait butun isleri geri döner
-        // Parameters:
-        //   domainId:domain id
-        //     
+        }       
         public JsonResult DomainAitIsler(int domainId)
         {
             var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis)
@@ -140,6 +136,29 @@ namespace Portal.Controllers
           
             return Json(jsn,JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetirDomainNotlari(int domainId)
+        {
+            var list = (from dn in Db.DomainNots
+                        join d in Db.Domains on dn.RefDomainId equals d.DomainID
+                        join f in Db.Firmas on d.RefDomainFirmaID equals f.FirmaID
+                        join u in Db.AspNetUsers on dn.RefNotKullaniciId equals u.Id
+                        orderby dn.DomainNotTarih descending
+                        where dn.RefDomainId==domainId
+                        select new
+                        {
+                            Id = dn.DomainNotId,
+                            Note = dn.DomainNotNot,
+                            DomainAdi = d.DomainAdi,
+                            DomainId = d.DomainID,
+                            FirmaAdi = f.FirmaAdi,
+                            AdSoyad = u.Isim + " " + u.SoyIsim,
+                            Tarih = dn.DomainNotTarih
+                        }
+                     ).ToList();
+            return Json(list,JsonRequestBehavior.AllowGet);
+
+        }
+        #endregion 
         public ActionResult IcerikFormu()
         {
            

@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using Portal.Models;
 using System.Threading.Tasks;
+using Microsoft.Web.Mvc;
+using System.Data.Entity;
+using Microsoft.AspNet.Identity;
 
 namespace Portal.Controllers
 {
@@ -283,6 +286,74 @@ namespace Portal.Controllers
 
             return RedirectToAction("DomainKategorileri");
         }
+        #region Domain Notlari
+        public ActionResult DomainNotlari()
+        {            
+            return View();
+        }
+        public JsonResult DomainNoteAra(string domainAdi,string basTarih, string bitisTarih)
+        {
+            DateTime tBas = DateTime.Parse(basTarih);
+            DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
+            var list = (from dn in Db.DomainNots
+                        join d in Db.Domains on dn.RefDomainId equals d.DomainID
+                        join f in Db.Firmas on d.RefDomainFirmaID equals f.FirmaID
+                        join u in Db.AspNetUsers on dn.RefNotKullaniciId equals u.Id
+                        orderby dn.DomainNotTarih descending
+                        select new
+                        {
+                            Id = dn.DomainNotId,
+                            Note = dn.DomainNotNot,
+                            DomainAdi = d.DomainAdi,
+                            DomainId = d.DomainID,
+                            FirmaAdi = f.FirmaAdi,
+                            AdSoyad = u.Isim + " " + u.SoyIsim,
+                            Tarih = dn.DomainNotTarih
+                        }
+                      );
+            list = list.Where(x => (!string.IsNullOrEmpty(domainAdi) ? x.DomainAdi.Contains(domainAdi) :true)
+                && x.Tarih>=tBas && x.Tarih<=tBit);
+            return Json(list,JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult DomainNoteEkle(int?id)
+        {
+            DomainNot model = new DomainNot();
+            if (id.HasValue)
+            {
+                model = Db.DomainNots.Include(x=>x.Domain).SingleOrDefault(x=>x.DomainNotId==id);
+            }
+            return View(model);
+        }
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult DomainNoteEkle(DomainNot model, FormCollection frm)
+        {
+         
+            DomainNot entity = new DomainNot();
+            if (model.DomainNotId > 0)
+            {
+                entity = Db.DomainNots.SingleOrDefault(x=>x.DomainNotId==model.DomainNotId);
+            }
+            entity.DomainNotNot = model.DomainNotNot;
+            entity.DomainNotTarih = DateTime.Now;
+            entity.RefDomainId = model.RefDomainId;
+            if (model.DomainNotId > 0)
+            {
+                Db.Entry(entity).State = EntityState.Modified;
+            }else
+            {
+                Db.DomainNots.Add(entity);
+            }
+            //todo: login ekranı eklenince kaldırılacak
+            entity.RefNotKullaniciId= User.Identity.GetUserId()?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+            Db.SaveChanges();
+            TempData[SUCESS] = "Domain Kaydedildi";
+            return RedirectToAction("DomainNotlari") ;
+            
+
+            
+        }
+        #endregion
         private void SetViewBagEkle()
         {
             ViewBag.DomainKayitliFirmalar = Database.Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);

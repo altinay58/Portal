@@ -23,6 +23,17 @@
                 dataType: "json"
             });
             return (request.then(handleSuccess, handleError));
+        },
+        getirDomainNotlari:function(domainId){
+          var request = $http({
+              method: "get",
+              url: "/Isler/GetirDomainNotlari",
+              params: {
+                  domainId:domainId
+              },
+              dataType: "json"
+          });
+          return (request.then(handleSuccess, handleError));
         }
 
     });
