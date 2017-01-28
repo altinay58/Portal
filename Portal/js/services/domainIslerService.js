@@ -34,6 +34,17 @@
               dataType: "json"
           });
           return (request.then(handleSuccess, handleError));
+        },
+        getirFirmaKisileri:function(firmaId){
+          var request = $http({
+              method: "get",
+              url: "/Isler/FirmaKisiler",
+              params: {
+                  firmaId:firmaId
+              },
+              dataType: "json"
+          });
+          return (request.then(handleSuccess, handleError));
         }
 
     });

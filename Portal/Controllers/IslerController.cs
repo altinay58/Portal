@@ -50,7 +50,7 @@ namespace Portal.Controllers
         }       
         public JsonResult DomainAitIsler(int domainId)
         {
-            var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis)
+            var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis).Include(x=>x.isYorums)
                         join a in Db.AspNetUsers on p.islerisiVerenKisi equals a.Id
                         join z in Db.ZamanIs on p.islerID equals z.RefIsId into temp
                         from zz in temp.DefaultIfEmpty()
@@ -68,6 +68,12 @@ namespace Portal.Controllers
                             BitisTarihiVarmi=p.islerBitisTarihiVarmi,
                             BitisTarihi=p.islerBitisTarihi,
                             Tarih=p.islerTarih,
+                            Yorumlar=(from y in p.isYorums
+                                      join q in Db.AspNetUsers on y.isYorumRefYorumuYapanID equals q.Id
+                                      orderby y.isYorumKayitTarih ascending
+                                      select new YorumIs
+                                      { Aciklama=y.isYorumAciklama,Tarih=y.isYorumKayitTarih.Value,AdSoyad=q.Isim+" "+q.SoyIsim}
+                                      ).ToList(),
                             IsGecenZaman=new GecenZaman { GecenZamanSaniye=zz.GecenZamanSaniye,ZamanBasTarih=zz.ZamanIsBasTarih},
                             
                             IsiYapacakKullanicilar = (from pf in p.IsiYapacakKisis
@@ -157,6 +163,23 @@ namespace Portal.Controllers
                      ).ToList();
             return Json(list,JsonRequestBehavior.AllowGet);
 
+        }
+        public JsonResult FirmaKisiler(int firmaId)
+        {
+            var list = (from fl in Db.FirmaKisis.Include(x => x.Firma)
+                        orderby fl.Firma.FirmaAdi descending                      
+                        select new
+                        {
+                            Id = fl.Id,
+                            Ad = fl.Ad,
+                            Soyad = fl.Soyad,
+                            Departman = fl.Departman,
+                            Tel = fl.Tel,
+                            Email = fl.Email,
+                            FirmaAdi = fl.Firma.FirmaAdi
+                        }
+                       ); 
+            return Json(list.ToList(), JsonRequestBehavior.AllowGet);
         }
         #endregion 
         public ActionResult IcerikFormu()

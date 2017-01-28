@@ -223,6 +223,18 @@
           <Property Name="FirmaVergiNumarasi" Type="nvarchar" MaxLength="250" />
           <Property Name="FirmaSilindi" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="FirmaKisi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="50" />
+          <Property Name="Soyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="Departman" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tel" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="FirmaId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="GelinmeyenGun">
           <Key>
             <PropertyRef Name="GelinMeyenGunID" />
@@ -997,6 +1009,18 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FirmaKisi_Firma">
+          <End Role="Firma" Type="Self.Firma" Multiplicity="1" />
+          <End Role="FirmaKisi" Type="Self.FirmaKisi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firma">
+              <PropertyRef Name="FirmaID" />
+            </Principal>
+            <Dependent Role="FirmaKisi">
+              <PropertyRef Name="FirmaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GelinmeyenGun_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="GelinmeyenGun" Type="Self.GelinmeyenGun" Multiplicity="*" />
@@ -1554,6 +1578,7 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <EntitySet Name="DomainKayitliFirma" EntityType="Self.DomainKayitliFirma" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DomainNot" EntityType="Self.DomainNot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Firma" EntityType="Self.Firma" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FirmaKisi" EntityType="Self.FirmaKisi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GelinmeyenGun" EntityType="Self.GelinmeyenGun" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GidilenMusteri" EntityType="Self.GidilenMusteri" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hosting" EntityType="Self.Hosting" Schema="dbo" store:Type="Tables" />
@@ -1712,6 +1737,10 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <AssociationSet Name="FK_Firma_Sektorler" Association="Self.FK_Firma_Sektorler">
             <End Role="Sektorler" EntitySet="Sektorler" />
             <End Role="Firma" EntitySet="Firma" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FirmaKisi_Firma" Association="Self.FK_FirmaKisi_Firma">
+            <End Role="Firma" EntitySet="Firma" />
+            <End Role="FirmaKisi" EntitySet="FirmaKisi" />
           </AssociationSet>
           <AssociationSet Name="FK_GelinmeyenGun_AspNetUsers" Association="Self.FK_GelinmeyenGun_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -2254,6 +2283,11 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             <End Role="Domain" EntitySet="Domains" />
             <End Role="DomainNot" EntitySet="DomainNots" />
           </AssociationSet>
+          <EntitySet Name="FirmaKisis" EntityType="PortalModel.FirmaKisi" />
+          <AssociationSet Name="FK_FirmaKisi_Firma" Association="PortalModel.FK_FirmaKisi_Firma">
+            <End Role="Firma" EntitySet="Firmas" />
+            <End Role="FirmaKisi" EntitySet="FirmaKisis" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2582,6 +2616,7 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <NavigationProperty Name="Satis" Relationship="PortalModel.FK_Satis_Firma" FromRole="Firma" ToRole="Sati" />
           <NavigationProperty Name="Satis1" Relationship="PortalModel.FK_Satis_Satis" FromRole="Firma" ToRole="Sati" />
           <NavigationProperty Name="Teklifs" Relationship="PortalModel.FK_Teklif_Firma" FromRole="Firma" ToRole="Teklif" />
+          <NavigationProperty Name="FirmaKisis" Relationship="PortalModel.FK_FirmaKisi_Firma" FromRole="Firma" ToRole="FirmaKisi" />
         </EntityType>
         <EntityType Name="GelinmeyenGun">
           <Key>
@@ -3873,6 +3908,31 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FirmaKisi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Departman" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirmaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Firma" Relationship="PortalModel.FK_FirmaKisi_Firma" FromRole="FirmaKisi" ToRole="Firma" />
+        </EntityType>
+        <Association Name="FK_FirmaKisi_Firma">
+          <End Type="PortalModel.Firma" Role="Firma" Multiplicity="1" />
+          <End Type="PortalModel.FirmaKisi" Role="FirmaKisi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firma">
+              <PropertyRef Name="FirmaID" />
+            </Principal>
+            <Dependent Role="FirmaKisi">
+              <PropertyRef Name="FirmaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4599,6 +4659,19 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
                 <ScalarProperty Name="ZamanIsBasTarih" ColumnName="ZamanIsBasTarih" />
                 <ScalarProperty Name="RefIsId" ColumnName="RefIsId" />
                 <ScalarProperty Name="ZamanIsId" ColumnName="ZamanIsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FirmaKisis">
+            <EntityTypeMapping TypeName="PortalModel.FirmaKisi">
+              <MappingFragment StoreEntitySet="FirmaKisi">
+                <ScalarProperty Name="FirmaId" ColumnName="FirmaId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Departman" ColumnName="Departman" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

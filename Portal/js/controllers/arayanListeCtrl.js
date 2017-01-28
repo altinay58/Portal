@@ -37,7 +37,6 @@ angModule.controller('arayanListeCtrl', function ($scope,arayanListService) {
           console.log(arayan);
           if (arayan.KayitDurum) {
               return '<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet({0}))">Kaydet</button>'.with(arayan.Id);
-              ;
             
           } else {
               return "<span><a href='#'>Kayıtlı Firma</a></span>";

@@ -23,11 +23,14 @@ String.prototype.toplamZamanFormat = function () {
 }
 angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     var self = $scope;
+    const HEPSI=0;
     self.guncelDomainId = 0;//287 karayeltasarim.com
+    self.guncelFirmaId=0;
     self.domainIsler = [], self.guncelKullanici, self.toplamZaman, self.toplamZamanStr;
     self.filterdResults = [], self.domainNotlari=[];
     self.filterIsDurum = 0;
     self.filterUserId= "Hepsi";
+    self.firmaKisiler=[];
     let IsinDurumuEnum={
         Yapilacak : 1, YapilacakDeadline:2, Yapiliyor:3,
         OnayBekleyen:4, Biten:5
@@ -43,11 +46,13 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         console.log(self.guncelDomainId);
         self.getirDomainIsler();
     });
-    self.init = function (domainId,guncelKullanici,toplamZaman) {
-        console.log(toplamZaman);
+    self.init = function (domainId,guncelKullanici,toplamZaman,firmaId) {
+        console.log(firmaId);
         self.guncelDomainId = domainId;
         self.guncelKullanici = guncelKullanici;
         self.toplamZaman = toplamZaman;
+        self.guncelFirmaId=firmaId;
+
     }
     self.getirDomainIsler = function () {
         domainIslerService.getirDomaineAitIsleri(self.guncelDomainId)
@@ -60,7 +65,7 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         })
     }
     self.filterByIsinDurumu = function (domainIs) {
-        if (self.filterIsDurum == 0 || self.filterIsDurum === domainIs.IsDurum) {
+        if (self.filterIsDurum == HEPSI || self.filterIsDurum === domainIs.IsDurum) {
             if (self.filterUserId === 'Hepsi') {
                 return true;
             }
@@ -92,7 +97,12 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         self.filterUserId = userId;
     }
     self.gosterCariBilgi = function () {
+      domainIslerService.getirFirmaKisileri(self.guncelFirmaId)
+      .then((res)=>{
+        self.firmaKisiler=res;
         $("#modalCari").modal("show");
+      })
+
     }
     self.gosterDomainNotlari=function(){
         domainIslerService.getirDomainNotlari(self.guncelDomainId)
@@ -105,6 +115,16 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         if (tarih) {
             let date = new Date(parseInt(tarih.replace("/Date(", "").replace(")/", ""), 10));
             let formattedDate = moment(date).format('DD.MM.YYYY');
+            return formattedDate;
+        }else
+        {
+            return "";
+        }
+    }
+    self.tarihFormatUznStr = function (tarih) {
+        if (tarih) {
+            let date = new Date(parseInt(tarih.replace("/Date(", "").replace(")/", ""), 10));
+            let formattedDate = moment(date).format('DD.MM.YYYY HH:mm');
             return formattedDate;
         }else
         {

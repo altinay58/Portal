@@ -15,6 +15,12 @@ namespace Portal.Models.IslerModels
         public DateTime? ZamanBasTarih { get; set; }
         public long? GecenZamanSaniye { get; set; }
     }
+    public class YorumIs
+    {
+        public string Aciklama { get; set; }
+        public DateTime Tarih { get; set; }
+        public string AdSoyad { get; set; }
+    }
     public class DomainIs
     {
         public int IsId { get; set; }
@@ -29,9 +35,11 @@ namespace Portal.Models.IslerModels
         public DateTime? BitisTarihi { get; set; }
         public DateTime? Tarih { get; set; }
         public GecenZaman IsGecenZaman { get; set; }
+        public List<YorumIs> Yorumlar { get; set; }
         public DomainIs()
         {
             IsiYapacakKullanicilar = new List<Kullanici>();
+            Yorumlar = new List<YorumIs>();
         }
     }
 }
