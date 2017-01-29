@@ -20,6 +20,7 @@ namespace Portal.Models.IslerModels
         public string Aciklama { get; set; }
         public DateTime Tarih { get; set; }
         public string AdSoyad { get; set; }
+        public string KullaniciId { get; set; }
     }
     public class DomainIs
     {

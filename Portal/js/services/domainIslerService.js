@@ -45,6 +45,17 @@
               dataType: "json"
           });
           return (request.then(handleSuccess, handleError));
+        },
+        kaydetYorum:function(kullaniciId,aciklama,isId){
+          var request=$http({
+            method:"get",
+            url:"/Isler/YorumKaydet",
+            params:{
+              kullaniciId:String(kullaniciId),aciklama:aciklama,isId:isId
+            },
+            dataType:"json"
+          });
+          return (request.then(handleSuccess, handleError));
         }
 
     });

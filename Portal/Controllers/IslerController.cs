@@ -46,6 +46,12 @@ namespace Portal.Controllers
             ViewBag.domainId = id;
             var domain = Db.Domains.SingleOrDefault(x=>x.DomainID==id);
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList() ;
+            //todo:login ekrani olunca değiştirilecek
+            //User.Identity.IsAuthenticated ? 
+            string userId= User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+            ViewBag.guncelKullanici = Db.AspNetUsers.Where(x => x.Id == userId).
+                                      Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
+
             return View(domain);
         }       
         public JsonResult DomainAitIsler(int domainId)
@@ -72,7 +78,7 @@ namespace Portal.Controllers
                                       join q in Db.AspNetUsers on y.isYorumRefYorumuYapanID equals q.Id
                                       orderby y.isYorumKayitTarih ascending
                                       select new YorumIs
-                                      { Aciklama=y.isYorumAciklama,Tarih=y.isYorumKayitTarih.Value,AdSoyad=q.Isim+" "+q.SoyIsim}
+                                      { KullaniciId=q.Id,Aciklama=y.isYorumAciklama,Tarih=y.isYorumKayitTarih.Value,AdSoyad=q.Isim+" "+q.SoyIsim}
                                       ).ToList(),
                             IsGecenZaman=new GecenZaman { GecenZamanSaniye=zz.GecenZamanSaniye,ZamanBasTarih=zz.ZamanIsBasTarih},
                             
@@ -180,6 +186,20 @@ namespace Portal.Controllers
                         }
                        ); 
             return Json(list.ToList(), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult YorumKaydet(string kullaniciId,string aciklama,int isId)
+        {
+            JsonCevap jsn = new JsonCevap();
+
+            jsn.Basarilimi = true;
+            isYorum yorum = new isYorum();
+            yorum.isYorumAciklama = aciklama;
+            yorum.isYorumKayitTarih = DateTime.Now;
+            yorum.isYorumRefYorumuYapanID = kullaniciId;
+            yorum.isYorumRefislerID = isId;
+            Db.isYorums.Add(yorum);
+            Db.SaveChanges();
+            return Json(jsn,JsonRequestBehavior.AllowGet);
         }
         #endregion 
         public ActionResult IcerikFormu()
