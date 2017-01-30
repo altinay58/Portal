@@ -133,13 +133,13 @@
                
                 <!-- END TIMELINE DOMAIN BEKLEMEDE -->
                 <!-- TIMELINE ITEM YAPILACAK (WITH DEADLINE) -->
-                <div class="timeline-item" ng-repeat="x in domainIsler  | filter:filterByIsinDurumu">                  
+                <div  ng-repeat="x in domainIsler  | filter:filterByIsinDurumu" class="timeline-item ">                  
                     <div class="timeline-badge">
                         <div class="timeline-icon">
                             <i class="fa fa-code {{timelineIconClassBelirleDurumaGore(x.IsDurum)}}"></i>
                         </div>
                     </div>
-                    <div class="timeline-body {{timelineBodyClassBelirleDurumaGore(x.IsDurum)}}">
+                    <div class="timeline-body {{timelineBodyClassBelirleDurumaGore(x.IsDurum)}}   ng-class:{ 'animated':x.yorumEklendi }">
                         <div class="timeline-body-arrow {{timelineArrowClassBelirleDurumaGore(x.IsDurum)}}" > </div>
                         <div class="timeline-body-head">
                             <div class="timeline-body-head-caption">
@@ -150,7 +150,7 @@
                             </div>
                             <div class="timeline-body-head-actions" >
                                 <i class="fa fa-clock-o" aria-hidden="true"></i> {{x.gecenZaman}}
-                                <button class="btn btn-circle green btn-sm btn-tamamla" ng-show="x.GosterIseBaslaBtn" ng-click="iseBaslaDurdur(x)"  type="button">
+                                <button class="btn btn-circle green btn-sm btn-tamamla" ng-show="x.GosterIseBaslaBtn" ng-click="isDurumDegistir(x)"  type="button">
                                     <i ng-class="x.iBtnClass" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -203,7 +203,7 @@
                                                         <div class="timeline-body-arrow"> </div>
                                                         <div class="timeline-body-head">
                                                             <div class="timeline-body-head-caption">
-                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">İlhami Yılmaz</a>
+                                                                <a href="javascript:;" class="timeline-body-title font-blue-madison">{{yorum.AdSoyad}}</a>
                                                                 <span class="timeline-body-time font-grey-cascade">{{tarihFormatUznStr(yorum.Tarih)}}</span>
                                                             </div>
                                                         </div>
@@ -235,7 +235,7 @@
                                                                 <textarea name="Adres"  class="form-control" ng-model="x.yorumAciklamaModel"></textarea>                                                            
                                                             </div>
                                                             <div class="col-sm-2">
-                                                                <button class="btn btn-circle green btn-sm" ng-click="yorumEkle(x)">
+                                                                <button class="btn btn-circle green btn-sm" ng-click="yorumEkle(x,$index)">
                                                                     Gönder
                                                                 </button>
                                                             </div>
@@ -347,10 +347,35 @@
             </div>
         </div>
     </div>
-    </div>
-
+    </div> 
 @section css{
 <style>
+.animated {
+
+background-repeat: no-repeat;
+background-position: left top;
+padding-top:95px;
+margin-bottom:60px;
+-webkit-animation-duration: 10s;
+animation-duration: 10s;
+-webkit-animation-fill-mode: both;
+animation-fill-mode: both;
+}
+         
+@@-webkit-keyframes fadeIn {
+0% {opacity: 0;}
+100% {opacity: 1;}
+}
+         
+@@keyframes fadeIn {
+0% {opacity: 0;border : 10px solid blue; }
+100% {opacity: 1;border : 0px solid red; }
+}
+         
+.fadeIn {
+-webkit-animation-name: fadeIn;
+animation-name: fadeIn;
+}
 .bg-black {
     background: #222222 !important;
 }
@@ -384,14 +409,23 @@
 </style>
 }
 @section scripts{
-<script src="/js/services/domainIslerService.js?v=1.0.24"></script>
-<script src="/js/controllers/domainIslerCtrl.js?v=1.0.24"></script>
+<script src="/Scripts/jquery.signalR-2.2.1.min.js"></script>
+@*<script src="/signalr/hubs"></script>*@
+<script src="@Url.Content("/signalr/hubs")"></script>
+<script src="/js/services/domainIslerService.js?v=1.0.33"></script>
+<script src="/js/controllers/domainIslerCtrl.js?v=1.0.33"></script>
 <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
 
+    <script>   
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();       
+           
+        })
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+  
      }
 
