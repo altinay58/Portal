@@ -15,5 +15,9 @@ namespace Portal.Hubs
         {
             Clients.All.domaisDurumDegisti(jsnDomainIs,fromId);
         }
+        public void GonderSayfayiYenidenYukle()
+        {
+            Clients.All.domainDurumDegisti();
+        }
     }
 }

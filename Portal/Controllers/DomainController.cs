@@ -30,7 +30,7 @@ namespace Portal.Controllers
         [HttpPost]
         public ActionResult Ekle(Portal.Models.Domain domain,FormCollection frm)
         {
-            if (Database.Db.Domains.DomainEklimi(domain.DomainAdi))
+            if (Db.Domains.DomainEklimi(domain.DomainAdi))
             {
                 SetViewBagEkle();
                 TempData[ERROR] = "Domain daha önce eklenmiş!";
@@ -41,8 +41,8 @@ namespace Portal.Controllers
             {
                 domain.DomainDurum = true;
                 domain.UzatmaTarihi = DateTime.Now.AddYears(-1);
-                Database.Db.Domains.Add(domain);
-                Database.Db.SaveChanges();
+                Db.Domains.Add(domain);
+                Db.SaveChanges();
                 SetViewBagEkle();
                 TempData[SUCESS] = "Domain Kaydedildi";
                 return View(domain);
@@ -54,10 +54,10 @@ namespace Portal.Controllers
         {
            
             int domainBaslangic = ((page ?? 1) - 1) * PagerCount;
-            var viewData = Database.Db.Domains.GetirDomainler(PagerCount, domainBaslangic);
-            int totalCount = Database.Db.Domains.GetirDomainler().Count();
-            ViewBag.Firmalar = Database.Db.Firmas.GetirFirmalar("");
-            ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+            var viewData = Db.Domains.GetirDomainler(PagerCount, domainBaslangic);
+            int totalCount = Db.Domains.GetirDomainler().Count();
+            ViewBag.Firmalar = Db.Firmas.GetirFirmalar("");
+            ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
             
             PaginatedList pager = new PaginatedList((page ?? 1), PagerCount, totalCount);
        
@@ -69,10 +69,10 @@ namespace Portal.Controllers
         {
             Domain d = new Domain();
        
-            var viewData =  Database.Db.Domains.FirstOrDefault(a => a.DomainID == id);
-            ViewBag.DomainKayitliFirma = Database.Db.DomainKayitliFirmas.OrderBy(x=>x.DomainKayitliFirmaAdi);
-            ViewBag.HostingDetay = Database.Db.Hostings.GetirHosting();
-            ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+            var viewData =  Db.Domains.FirstOrDefault(a => a.DomainID == id);
+            ViewBag.DomainKayitliFirma = Db.DomainKayitliFirmas.OrderBy(x=>x.DomainKayitliFirmaAdi);
+            ViewBag.HostingDetay = Db.Hostings.GetirHosting();
+            ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
             if (Request.UrlReferrer != null)
             {
                 var ary = Request.UrlReferrer.ToString().Split('/');
@@ -91,7 +91,7 @@ namespace Portal.Controllers
             if (ModelState.IsValid)
             {
                 domain.DomainAdi = Temizle(domain.DomainAdi);
-                Domain entity = Database.Db.Domains.SingleOrDefault(x=>x.DomainID==domain.DomainID);
+                Domain entity = Db.Domains.SingleOrDefault(x=>x.DomainID==domain.DomainID);
 
                 entity.DomainAdi = domain.DomainAdi;
                 entity.Tarih = domain.Tarih;
@@ -103,7 +103,7 @@ namespace Portal.Controllers
                 entity.RefDomainKategori = domain.RefDomainKategori;
                 entity.DomainDurum = domain.DomainDurum;
                 entity.Kontrol = domain.Kontrol;
-                Database.Db.SaveChanges();
+                Db.SaveChanges();
                 TempData[SUCESS] = "Kaydedildi";
                 if (Request["oncekiSayfa"] != "")
                 {
@@ -118,10 +118,10 @@ namespace Portal.Controllers
             }
             else
             {
-                var viewData = Database.Db.Domains.FirstOrDefault(a => a.DomainID == id);
-                ViewBag.DomainKayitliFirma = Database.Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);
-                ViewBag.HostingDetay = Database.Db.Hostings.GetirHosting();
-                ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+                var viewData = Db.Domains.FirstOrDefault(a => a.DomainID == id);
+                ViewBag.DomainKayitliFirma = Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);
+                ViewBag.HostingDetay = Db.Hostings.GetirHosting();
+                ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
                 TempData["Error"] = "Domain daha önce eklenmiş!";
                 return View();
             }
@@ -142,9 +142,9 @@ namespace Portal.Controllers
             {
 
 
-                Domain domainduzenle = Database.Db.Domains.GetirDomain(domainID);
+                Domain domainduzenle = Db.Domains.GetirDomain(domainID);
 
-                string mesaj = Database.Db.MailSablonus.Find(1).MailSablonu1;
+                string mesaj = Db.MailSablonus.Find(1).MailSablonu1;
 
                 mesaj = mesaj.Replace("{FirmaAdi}", domainduzenle.Firma.FirmaAdi);
                 mesaj = mesaj.Replace("{MusteriAdiSoyadi}", domainduzenle.Firma.YetkiliAdi + " " + domainduzenle.Firma.YetkiliSoyAdi);
@@ -167,12 +167,12 @@ namespace Portal.Controllers
 
         public ActionResult DomainUzat(int domainID)
         {
-            Domain domainduzenle = Database.Db.Domains.GetirDomain(domainID);
+            Domain domainduzenle = Db.Domains.GetirDomain(domainID);
 
             DateTime yeniTarih = new DateTime(domainduzenle.UzatmaTarihi.AddYears(1).Year, domainduzenle.UzatmaTarihi.Month, domainduzenle.UzatmaTarihi.Day);
 
             domainduzenle.UzatmaTarihi = yeniTarih;
-            Database.Db.SaveChanges();
+            Db.SaveChanges();
 
             TempData[SUCESS] = domainduzenle.DomainAdi + " Domain Uzatıldı !!!";
 
@@ -183,7 +183,7 @@ namespace Portal.Controllers
         //Eski yeri WebController,eski adi UzatmaSuresiGelenler Uzatılacak Domainler
         public ActionResult UzatilacakDomainler()
         {
-            var viewData = Database.Db.Domains.GetirUzatmasiGelenler();
+            var viewData = Db.Domains.GetirUzatmasiGelenler();
 
             return View(viewData);
         }
@@ -198,15 +198,15 @@ namespace Portal.Controllers
         public ActionResult SilinenDomainler(int?page,string domain,FormCollection frm)
         {
             int domainBaslangic = ((page ?? 1) - 1) * PagerCount;
-            var viewData = (from q in Database.Db.Domains
+            var viewData = (from q in Db.Domains
                             where string.IsNullOrEmpty(domain) ? true : q.DomainAdi.Contains(domain)
                             orderby q.SilmeTarihi descending
                             select q).Skip(domainBaslangic).Take(PagerCount);
 
-            int totalCount = Database.Db.Domains.Where(dp => dp.DomainAdi != null ? (dp.DomainAdi.Contains(domain)) : (1 == 1) && dp.DomainDurum == false)
+            int totalCount = Db.Domains.Where(dp => dp.DomainAdi != null ? (dp.DomainAdi.Contains(domain)) : (1 == 1) && dp.DomainDurum == false)
                              .Count();
-            ViewBag.Firmalar = Database.Db.Firmas.GetirFirmalar("");
-            ViewBag.DomainKategorileri = Database.Db.DomainKategoris.GetirDomainKategorileri();
+            ViewBag.Firmalar = Db.Firmas.GetirFirmalar("");
+            ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
 
             PaginatedList pager = new PaginatedList((page ?? 1), PagerCount, totalCount);
             //sayfalama
@@ -217,11 +217,11 @@ namespace Portal.Controllers
         // Eski yeri WebController
         public ActionResult DomainSil(int id)
         {
-            Domain domainduzenle = Database.Db.Domains.Find(id);
+            Domain domainduzenle = Db.Domains.Find(id);
 
             domainduzenle.SilmeTarihi = DateTime.Now;
             domainduzenle.DomainDurum = false;
-            Database.Db.SaveChanges();
+            Db.SaveChanges();
 
             TempData[SUCESS] = domainduzenle.DomainAdi + " Domain Silindi !!!";
 
@@ -231,7 +231,7 @@ namespace Portal.Controllers
 
         public ActionResult DomainKategorileri()
         {           
-            var viewData = Database.Db.DomainKategoris.GetirDomainKategorileri();
+            var viewData = Db.DomainKategoris.GetirDomainKategorileri();
 
             return View(viewData);
         }
@@ -356,9 +356,9 @@ namespace Portal.Controllers
         #endregion
         private void SetViewBagEkle()
         {
-            ViewBag.DomainKayitliFirmalar = Database.Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);
-            ViewBag.Hostingler = Database.Db.Hostings.OrderBy(x => x.HostingAdi);
-            ViewBag.DomainKategorileri = Database.Db.DomainKategoris.OrderBy(x => x.DomainKategoriAdi);
+            ViewBag.DomainKayitliFirmalar = Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);
+            ViewBag.Hostingler = Db.Hostings.OrderBy(x => x.HostingAdi);
+            ViewBag.DomainKategorileri = Db.DomainKategoris.OrderBy(x => x.DomainKategoriAdi);
         }
         public static string Temizle(string Kelime)
         {

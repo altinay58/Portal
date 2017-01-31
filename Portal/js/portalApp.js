@@ -1,10 +1,10 @@
 ﻿/// <reference path="C:\Projects\Portal\Portal\Scripts/_references.js" />
 //
 var portalApp = {
-    mesajGoster:function(msj){
+    mesajGoster:function(msj,type){
         $.bootstrapGrowl(msj, {
             ele: 'body', // which element to append to
-            type: 'info', // (null, 'info', 'danger', 'success')
+            type:typeof type!=='undefined'?type: 'info', // (null, 'info', 'danger', 'success')
             offset: { from: 'top', amount: 50 }, // 'top', or 'bottom'
             align: 'right', // ('left', 'right', or 'center')
             width: 250, // (integer, or 'auto')

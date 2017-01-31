@@ -138,11 +138,15 @@ namespace Portal.Models
         }
         public static long DomainToplamZaman(int domainId)
         {
-            var q = Database.Db.Database
-                .SqlQuery<long?>(@"select sum(z.GecenZamanSaniye) 
+            using (PortalEntities Db=new PortalEntities())
+            {
+                var q = Db.Database
+                                    .SqlQuery<long?>(@"select sum(z.GecenZamanSaniye) 
                      from ZamanIs z left outer join isler i on(z.RefIsId=i.islerID)
-                  where i.islerRefDomainID=@p0",domainId);
-            return q.SingleOrDefault() ?? 0;
+                  where i.islerRefDomainID=@p0", domainId);
+                return q.SingleOrDefault() ?? 0;
+            }
+                
         }
     }
 }

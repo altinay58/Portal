@@ -8,6 +8,6 @@ namespace Portal
 {
     public class Database
     {
-        public static PortalEntities Db { get; set; }
+        //public static PortalEntities Db { get; set; }
     }
 }

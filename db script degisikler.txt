@@ -211,7 +211,16 @@ GO
 
 ALTER TABLE [dbo].[FirmaKisi] CHECK CONSTRAINT [FK_FirmaKisi_Firma]
 GO
-
+---31.01.2017
+ALTER TABLE [dbo].[Domain]
+ADD SatisOncelikli bit not NULL default(0)
+GO
+ALTER TABLE [dbo].[Domain]
+ADD GuncellemeSozlesmesiVarmi bit not NULL default(0)
+GO
+ALTER TABLE [dbo].[Domain]
+ADD OdemesiAlindi bit not NULL default(0)
+GO
 
 
 

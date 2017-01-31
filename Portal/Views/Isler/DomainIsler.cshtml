@@ -1,45 +1,65 @@
 ﻿@model Domain
+@using System.Linq;
 @using Portal.Models;
 @using Microsoft.AspNet.Identity;
 @using Newtonsoft.Json;
+@using Portal.Models.IslerModels;
 @{
     ViewBag.Title = "DomainIsler";
+    DomainBilgi domainBilgi = new DomainBilgi
+    {
+        Id = Model.DomainID,
+        SatisOncelikli = Model.SatisOncelikli,
+        GuncellemeSozlesmesiVarmi=Model.GuncellemeSozlesmesiVarmi,
+        OdemesiAlindi=Model.OdemesiAlindi,
+        DomainAksiyon=Model.DomainAksiyon
+    };
+    string jsnDomain = JsonConvert.SerializeObject(domainBilgi);
 }
 
-<div style="margin-top:0px" ng-controller="domainIslerCtrl" ng-init="init(@ViewBag.domainId,'@JsonConvert.SerializeObject(ViewBag.guncelKullanici)',@Sorgular.DomainToplamZaman(Model.DomainID),@Model.RefDomainFirmaID)">
+<div style="margin-top:0px" ng-controller="domainIslerCtrl" ng-init="init('@jsnDomain','@JsonConvert.SerializeObject(ViewBag.guncelKullanici)',@Sorgular.DomainToplamZaman(Model.DomainID),@Model.RefDomainFirmaID)">
     <div class="clearfix" style="margin-bottom:5px">
-        <div class="" style="display:inline-block;float:left;margin:0;">
+        <div class="" style="display:inline-block;float:left;margin:0;font-size:20px">
             @Model.DomainAdi
             <span>
-                <i class="fa fa-star sari" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satış Öncelikli"></i>
-                <i class="fa fa-file-text kirmizi" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Güncelleme Sözleşmesi Yok"></i>
-                <i class="fa fa-money turkuaz" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ödemesi Alındı"></i>
-            </span>
+               <a href="#" ng-model="domainBilgi.SatisOncelikli" ng-click="degistirSatisOncelik()">    
+               <i class="fa fa-star ng-class:{ 'sari':domainBilgi.SatisOncelikli }"   aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" 
+                  data-original-title="{{domainBilgi.SatisOncelikli ? 'Satış Öncelikli':'Satış Öncelikli değil'  }} "></i>
+                </a>
+               <a href="#" ng-model="domainBilgi.GuncellemeSozlesmesiVarmi" ng-click="degistirGuncellemeSozlesmesi()">
+               <i class="fa fa-file-text  ng-class:{ 'kirmizi':domainBilgi.GuncellemeSozlesmesiVarmi }" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" 
+                       data-original-title="{{domainBilgi.GuncellemeSozlesmesiVarmi ? 'Güncelleme Sözleşmesi Var':'Güncelleme Sözleşmesi Yok'  }} "></i>
+                </a>
+                <a href="#" ng-model="domainBilgi.OdemesiAlindi" ng-click="degistirOdemesiAlindi()">
+                    <i class="fa fa-money  ng-class:{ 'turkuaz':domainBilgi.OdemesiAlindi }" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" 
+                       data-original-title="{{domainBilgi.OdemesiAlindi ? 'Ödemesi Alındı':'Ödemesi Alınmadı'  }}"></i>
+                </a>
+</span>
         </div>
         <div class="page-toolbar" style="float:right">
             <div class="btn-group pull-right">
-                <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown">
+                <button type="button"  class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown">
                     Aksiyon Al
                     <i class="fa fa-angle-down"></i>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li>
-                        <a href="#">
+                        <a href="#" ng-click="domainAksiyonDegistir(domainAksiyon.BeklemeyeAl)">
                             <i class="fa fa-pause" aria-hidden="true"></i> Beklemeye Al
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" ng-click="domainAksiyonDegistir(domainAksiyon.YayinaAl)">
                             <i class="fa fa-play" aria-hidden="true"></i> Yayına Al
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" ng-click="domainAksiyonDegistir(domainAksiyon.YayiniDurdur)">
                             <i class="fa fa-stop" aria-hidden="true"></i> Yayını Durdur
                         </a>
                     </li>
                     <li>
-                        <a href="#" ng-click="gosterDomainNotlari()">
+                        <a href="#" ng-click="domainAksiyonDegistir()">
                             <i class="fa fa-comment" aria-hidden="true"></i> Domain Notları
                         </a>
                     </li>
@@ -139,7 +159,7 @@
                             <i class="fa fa-code {{timelineIconClassBelirleDurumaGore(x.IsDurum)}}"></i>
                         </div>
                     </div>
-                    <div class="timeline-body {{timelineBodyClassBelirleDurumaGore(x.IsDurum)}}   ng-class:{ 'animated':x.yorumEklendi }">
+                    <div class="timeline-body {{timelineBodyClassBelirleDurumaGore(x.IsDurum)}}   ng-class:{ 'animated fadeIn':x.yorumEklendi }">
                         <div class="timeline-body-arrow {{timelineArrowClassBelirleDurumaGore(x.IsDurum)}}" > </div>
                         <div class="timeline-body-head">
                             <div class="timeline-body-head-caption">
@@ -351,24 +371,19 @@
 @section css{
 <style>
 .animated {
-
-background-repeat: no-repeat;
-background-position: left top;
-padding-top:95px;
-margin-bottom:60px;
--webkit-animation-duration: 10s;
-animation-duration: 10s;
+-webkit-animation-duration: 2s;
+animation-duration: 2s;
 -webkit-animation-fill-mode: both;
 animation-fill-mode: both;
 }
          
 @@-webkit-keyframes fadeIn {
-0% {opacity: 0;}
-100% {opacity: 1;}
+0% {opacity: 0.5;border : 10px solid blue;}
+100% {opacity: 1; border : 0px solid red;}
 }
          
 @@keyframes fadeIn {
-0% {opacity: 0;border : 10px solid blue; }
+0% {opacity: 0.5;border : 10px solid blue; }
 100% {opacity: 1;border : 0px solid red; }
 }
          
@@ -412,8 +427,8 @@ animation-name: fadeIn;
 <script src="/Scripts/jquery.signalR-2.2.1.min.js"></script>
 @*<script src="/signalr/hubs"></script>*@
 <script src="@Url.Content("/signalr/hubs")"></script>
-<script src="/js/services/domainIslerService.js?v=1.0.33"></script>
-<script src="/js/controllers/domainIslerCtrl.js?v=1.0.33"></script>
+<script src="/js/services/domainIslerService.js?v=1.0.41"></script>
+<script src="/js/controllers/domainIslerCtrl.js?v=1.0.41"></script>
 <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
 
     <script>   

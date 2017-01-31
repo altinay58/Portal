@@ -166,6 +166,9 @@
           <Property Name="SilindimiVeriTabani" Type="bit" Nullable="false" />
           <Property Name="RefDomainKayitliFirmaId" Type="int" Nullable="false" />
           <Property Name="DomainAksiyon" Type="int" Nullable="false" />
+          <Property Name="SatisOncelikli" Type="bit" Nullable="false" />
+          <Property Name="GuncellemeSozlesmesiVarmi" Type="bit" Nullable="false" />
+          <Property Name="OdemesiAlindi" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -2555,6 +2558,9 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <NavigationProperty Name="DomainKayitliFirma" Relationship="PortalModel.FK_Domain_DomainKayitliFirma" FromRole="Domain" ToRole="DomainKayitliFirma" />
           <Property Name="DomainAksiyon" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DomainNots" Relationship="PortalModel.FK_Domain_RefDomainId" FromRole="Domain" ToRole="DomainNot" />
+          <Property Name="SatisOncelikli" Type="Boolean" Nullable="false" />
+          <Property Name="GuncellemeSozlesmesiVarmi" Type="Boolean" Nullable="false" />
+          <Property Name="OdemesiAlindi" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -4142,6 +4148,9 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <EntitySetMapping Name="Domains">
             <EntityTypeMapping TypeName="PortalModel.Domain">
               <MappingFragment StoreEntitySet="Domain">
+                <ScalarProperty Name="OdemesiAlindi" ColumnName="OdemesiAlindi" />
+                <ScalarProperty Name="GuncellemeSozlesmesiVarmi" ColumnName="GuncellemeSozlesmesiVarmi" />
+                <ScalarProperty Name="SatisOncelikli" ColumnName="SatisOncelikli" />
                 <ScalarProperty Name="DomainAksiyon" ColumnName="DomainAksiyon" />
                 <ScalarProperty Name="RefDomainKayitliFirmaId" ColumnName="RefDomainKayitliFirmaId" />
                 <ScalarProperty Name="SilindimiVeriTabani" ColumnName="SilindimiVeriTabani" />

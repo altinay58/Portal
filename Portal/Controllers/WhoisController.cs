@@ -21,7 +21,7 @@ namespace Portal.Controllers
 
         public JsonResult IPAdresi(int domainID)
         {
-            Domain domainim = Database.Db.Domains.FirstOrDefault(a => a.DomainID == domainID);
+            Domain domainim = Db.Domains.FirstOrDefault(a => a.DomainID == domainID);
             string stackoverflow = domainim.DomainAdi;
             string ipler = "";
 
@@ -39,7 +39,7 @@ namespace Portal.Controllers
                     domainim.IpAdres = ipler;
                 }
 
-                Database.Db.SaveChanges();
+                Db.SaveChanges();
 
             }
             catch

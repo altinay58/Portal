@@ -1,4 +1,4 @@
-﻿var ff,gg;
+﻿var ff,gg,db;
 String.prototype.toHHMMSS = function () {
     var sec_num = parseInt(this, 10);
     var hours = Math.floor(sec_num / 3600);
@@ -21,7 +21,7 @@ String.prototype.toplamZamanFormat = function () {
     if (seconds < 10) { seconds = "0" + seconds; }
     return hours + 'sa ' + minutes + 'dk ' + seconds+'s';
 }
-angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
+angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, domainIslerService) {
     var self = $scope;
     const HEPSI=0;
     self.guncelDomainId = 0;//287 karayeltasarim.com
@@ -30,7 +30,14 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
     self.filterdResults = [], self.domainNotlari=[];
     self.filterIsDurum = 0;
     self.filterUserId= "Hepsi";
-    self.firmaKisiler=[];
+    self.firmaKisiler = [];
+    self.domainBilgi = {
+        Id : 0,
+        SatisOncelikli : false,
+        GuncellemeSozlesmesiVarmi:false,
+        OdemesiAlindi: false,
+        DomainAksiyon:2
+    };
     var signalDomain = null;
     let IsinDurumuEnum={
         Yapilacak : 1, YapilacakDeadline:2, Yapiliyor:3,
@@ -43,6 +50,10 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
         4: { ad: "OnayBekleyen", timelineIconClass: "font-yellow", arrowClass: "arrow-onay", bodyClass: "bg-yellow" },
         5: { ad: "Biten", timelineIconClass: "", arrowClass: "", bodyClass: "body-biten" }
     }
+    self.domainAksiyon = {
+        BeklemeyeAl:1,YayinaAl:2,YayiniDurdur:3
+    }
+    self.guncelDomainAksiyon = null;
     angular.element(document).ready(function () {
         console.log(self.guncelDomainId);
         self.getirDomainIsler();
@@ -55,39 +66,47 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
                 if (toId.indexOf( self.guncelKullanici.Id)>-1) {
                     portalApp.mesajGoster("#" + self.domainIsler[index].IsId + " ticket yeni yorum eklendi");
                     self.domainIsler[index].yorumEklendi = true;
-                   
                 }
-                
+
                 self.$apply();
-                setTimeout(function () {
+                $timeout(function () {
                     self.domainIsler[index].yorumEklendi = false;
-                }, 1500);
+                }, 2100);
                 //self.$apply(() => {
-                   
+
+
                 //});
             }
-                      
+
         };
-        signalDomain.client.domaisDurumDegisti = function (jsnDomainIs, fromId) {   
-           
+        signalDomain.client.domaisDurumDegisti = function (jsnDomainIs, fromId) {
+
             if (self.guncelKullanici.Id != fromId) {
                 let di = JSON.parse(jsnDomainIs);
-                let index = self.domainIsler.findIndex(f=> { return f.IsId == di.IsId });             
-                self.domainIsler[index] = di;              
+                let index = self.domainIsler.findIndex(f=> { return f.IsId == di.IsId });
+                self.domainIsler[index] = di;
                 portalApp.mesajGoster("#"+di.IsId+ " ticket durumu değişti");
                 zamanAyarla(self.domainIsler[index]);
-                self.$apply();              
+                self.$apply();
             }
+
+        }
+        signalDomain.client.domainDurumDegisti = function () {
+            portalApp.mesajGoster("Domain durumu değişti", "success");
+            $timeout(function () {
+                $window.location.reload();
+            }, 2000);
            
         }
     });
-    self.init = function (domainId,guncelKullanici,toplamZaman,firmaId) {
-        console.log(guncelKullanici);
-        self.guncelDomainId = domainId;
+    self.init = function (jsnDomain,guncelKullanici,toplamZaman,firmaId) {
+        console.log(jsnDomain);
+        db=self.domainBilgi = JSON.parse(jsnDomain);
+        self.guncelDomainId = self.domainBilgi.Id;
         self.guncelKullanici = JSON.parse(guncelKullanici);
         self.toplamZaman = toplamZaman;
         self.guncelFirmaId=firmaId;
-
+        self.guncelDomainAksiyon = self.domainBilgi.DomainAksiyon;
 
     }
     self.getirDomainIsler = function () {
@@ -171,7 +190,7 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
                 } else {
                     return moment(tarih).format("DD.YYYY HH:mm")
                 }
-             
+
             }
 
         }else
@@ -208,6 +227,7 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
 
     }
     self.clickTamamlaBtn = function (domainIs) {
+
         domainIs.GosterTamamlaBtn = false;
         domainIs.GosterIseBaslaBtn = false;
         domainIs.GosterOnaylaBtn = true;
@@ -231,7 +251,7 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
                 };
                 domainIs.Yorumlar.push(yeniYorum);
                 let toIds =String( domainIs.IsiVerenKullanici.Id);
-              
+
                 domainIs.IsiYapacakKullanicilar.forEach(x=> {
                     toIds = toIds+","+String(x.Id);
                 });
@@ -240,6 +260,36 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
             });
 
     }
+    self.degistirSatisOncelik = function () {
+        self.domainBilgi.SatisOncelikli = !self.domainBilgi.SatisOncelikli;
+        domainIslerService.degistirSatisOncelik(self.domainBilgi).
+        then(res=> {
+            portalApp.mesajGoster("Satış öncelik değişti", "success");
+        });
+    }
+    self.degistirGuncellemeSozlesmesi = function () {
+        self.domainBilgi.GuncellemeSozlesmesiVarmi = !self.domainBilgi.GuncellemeSozlesmesiVarmi;
+        domainIslerService.degistirGuncellemeSozlesmesi(self.domainBilgi).
+        then(res=> {
+            portalApp.mesajGoster("Guncelleme Sozlesmesi  değişti", "success");
+        });
+    }
+    self.degistirOdemesiAlindi = function () {
+        self.domainBilgi.OdemesiAlindi = !self.domainBilgi.OdemesiAlindi;
+        domainIslerService.degistirOdemesiAlindi(self.domainBilgi).
+        then(res=> {
+            portalApp.mesajGoster("Demesi Alındı  değişti", "success");
+        });
+    }
+    self.domainAksiyonDegistir = function (aksiyon) {
+        console.log(aksiyon);
+        domainIslerService.domainAksiyonDegistir(self.guncelDomainId,aksiyon)
+        .then((res) => {
+            signalDomain.server.gonderSayfayiYenidenYukle();          
+           
+        })
+    }
+   
     function durumDegistir(domainIs, yeniDurum, iBtnClass) {
         domainIslerService.IsDurumuDegistir(domainIs, yeniDurum)
        .then(function (res) {
@@ -256,10 +306,10 @@ angModule.controller("domainIslerCtrl", function ($scope, domainIslerService) {
            }
        })
     }
-   
+
     $.connection.hub.start().done(function () {
-       
-      
+
+
     });
     function getDate(jsnDate) {
         let date = new Date(parseInt(jsnDate.replace("/Date(", "").replace(")/", ""), 10));

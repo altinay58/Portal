@@ -7,11 +7,12 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Security;
-
+using Portal.Helper;
+using Portal.Models;
 namespace Portal.Controllers
 {
     public abstract class BaseController : Controller
-    {
+    {        
         public BaseController()
         {
             
@@ -23,13 +24,14 @@ namespace Portal.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            Database.Db = new Models.PortalEntities();
+            Db = new PortalEntities() ;
+            //Database.Db = new Models.PortalEntities();
             //TODO: sonra iptal edilecek,login ekranindan giris olmadigi icin           
             //FormsAuthentication.SetAuthCookie("fatihgokce07@gmail.com",true);
             //daha sonra aktif edilecek
             //WebLoguEkle(Request.RawUrl);
         }
-        protected Models.PortalEntities Db { get { return Database.Db; } private set { } }
+        protected Models.PortalEntities Db { get; private set; }
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             base.OnActionExecuted(filterContext);
@@ -39,9 +41,9 @@ namespace Portal.Controllers
         {
             if (disposing)
             {
-                if(Database.Db!=null)
+                if(Db!=null)
                 {
-                   Database.Db.Dispose();
+                   Db.Dispose();
                 }
                
             }
@@ -51,7 +53,8 @@ namespace Portal.Controllers
         {
             if (System.Web.HttpContext.Current.User.Identity.GetUserId() != null)
             {
-               
+                using (PortalEntities Db=new PortalEntities())
+                {
                     WebLog log = new WebLog()
                     {
                         WebLogIP = System.Web.HttpContext.Current.Request.UserHostAddress,
@@ -59,8 +62,10 @@ namespace Portal.Controllers
                         WebLogTarih = DateTime.Now,
                         WebLogUserID = System.Web.HttpContext.Current.User.Identity.GetUserId(),
                     };
-                    Database.Db.WebLogs.Add(log);
-                    Database.Db.SaveChanges();
+                    Db.WebLogs.Add(log);
+                    Db.SaveChanges();
+                }
+                    
                 
             }
 

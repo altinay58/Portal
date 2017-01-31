@@ -45,6 +45,9 @@ namespace Portal.Models
         public bool SilindimiVeriTabani { get; set; }
         public int RefDomainKayitliFirmaId { get; set; }
         public int DomainAksiyon { get; set; }
+        public bool SatisOncelikli { get; set; }
+        public bool GuncellemeSozlesmesiVarmi { get; set; }
+        public bool OdemesiAlindi { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
         public virtual Firma Firma { get; set; }

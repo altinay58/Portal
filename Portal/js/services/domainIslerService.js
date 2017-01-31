@@ -56,8 +56,51 @@
             dataType:"json"
           });
           return (request.then(handleSuccess, handleError));
+        },
+        degistirSatisOncelik: function (domainBilgi) {
+            var request = $http({
+                method: "get",
+                url: "/Isler/DegistirSatisOncelik",
+                params: {
+                    domainId: domainBilgi.Id, value: domainBilgi.SatisOncelikli
+                },
+                dataType: "json"
+            });
+            return (request.then(handleSuccess, handleError));
+        },
+        degistirGuncellemeSozlesmesi: function (domainBilgi) {
+            var request = $http({
+                method: "get",
+                url: "/Isler/DegistirGuncellemeSozlesmesi",
+                params: {
+                    domainId: domainBilgi.Id, value: domainBilgi.SatisOncelikli
+                },
+                dataType: "json"
+            });
+            return (request.then(handleSuccess, handleError));
+        },
+        degistirOdemesiAlindi: function (domainBilgi) {
+            var request = $http({
+                method: "get",
+                url: "/Isler/DegistirOdemesiAlindi",
+                params: {
+                    domainId: domainBilgi.Id, value: domainBilgi.SatisOncelikli
+                },
+                dataType: "json"
+            });
+            return (request.then(handleSuccess, handleError));
+        },
+        domainAksiyonDegistir: function (domainId,domainAksiyon) {
+            var request = $http({
+                method: "get",
+                url: "/Isler/DomainAksiyonDegistir",
+                params: {
+                    domainId: domainId, domainAksiyon: domainAksiyon
+                },
+                dataType: "json"
+            });
+            return (request.then(handleSuccess, handleError));
         }
-
     });
     /// private methods
     function handleError(response) {

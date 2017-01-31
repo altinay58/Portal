@@ -201,6 +201,57 @@ namespace Portal.Controllers
             Db.SaveChanges();
             return Json(jsn,JsonRequestBehavior.AllowGet);
         }
+        public JsonResult DegistirSatisOncelik(int domainId, bool value)
+        {
+            JsonCevap jsn = new JsonCevap();
+            var domain = Db.Domains.SingleOrDefault(x=>x.DomainID==domainId);
+            domain.SatisOncelikli = value;
+            Db.Database.ExecuteSqlCommand(@"update isler set islerOncelikSiraID=@p0 
+                                         where islerRefDomainID=@p1",(int)IslerOncelikSira.Birinci,domainId);
+           
+            Db.SaveChanges();
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DegistirGuncellemeSozlesmesi(int domainId, bool value)
+        {
+            JsonCevap jsn = new JsonCevap();
+            var domain = Db.Domains.SingleOrDefault(x => x.DomainID == domainId);
+            domain.GuncellemeSozlesmesiVarmi = value;
+            Db.SaveChanges();
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DegistirOdemesiAlindi(int domainId, bool value)
+        {
+            JsonCevap jsn = new JsonCevap();
+            var domain = Db.Domains.SingleOrDefault(x => x.DomainID == domainId);
+            domain.OdemesiAlindi = value;
+            Db.SaveChanges();
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DomainAksiyonDegistir(int domainId, int domainAksiyon)
+        {
+            JsonCevap jsn = new JsonCevap();
+            DomainAksiyon yeniAksiyon = (DomainAksiyon)domainAksiyon;
+            var domain = Db.Domains.SingleOrDefault(x => x.DomainID == domainId);
+            if(yeniAksiyon==DomainAksiyon.BeklemeyeAl || yeniAksiyon == DomainAksiyon.YayiniDurdur)
+            {
+                Db.Database.ExecuteSqlCommand( @" UPDATE dbo.isler  
+SET     islerIsinDurumu =  CASE when  
+								islerIsinDurumu=3 
+								then 
+								case when
+									islerBitisTarihiVarmi=1
+									then 2--deadline
+									else 1--yapilacak
+								end
+						   end
+WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
+            }
+            domain.DomainAksiyon = (int)yeniAksiyon;
+            Db.SaveChanges();
+            jsn.Basarilimi = true;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
         #endregion 
         public ActionResult IcerikFormu()
         {
@@ -213,12 +264,12 @@ namespace Portal.Controllers
         {
             // is atanacak ve kontrol edecek kullanici ayar tablosundaki kayitlara gore belirleniyor
             // Ayar table da IcerikFormuIsAtanacakKullanici ve IcerikFormuIsKontrolEdenKullanici kayitlari yok ise ekranda uyari gosteriyor
-            var isAtanacakKullanici = Database.Db.Ayars.Where(x=>x.AyarAdi== "IcerikFormuIsAtanacakKullanici").SingleOrDefault();
-            var isKontrolEdenKullanici = Database.Db.Ayars.Where(x=>x.AyarAdi== "IcerikFormuIsKontrolEdenKullanici").SingleOrDefault();
+            var isAtanacakKullanici = Db.Ayars.Where(x=>x.AyarAdi== "IcerikFormuIsAtanacakKullanici").SingleOrDefault();
+            var isKontrolEdenKullanici = Db.Ayars.Where(x=>x.AyarAdi== "IcerikFormuIsKontrolEdenKullanici").SingleOrDefault();
             if (ModelState.IsValid && (isAtanacakKullanici!=null && isKontrolEdenKullanici!=null) &&
                 (!string.IsNullOrEmpty(isAtanacakKullanici.AyarDeger) && !(string.IsNullOrEmpty(isKontrolEdenKullanici.AyarDeger)) ))
             {
-                var listStandardIsler = Database.Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
+                var listStandardIsler = Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
                 var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
                 var isHtml = string.Format("<p>Firma Adı:{0}</p>",icerik.FirmaAdi);
                 isHtml += string.Format("<p>Domain Adı:{0}</p>", icerik.DomainAdi);
@@ -278,8 +329,8 @@ namespace Portal.Controllers
                     Db.IsiYapacakKisis.Add(kisi);
                     Db.islers.Add(job);
                 }
-                //Database.Db.islers.AddRange(isler);
-                Database.Db.SaveChanges();
+                //Db.islers.AddRange(isler);
+                Db.SaveChanges();
                 TempData["Success"] = "Kaydedildi";
 
                 return RedirectToAction("Index",new { kontrolBekleyenIsler=false,  onaylananIsler=false });
@@ -310,7 +361,7 @@ namespace Portal.Controllers
 
             var firmalar = new List<object>();
 
-            foreach (Firma firma in Database.Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) 
+            foreach (Firma firma in Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) 
             || a.YetkiliTelefon.Contains(firmaAdi) || a.Email.Contains(firmaAdi)
             ))
             {
@@ -358,7 +409,7 @@ namespace Portal.Controllers
         {
         
 
-            var listDomain = (from d in Database.Db.Domains
+            var listDomain = (from d in Db.Domains
                               where (firmaId.HasValue ? d.RefDomainFirmaID == firmaId.Value : true) && d.DomainAdi.Contains(domainAdi)
                               select new
                               {
