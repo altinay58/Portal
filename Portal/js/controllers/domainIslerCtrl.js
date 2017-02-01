@@ -96,7 +96,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
             $timeout(function () {
                 $window.location.reload();
             }, 2000);
-           
+
         }
     });
     self.init = function (jsnDomain,guncelKullanici,toplamZaman,firmaId) {
@@ -208,38 +208,76 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         return self.isDurum[durumId].bodyClass;
     }
     self.isDurumDegistir = function (domainIs) {
-        let yeniDurum = 0, iBtnClass="fa fa-play";
-        if (domainIs.IsDurum === IsinDurumuEnum.Yapilacak || domainIs.IsDurum === IsinDurumuEnum.YapilacakDeadline) {
-            yeniDurum = IsinDurumuEnum.Yapiliyor;
-            iBtnClass = "fa fa-pause";
-            domainIs.GosterTamamlaBtn = true;
+        if (self.domainBilgi.DomainAksiyon == self.domainAksiyon.YayinaAl) {
+            if (guncelKullaniciIsiYapacakmi(domainIs))
+            {
+                let yeniDurum = 0, iBtnClass = "fa fa-play";
+                if (domainIs.IsDurum === IsinDurumuEnum.Yapilacak || domainIs.IsDurum === IsinDurumuEnum.YapilacakDeadline) {
+                    yeniDurum = IsinDurumuEnum.Yapiliyor;
+                    if (guncelKullaniciIsiYapliyorSayisi() > 0) {
+                        portalApp.mesajGoster("Başka bir iş yaplıyor durumda.", "danger");
+                        return;
+                    }
+                    iBtnClass = "fa fa-pause";
+                    domainIs.GosterTamamlaBtn = true;
+                }
+                else {
+                    domainIs.GosterTamamlaBtn = false;
+                    if (domainIs.BitisTarihiVarmi) {
+                        yeniDurum = IsinDurumuEnum.YapilacakDeadline;
+                    } else {
+                        yeniDurum = IsinDurumuEnum.Yapilacak;
+                    }
+                }
+                durumDegistir(domainIs, yeniDurum, iBtnClass);
+            }
+            else {
+                portalApp.mesajGoster("Yetkiniz yok. ", "danger");
+            }
+           
         }
         else {
-            domainIs.GosterTamamlaBtn = false;
-            if (domainIs.BitisTarihiVarmi) {
-                yeniDurum = IsinDurumuEnum.YapilacakDeadline;
-            } else {
-                yeniDurum = IsinDurumuEnum.Yapilacak;
-            }
+            portalApp.mesajGoster("Domain yayın durduruldu  veya beklemeye alındı ","danger");
         }
-        durumDegistir(domainIs,yeniDurum,iBtnClass);
-
-
+    }
+    function guncelKullaniciIsiYapliyorSayisi() {
+        let sayi = 0;
+        self.domainIsler.forEach(e=> {
+            if (guncelKullaniciIsiYapacakmi(e)) {
+                if (e.IsDurum == IsinDurumuEnum.Yapiliyor) {
+                    sayi = sayi + 1;
+                }
+            }
+        });
+        return sayi;
+    }
+    function guncelKullaniciIsiYapacakmi(domainIs){
+        let index= domainIs.IsiYapacakKullanicilar.findIndex(e=>{return e.Id==self.guncelKullanici.Id});
+        return index > -1;
     }
     self.clickTamamlaBtn = function (domainIs) {
-
-        domainIs.GosterTamamlaBtn = false;
-        domainIs.GosterIseBaslaBtn = false;
-        domainIs.GosterOnaylaBtn = true;
-        let yeniDurum = IsinDurumuEnum.OnayBekleyen;
-        durumDegistir(domainIs, yeniDurum, "");
+        if (guncelKullaniciIsiYapacakmi(domainIs)) {
+            domainIs.GosterTamamlaBtn = false;
+            domainIs.GosterIseBaslaBtn = false;
+            domainIs.GosterOnaylaBtn = true;
+            let yeniDurum = IsinDurumuEnum.OnayBekleyen;
+            durumDegistir(domainIs, yeniDurum, "");
+        } else {
+            portalApp.mesajGoster("Yetkiniz yok. ", "danger");
+        }
+       
     }
     self.clickOnayla = function (domainIs) {
-        domainIs.GosterTamamlaBtn = false;
-        domainIs.GosterIseBaslaBtn = false;
-        domainIs.GosterOnaylaBtn = false;
-        let yeniDurum = IsinDurumuEnum.Biten;
-        durumDegistir(domainIs, yeniDurum, "");
+        if (self.guncelKullanici.Id == domainIs.IsiVerenKullanici.Id) {
+            domainIs.GosterTamamlaBtn = false;
+            domainIs.GosterIseBaslaBtn = false;
+            domainIs.GosterOnaylaBtn = false;
+            let yeniDurum = IsinDurumuEnum.Biten;
+            durumDegistir(domainIs, yeniDurum, "");
+        } else {
+            portalApp.mesajGoster("Yetkiniz yok. ", "danger");
+        }
+        
     }
 
     self.yorumEkle=function(domainIs,index){
@@ -278,18 +316,18 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         self.domainBilgi.OdemesiAlindi = !self.domainBilgi.OdemesiAlindi;
         domainIslerService.degistirOdemesiAlindi(self.domainBilgi).
         then(res=> {
-            portalApp.mesajGoster("Demesi Alındı  değişti", "success");
+            portalApp.mesajGoster("Ödemesi Alındı  değişti", "success");
         });
     }
     self.domainAksiyonDegistir = function (aksiyon) {
         console.log(aksiyon);
         domainIslerService.domainAksiyonDegistir(self.guncelDomainId,aksiyon)
         .then((res) => {
-            signalDomain.server.gonderSayfayiYenidenYukle();          
-           
+            signalDomain.server.gonderSayfayiYenidenYukle();
+
         })
     }
-   
+
     function durumDegistir(domainIs, yeniDurum, iBtnClass) {
         domainIslerService.IsDurumuDegistir(domainIs, yeniDurum)
        .then(function (res) {
