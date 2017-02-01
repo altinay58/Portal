@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<Domain>
+@using Portal.Models;
+@{
     ViewBag.Title = "Home Page";
 }
 <div class="row">
@@ -49,90 +51,55 @@
             <div class="portlet-body">
                 <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
                     <div class="general-item-list">
-                        <div class="item">
-                            <div class="item-head">
-                                <div class="item-details">
-                                    <label class="mt-checkbox mt-checkbox-outline">                                       
-                                        <input type="checkbox" name="isEkle"   id="cbIsEkle">
-                                        <span></span>
-                                    </label> 
-                                    <a href="" class="item-name primary-link">guleryuzteam.com</a>
-                                    @*<span class="item-label">3 hrs ago</span>*@
-                                </div>
-                                <div class="item-status" style="top:2px">
-                                    <div class="page-toolbar toolbar-ext">
-                                        <div class="btn-group pull-right">
-                                            <button type="button" class="btn default btn-sm icon-only dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                                <i class="fa fa-cog"></i>
-                                                <i class="fa fa-angle-down"></i>
-                                            </button>
-                                            <ul class="dropdown-menu pull-right" role="menu">
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-check" aria-hidden="true"></i> Sonraki Aşama
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i> Beklemeye Al
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-trash-o" aria-hidden="true"></i> Pasifleştir
-                                                    </a>
-                                                </li>
-                                               
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <span class="label label-primary label-durum"> İçerik Temini </span>
-                                </div>
-                            </div>
-                           
-                        </div>
-                        <div class="item">
-                            <div class="item-head">
-                                <div class="item-details">
-                                    <label class="mt-checkbox mt-checkbox-outline">
-                                        <input type="checkbox" name="isEkle" id="cbIsEkle">
-                                        <span></span>
-                                    </label>
-                                    <a href="@Url.Action("DomainIsler", "Isler",new { id= 13448 })" class="item-name primary-link">deneme</a>
-                                   
-                                </div>
-                                <div class="item-status" style="top:2px">
-                                    <div class="page-toolbar toolbar-ext">
-                                        <div class="btn-group pull-right">
-                                            <button type="button" class="btn default btn-sm icon-only dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                                <i class="fa fa-cog"></i>
-                                                <i class="fa fa-angle-down"></i>
-                                            </button>
-                                            <ul class="dropdown-menu pull-right" role="menu">
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-check" aria-hidden="true"></i> Sonraki Aşama
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-pencil" aria-hidden="true"></i> Beklemeye Al
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-trash-o" aria-hidden="true"></i> Pasifleştir
-                                                    </a>
-                                                </li>
+                        @foreach (Domain domain in Model)
+                        {
+                            <div class="item">
+                                <div class="item-head">
+                                    <div class="item-details">
+                                        <label class="mt-checkbox mt-checkbox-outline">
+                                            <input type="checkbox" name="isEkle" id="cbIsEkle">
+                                            <span></span>
+                                        </label>
+                                        <a href="@Url.Action("DomainIsler", "Isler",new { id= domain.DomainID })" class="item-name primary-link">
+                                            @domain.DomainAdi
+                                        </a>
 
-                                            </ul>
-                                        </div>
                                     </div>
-                                    <span class="label label-primary label-durum"> İçerik Temini </span>
-                                </div>
-                            </div>
+                                    <div class="item-status" style="top:2px">
+                                        <div class="page-toolbar toolbar-ext">
+                                            <div class="btn-group pull-right">
+                                                <button type="button" class="btn default btn-sm icon-only dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                    <i class="fa fa-cog"></i>
+                                                    <i class="fa fa-angle-down"></i>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right" role="menu">
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fa fa-check" aria-hidden="true"></i> Sonraki Aşama
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i> Beklemeye Al
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i> Pasifleştir
+                                                        </a>
+                                                    </li>
 
-                        </div>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <span class="label label-primary label-durum"> İçerik Temini </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                      
+                       
                      
                     </div>
                 </div>
