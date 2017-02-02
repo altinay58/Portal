@@ -1,0 +1,102 @@
+﻿@model Portal.Models.SatisNotu
+@using Portal.Models;
+@{
+    ViewBag.Title = "NotKaydet";
+}
+@using (@Html.BeginForm("NotKaydet", "SatisBolumu", FormMethod.Post,
+                                                     new { id = "ekleForm" }))
+{
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(x => x.SatisNotlariID)
+    <div class="alert alert-danger display-hide">
+        <button class="close" data-close="alert"></button> Bazı alanları hatalı girdiniz! Lütfen formu kontrol ediniz.
+    </div>
+    <div class="alert alert-success display-hide">
+        <button class="close" data-close="alert"></button> Form validasyonu başarılı!
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Note
+        </label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(model => model.SatisNotu1, new { @class = "form-control" })       
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+            <button type="submit" class="btn green">Kaydet</button>
+        </div>
+    </div>
+</div>
+ }
+@section scripts{
+
+    <script src="/Content/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script>
+
+        $(function () {
+            validateForm();
+        })
+        function validateForm() {
+            //**validation
+            var form1 = $('#ekleForm');
+            var error1 = $('.alert-danger', form1);
+            var success1 = $('.alert-success', form1);
+
+            form1.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                messages: {
+                    SatisNotu1: "Lütfen Not  giriniz."
+                },
+                rules: {
+                    SatisNotu1: {
+                        minlength: 2,
+                        required: true
+                    }    
+
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    success1.hide();
+                    error1.show();
+                    App.scrollTo(error1, -200);
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                },
+
+                submitHandler: function (form) {
+                    //success1.show();
+                    //error1.hide();
+                    $('#ekleForm')[0].submit();
+                }
+            });
+
+
+
+
+            //**end validation
+        }
+    </script>
+
+}
+

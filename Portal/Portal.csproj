@@ -221,6 +221,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IslerController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SatisBolumuController.cs" />
     <Compile Include="Controllers\StandartProjeIslerisController.cs" />
     <Compile Include="Controllers\WhoisController.cs" />
     <Compile Include="Database.cs" />
@@ -549,6 +550,8 @@
     <Content Include="Views\Domain\DomainNoteEkle.cshtml" />
     <Content Include="Views\Firmalar\FirmaKisiList.cshtml" />
     <Content Include="Views\Firmalar\FirmaKisiEkle.cshtml" />
+    <Content Include="Views\SatisBolumu\Notlar.cshtml" />
+    <Content Include="Views\SatisBolumu\NotKaydet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,6 +17,7 @@ namespace Portal.Controllers
         {
             
         }
+        protected readonly string DEFAULT_USER_ID = "f5f53da2-c311-44c9-af6a-b15ca29aee57";
         protected readonly int  PagerCount = 20;
         //basarili
         protected readonly string SUCESS = "Success";
