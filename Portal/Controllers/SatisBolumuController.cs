@@ -10,6 +10,10 @@ namespace Portal.Controllers
 {
     public class SatisBolumuController : BaseController
     {
+        public SatisBolumuController()
+        {
+            ViewBag.guncelMenu = "Satis Bolumu";
+        }
         // GET: SatisBolumu
         public ActionResult Index()
         {
@@ -59,5 +63,29 @@ namespace Portal.Controllers
             return RedirectToAction("Notlar");
         }
         #endregion Notlar
+        #region RootBilgisi
+        public ActionResult RootBilgisi()
+        {
+            return View();
+        }
+        #endregion rootbilgisi
+        #region randevular
+        public ActionResult Randevular()
+        {
+            //IEnumerable<Randevu> randevular = Db.Randevus.Where(m => m.RandevuSilDurum == false).OrderByDescending(m => m.RandevuTarihi)
+            //    .Skip(baslanacakSira).Take(10);
+            //ViewBag.ToplamEleman = Db.Randevus.ToList().Count;
+            return View();
+        }
+        public JsonResult RandevuAra(string basTarih, string bitisTarih)
+        {
+
+            DateTime tBas = DateTime.Parse(basTarih);
+            DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
+            var query = Db.RandevularViews.Where(x => x.RandevuTarihi >= tBas && x.RandevuTarihi <= tBit          
+            ).OrderByDescending(x => x.RandevuTarihi);
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+        #endregion randevular
     }
 }

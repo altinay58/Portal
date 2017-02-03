@@ -12,7 +12,10 @@ namespace Portal.Controllers
 {
     public class IslerController : BaseController
     {
-       
+       public IslerController()
+        {
+            ViewBag.guncelMenu = "Isler";
+        }
         // GET: Isler
         public ActionResult Index(bool kontrolBekleyenIsler, bool onaylananIsler, int? RefBolgeID, int? SayfaNo)
         {

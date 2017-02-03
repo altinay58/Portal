@@ -221,6 +221,38 @@ GO
 ALTER TABLE [dbo].[Domain]
 ADD OdemesiAlindi bit not NULL default(0)
 GO
+----
+GO
+
+/****** Object:  View [dbo].[RandevularView]    Script Date: 4.02.2017 00:59:37 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE VIEW [dbo].[RandevularView]
+AS
+SELECT    RandevuID,RandevuRefFirmaID, RandevuYeri, RandevuTarihi, CASE WHEN RandevuRefFirmaID IS NOT NULL THEN
+                    (SELECT   TOP 1 k.Konum
+                     FROM      Konum k, Firma f
+                     WHERE   f.FirmaID = [RandevuRefFirmaID] AND f.RefKonumID = k.KonumID) ELSE
+                    (SELECT   TOP 1 k.Konum
+                     FROM      Konum k, Arayanlar a
+                     WHERE   a.arayanID = [RandevuRefArayanID] AND a.arayanRefKonumID = k.KonumID) END AS Bolge, CASE WHEN RandevuRefFirmaID IS NOT NULL THEN
+                    (SELECT   TOP 1 f.FirmaAdi + ' / ' + f.YetkiliAdi + ' ' + f.YetkiliSoyAdi
+                     FROM      Firma f
+                     WHERE   f.FirmaID = [RandevuRefFirmaID]) ELSE
+                    (SELECT   TOP 1 a.arayanFirmaAdi + ' / ' + a.arayanAdi + ' ' + a.arayanSoyadi
+                     FROM      Arayanlar a
+                     WHERE   a.arayanID = [RandevuRefArayanID]) END AS Firma,
+                    (SELECT   TOP (1) Isim
+                     FROM      dbo.AspNetUsers AS a
+                     WHERE   (Id = dbo.Randevu.RandevuYetkiliKisiID)) AS Kiminle
+FROM      dbo.Randevu
+GO
+-----------------------
 
 
 

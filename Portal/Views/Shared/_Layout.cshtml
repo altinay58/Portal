@@ -57,6 +57,13 @@
     background-color: #eee !important;
     border-color: #ddd !important;
 }
+           .anasayfa{    
+            padding-left: 10px;
+            font-weight: 500;
+           }
+           .anasayfa.active{
+              color: #36c6d3;
+           }
         </style>
         @RenderSection("css", required: false)
     </head>
@@ -498,13 +505,15 @@
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
                         <li class="heading">
-                            <h3 class="uppercase">Anasayfa</h3>
+                            <h3 class="uppercase">
+                            <a href="/" class="anasayfa">Anasayfa</a>
+                            </h3>
                         </li>                      
                        
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-puzzle"></i>
-                                <span class="title">Arayanlar</span>
+                                <span class="title" tr-menu-ismi="Arayanlar">Arayanlar</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu"> 
@@ -648,7 +657,7 @@
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-briefcase"></i>
-                                <span class="title">Satış Bölümü</span>
+                                <span class="title" tr-menu-ismi="Satis Bolumu">Satış Bölümü</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
@@ -693,7 +702,7 @@
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
-                                <span class="title">Isler</span>
+                                <span class="title"  tr-menu-ismi="Isler">İşler</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
@@ -806,7 +815,7 @@
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-pointer"></i>
-                                <span class="title">Firmalar</span>
+                                <span class="title" tr-menu-ismi="Firmalar">Firmalar</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
@@ -827,7 +836,7 @@
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-pointer"></i>
-                                <span class="title">Domainler</span>
+                                <span class="title" tr-menu-ismi="Domainler">Domainler</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
@@ -1549,13 +1558,42 @@
         <script src="http://ifightcrime.github.io/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
         <script src="/js/extensions.js"></script>    
         <script src="/scripts/angular.min.js"></script>
-        <script src="/js/angModule.js?v=1.0.1"></script>
+        @*<script src="/Scripts/ui-bootstrap-2.5.0.min.js"></script>*@
+        <script  src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.min.js"></script>
+        <script src="/js/angModule.js?v=1.0.3"></script>
         @RenderSection("scripts", required: false)
         <script src="/Scripts/ajaxService.js"></script>
         <script src="/js/portalApp.js?v=1.0"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
- 
-    
+ <script>
+     $(function () {
+         ayarlaMenu();
+     });
+     function ayarlaMenu() {
+         let guncelMenu = '@ViewBag.guncelMenu';
+         let guncelLink = "@ViewContext.RouteData.Values["action"]";
+         let guncelCnt = '@ViewContext.RouteData.Values["controller"]';
+         let linkHref='/'+guncelCnt+'/'+guncelLink;
+         if (guncelCnt == 'Home' && guncelLink == 'Index') {
+             $(".anasayfa").addClass("active");
+             return;
+         }
+         $(".page-sidebar-menu >  li.nav-item").removeClass("open active");
+
+         $(".page-sidebar-menu >  li.nav-item > a > span.title").each((index, elm) => {
+             if (guncelMenu == $(elm).attr("tr-menu-ismi")) {
+                 console.log(guncelMenu);
+                 let menu = $(elm).closest("li").addClass("open active");
+                 $(menu).find("ul.sub-menu > li > a").each((ind, selm) => {
+                     if ($(selm).attr('href') == linkHref) {
+                         $(selm).closest("li").addClass("open active");
+                     }
+                 });
+             }
+         });
+     }
+ </script>
+
     </body>
 
 </html>

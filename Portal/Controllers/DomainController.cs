@@ -14,6 +14,10 @@ namespace Portal.Controllers
     public class DomainController : BaseController
     {
         const int  sayfada_gosterilecek_domain_sayisi = 10;
+        public DomainController()
+        {
+            ViewBag.guncelMenu = "Domainler";
+        }
         // GET: Domain
         public ActionResult Index()
         {

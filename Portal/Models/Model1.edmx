@@ -692,6 +692,20 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <Property Name="KayitDurum" Type="bit" />
           <Property Name="Bolge" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RandevularView">
+          <Key>
+            <PropertyRef Name="RandevuID" />
+          </Key>
+          <Property Name="RandevuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RandevuRefFirmaID" Type="int" />
+          <Property Name="RandevuYeri" Type="nvarchar" MaxLength="250" />
+          <Property Name="RandevuTarihi" Type="datetime" />
+          <Property Name="Bolge" Type="nvarchar" MaxLength="250" />
+          <Property Name="Firma" Type="nvarchar" MaxLength="754" />
+          <Property Name="Kiminle" Type="nvarchar(max)" />
+        </EntityType>
         <Association Name="FK_Arayanlar_ArayanGrup">
           <End Role="ArayanGrup" Type="Self.ArayanGrup" Multiplicity="0..1" />
           <End Role="Arayanlar" Type="Self.Arayanlar" Multiplicity="*" />
@@ -1637,6 +1651,17 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
     [ArayanListesi].[Bolge] AS [Bolge]
     FROM [dbo].[ArayanListesi] AS [ArayanListesi]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="RandevularView" EntityType="Self.RandevularView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RandevularView].[RandevuID] AS [RandevuID], 
+    [RandevularView].[RandevuRefFirmaID] AS [RandevuRefFirmaID], 
+    [RandevularView].[RandevuYeri] AS [RandevuYeri], 
+    [RandevularView].[RandevuTarihi] AS [RandevuTarihi], 
+    [RandevularView].[Bolge] AS [Bolge], 
+    [RandevularView].[Firma] AS [Firma], 
+    [RandevularView].[Kiminle] AS [Kiminle]
+    FROM [dbo].[RandevularView] AS [RandevularView]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Arayanlar_ArayanGrup" Association="Self.FK_Arayanlar_ArayanGrup">
             <End Role="ArayanGrup" EntitySet="ArayanGrup" />
             <End Role="Arayanlar" EntitySet="Arayanlar" />
@@ -2291,6 +2316,7 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             <End Role="Firma" EntitySet="Firmas" />
             <End Role="FirmaKisi" EntitySet="FirmaKisis" />
           </AssociationSet>
+          <EntitySet Name="RandevularViews" EntityType="PortalModel.RandevularView" />
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -3939,6 +3965,18 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="RandevularView">
+          <Key>
+            <PropertyRef Name="RandevuID" />
+          </Key>
+          <Property Name="RandevuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RandevuYeri" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RandevuTarihi" Type="DateTime" Precision="3" />
+          <Property Name="Bolge" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Firma" Type="String" MaxLength="754" FixedLength="false" Unicode="true" />
+          <Property Name="Kiminle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RandevuRefFirmaID" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4681,6 +4719,19 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
                 <ScalarProperty Name="Soyad" ColumnName="Soyad" />
                 <ScalarProperty Name="Ad" ColumnName="Ad" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RandevularViews">
+            <EntityTypeMapping TypeName="PortalModel.RandevularView">
+              <MappingFragment StoreEntitySet="RandevularView">
+                <ScalarProperty Name="RandevuRefFirmaID" ColumnName="RandevuRefFirmaID" />
+                <ScalarProperty Name="Kiminle" ColumnName="Kiminle" />
+                <ScalarProperty Name="Firma" ColumnName="Firma" />
+                <ScalarProperty Name="Bolge" ColumnName="Bolge" />
+                <ScalarProperty Name="RandevuTarihi" ColumnName="RandevuTarihi" />
+                <ScalarProperty Name="RandevuYeri" ColumnName="RandevuYeri" />
+                <ScalarProperty Name="RandevuID" ColumnName="RandevuID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -376,6 +376,9 @@
     <Compile Include="Models\Randevu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RandevularView.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SanalPos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -444,12 +447,14 @@
     <Content Include="js\controllers\domainIslerCtrl.js" />
     <Content Include="js\controllers\domainNotlariCtrl.js" />
     <Content Include="js\controllers\firmaKisiListCtrl.js" />
+    <Content Include="js\controllers\randevularCtrl.js" />
     <Content Include="js\extensions.js" />
     <Content Include="js\portalApp.js" />
     <Content Include="js\services\arayanListService.js" />
     <Content Include="js\services\domainIslerService.js" />
     <Content Include="js\services\domainNotlariService.js" />
     <Content Include="js\services\firmaKisiListService.js" />
+    <Content Include="js\services\randevularService.js" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -490,6 +495,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ui-bootstrap-2.5.0.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -552,6 +558,8 @@
     <Content Include="Views\Firmalar\FirmaKisiEkle.cshtml" />
     <Content Include="Views\SatisBolumu\Notlar.cshtml" />
     <Content Include="Views\SatisBolumu\NotKaydet.cshtml" />
+    <Content Include="Views\SatisBolumu\RootBilgisi.cshtml" />
+    <Content Include="Views\SatisBolumu\Randevular.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

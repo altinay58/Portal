@@ -11,6 +11,10 @@ namespace Portal.Controllers
 {
     public class FirmalarController : BaseController
     {
+        public FirmalarController()
+        {
+            ViewBag.guncelMenu = "Firmalar";
+        }
         #region firmakisilist
         public ActionResult FirmaKisiList()
         {

@@ -132,6 +132,7 @@
         <AssociationConnector Association="PortalModel.FK_Domain_RefDomainId" />
         <EntityTypeShape EntityType="PortalModel.FirmaKisi" Width="1.5" PointX="5.375" PointY="19.25" />
         <AssociationConnector Association="PortalModel.FK_FirmaKisi_Firma" />
+        <EntityTypeShape EntityType="PortalModel.RandevularView" Width="1.5" PointX="12.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -81,5 +81,6 @@ namespace Portal.Models
         public virtual DbSet<DomainNot> DomainNots { get; set; }
         public virtual DbSet<ZamanI> ZamanIs { get; set; }
         public virtual DbSet<FirmaKisi> FirmaKisis { get; set; }
+        public virtual DbSet<RandevularView> RandevularViews { get; set; }
     }
 }

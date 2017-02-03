@@ -22,6 +22,10 @@ namespace Portal.Controllers
     //}
     public class ArayanlarController : BaseController
     {
+        public ArayanlarController()
+        {
+            ViewBag.guncelMenu = "Arayanlar";
+        }
         // GET: Arayanlar
         public ActionResult ArayanListesi()
         {
