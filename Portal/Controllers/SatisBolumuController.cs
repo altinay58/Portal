@@ -77,14 +77,19 @@ namespace Portal.Controllers
             //ViewBag.ToplamEleman = Db.Randevus.ToList().Count;
             return View();
         }
-        public JsonResult RandevuAra(string basTarih, string bitisTarih)
+        public JsonResult RandevuAra(string basTarih, string bitisTarih,int sayfaNo)
         {
-
+            JsonCevap jsn = new JsonCevap();
+            int baslangic = (sayfaNo - 1) * PagerCount;
             DateTime tBas = DateTime.Parse(basTarih);
             DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
-            var query = Db.RandevularViews.Where(x => x.RandevuTarihi >= tBas && x.RandevuTarihi <= tBit          
-            ).OrderByDescending(x => x.RandevuTarihi);
-            return Json(query, JsonRequestBehavior.AllowGet);
+            jsn.ToplamSayi = Db.RandevularViews.Where(x => x.RandevuTarihi >= tBas && x.RandevuTarihi <= tBit          
+            ).OrderByDescending(x => x.RandevuTarihi).Count();
+
+            var query = Db.RandevularViews.Where(x => x.RandevuTarihi >= tBas && x.RandevuTarihi <= tBit
+           ).OrderByDescending(x => x.RandevuTarihi).Skip(baslangic).Take(PagerCount);
+            jsn.Data = query.ToList();
+            return Json(jsn, JsonRequestBehavior.AllowGet);
         }
         #endregion randevular
     }

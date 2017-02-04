@@ -9,5 +9,6 @@ namespace Portal.Models
     {
         public bool Basarilimi { get; set; }
         public object Data { get; set; }
+        public int ToplamSayi { get; set; }
     }
 }

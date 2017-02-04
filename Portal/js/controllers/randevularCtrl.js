@@ -1,19 +1,18 @@
 ﻿var ff;
 angModule.controller("randevularCtrl", function ($scope, $log, randevularService) {
     var self = $scope;
-    $scope.filteredTodos = []
-  , $scope.currentPage = 1
-  , $scope.numPerPage = 5
+    $scope.currentPage = 1
   , $scope.maxSize = 5;
     self.randevular = [];
     angular.element(document).ready(() => {
         self.getirData();
     });
     self.getirData = function () {
-        randevularService.getirRandevulari(self.basTarih, self.bitisTarih)
+        randevularService.getirRandevulari(self.basTarih, self.bitisTarih, $scope.currentPage)
         .then((res) => {
-            self.randevular = res;
-            ff=res;
+            self.randevular = res.Data;
+            ff = res;
+            $scope.totalItems = res.ToplamSayi;
         });
     }
     self.tarihFormatUznStr = function (tarih) {
@@ -36,7 +35,13 @@ angModule.controller("randevularCtrl", function ($scope, $log, randevularService
             return "";
         }
     }
-
+    self.pageChanged = function () {
+        randevularService.getirRandevulari(self.basTarih, self.bitisTarih, $scope.currentPage)
+       .then((res) => {
+           self.randevular = res.Data;
+           $scope.totalItems = res.ToplamSayi;
+       });
+    }
     $scope.$watch('currentPage + numPerPage', function () {
         //var begin = (($scope.currentPage - 1) * $scope.numPerPage)
         //, end = begin + $scope.numPerPage;

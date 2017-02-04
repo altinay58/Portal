@@ -1,11 +1,11 @@
 ﻿angModule.service("randevularService",function($http,$q){
   return ({
-    getirRandevulari:function(basTar,bitTar){
+    getirRandevulari:function(basTar,bitTar,sayfaNo){
       var request = $http({
           method: "get",
           url: "/SatisBolumu/RandevuAra",
           params: {
-              basTarih: basTar, bitisTarih: bitTar
+              basTarih: basTar, bitisTarih: bitTar,sayfaNo:sayfaNo
           },
           dataType: "json"
       });

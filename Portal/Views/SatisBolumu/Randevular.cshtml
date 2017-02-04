@@ -92,14 +92,9 @@
                 </tbody>
             </table>
         </div>
-        <pagination ng-model="currentPage"
-                    total-items="randevular.length"
-                    max-size="maxSize"
-                    boundary-links="true">
-        </pagination>
-        <p>
-            {{currentPage}}
-        </p>
+      
+        <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" 
+           items-per-page="20" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>      
     </form>
 </div>
 @section css{
@@ -123,8 +118,8 @@
 <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
 
-<script src="/js/services/randevularService.js?v=1.0.0"></script>
-<script src="/js/controllers/randevularCtrl.js?v=1.0.3"></script>
+<script src="/js/services/randevularService.js?v=1.0.1"></script>
+<script src="/js/controllers/randevularCtrl.js?v=1.0.4"></script>
 
 <script>
     $(function () {
