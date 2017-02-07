@@ -91,6 +91,70 @@ namespace Portal.Controllers
             jsn.Data = query.ToList();
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult RandevuKaydet(int?id)
+        {
+            Randevu randevu = new Randevu();
+            if (id.HasValue)
+            {
+                randevu = Db.Randevus.SingleOrDefault(x=>x.RandevuID==id);
+            }
+            ViewBag.RandevuYetkiliKisiID = new SelectList(Db.AspNetUsers.TumKullanicilar(), "Id", "UserName");
+            return View(randevu);
+        }
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult RandevuKaydet(Randevu model)
+        {
+            Randevu randevu = new Randevu();
+            if (model.RandevuID>0)
+            {
+                randevu = Db.Randevus.SingleOrDefault(x => x.RandevuID == model.RandevuID);
+            }
+            randevu.RandevuSilDurum = false;
+            randevu.RandevuDetay = model.RandevuDetay;
+            randevu.RandevuKayitTarihi = DateTime.Now;
+            randevu.RandevuEkleyenID = User.Identity.GetUserId()??DEFAULT_USER_ID;
+            randevu.RandevuRefFirmaID = model.RandevuRefFirmaID;
+            randevu.RandevuRefArayanID = model.RandevuRefArayanID;
+            if (model.RandevuRefFirmaID != null)
+            {
+                randevu.RandevuKonumID = Fonksiyonlar.FirmaBolgeIDGetir(model.RandevuRefFirmaID ?? 0);
+            }
+            else
+            {
+                randevu.RandevuKonumID = Fonksiyonlar.KonumIDGetir(model.RandevuRefArayanID ?? 0);
+            }
+            randevu.RandevuTarihi = new DateTime(model.RandevuTarihi.Value.Year, model.RandevuTarihi.Value.Month,
+                       model.RandevuTarihi.Value.Day, 0, 0, 0);
+            if (!string.IsNullOrEmpty(Request["SaatDakika"]))
+            {
+                string[] ary = Request["SaatDakika"].Split(':');
+                randevu.RandevuTarihi = new DateTime(model.RandevuTarihi.Value.Year, model.RandevuTarihi.Value.Month, 
+                    model.RandevuTarihi.Value.Day,
+                    Convert.ToInt32(ary[0]), Convert.ToInt32(ary[1]), 0);
+            }
+            if (model.RandevuID > 0)
+            {
+                Db.Entry(randevu).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                Db.Randevus.Add(randevu);
+            }
+            randevu.RandevuYetkiliKisiID = model.RandevuYetkiliKisiID;
+            randevu.RandevuYeri = model.RandevuYeri;
+            Db.SaveChanges();
+            TempData[SUCESS] = "Randevu Kaydedildi";
+            return RedirectToAction("Randevular");
+        }
+        public ActionResult RandevuSil(int id)
+        {
+            var randevu = Db.Randevus.SingleOrDefault(x => x.RandevuID == id);
+            Db.Randevus.Remove(randevu);
+            TempData[SUCESS] = "Kayıt Silindi";
+            Db.SaveChanges();
+            return RedirectToAction("Randevular");
+        }
         #endregion randevular
     }
 }

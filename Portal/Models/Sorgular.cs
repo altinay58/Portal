@@ -148,5 +148,43 @@ namespace Portal.Models
             }
                 
         }
+        public static IEnumerable<Firma> GetirFirmalar(this IEnumerable<Firma> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic, string durum)
+        {
+            if (durum == "personel")
+            {
+                return (from q in kaynakTablo
+                        where q.Personel == true && q.FirmaSilindi == false
+                        orderby q.FirmaID descending
+                        select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            }
+            if (durum == "kasa")
+            {
+                return (from q in kaynakTablo
+                        where q.Kasa == true && q.FirmaSilindi == false
+                        orderby q.FirmaID descending
+                        select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            }
+            else if (durum == "araci")
+            {
+                return (from q in kaynakTablo
+                        where q.Araci == true && q.FirmaSilindi == false
+                        orderby q.FirmaID descending
+                        select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            }
+            else if (durum == "musteri")
+            {
+                return (from q in kaynakTablo
+                        where q.Musteri == true && q.FirmaSilindi == false
+                        orderby q.FirmaID descending
+                        select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            }
+            else
+            {
+                return (from q in kaynakTablo
+                        where q.FirmaSilindi == false
+                        orderby q.FirmaID descending
+                        select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            }
+        }
     }
 }

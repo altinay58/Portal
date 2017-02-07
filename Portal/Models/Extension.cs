@@ -14,7 +14,7 @@ namespace Portal.Models
         }
         public static IEnumerable<T> TumFirmalar<T>(this IQueryable<T> source) where T : Firma
         {
-            return source.Where(a => a.FirmaSilindi == false);
+            return source.Where(a => a.FirmaSilindi == false).OrderByDescending(x=>x.FirmaID);
         }
         public static bool ContainsNullControl(this string source,string value)
         {

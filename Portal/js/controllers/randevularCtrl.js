@@ -42,6 +42,17 @@ angModule.controller("randevularCtrl", function ($scope, $log, randevularService
            $scope.totalItems = res.ToplamSayi;
        });
     }
+    self.randevuSil = function (id) {
+        var result = confirm("Silmek istediğinizden eminmisiniz?");
+        if (result) {
+            var url= "/SatisBolumu/RandevuSil";
+            url=url+"/"+id;
+            let form=document.getElementById("form1");// $("#form1");
+            form.action=url;
+            form.submit();
+
+        }
+    }
     $scope.$watch('currentPage + numPerPage', function () {
         //var begin = (($scope.currentPage - 1) * $scope.numPerPage)
         //, end = begin + $scope.numPerPage;

@@ -118,5 +118,144 @@ namespace Portal.Models
 
             return Duzenlenmis;
         }
+        public static int FirmaBolgeIDGetir(int FirmaID)
+        {
+            int? firmaBolgeID;
+            using (var dbc = new PortalEntities())
+            {
+                firmaBolgeID = dbc.Firmas.Find(FirmaID).RefKonumID;
+
+            }
+
+            return firmaBolgeID ?? 0;
+        }
+
+        public static int KonumIDGetir(int arayanID)
+        {
+            int? arayanRefKonumID;
+            using (var dbc = new PortalEntities())
+            {
+                arayanRefKonumID = dbc.Arayanlars.Find(arayanID).arayanRefKonumID;
+
+            }
+
+            return arayanRefKonumID ?? 0;
+        }
+        public static MvcHtmlString Sayfala(string link, int bulunduguSayfa, int ogeAdedi, int sayfadaGosterilecekOgesayisi, bool lilimi, string liCSS, string aCSS, string activeCSS,
+       bool limiAktif, bool tumSayfalariGoster, int sayfadanOnceKacSayfaGosterilsin)
+        {
+            string sayfalama = "";
+            string liBaslangic = "";
+            string liBitis = "";
+            string aktifLi = "";
+
+            // Sayfasayısını buluyoruz Eğer sayfa sayısında kalan olursa yukarı yuvarlayarak artan elemanların son
+            // sayfada çıkmasını sağlıyoruz
+
+            double toplamSayfa = (double)ogeAdedi / sayfadaGosterilecekOgesayisi;
+            toplamSayfa = Math.Ceiling(toplamSayfa);
+
+
+            // Sayfalama sistemi li li ise lileri ekliyoruz
+            if (lilimi)
+            {
+                liBaslangic = "<li class=\"" + liCSS + "\">";
+                liBitis = "</li>";
+                aktifLi = "<li class=\"" + liCSS + " " + activeCSS + "\">";
+            }
+
+
+            // ilk sayfa kodu
+            sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "\">İlk</a>" + liBitis;
+
+            // Bulunduğu sayfa 1 den büyükde önceki sayfa linkini ekliyoruz
+            if (bulunduguSayfa > 1)
+            {
+                sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "/" + (bulunduguSayfa - 1).ToString() + "\">Önceki</a>" + liBitis;
+
+            }
+
+            // Tüm sayfaları göster true ise tüm sayfaların listelenmesi için aşağıdaki kodu yazdık.
+            if (tumSayfalariGoster)
+            {
+                if (toplamSayfa > 1)
+                {
+                    if (bulunduguSayfa == 0)
+                    {
+                        sayfalama = sayfalama + aktifLi + "<a class=\"" + aCSS + " " + activeCSS + "\" href=\"" + link + "\">1</a>" + liBitis;
+                    }
+                    else
+                    {
+                        sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "\">" + 1 + "</a>" + liBitis;
+                    }
+                }
+
+
+                for (int i = 2; i <= toplamSayfa; i++)
+                {
+                    if (bulunduguSayfa == i)
+                    {
+                        sayfalama = sayfalama + aktifLi + "<a class=\"" + aCSS + " " + activeCSS + "\" href=\"" + link + "/" + (bulunduguSayfa).ToString() + "\">" + bulunduguSayfa + "</a>" + liBitis;
+                    }
+                    else
+                    {
+                        sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "/" + (i).ToString() + "\">" + i + "</a>" + liBitis;
+                    }
+                }
+            }
+            else // Tüm sayfalar gösterilmeyecekse aşağıdaki kodu yazdık.
+            {
+                // Sayfamızdan verilen değerden önceki sayfaları getiriyoruz.
+                for (int i = bulunduguSayfa - sayfadaGosterilecekOgesayisi; i < bulunduguSayfa; i++)
+                {
+                    if (i == 1)
+                    {
+                        sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "\">" + 1 + "</a>" + liBitis;
+                    }
+                    else if (i > 0)
+                    {
+                        sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "/" + (i).ToString() + "\">" + i + "</a>" + liBitis;
+                    }
+                }
+
+                // Bulunduğu sayfa 0 dan büyükse yazdırıyoruz.
+                if (bulunduguSayfa > 0)
+                {
+                    if (bulunduguSayfa == 1)
+                    {
+                        sayfalama = sayfalama + aktifLi + "<a class=\"" + aCSS + " " + activeCSS + "\" href=\"" + link + "\">" + 1 + "</a>" + liBitis;
+                    }
+                    else if (bulunduguSayfa > 0)
+                    {
+                        sayfalama = sayfalama + aktifLi + "<a class=\"" + aCSS + " " + activeCSS + "\" href=\"" + link + "/" + (bulunduguSayfa).ToString() + "\">" + bulunduguSayfa + "</a>" + liBitis;
+                    }
+                }
+
+                // sayfadan sonraki belirtilen sayfasayıkı kadar sayfa ekliyoruz
+                for (int i = bulunduguSayfa + 1; i < bulunduguSayfa + sayfadaGosterilecekOgesayisi + 1; i++)
+                {
+                    if (i <= toplamSayfa)
+                    {
+                        sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "/" + (i).ToString() + "\">" + i + "</a>" + liBitis;
+                    }
+                }
+
+
+            }
+
+
+            // Bulunduğu sayfa son sayfadan küçükse Sonraki linkini ekliyoruz
+            if (toplamSayfa > bulunduguSayfa)
+            {
+                sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "/" + (bulunduguSayfa + 1).ToString() + "\">Sonraki</a>" + liBitis;
+            }
+
+            // Son sayfa kodu
+            sayfalama = sayfalama + liBaslangic + "<a class=\"" + aCSS + "\" href=\"" + link + "/" + (toplamSayfa).ToString() + "\">Son</a>" + liBitis;
+
+
+            return MvcHtmlString.Create(sayfalama);
+
+        }
     }
 }

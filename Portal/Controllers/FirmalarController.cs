@@ -15,6 +15,46 @@ namespace Portal.Controllers
         {
             ViewBag.guncelMenu = "Firmalar";
         }
+        public ActionResult Tumu(int? sayfaNo,string q)
+        {
+            //if (!User.IsInRole("Muhasebe") && durum != "musteri")
+            //{
+
+            //    TempData["KirmiziMesaj"] = "Bu bölüme giriş yetkiniz bulunmuyor.";
+            //    return RedirectToAction("Index", "Home");
+            //}
+
+            ViewBag.SayfaAdi = "Firmalar";
+            ViewBag.Durum = "tumu";
+
+
+            int SayfaNo = sayfaNo ?? 0;
+
+
+            int domainBaslangic = 0;
+            if (SayfaNo > 1)
+            {
+                domainBaslangic = (SayfaNo - 1) * PagerCount;
+            }
+
+            var viewData = Db.Firmas.TumFirmalar()
+                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true)
+                .Skip(domainBaslangic).Take(PagerCount).ToList();
+                
+                //.GetirFirmalar(PagerCount, domainBaslangic, "tumu");
+
+
+            ViewBag.BulunduguSayfa = SayfaNo;
+            int totalCount = Db.Firmas.TumFirmalar()
+                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true).Count();
+            PaginatedList pager = new PaginatedList((sayfaNo ?? 1), PagerCount, totalCount);
+            //sayfalama
+            ViewData["queryData"] = q;
+            ViewBag.Sayfalama = pager;
+            //ViewBag.Domainler = Db.Domains.GetirDomainler(id);
+
+            return View(viewData);
+        }
         #region firmakisilist
         public ActionResult FirmaKisiList()
         {

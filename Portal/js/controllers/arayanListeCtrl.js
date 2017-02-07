@@ -33,13 +33,12 @@ angModule.controller('arayanListeCtrl', function ($scope,arayanListService) {
 
           alert(index);
       }
-      self.kontrolKayitDurumu = function (arayan) {
-          console.log(arayan);
+      self.kontrolKayitDurumu = function (arayan) {         
           if (arayan.KayitDurum) {
-              return '<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet({0}))">Kaydet</button>'.with(arayan.Id);
-            
-          } else {
-              return "<span><a href='#'>Kayıtlı Firma</a></span>";
+              return "<span><a href='#'>Kayıtlı Firma</a></span>";            
+          } else {             
+              return `<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet(${arayan.Id}))">Kaydet</button>`;
+              //.with(arayan.Id);
           }
       }
       //self.$watch('basTarih,bitisTarih', function () {

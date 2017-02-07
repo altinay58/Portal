@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Portal.Models.Firma>
+@using Portal.Models;
+@using Portal.Extensions;
+@using Portal.Controllers;
+@{
+    ViewBag.Title = "Tumu";
+}
+<form method="post" name="form1" action="@Url.Action("Tumu","Firmalar")" enctype="multipart/form-data">
+    <div class="row" style="margin-bottom:5px">
+        <div class="col-md-3">
+            <input type="text" class="form-control" name="q" placeholder="Ara..." value="@ViewData["queryData"]" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default blue" type="submit">Ara</button>
+        </div>
+    </div>
+</form>
+<div class="table-scrollable">
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="flip-content">
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>Kalan Ödeme</th>
+                <th>
+                    Firma
+                </th>
+                <th class="left">
+                    Yetkili
+                </th>
+                <th class="left">
+                    Telefon
+                </th>
+                <th class="left">
+                    Cep Telefon
+                </th>
+                <th class="left">
+                    Domainler
+                </th>
+                <th class="left">
+                    Aracı
+                </th>
+
+                <th class="left">
+                    E-Mail
+                </th>
+                <th class="right">
+                    Düzelt
+                </th>
+                <th class="right">
+                    Sil
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @{ foreach (Portal.Models.Firma firmaVerisi in ViewData.Model)
+                {
+                    int? alinan = firmaVerisi.CariHarekets.Sum(q => q.ChAlinanOdeme);
+
+                    int? satis = firmaVerisi.CariHarekets.Sum(q => q.ChSatisFiyati);
+
+                    if (satis == null)
+                    {
+                        satis = 0;
+                    }
+                    if (alinan == null)
+                    {
+                        alinan = 0;
+                    }
+                    <tr>
+                        <td>@firmaVerisi.FirmaID</td>
+                        <td class="text-right"> @String.Format("{0:0,0}", (satis - alinan)) TL</td>
+                        <td>
+                            <a href="@Url.Action("CariHareketDetay", "Web", new { firmaID = firmaVerisi.FirmaID })">
+                                @firmaVerisi.FirmaAdi
+                            </a>
+                        </td>
+                        <td>
+                            @firmaVerisi.YetkiliAdi
+                        </td>
+                        <td>
+                            @firmaVerisi.YetkiliTelefon
+                        </td>
+                        <td>
+                            @firmaVerisi.YetkiliCepTelefon
+                        </td>
+                        <td>
+                            @firmaVerisi.Domains.Count
+                        </td>
+
+                        <td>
+                            @firmaVerisi.Firma2.FirmaAdi
+                        </td>
+
+
+                        <td>
+                            @firmaVerisi.Email
+                        </td>
+
+
+
+                        <td>
+                            <a href="@Url.Action("FirmaDuzenle", new { controller = "Web", id = firmaVerisi.FirmaID })">
+                               Düzenle
+                            </a>
+
+                        </td>
+                        <td align="right">
+                            <a href="javascript:if(confirm('Emin misiniz?'))location.href='@Url.Action("FirmaSil", "Web", new { controller = "Web", id = firmaVerisi.FirmaID })'">
+                               Sil
+                            </a>
+                        </td>
+                    </tr>
+
+                }
+                string durum = ViewBag.Durum;
+            }
+        </tbody>
+
+    </table>
+</div>
+@if (ViewBag.Sayfalama.TotalCount > 0)
+{
+    @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<FirmalarController>(c => c.Tumu(page, queryData))))
+}
+

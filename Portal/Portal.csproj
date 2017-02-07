@@ -482,6 +482,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="js\jquery.autocomplete.js" />
+    <None Include="Properties\PublishProfiles\portal.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -560,6 +561,8 @@
     <Content Include="Views\SatisBolumu\NotKaydet.cshtml" />
     <Content Include="Views\SatisBolumu\RootBilgisi.cshtml" />
     <Content Include="Views\SatisBolumu\Randevular.cshtml" />
+    <Content Include="Views\SatisBolumu\RandevuKaydet.cshtml" />
+    <Content Include="Views\Firmalar\Tumu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

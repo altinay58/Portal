@@ -87,7 +87,7 @@
                         <td> {{x.Firma}} </td>
                         <td> {{x.Tel}} </td>
                         <td> {{x.CepTel}} </td>
-                        <td>{{x.Note }}</td>
+                        <td><div ng-bind-html="x.Note | to_trusted "></div></td>
                         <td> {{x.MailDurum}} </td>
                         <td><div ng-bind-html="kontrolTicket(x.Ticket) | to_trusted"></div></td>
                         <td> {{x.StrTarih}} </td>
@@ -131,7 +131,7 @@
 
 
 <script src="/js/services/arayanListService.js?v=1.0.4"></script>
-<script src="/js/controllers/arayanListeCtrl.js?v=1.0.4"></script>
+<script src="/js/controllers/arayanListeCtrl.js?v=1.0.5"></script>
 
 <script>
     function printPage() {
