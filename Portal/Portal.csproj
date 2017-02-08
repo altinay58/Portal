@@ -563,6 +563,7 @@
     <Content Include="Views\SatisBolumu\Randevular.cshtml" />
     <Content Include="Views\SatisBolumu\RandevuKaydet.cshtml" />
     <Content Include="Views\Firmalar\Tumu.cshtml" />
+    <Content Include="Views\Firmalar\FirmaKaydet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

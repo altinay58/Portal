@@ -186,5 +186,19 @@ namespace Portal.Models
                         select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
             }
         }
+        public static IEnumerable<Konum> GetirKonumlar(this IEnumerable<Konum> kaynakTablo)
+        {
+            return from a in kaynakTablo
+                   orderby a.Konum1 ascending
+                   select a;
+        }
+        public static IEnumerable<Arayanlar> GetirArayanGecmisAramalar(this IEnumerable<Arayanlar> kaynakTablo, string FirmaAdi)
+        {
+
+            return (from d in kaynakTablo
+                    where d.arayanFirmaAdi.Replace(" ", "").ToUpper() == FirmaAdi.ToString()
+                    orderby d.arayanKayitTarih descending
+                    select d).ToList();
+        }
     }
 }

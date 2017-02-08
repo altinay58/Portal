@@ -5,10 +5,10 @@
 @{
     ViewBag.Title = "Tumu";
 }
-<form method="post" name="form1" action="@Url.Action("Tumu","Firmalar")" enctype="multipart/form-data">
+<form method="post" id="ekleForm" name="form1" action="@Url.Action("Tumu","Firmalar")" enctype="multipart/form-data">
     <div class="row" style="margin-bottom:5px">
         <div class="col-md-3">
-            <input type="text" class="form-control" name="q" placeholder="Ara..." value="@ViewData["queryData"]" />
+            <input type="text" class="form-control" name="q" placeholder="Ara..." value="" />
         </div>
         <div class="col-md-2">
             <button class="btn btn-default blue" type="submit">Ara</button>
@@ -102,13 +102,13 @@
 
 
                         <td>
-                            <a href="@Url.Action("FirmaDuzenle", new { controller = "Web", id = firmaVerisi.FirmaID })">
+                            <a href="@Url.Action("FirmaKaydet", new { controller = "Firmalar", id = firmaVerisi.FirmaID })">
                                Düzenle
                             </a>
 
                         </td>
                         <td align="right">
-                            <a href="javascript:if(confirm('Emin misiniz?'))location.href='@Url.Action("FirmaSil", "Web", new { controller = "Web", id = firmaVerisi.FirmaID })'">
+                            <a href="#" onclick="firmaSil(@firmaVerisi.FirmaID)">
                                Sil
                             </a>
                         </td>
@@ -125,5 +125,20 @@
 {
     @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
                             string.Format("{0}", this.Html.BuildUrlFromExpressionFG<FirmalarController>(c => c.Tumu(page, queryData))))
+}
+@section scripts{
+<script>
+    function firmaSil(id) {
+        var result = confirm("Silmek istediğinizden eminmisiniz?");
+        if (result) {
+            var url = "/Firmalar/FirmaSil";
+            url = url + "/" + id;
+            let form = document.getElementById("ekleForm");// $("#form1");
+            form.action = url;
+            form.submit();
+
+        }
+    }
+</script>
 }
 

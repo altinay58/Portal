@@ -1,0 +1,307 @@
+﻿@model Portal.Models.Firma
+@{
+    ViewBag.Title = "FirmaKaydet";
+}
+<form action="/Firmalar/FirmaKaydet/@Model.FirmaID" method="post" id="ekleForm">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model=>model.firmaRefArayanID)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Firma Adı
+            </label>
+            <div class="col-md-4">
+                @if (Model != null)
+                {
+                    <input id="firmaAdi" type="text" class="form-control" name="FirmaAdi" value="@Model.FirmaAdi" />              
+                    <input type="hidden" id="FirmaID" name="FirmaID" value="@Model.FirmaID" />
+                }              
+                else
+                {
+                    <input id="firmaAdi" type="text" class="form-control" name="firmaAdi" value="" />
+                    <input type="hidden" id="FirmaID" name="FirmaID" value="" />
+                }
+
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Vergi Dairesi
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.FirmaVergiDairesi, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Vergi Numarası
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.FirmaVergiNumarasi, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Firma Adres
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.FirmaAdres, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Yetkili Adı
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.YetkiliAdi, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Yetkili Soyadı
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.YetkiliSoyAdi, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Yetkili Telefon
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.YetkiliTelefon, new { @class = "form-control phone" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Yetkili Cep Telefon
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.YetkiliCepTelefon, new { @class = "form-control phone" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Email
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Aracı
+            </label>
+            <div class="col-md-4">
+                <select name="refFirmaID" class="form-control select2">
+                    @{
+                        foreach (Portal.Models.Firma firmaDetay in ViewBag.Firmalar)
+                        {
+                            if (firmaDetay.FirmaID == Model.RefFirmaID)
+                            {
+                                <option selected="selected" value="@(firmaDetay.FirmaID)">@(firmaDetay.FirmaAdi)</option>
+                            }
+                            else
+                            {
+                                <option value="@(firmaDetay.FirmaID)">@(firmaDetay.FirmaAdi)</option>
+                            }
+                        }
+                    }
+                </select>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Konum
+            </label>
+            <div class="col-md-4">
+                <select name="refKonumID" class="form-control select2">
+                    @{
+                        foreach (Portal.Models.Konum konum in ViewBag.Konumlar)
+                        {
+                            if (konum.KonumID == Model.RefKonumID)
+                            {
+                                <option selected="selected" value="@(konum.KonumID)">@(konum.Konum1)</option>
+                            }
+                            else
+                            {
+                                <option value="@(konum.KonumID)">@(konum.Konum1)</option>
+                            }
+                        }
+                    }
+                </select>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Durum
+            </label>
+            <div class="col-md-4">
+                <input name="araci" type="checkbox" value="true" @if (Model.Araci == true) { @MvcHtmlString.Create("checked=\"checked\"")    } />Aracı<br />
+                <input name="musteri" type="checkbox" value="true" @if (Model.Musteri == true) { @MvcHtmlString.Create("checked=\"checked\"")    } />Müşteri<br />
+                <input name="personel" type="checkbox" value="true" @if (Model.Personel == true) { @MvcHtmlString.Create("checked=\"checked\"")    } />Personel<br />
+                <input name="kasa" type="checkbox" value="true" @if (Model.Kasa == true) { @MvcHtmlString.Create("checked=\"checked\"")    } />Kasa<br />               
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-1">
+                <button type="submit" class="btn green">Kaydet</button>
+            </div>           
+        </div>
+    </div>
+</form>
+@section css{
+    <link href="/Content/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    
+
+    <style>
+        .datepicker.dropdown-menu {
+            z-index: 9999 !important;
+        }
+
+        .autocomplete-suggestions {
+            border: 1px solid #999;
+            background: #FFF;
+            overflow: auto;
+        }
+
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .autocomplete-selected {
+            background: #F0F0F0;
+        }
+
+        .autocomplete-suggestions strong {
+            font-weight: normal;
+            color: #3399FF;
+        }
+
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+
+        .autocomplete-group strong {
+            display: block;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+
+}
+@section scripts{
+    <script src="/js/jquery.autocomplete.js"></script>
+    <script src="/Content/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script> 
+    <script src="/Content/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="/Content/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script>
+     
+        $(function () {
+            validateForm();
+            $('.phone').inputmask("mask", {
+                "mask": "(9999)-999-99-99"
+            });
+            $(".select2").select2();
+            $("#firmaAdi").autocomplete({
+                minChars: 2,
+                transformResult: function (response) {
+                    return {
+                        suggestions: $.map(response, function (dataItem) {
+                            return { value: dataItem["label"], data: dataItem["value"], kayitlimi: dataItem.Kayitlimi };
+                        })
+                    };
+                },
+                onSearchStart: function (query) {
+                    query.sadeceFirma = true;
+                    query.sadeceArayanlar = false;
+                },
+                paramName: 'firmaAdi',
+                serviceUrl: '/Isler/FirmalariGetir',
+                onSelect: function (suggestion) {                  
+                    $("#FirmaID").val(suggestion.data);
+                },
+                dataType: "json",
+                noCache: true,
+                tabDisabled: true
+            });
+          
+         
+
+
+        
+        })
+        function validateForm() {
+            //**validation
+            var form1 = $('#ekleForm');
+            var error1 = $('.alert-danger', form1);
+            var success1 = $('.alert-success', form1);
+
+            form1.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                messages: {
+                    firmaAdi: "Zorunlu alan.",
+                    FirmaAdres: "Zorunlu alan.",
+                    Email: "Format yanlış."
+                },
+                rules: {
+                    firmaAdi: {
+                        minlength: 2,
+                        required: true
+                    },
+                    FirmaAdres: {
+                        minlength: 2,
+                        required: true
+                    },
+                    YetkiliAdi: {
+                        minlength: 2,
+                        required: true
+                    },
+                    Email:{email:true}
+
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    success1.hide();
+                    error1.show();
+                    App.scrollTo(error1, -200);
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                },
+
+                submitHandler: function (form) {
+                    //success1.show();
+                    //error1.hide();
+                    $('#ekleForm')[0].submit();
+                }
+            });
+
+
+
+
+            //**end validation
+        }
+    </script>
+
+}

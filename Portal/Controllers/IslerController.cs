@@ -358,53 +358,83 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
 
             return Json(cevap, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult FirmalariGetir(string firmaAdi)
+        public JsonResult FirmalariGetir(string firmaAdi,bool sadeceFirma=true,bool sadeceArayanlar=true)
         {
 
 
             var firmalar = new List<object>();
-
-            foreach (Firma firma in Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi) 
-            || a.YetkiliTelefon.Contains(firmaAdi) || a.Email.Contains(firmaAdi)
-            ))
+            if (sadeceFirma)
             {
-                firmalar.Add(new
+                foreach (Firma firma in Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi)
+                        || a.YetkiliTelefon.Contains(firmaAdi) || a.Email.Contains(firmaAdi)
+                        ))
                 {
-                    value = firma.FirmaID, label = firma.FirmaAdi,Telefon1=firma.YetkiliTelefon,Telefon2=firma.YetkiliCepTelefon,
-                    Email=firma.Email,Adres=firma.FirmaAdres,Kayitlimi=true,Adi=firma.YetkiliAdi,Soyadi=firma.YetkiliSoyAdi,
-                    FirmaSahibiOzellik="",Sehir=firma.firmaSehir,ilce=firma.firmailce,WebAdresi="",
-                    KonumId =firma.RefKonumID,SektorId=firma.firmaSektorID,DomainKategoriId=firma.firmaDomainKategoriID
-                });
-            }
-
-
-            var diziArayanlar = Db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi)
-            || a.arayanTelefonNo.Contains(firmaAdi) || a.arayanMailAdresi.Contains(firmaAdi) ).ToList();
-
-            List<int> listTemp = new List<int>();
-           
-            //.Select(o => new { ArayanAdi = o.Key, Arayan = o.OrderBy(c => c.arayanFirmaAdi).ToList() }).ToList();
-
-            foreach (var arayan in diziArayanlar)
-            {
-                //Arayanlar arayanFirma = db.Arayanlars.FirstOrDefault(a => a.arayanFirmaAdi == aramaYapan.ArayanAdi);
-                //if (arayanFirma != null)
-                //{
-                //    firmalar.Add(new { value = "kayitliDegil" + arayanFirma.arayanID, label = arayanFirma.arayanFirmaAdi + " - Kayıtlı Değil" });
-                //}
-                if (!listTemp.Contains(arayan.arayanID))
-                {
-                    firmalar.Add(new { value = arayan.arayanID, label = arayan.arayanFirmaAdi,Telefon1=arayan.arayanTelefonNo,Telefon2=arayan.arayanCepTelNo,
-                        Email = arayan.arayanMailAdresi,Adres = arayan.arayanAdres,Kayitlimi = false,
-                        Adi = arayan.arayanAdi,Soyadi = arayan.arayanSoyadi,FirmaSahibiOzellik = arayan.arayanFirmaSahibiOzelligi,
-                        Sehir = arayan.arayanSehir,ilce = arayan.arayanilce, WebAdresi = arayan.arayanWebAdresi,
-                        KonumId = arayan.arayanRefKonumID,SektorId = arayan.arayanSektorID,
-                        DomainKategoriId = arayan.arayanDomainKategoriID
+                    firmalar.Add(new
+                    {
+                        value = firma.FirmaID,
+                        label = firma.FirmaAdi,
+                        Telefon1 = firma.YetkiliTelefon,
+                        Telefon2 = firma.YetkiliCepTelefon,
+                        Email = firma.Email,
+                        Adres = firma.FirmaAdres,
+                        Kayitlimi = true,
+                        Adi = firma.YetkiliAdi,
+                        Soyadi = firma.YetkiliSoyAdi,
+                        FirmaSahibiOzellik = "",
+                        Sehir = firma.firmaSehir,
+                        ilce = firma.firmailce,
+                        WebAdresi = "",
+                        KonumId = firma.RefKonumID,
+                        SektorId = firma.firmaSektorID,
+                        DomainKategoriId = firma.firmaDomainKategoriID
                     });
-                    listTemp.Add(arayan.arayanID);
                 }
-               
             }
+        
+
+            if (sadeceArayanlar)
+            {
+                var diziArayanlar = Db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi)
+            || a.arayanTelefonNo.Contains(firmaAdi) || a.arayanMailAdresi.Contains(firmaAdi)).ToList();
+
+                List<int> listTemp = new List<int>();
+
+                //.Select(o => new { ArayanAdi = o.Key, Arayan = o.OrderBy(c => c.arayanFirmaAdi).ToList() }).ToList();
+
+                foreach (var arayan in diziArayanlar)
+                {
+                    //Arayanlar arayanFirma = db.Arayanlars.FirstOrDefault(a => a.arayanFirmaAdi == aramaYapan.ArayanAdi);
+                    //if (arayanFirma != null)
+                    //{
+                    //    firmalar.Add(new { value = "kayitliDegil" + arayanFirma.arayanID, label = arayanFirma.arayanFirmaAdi + " - Kayıtlı Değil" });
+                    //}
+                    if (!listTemp.Contains(arayan.arayanID))
+                    {
+                        firmalar.Add(new
+                        {
+                            value = arayan.arayanID,
+                            label = arayan.arayanFirmaAdi,
+                            Telefon1 = arayan.arayanTelefonNo,
+                            Telefon2 = arayan.arayanCepTelNo,
+                            Email = arayan.arayanMailAdresi,
+                            Adres = arayan.arayanAdres,
+                            Kayitlimi = false,
+                            Adi = arayan.arayanAdi,
+                            Soyadi = arayan.arayanSoyadi,
+                            FirmaSahibiOzellik = arayan.arayanFirmaSahibiOzelligi,
+                            Sehir = arayan.arayanSehir,
+                            ilce = arayan.arayanilce,
+                            WebAdresi = arayan.arayanWebAdresi,
+                            KonumId = arayan.arayanRefKonumID,
+                            SektorId = arayan.arayanSektorID,
+                            DomainKategoriId = arayan.arayanDomainKategoriID
+                        });
+                        listTemp.Add(arayan.arayanID);
+                    }
+
+                }
+            }
+            
 
             return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
