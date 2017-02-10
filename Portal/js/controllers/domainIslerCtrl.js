@@ -108,8 +108,9 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         self.guncelFirmaId=firmaId;
         self.guncelDomainAksiyon = self.domainBilgi.DomainAksiyon;
 
-    }
-    self.getirDomainIsler = function () {
+    } 
+    self.getirDomainIsler = function () {    
+       
         domainIslerService.getirDomaineAitIsleri(self.guncelDomainId)
         .then(function (res) {
             ff = res;
@@ -117,6 +118,9 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
             self.domainIsler = res;
             self.toplamZamanStr = String(self.toplamZaman).toplamZamanFormat();
             arrayZamanHesapla();
+            //$timeout(function () {
+            //    console.log("post Digest with $timeout");
+            //}, 0, false);
         })
     }
     self.filterByIsinDurumu = function (domainIs) {
@@ -239,6 +243,10 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         else {
             portalApp.mesajGoster("Domain yayın durduruldu  veya beklemeye alındı ","danger");
         }
+    }
+    self.isiYapanKullanicilar = function (kullanicilar) {
+        let str = kullanicilar.map(e=> { return e.AdSoyad }).join();
+        return str;        
     }
     function guncelKullaniciIsiYapliyorSayisi() {
         let sayi = 0;

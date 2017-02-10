@@ -56,7 +56,8 @@ namespace Portal.Controllers
                                       Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
 
             return View(domain);
-        }       
+        }
+        //[OutputCache(Duration = 3600, VaryByParam = "domainId")]
         public JsonResult DomainAitIsler(int domainId)
         {
             var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis).Include(x=>x.isYorums)
@@ -94,9 +95,12 @@ namespace Portal.Controllers
                                                     ).ToList()
                         }
                         
-                        );               
-            
-            return Json(list,JsonRequestBehavior.AllowGet);
+                        );
+            var jsonResult = Json(list, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+            return jsonResult;
+
+           
         }
         [ValidateInput(false)]
         public JsonResult IsDurumuDegistir(string domainIs,byte yeniDurum)
