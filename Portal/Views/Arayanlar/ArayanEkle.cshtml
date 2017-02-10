@@ -11,8 +11,7 @@
             <div class="form-group">
 
                 <label class="control-label col-md-2">Firma Adı</label>
-                <div class="col-md-4">
-                  
+                <div class="col-md-4">                
                     @Html.TextBoxFor(x=>x.arayanFirmaAdi,new {@class="form-control" })
                     <input type="hidden" name="arayanKayitliRefFirmaID" id="arayanKayitliRefFirmaID" />
                     <input type="hidden" name="Kayitlimi" />
@@ -323,11 +322,12 @@
     <script src="/Content/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
     <script src="/Content/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script> 
     <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
-<script src="/Content/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+<script src="/content/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+
 @*<script src="/Content/assets/pages/scripts/ui-bootstrap-growl.min.js" type="text/javascript"></script>*@
 <script src="http://ifightcrime.github.io/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
 @*<script src="/Scripts/jquery.autocomplete.min.js"></script>*@
-<script src="/js/jquery.autocomplete.js?v=1.0.9"></script>
+<script src="/js/jquery.autocomplete.js?v=1.0.10"></script>
     <script>
         //auto complete olacak input name lerini tutar
         var aryAutoKeys = {},ff;
@@ -378,7 +378,9 @@
                 }
             });
             $('.phone_us').inputmask("mask", {
-                "mask": "(9999)-999-99-99", autoUnmask: true
+                "mask": "(9999)-999-99-99", 
+                autoUnmask: true,
+                removeMaskOnSubmit: true,
             });
             $("#cbIsEkle").change(function () {
                 if ($(this).is(":checked")) {

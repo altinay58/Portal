@@ -11,6 +11,7 @@ using Portal.Helper;
 using Portal.Models;
 namespace Portal.Controllers
 {
+    [Authorize]
     public abstract class BaseController : Controller
     {        
         public BaseController()

@@ -37,7 +37,7 @@ angModule.controller('arayanListeCtrl', function ($scope,arayanListService) {
           if (arayan.KayitDurum) {
               return "<span><a href='#'>Kayıtlı Firma</a></span>";            
           } else {
-              return `<a href="/Firmalar/ArayaniFirmayaKaydet/${arayan.Id}">Firmayı Kaydet</a>"`;
+              return `<a href="/Firmalar/ArayaniFirmayaKaydet/${arayan.Id}">Firmayı Kaydet</a>`;
               //return `<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet(${arayan.Id}))">Kaydet</button>`;
               //.with(arayan.Id);
           }

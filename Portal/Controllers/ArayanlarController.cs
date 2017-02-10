@@ -80,8 +80,8 @@ namespace Portal.Controllers
                 arayan.arayanSoyadi = vmodel.arayanSoyadi;
                 arayan.arayanFirmaAdi = vmodel.arayanFirmaAdi;
                 arayan.arayanFirmaSahibiOzelligi = vmodel.arayanFirmaSahibiOzelligi;
-                arayan.arayanTelefonNo = vmodel.arayanTelefonNo;
-                arayan.arayanCepTelNo = vmodel.arayanCepTelNo;
+                arayan.arayanTelefonNo =Fonksiyonlar.TelefonDuzelt(vmodel.arayanTelefonNo);
+                arayan.arayanCepTelNo = Fonksiyonlar.TelefonDuzelt( vmodel.arayanCepTelNo);
                 arayan.arayanMailAdresi = vmodel.arayanMailAdresi;
                 arayan.arayanWebAdresi = vmodel.arayanWebAdresi;
                 arayan.arayanSehir = vmodel.arayanSehir;

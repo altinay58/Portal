@@ -64,7 +64,7 @@ namespace Portal.Controllers
                         join z in Db.ZamanIs on p.islerID equals z.RefIsId into temp
                         from zz in temp.DefaultIfEmpty()
                         where p.islerRefDomainID == domainId 
-                        orderby p.islerSiraNo descending
+                        orderby p.islerIsinDurumu ascending,p.islerID descending
                         select new DomainIs
                         {
                             IsId = p.islerID,

@@ -60,7 +60,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         gg = self;
         signalDomain = $.connection.domainIsHub;
         signalDomain.client.yorumEklendi = function (index, jsnYorum, fromId, toId) {
-            if (self.guncelKullanici.Id != fromId) {
+            if (self.guncelKullanici.Id !== fromId) {
                 let yeniYorum = JSON.parse(jsnYorum);
                 self.domainIsler[index].Yorumlar.push(yeniYorum);
                 if (toId.indexOf( self.guncelKullanici.Id)>-1) {
@@ -81,9 +81,9 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         };
         signalDomain.client.domaisDurumDegisti = function (jsnDomainIs, fromId) {
 
-            if (self.guncelKullanici.Id != fromId) {
+            if (self.guncelKullanici.Id !== fromId) {
                 let di = JSON.parse(jsnDomainIs);
-                let index = self.domainIsler.findIndex(f=> { return f.IsId == di.IsId });
+                let index = self.domainIsler.findIndex(f=> { return f.IsId === di.IsId });
                 self.domainIsler[index] = di;
                 portalApp.mesajGoster("#"+di.IsId+ " ticket durumu değişti");
                 zamanAyarla(self.domainIsler[index]);
@@ -120,7 +120,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         })
     }
     self.filterByIsinDurumu = function (domainIs) {
-        if (self.filterIsDurum == HEPSI || self.filterIsDurum === domainIs.IsDurum) {
+        if (self.filterIsDurum === HEPSI || self.filterIsDurum === domainIs.IsDurum) {
             if (self.filterUserId === 'Hepsi') {
                 return true;
             }
@@ -138,7 +138,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         }
     }
     function filterKullanici(domainIs) {
-        let ary = domainIs.IsiYapacakKullanicilar.filter((e)=> { return self.filterUserId == e.Id })
+        let ary = domainIs.IsiYapacakKullanicilar.filter((e)=> { return self.filterUserId === e.Id })
         if (ary.length > 0) {
             return true;
         } else {
@@ -208,7 +208,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         return self.isDurum[durumId].bodyClass;
     }
     self.isDurumDegistir = function (domainIs) {
-        if (self.domainBilgi.DomainAksiyon == self.domainAksiyon.YayinaAl) {
+        if (self.domainBilgi.DomainAksiyon === self.domainAksiyon.YayinaAl) {
             if (guncelKullaniciIsiYapacakmi(domainIs))
             {
                 let yeniDurum = 0, iBtnClass = "fa fa-play";
@@ -244,7 +244,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         let sayi = 0;
         self.domainIsler.forEach(e=> {
             if (guncelKullaniciIsiYapacakmi(e)) {
-                if (e.IsDurum == IsinDurumuEnum.Yapiliyor) {
+                if (e.IsDurum === IsinDurumuEnum.Yapiliyor) {
                     sayi = sayi + 1;
                 }
             }
@@ -252,7 +252,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         return sayi;
     }
     function guncelKullaniciIsiYapacakmi(domainIs){
-        let index= domainIs.IsiYapacakKullanicilar.findIndex(e=>{return e.Id==self.guncelKullanici.Id});
+        let index= domainIs.IsiYapacakKullanicilar.findIndex(e=>{return e.Id===self.guncelKullanici.Id});
         return index > -1;
     }
     self.clickTamamlaBtn = function (domainIs) {
@@ -268,7 +268,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
        
     }
     self.clickOnayla = function (domainIs) {
-        if (self.guncelKullanici.Id == domainIs.IsiVerenKullanici.Id) {
+        if (self.guncelKullanici.Id === domainIs.IsiVerenKullanici.Id) {
             domainIs.GosterTamamlaBtn = false;
             domainIs.GosterIseBaslaBtn = false;
             domainIs.GosterOnaylaBtn = false;

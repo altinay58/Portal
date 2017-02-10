@@ -767,11 +767,14 @@
             }
 
             $.each(that.suggestions, function (i, suggestion) {
-                var foundMatch = suggestion.value.toLowerCase().indexOf(value) === 0;
-                if (foundMatch) {
-                    bestMatch = suggestion;
+                if (value != null) {
+                    var foundMatch = suggestion.value.toLowerCase().indexOf(value) === 0;
+                    if (foundMatch) {
+                        bestMatch = suggestion;
+                    }
+                    return !foundMatch;
                 }
-                return !foundMatch;
+               
             });
 
             that.signalHint(bestMatch);
