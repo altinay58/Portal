@@ -358,9 +358,11 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
 
     });
     function getDate(jsnDate) {
-        let date = new Date(parseInt(jsnDate.replace("/Date(", "").replace(")/", ""), 10));
-
-        return date;
+        //new Date(parseInt(jsnDate.replace("/Date(", "").replace(")/", ""), 10));
+        if (jsnDate.indexOf('+02') > -1) {
+            jsnDate = jsnDate.replace('+02', '+03');
+        }
+        return moment(jsnDate).toDate();       
     }
     function arrayZamanHesapla() {
         self.domainIsler.forEach(function (e) {

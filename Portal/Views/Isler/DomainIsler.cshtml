@@ -164,7 +164,7 @@
                             <i class="fa fa-code {{timelineIconClassBelirleDurumaGore(x.IsDurum)}}"></i>
                         </div>
                     </div>
-                    <div class="timeline-body {{timelineBodyClassBelirleDurumaGore(x.IsDurum)}}   ng-class:{ 'animated fadeIn':x.yorumEklendi }">
+                    <div class="timeline-body {{timelineBodyClassBelirleDurumaGore(x.IsDurum)}}   ng-class:{ 'animated flash':x.yorumEklendi }">
                         <div class="timeline-body-arrow {{timelineArrowClassBelirleDurumaGore(x.IsDurum)}}" > </div>
                         <div class="timeline-body-head">
                             <div class="timeline-body-head-caption">
@@ -373,6 +373,7 @@
     </div>
     </div> 
 @section css{
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 <style>
 .animated {
 -webkit-animation-duration: 2s;
@@ -431,8 +432,8 @@ animation-name: fadeIn;
 <script src="/Scripts/jquery.signalR-2.2.1.min.js"></script>
 @*<script src="/signalr/hubs"></script>*@
 <script src="@Url.Content("/signalr/hubs")"></script>
-<script src="/js/services/domainIslerService.js?v=1.0.49"></script>
-<script src="/js/controllers/domainIslerCtrl.js?v=1.0.49"></script>
+<script src="/js/services/domainIslerService.js?v=1.0.61"></script>
+<script src="/js/controllers/domainIslerCtrl.js?v=1.0.63"></script>
 <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
 
     <script>   

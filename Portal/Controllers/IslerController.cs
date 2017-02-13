@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using Portal.Models.IslerModels;
 using System.Data.Entity;
+using Portal.Filters;
+
 namespace Portal.Controllers
 {
     public class IslerController : BaseController
@@ -103,6 +105,7 @@ namespace Portal.Controllers
            
         }
         [ValidateInput(false)]
+        [JsonNetFilter]
         public JsonResult IsDurumuDegistir(string domainIs,byte yeniDurum)
         {
             IsinDurumu yeniisDurum = (IsinDurumu) yeniDurum;

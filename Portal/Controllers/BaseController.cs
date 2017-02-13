@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Web.Security;
 using Portal.Helper;
 using Portal.Models;
+using System.Threading;
+using System.Globalization;
+
 namespace Portal.Controllers
 {
     [Authorize]
@@ -16,7 +19,8 @@ namespace Portal.Controllers
     {        
         public BaseController()
         {
-            
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("tr-TR");
         }
         protected readonly string DEFAULT_USER_ID = "f5f53da2-c311-44c9-af6a-b15ca29aee57";
         protected readonly int  PagerCount = 20;
