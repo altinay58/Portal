@@ -100,6 +100,28 @@
                 dataType: "json"
             });
             return (request.then(handleSuccess, handleError));
+        },
+        getirDomainSonNot: function (domainId) {
+            var request = $http({
+                method: "get",
+                url: "/Isler/GetirDomainSonNot",
+                params: {
+                    domainId: domainId
+                },
+                dataType: "json"
+            });
+            return (request.then(handleSuccess, handleError));
+        },
+        domainNotKaydet: function (domainId,note) {
+            var request = $http({
+                method: "post",
+                url: "/Domain/DomainNoteEkle",
+                params: {
+                    RefDomainId: domainId, DomainNotNot: note, isAjax: true
+                },
+                dataType: "json"
+            });
+            return (request.then(handleSuccess, handleError));
         }
     });
     /// private methods

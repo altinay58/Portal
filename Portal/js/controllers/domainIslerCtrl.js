@@ -31,6 +31,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
     self.filterIsDurum = 0;
     self.filterUserId= "Hepsi";
     self.firmaKisiler = [];
+    self.sonDomainNote = "", self.modelDomainNote = "";
     self.domainBilgi = {
         Id : 0,
         SatisOncelikli : false,
@@ -57,8 +58,15 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
     angular.element(document).ready(function () {
         console.log(self.guncelDomainId);
         self.getirDomainIsler();
+        getirDomainSonNote();
         gg = self;
         signalDomain = $.connection.domainIsHub;
+        $.connection.hub.logging = true;
+        $.connection.hub.disconnected(function () {
+            setTimeout(function () {
+                $.connection.hub.start();
+            }, 5000); // Restart connection after 5 seconds.
+        });
         signalDomain.client.yorumEklendi = function (index, jsnYorum, fromId, toId) {
             if (self.guncelKullanici.Id !== fromId) {
                 let yeniYorum = JSON.parse(jsnYorum);
@@ -123,6 +131,12 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
             //}, 0, false);
         })
     }
+    function getirDomainSonNote() {
+        domainIslerService.getirDomainSonNot(self.guncelDomainId)
+        .then(function (res) {
+            self.sonDomainNote = res;
+        })
+    }
     self.filterByIsinDurumu = function (domainIs) {
         if (self.filterIsDurum === HEPSI || self.filterIsDurum === domainIs.IsDurum) {
             if (self.filterUserId === 'Hepsi') {
@@ -145,7 +159,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         let ary = domainIs.IsiYapacakKullanicilar.filter((e)=> { return self.filterUserId === e.Id })
         if (ary.length > 0) {
             return true;
-        } else {
+        } else { 
             return false;
         }
     }
@@ -169,6 +183,13 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
           self.domainNotlari=res;
           $("#modalDomainNotlari").modal("show");
         })
+    },
+    self.domainNoteKaydet = function () {
+        domainIslerService.domainNotKaydet(self.guncelDomainId, self.modelDomainNote)
+        .then(res=> {
+            self.gosterDomainNotlari();
+            self.sonDomainNote = self.modelDomainNote;
+        });
     }
     self.tarihFormatStr = function (tarih) {
         if (tarih) {
@@ -287,7 +308,24 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         }
         
     }
+    self.revizeIste = function (domainIs) {
+        if (self.guncelKullanici.Id === domainIs.IsiVerenKullanici.Id) {
+            let iBtnClass = "fa fa-play";
+            domainIs.GosterTamamlaBtn = false;
+            domainIs.GosterIseBaslaBtn = true;
+            domainIs.GosterOnaylaBtn = false;
+            let yeniDurum = IsinDurumuEnum.Yapilacak;
+            if (domainIs.BitisTarihiVarmi) {
+                yeniDurum = IsinDurumuEnum.YapilacakDeadline;
+            } else {
+                yeniDurum = IsinDurumuEnum.Yapilacak;
+            }
+            durumDegistir(domainIs, yeniDurum, iBtnClass);
+        } else {
+            portalApp.mesajGoster("Yetkiniz yok. ", "danger");
+        }
 
+    }
     self.yorumEkle=function(domainIs,index){
         domainIslerService.kaydetYorum(self.guncelKullanici.Id, domainIs.yorumAciklamaModel, domainIs.IsId)
             .then((res) => {

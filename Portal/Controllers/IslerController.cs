@@ -130,11 +130,15 @@ namespace Portal.Controllers
                     else
                     {
                         //islerIsinDurumu Yapilacak veya YapilacakDeadline
-                        var diffInSeconds = (DateTime.Now - obj.IsGecenZaman.ZamanBasTarih.Value).TotalSeconds;
-                        zamanIs.GecenZamanSaniye = zamanIs.GecenZamanSaniye + (long)diffInSeconds;
-                        zamanIs.ZamanIsBasTarih = DateTime.Now;
-                        obj.IsGecenZaman.ZamanBasTarih = DateTime.Now;
-                        obj.IsGecenZaman.GecenZamanSaniye = zamanIs.GecenZamanSaniye;
+                        if (obj.IsDurum == (int)IsinDurumu.Yapiliyor)
+                        {
+                            var diffInSeconds = (DateTime.Now - obj.IsGecenZaman.ZamanBasTarih.Value).TotalSeconds;
+                            zamanIs.GecenZamanSaniye = zamanIs.GecenZamanSaniye + (long)diffInSeconds;
+                            zamanIs.ZamanIsBasTarih = DateTime.Now;
+                            obj.IsGecenZaman.ZamanBasTarih = DateTime.Now;
+                            obj.IsGecenZaman.GecenZamanSaniye = zamanIs.GecenZamanSaniye;
+                        }
+                      
                     }
                 }else
                 {
@@ -261,6 +265,12 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             Db.SaveChanges();
             jsn.Basarilimi = true;
             return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetirDomainSonNot(int domainId)
+        {
+            var list = Db.DomainNots.Where(x => x.RefDomainId == domainId).OrderByDescending(x => x.DomainNotTarih)
+                .Take(1).SingleOrDefault();
+            return Json(list.DomainNotNot, JsonRequestBehavior.AllowGet);
         }
         #endregion 
         public ActionResult IcerikFormu()
@@ -450,7 +460,8 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
         
 
             var listDomain = (from d in Db.Domains
-                              where (firmaId.HasValue ? d.RefDomainFirmaID == firmaId.Value : true) && d.DomainAdi.Contains(domainAdi)
+                              where (firmaId.HasValue ? d.RefDomainFirmaID == firmaId.Value : true) 
+                              && (string.IsNullOrEmpty(domainAdi) ? true: d.DomainAdi.Contains(domainAdi))
                               select new
                               {
                                   value = d.DomainID,label=d.DomainAdi,firmaId=d.Firma.FirmaID,firmaAdi=d.Firma.FirmaAdi,

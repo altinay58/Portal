@@ -207,7 +207,8 @@
                                 <div class="col-md-3 box">
                                     <div class="form-group">
                                         <label class="">Domain</label>
-                                        <input type="text" name="domainAdi" id="domainAdi" class="form-control" />
+                                        @*<input type="text" name="domainAdi" id="domainAdi" class="form-control" />*@
+                                        <select name="domainAdi" id="domainAdi" class="form-control select2"></select>
                                         <input type="hidden" name="domainId" id="domainId"  />
                                     </div>
                                 </div>
@@ -463,6 +464,7 @@
                         var data = firmalar.find(function (f) { return f[evalue] == suggestion.data });
                         ff = data;
                         setData(data);
+                        yukleDomain(data.value);
                         init();
                     },
                     dataType: "json",
@@ -474,38 +476,64 @@
             });       
 
           
-            var domains = new Bloodhound({
-                datumTokenizer: function (datum) {
-                    return Bloodhound.tokenizers.whitespace(datum.label);
-                },
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                remote: {
-                    wildcard: '%domainAdi',
-                    url: '/Isler/DomainGetir',
-                    replace: function (url, query) {
-                        url += '?domainAdi=' + encodeURIComponent($("#domainAdi").val()) + '&firmaId=';                      
-                        url += encodeURIComponent($('#arayanKayitliRefFirmaID').val());                      
-                        return url;
-                    },
-                    transform: function (response) {                       
-                        return response;                       
-                    }
-                }
-            });
+            //var domains = new Bloodhound({
+            //    datumTokenizer: function (datum) {
+            //        return Bloodhound.tokenizers.whitespace(datum.label);
+            //    },
+            //    queryTokenizer: Bloodhound.tokenizers.whitespace,
+            //    remote: {
+            //        wildcard: '%domainAdi',
+            //        url: '/Isler/DomainGetir',
+            //        replace: function (url, query) {
+            //            url += '?domainAdi=' + encodeURIComponent($("#domainAdi").val()) + '&firmaId=';                      
+            //            url += encodeURIComponent($('#arayanKayitliRefFirmaID').val());                      
+            //            return url;
+            //        },
+            //        transform: function (response) {                       
+            //            return response;                       
+            //        }
+            //    }
+            //});
 
-            // Instantiate the Typeahead UI
-            $('#domainAdi').typeahead(null, {
-                display: 'label',
-                displayKey: 'value',
-                hint: true,
-                minLength: 1,
-                source: domains
-            });
-            $('#domainAdi').on('typeahead:selected', function (event, datum) {
-                console.log(datum);
-                $('#domainId').val(datum.value);
+            //// Instantiate the Typeahead UI
+            //$('#domainAdi').typeahead(null, {
+            //    display: 'label',
+            //    displayKey: 'value',
+            //    hint: true,
+            //    minLength: 1,
+            //    source: domains
+            //});
+            //$('#domainAdi').on('typeahead:selected', function (event, datum) {
+            //    console.log(datum);
+            //    $('#domainId').val(datum.value);
+            //});
+            $('#domainAdi').change(function () {
+                $('#domainId').val($('#domainAdi option:selected').val());
             });
         });
+        function yukleDomain(firmaId) {
+            $('#domainAdi').html("");
+            $("#domainAdi").select2("val", "");
+            $.ajax({
+                url: "/Isler/DomainGetir",
+                method: "get",
+                data: { firmaId: firmaId },
+                dataType: "json",
+                cache: false
+            }).done(function (res) {
+               
+                $('#domainAdi')
+                       .append($("<option></option>")
+                           .attr("value","")
+                           .text("Seçiniz"));
+                res.forEach(item=> {                
+                    $('#domainAdi')
+                        .append($("<option></option>")
+                            .attr("value", item.value)
+                            .text(item.label));
+                });
+            });
+        }
         function setData(datum) {
             $("#divIs").css("display", "none");
             $('#cbIsEkle').removeAttr("disabled");
@@ -557,7 +585,14 @@
                         var vl = CKEDITOR.instances[$(element).attr("name")].getData();
                         return vl.length >= 3;
                     }
-                    if ($(element).val().length >= 3) {
+                    if (element.tagName === "SELECT") {
+                        if ($(element).find("option:selected").val()!="") {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    else if ($(element).val().length >= 3) {
                         return true;
                     } else {
                         return false;

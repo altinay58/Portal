@@ -332,30 +332,47 @@ namespace Portal.Controllers
         [HttpPost]
         public ActionResult DomainNoteEkle(DomainNot model, FormCollection frm)
         {
-         
-            DomainNot entity = new DomainNot();
-            if (model.DomainNotId > 0)
+            bool isAjax = Request["isAjax"] != "";
+            if (!isAjax)
             {
-                entity = Db.DomainNots.SingleOrDefault(x=>x.DomainNotId==model.DomainNotId);
-            }
-            entity.DomainNotNot = model.DomainNotNot;
-            entity.DomainNotTarih = DateTime.Now;
-            entity.RefDomainId = model.RefDomainId;
-            if (model.DomainNotId > 0)
+                DomainNot entity = new DomainNot();
+                if (model.DomainNotId > 0)
+                {
+                    entity = Db.DomainNots.SingleOrDefault(x => x.DomainNotId == model.DomainNotId);
+                }
+                entity.DomainNotNot = model.DomainNotNot;
+                entity.DomainNotTarih = DateTime.Now;
+                entity.RefDomainId = model.RefDomainId;
+                if (model.DomainNotId > 0)
+                {
+                    Db.Entry(entity).State = EntityState.Modified;
+                }
+                else
+                {
+                    Db.DomainNots.Add(entity);
+                }
+                //todo: login ekranı eklenince kaldırılacak
+                entity.RefNotKullaniciId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+                Db.SaveChanges();
+                TempData[SUCESS] = "Domain Kaydedildi";
+                return RedirectToAction("DomainNotlari");
+            }else //if (Request.HttpMethod == "GET") 
             {
-                Db.Entry(entity).State = EntityState.Modified;
-            }else
-            {
-                Db.DomainNots.Add(entity);
-            }
-            //todo: login ekranı eklenince kaldırılacak
-            entity.RefNotKullaniciId= User.Identity.GetUserId()?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
-            Db.SaveChanges();
-            TempData[SUCESS] = "Domain Kaydedildi";
-            return RedirectToAction("DomainNotlari") ;
-            
+                JsonCevap jsn = new JsonCevap();
+                jsn.Basarilimi = true;
+                DomainNot entity = new DomainNot();
 
-            
+                entity.DomainNotNot = model.DomainNotNot;
+                entity.DomainNotTarih = DateTime.Now;
+                entity.RefDomainId =model.RefDomainId;
+                Db.DomainNots.Add(entity);
+               
+                //todo: login ekranı eklenince kaldırılacak
+                entity.RefNotKullaniciId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+                Db.SaveChanges();
+
+                return Json(jsn, JsonRequestBehavior.AllowGet);
+            }            
         }
         #endregion
         private void SetViewBagEkle()
