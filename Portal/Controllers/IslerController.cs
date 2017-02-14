@@ -270,7 +270,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
         {
             var list = Db.DomainNots.Where(x => x.RefDomainId == domainId).OrderByDescending(x => x.DomainNotTarih)
                 .Take(1).SingleOrDefault();
-            return Json(list.DomainNotNot, JsonRequestBehavior.AllowGet);
+            return Json(list!=null ? list.DomainNotNot: "", JsonRequestBehavior.AllowGet);
         }
         #endregion 
         public ActionResult IcerikFormu()

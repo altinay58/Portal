@@ -195,13 +195,24 @@
                                 <div class="col-md-3 box">
                                     <div class="form-group">
                                         <label class="">Yapacak Kişi</label>
-                                        @Html.DropDownList("islerisiYapacakKisi", ViewBag.islerisiYapacakKisi as SelectList, new { @class = "form-control select2" })
+                                      
+                                        <select class="form-control select2" name="islerisiYapacakKisi">
+                                            @foreach (Portal.Models.AspNetUser user in ViewBag.kullanicilar)
+                                            {
+                                                <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                                            }
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3 box">
                                     <div class="form-group">
-                                        <label class="">Kontrol Eden</label>
-                                        @Html.DropDownList("kontrolEdecekKisi", ViewBag.islerisiYapacakKisi as SelectList, new { @class = "form-control select2" })
+                                        <label class="">Kontrol Eden</label>                                     
+                                        <select class="form-control select2" name="kontrolEdecekKisi">
+                                            @foreach (Portal.Models.AspNetUser user in ViewBag.kullanicilar)
+                                            {
+                                                <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                                            }
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3 box">

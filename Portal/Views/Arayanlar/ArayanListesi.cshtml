@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "ArayanListesi";
 }
-<div ng-controller="arayanListeCtrl">
+<div ng-controller="arayanListeCtrl" ng-init="init()">
     <form class="form-inline" role="form">
         <div class="form-group">
             <div class="input-group">
@@ -31,24 +31,9 @@
         <button type="button" class="btn btn-default green" ng-click="getirData()">Filtrele</button>
         <button type="button" class="btn btn-default red clearfix" style="float:right" onclick="printPage()">Yazdır</button>
     </form>
-    @*<div class="row" style="margin-top:10px;margin-bottom:5px">
-        <div class="col-md-2">
-            <input type="text" name="telNo" ng-model="telNo" placeholder="Telefon No" class="form-control" />
-        </div>
-        <div class="col-md-2">
-            <input type="text" name="adSoyad" ng-model="adSoyad" placeholder="Ad / Soyad" class="form-control" />
-        </div>
-        <div class="col-md-2">
-            <input type="text" name="firma" ng-model="firma" placeholder="Firma" class="form-control" />
-        </div>
-        <div class="col-md-2">
-            <input type="text" name="not" ng-model="not" placeholder="Not" class="form-control" />
-        </div>
-        <div class="col-md-2">
-            <input type="text" name="bolge" ng-model="bolge" placeholder="Bölge" class="form-control" />
-        </div>
-
-    </div>*@
+    <div style="position:absolute;top:45%;left:55%;right:0;margin:auto" ng-show="yukleniyor">
+        <i class="fa fa-refresh fa-spin fa-3x fa-fw font-blue"></i>
+    </div>
     <div class="portlet-body flip-scroll" style="margin-top:15px">
         <table class="table table-bordered table-striped table-condensed flip-content">
             <thead class="flip-content">
@@ -69,24 +54,24 @@
             <tbody>
                 <tr>
                     <td> </td>
-                    <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData()" placeholder="Ad / Soyad" class="form-control" /></td>
-                    <td> <input type="text" name="firma" ng-model="firma" ng-keyup="getirData()" placeholder="Firma" class="form-control" /></td>
-                    <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData()" placeholder="Telefon No" class="form-control" /> </td>
+                    <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData(adSoyad)" placeholder="Ad / Soyad" class="form-control" /></td>
+                    <td> <input type="text" name="firma" ng-model="firma" ng-keyup="getirData(firma)" placeholder="Firma" class="form-control" /></td>
+                    <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control" /> </td>
                     <td> &nbsp; </td>
-                    <td><input type="text" name="not" ng-model="note" ng-keyup="getirData()" placeholder="Not" class="form-control" />  </td>
+                    <td><input type="text" name="not" ng-model="note" ng-keyup="getirData(note)" placeholder="Not" class="form-control" />  </td>
                     <td> </td>
                     <td> &nbsp; </td>
                     <td>  </td>
                     <td>  </td>
                     <td>  </td>
                 </tr>
-               
+                    
                     <tr ng-repeat="x in arayanlar">
                         <td>{{x.Id}} </td>
                         <td> {{x.AdSoyad}} </td>
                         <td> {{x.Firma}} </td>
-                        <td> {{x.Tel}} </td>
-                        <td> {{x.CepTel}} </td>
+                        <td><a href="tel:{{x.Tel}}">{{x.Tel}} </a> </td>
+                        <td><a ng-href="tel:{{x.CepTel}}">{{x.CepTel}} </a> </td>
                         <td><div ng-bind-html="x.Note | to_trusted "></div></td>
                         <td> {{x.MailDurum}} </td>
                         <td><div ng-bind-html="kontrolTicket(x.Ticket) | to_trusted"></div></td>
@@ -101,6 +86,8 @@
             </tbody>
         </table>
         </div>
+    <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;"
+        items-per-page="20" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>    
     </div>
 @section css{
     
@@ -130,8 +117,8 @@
 <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 
 
-<script src="/js/services/arayanListService.js?v=1.0.7"></script>
-<script src="/js/controllers/arayanListeCtrl.js?v=1.0.7"></script>
+<script src="/js/services/arayanListService.js?v=1.0.8"></script>
+<script src="/js/controllers/arayanListeCtrl.js?v=1.0.22"></script>
 
 <script>
     function printPage() {
@@ -152,12 +139,13 @@
             autoclose: true,
             language: 'tr'
         });
-        $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
+        @*$("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");*@      
         $("input[is-date='1']").datepicker('update');
         $("input[is-date='1']").parent('.input-group').on('click', '.input-group-btn', function (e) {
             e.preventDefault();
             $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
         });
     })
+  
 </script>
 }

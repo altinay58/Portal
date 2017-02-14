@@ -17,13 +17,13 @@
 angModule.service("arayanListService",
                    function ($http, $q) {
                        return ({
-                           getListData: function (basTar, bitTar, firma, telNo, note, adSoyad) {                            
+                           getListData: function (basTar, bitTar, firma, telNo, note, adSoyad,sayfaNo) {                            
                                var request = $http({
                                    method: "get",
                                    url: "/Arayanlar/ArayanListesiParametre",
                                    params: {
                                        basTarih: basTar, bitisTarih: bitTar, firma: firma, telNo: telNo,
-                                       note: note, adSoyad: adSoyad
+                                       note: note, adSoyad: adSoyad,sayfaNo:sayfaNo
                                    },                                   
                                    dataType: "json"
                                });

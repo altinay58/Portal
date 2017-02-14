@@ -9,15 +9,18 @@ namespace Portal.Helper
     {
         private const string contextKey = "MyContext";
 
-        public PortalEntities Db()
+        public PortalEntities GetDb
         {
-          
-            if (HttpContext.Current.Items[contextKey] == null)
+           get
             {
-                HttpContext.Current.Items.Add(contextKey, new PortalEntities());
-            }
+                if (HttpContext.Current.Items[contextKey] == null)
+                {
+                    HttpContext.Current.Items.Add(contextKey, new PortalEntities());
+                }
 
-            return (PortalEntities)HttpContext.Current.Items[contextKey];
+                return (PortalEntities)HttpContext.Current.Items[contextKey];
+            }
+           
         }
 
         public void DisposeContext()

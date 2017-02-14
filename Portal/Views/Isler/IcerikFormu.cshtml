@@ -1,9 +1,10 @@
 ﻿@model Portal.Models.IcerikFormu
+@using Portal.Helper;
 @{
     ViewBag.Title = "İçerik Formu";
 }
 @{
-    var listStandardIsler = Database.Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
+    var listStandardIsler = Database.DbHelper.GetDb.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
     var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
 }
 

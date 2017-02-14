@@ -1,4 +1,5 @@
-﻿using Portal.Models;
+﻿using Portal.Helper;
+using Portal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Portal
     public class Database
     {
         //public static PortalEntities Db { get; set; }
+        public static readonly DbContextHelper DbHelper = new DbContextHelper();
     }
 }

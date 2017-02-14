@@ -257,24 +257,24 @@ namespace Portal.Models
             return MvcHtmlString.Create(sayfalama);
 
         }
-        public static string TelefonDuzelt(string TelefonNo)
+        public static string TelefonDuzelt(string telefonNo)
         {
-            Regex rgx = new Regex("[^0-9]");
-            TelefonNo = rgx.Replace(TelefonNo, "");
+            //Regex rgx = new Regex("[^0-9]");
+            //TelefonNo = rgx.Replace(TelefonNo, "");
 
-            if (TelefonNo.Length == 7)
-            {
-                TelefonNo = "0242" + TelefonNo;
-            }
+            //if (TelefonNo.Length == 7)
+            //{
+            //    TelefonNo = "0242" + TelefonNo;
+            //}
 
-            if (TelefonNo.Substring(0, 1) != "0")
-            {
-                TelefonNo = "0" + TelefonNo;
-            }
-            TelefonNo = TelefonNo.Substring(TelefonNo.Length - 11);
-            TelefonNo = "(" + TelefonNo.Substring(0, 4) + ")-" + TelefonNo.Substring(4, 3) + "-" + TelefonNo.Substring(7, 2) + "-" + TelefonNo.Substring(9, 2);
-
-            return TelefonNo;
+            //if (TelefonNo.Substring(0, 1) != "0")
+            //{
+            //    TelefonNo = "0" + TelefonNo;
+            //}
+            //TelefonNo = TelefonNo.Substring(TelefonNo.Length - 11);
+            //TelefonNo = "(" + TelefonNo.Substring(0, 4) + ")-" + TelefonNo.Substring(4, 3) + "-" + TelefonNo.Substring(7, 2) + "-" + TelefonNo.Substring(9, 2);
+            telefonNo=Regex.Replace(telefonNo, @"[^\d]", "");
+            return telefonNo;
         }
     }
 

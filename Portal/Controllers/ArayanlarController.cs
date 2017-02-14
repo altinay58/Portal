@@ -41,16 +41,30 @@ namespace Portal.Controllers
             return View();
         }
         public JsonResult ArayanListesiParametre(string basTarih,string bitisTarih,string firma,string telNo
-            ,string note,string adSoyad)
+            ,string note,string adSoyad,int sayfaNo)
         {
-            DateTime tBas = DateTime.Parse(basTarih);
-            DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
-            var query = Db.ArayanListesis.Where(x =>x.Tarih >= tBas && x.Tarih <= tBit
-            && (!string.IsNullOrEmpty(firma)?x.Firma.Contains(firma):true) && (!string.IsNullOrEmpty(telNo) ? x.Tel.Contains(telNo) : true)
-             && (!string.IsNullOrEmpty(note) ? x.Note.Contains(note) : true) &&  (!string.IsNullOrEmpty(adSoyad) ? x.AdSoyad.Contains(adSoyad) : true)
-            ).OrderByDescending(x => x.Tarih);         
-            return Json(query, JsonRequestBehavior.AllowGet);
+            int baslangic = (sayfaNo - 1) * PagerCount;
+            JsonCevap jsn = new JsonCevap();
+            var query = Db.ArayanListesis.Where(x => (!string.IsNullOrEmpty(firma) ? x.Firma.Contains(firma) : true) && (!string.IsNullOrEmpty(telNo) ? x.Tel.Contains(telNo) : true)
+             && (!string.IsNullOrEmpty(note) ? x.Note.Contains(note) : true) && (!string.IsNullOrEmpty(adSoyad) ? x.AdSoyad.Contains(adSoyad) : true)
+            );
+            if(!string.IsNullOrEmpty(basTarih) && !string.IsNullOrEmpty(bitisTarih))
+            {
+                DateTime tBas = DateTime.Parse(basTarih);
+                DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
+                jsn.ToplamSayi = query.Where(x => x.Tarih >= tBas && x.Tarih <= tBit).Count();
+                query = query.Where(x=> x.Tarih >= tBas && x.Tarih <= tBit).OrderByDescending(x=>x.Tarih).Skip(baslangic).Take(PagerCount);
+                jsn.Data = query.ToList();
+            }
+            else
+            {
+                query=query.OrderByDescending(x => x.Tarih).Skip(baslangic).Take(20);
+                jsn.ToplamSayi = 20;
+                jsn.Data = query.ToList();
+            }     
+            return Json(jsn, JsonRequestBehavior.AllowGet);
         }
+        #region arayanekle
         public ActionResult ArayanEkle()
         {
             ArayanModel arayanlar = new ArayanModel();
@@ -60,7 +74,8 @@ namespace Portal.Controllers
             ViewBag.arayanDomainKategoriID = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi");
             ViewBag.arayanSektorID = new SelectList(Db.Sektorlers, "sektorID", "sektorAdi");
             ViewBag.mailSablonlari = new SelectList(Db.MailSablonus, "MailSablonuID", "MailSablonuAdi");
-            ViewBag.islerisiYapacakKisi = new SelectList(Db.AspNetUsers, "Id", "UserName");
+            //ViewBag.islerisiYapacakKisi = new SelectList(Db.AspNetUsers, "Id", "UserName");
+            ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
             return View(arayanlar);
         }
         [HttpPost]
@@ -96,8 +111,8 @@ namespace Portal.Controllers
                 {
                     arayan.arayanRefKonumID = Db.Konums.SingleOrDefault(m => m.Konum1 == "Antalya").KonumID;
                 }
-                arayan.arayanKonu = vmodel.arayanKonu;
-                arayan.arayanNot = vmodel.arayanNot;
+                arayan.arayanKonu =Fonksiyonlar.KarakterDuzenle(vmodel.arayanKonu);
+                arayan.arayanNot =Fonksiyonlar.KarakterDuzenle( vmodel.arayanNot);
                 arayan.arayanBegendigiWebSiteleri = vmodel.arayanBegendigiWebSiteleri;
                 if (vmodel.arayanKayitTarih.HasValue)
                 {
@@ -223,5 +238,6 @@ namespace Portal.Controllers
             Fonksiyonlar.MailGonder(mailAdres, baslik, mesaj);
            
         }
+        #endregion arayanekle
     }
 }

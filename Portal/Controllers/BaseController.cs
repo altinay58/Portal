@@ -1,19 +1,14 @@
 ﻿using Microsoft.AspNet.Identity;
 using Portal.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity.Owin;
-using System.Web.Security;
-using Portal.Helper;
-using Portal.Models;
 using System.Threading;
 using System.Globalization;
+using Portal.Filters;
+using Portal.Helper;
 
 namespace Portal.Controllers
-{
+{   
     [Authorize]
     public abstract class BaseController : Controller
     {        
@@ -30,8 +25,9 @@ namespace Portal.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            Db = new PortalEntities() ;
-            //Database.Db = new Models.PortalEntities();
+            Db = Database.DbHelper.GetDb ;
+          
+          
             //TODO: sonra iptal edilecek,login ekranindan giris olmadigi icin           
             //FormsAuthentication.SetAuthCookie("fatihgokce07@gmail.com",true);
             //daha sonra aktif edilecek
