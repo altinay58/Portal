@@ -104,6 +104,11 @@ namespace Portal.Controllers
 
            
         }
+        [JsonNetFilter]
+        public JsonResult GetDate()
+        {
+            return Json(new { Date=DateTime.Now,DateStr=DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")},JsonRequestBehavior.AllowGet);
+        }
         [ValidateInput(false)]
         [JsonNetFilter]
         public JsonResult IsDurumuDegistir(string domainIs,byte yeniDurum)

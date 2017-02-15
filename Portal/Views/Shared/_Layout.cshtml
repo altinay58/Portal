@@ -505,8 +505,9 @@
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
                         <li class="heading">
-                            <h3 class="uppercase">
+                            <h3 class="">
                             <a href="/" class="anasayfa">Anasayfa</a>
+                                @System.DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")
                             </h3>
                         </li>                      
                        
@@ -881,6 +882,20 @@
                                     <a href="@Url.Action("DomainKategorileri","Domain")" class="nav-link ">
                                         <i class="icon-bar-chart"></i>
                                         <span class="title">Domain Kategorileri</span>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("DomainNotlari","Domain")" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Domain Notlari</span>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("DomainNoteEkle","Domain")" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Domain Not Ekle</span>
 
                                     </a>
                                 </li>
@@ -1577,7 +1592,7 @@
         <script src="/js/angModule.js?v=1.0.3"></script>
         @RenderSection("scripts", required: false)
         <script src="/Scripts/ajaxService.js"></script>
-        <script src="/js/portalApp.js?v=2.0"></script>
+        <script src="/js/portalApp.js?v=2.1"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
  <script>
      $(function () {

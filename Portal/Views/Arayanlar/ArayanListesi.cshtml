@@ -77,7 +77,7 @@
                         <td><div ng-bind-html="kontrolTicket(x.Ticket) | to_trusted"></div></td>
                         <td> {{x.StrTarih}} </td>
                         <td><div ng-bind-html="kontrolKayitDurumu(x) | to_trusted"></div> </td>
-                        <td> <span><a href="#">Düzenle</a><span>&nbsp;/&nbsp;</span><span><a href="#">Detay</a></span></span> </td>
+                        <td> <span><a href="/Arayanlar/ArayanDuzenle/{{x.Id}}">Düzenle</a><span>&nbsp;/&nbsp;</span><span><a href="#">Detay</a></span></span> </td>
                     </tr>
                 
                
@@ -86,8 +86,8 @@
             </tbody>
         </table>
         </div>
-    <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;"
-        items-per-page="20" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>    
+    <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+      boundary-link-numbers="true"  items-per-page="20" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>    
     </div>
 @section css{
     

@@ -32,6 +32,8 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
     self.filterUserId= "Hepsi";
     self.firmaKisiler = [];
     self.sonDomainNote = "", self.modelDomainNote = "";
+    self.guncelDomainAksiyon = null;
+    self.tempDomainAksiyon = null;//domain aksiyon değiştiginde,değer bu degiskende tutuluyor
     self.domainBilgi = {
         Id : 0,
         SatisOncelikli : false,
@@ -54,7 +56,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
     self.domainAksiyon = {
         BeklemeyeAl:1,YayinaAl:2,YayiniDurdur:3
     }
-    self.guncelDomainAksiyon = null;
+   
     angular.element(document).ready(function () {
         console.log(self.guncelDomainId);
         self.getirDomainIsler();
@@ -177,18 +179,22 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
       })
 
     }
-    self.gosterDomainNotlari=function(){
+    self.gosterDomainNotlari = function (domainAksiyon) {
+        self.tempDomainAksiyon = domainAksiyon;
         domainIslerService.getirDomainNotlari(self.guncelDomainId)
         .then((res)=>{
           self.domainNotlari=res;
           $("#modalDomainNotlari").modal("show");
         })
-    },
+    }
     self.domainNoteKaydet = function () {
         domainIslerService.domainNotKaydet(self.guncelDomainId, self.modelDomainNote)
         .then(res=> {
-            self.gosterDomainNotlari();
+            self.gosterDomainNotlari(self.tempDomainAksiyon);
             self.sonDomainNote = self.modelDomainNote;
+            if (self.tempDomainAksiyon != null) {
+                self.domainAksiyonDegistir(self.tempDomainAksiyon);
+            }
         });
     }
     self.tarihFormatStr = function (tarih) {
@@ -367,11 +373,13 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
     }
     self.domainAksiyonDegistir = function (aksiyon) {
         console.log(aksiyon);
-        domainIslerService.domainAksiyonDegistir(self.guncelDomainId,aksiyon)
+        self.tempDomainAksiyon = aksiyon;
+        self.gosterDomainNotlari();
+        domainIslerService.domainAksiyonDegistir(self.guncelDomainId, aksiyon)
         .then((res) => {
             signalDomain.server.gonderSayfayiYenidenYukle();
 
-        })
+        });
     }
 
     function durumDegistir(domainIs, yeniDurum, iBtnClass) {

@@ -484,40 +484,8 @@
                 })
                
 
-            });       
-
-          
-            //var domains = new Bloodhound({
-            //    datumTokenizer: function (datum) {
-            //        return Bloodhound.tokenizers.whitespace(datum.label);
-            //    },
-            //    queryTokenizer: Bloodhound.tokenizers.whitespace,
-            //    remote: {
-            //        wildcard: '%domainAdi',
-            //        url: '/Isler/DomainGetir',
-            //        replace: function (url, query) {
-            //            url += '?domainAdi=' + encodeURIComponent($("#domainAdi").val()) + '&firmaId=';                      
-            //            url += encodeURIComponent($('#arayanKayitliRefFirmaID').val());                      
-            //            return url;
-            //        },
-            //        transform: function (response) {                       
-            //            return response;                       
-            //        }
-            //    }
-            //});
-
-            //// Instantiate the Typeahead UI
-            //$('#domainAdi').typeahead(null, {
-            //    display: 'label',
-            //    displayKey: 'value',
-            //    hint: true,
-            //    minLength: 1,
-            //    source: domains
-            //});
-            //$('#domainAdi').on('typeahead:selected', function (event, datum) {
-            //    console.log(datum);
-            //    $('#domainId').val(datum.value);
-            //});
+            });               
+         
             $('#domainAdi').change(function () {
                 $('#domainId').val($('#domainAdi option:selected').val());
             });

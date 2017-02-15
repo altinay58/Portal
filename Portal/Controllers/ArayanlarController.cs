@@ -58,8 +58,8 @@ namespace Portal.Controllers
             }
             else
             {
-                query=query.OrderByDescending(x => x.Tarih).Skip(baslangic).Take(20);
-                jsn.ToplamSayi = 20;
+                jsn.ToplamSayi = query.Count();
+                query =query.OrderByDescending(x => x.Tarih).Skip(baslangic).Take(20);               
                 jsn.Data = query.ToList();
             }     
             return Json(jsn, JsonRequestBehavior.AllowGet);
@@ -165,7 +165,7 @@ namespace Portal.Controllers
 
             }
             return RedirectToAction("ArayanEkle");
-        }        
+        }       
         private isler YeniIsEkle(ArayanModel vmodel)
         {
             isler isE = new isler();
@@ -239,5 +239,46 @@ namespace Portal.Controllers
            
         }
         #endregion arayanekle
+        #region arayan duzenle
+        public ActionResult ArayanDuzenle(int id)
+        {
+            ViewBag.arayanGrupID = Db.ArayanGrups;
+            ViewBag.arayanRefKonumID = Db.Konums;
+            ViewBag.arayanDomainKategoriID = Db.DomainKategoris;
+            ViewBag.arayanSektorID = Db.Sektorlers;
+            ViewBag.mailSablonlari = Db.MailSablonus;
+            if (Request.UrlReferrer != null)
+            {
+                var ary = Request.UrlReferrer.ToString().Split('/');
+                if (ary.Length >= 4)
+                {
+                    ViewBag.oncekiSayfa = Request.UrlReferrer.ToString().Split('/')[4];
+                }
+            }
+            var arayan = Db.Arayanlars.SingleOrDefault(x => x.arayanID == id);
+            return View(arayan);
+        }
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult ArayanDuzenle(Arayanlar model,int id)
+        {
+            ViewBag.arayanGrupID = Db.ArayanGrups;
+            ViewBag.arayanRefKonumID = Db.Konums;
+            ViewBag.arayanDomainKategoriID = Db.DomainKategoris;
+            ViewBag.arayanSektorID = Db.Sektorlers;
+            ViewBag.mailSablonlari = Db.MailSablonus;
+            if (Request["oncekiSayfa"] != "")
+            {
+                string rd = Request["oncekiSayfa"].Trim();
+                return RedirectToAction(rd);
+            }
+            else
+            {
+                var arayan = Db.Arayanlars.SingleOrDefault(x => x.arayanID == id);
+                return View(model);
+            }
+            
+        }
+        #endregion arayan duzenle
     }
 }

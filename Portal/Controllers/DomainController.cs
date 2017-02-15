@@ -232,7 +232,7 @@ namespace Portal.Controllers
 
             return Redirect(Request.UrlReferrer.AbsoluteUri);
         }
-
+        #region domain kategori
         public ActionResult DomainKategorileri()
         {           
             var viewData = Db.DomainKategoris.GetirDomainKategorileri();
@@ -290,6 +290,7 @@ namespace Portal.Controllers
 
             return RedirectToAction("DomainKategorileri");
         }
+        #endregion domain kategori
         #region Domain Notlari
         public ActionResult DomainNotlari()
         {            
