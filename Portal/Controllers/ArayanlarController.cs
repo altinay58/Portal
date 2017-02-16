@@ -260,13 +260,65 @@ namespace Portal.Controllers
         }
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult ArayanDuzenle(Arayanlar model,int id)
-        {
-            ViewBag.arayanGrupID = Db.ArayanGrups;
-            ViewBag.arayanRefKonumID = Db.Konums;
-            ViewBag.arayanDomainKategoriID = Db.DomainKategoris;
-            ViewBag.arayanSektorID = Db.Sektorlers;
-            ViewBag.mailSablonlari = Db.MailSablonus;
+        public ActionResult ArayanDuzenle(Arayanlar vmodel,int id)
+        {           
+            var entity = Db.Arayanlars.SingleOrDefault(x => x.arayanID == id);
+            entity.arayanilkArama = vmodel.arayanKayitliRefFirmaID.HasValue ? false : true;
+            entity.arayanAdi = vmodel.arayanAdi;
+            entity.arayanSoyadi = vmodel.arayanSoyadi;
+            entity.arayanFirmaAdi = vmodel.arayanFirmaAdi;
+            entity.arayanFirmaSahibiOzelligi = vmodel.arayanFirmaSahibiOzelligi;
+            entity.arayanTelefonNo = Fonksiyonlar.TelefonDuzelt(vmodel.arayanTelefonNo);
+            entity.arayanCepTelNo = Fonksiyonlar.TelefonDuzelt(vmodel.arayanCepTelNo);
+            entity.arayanMailAdresi = vmodel.arayanMailAdresi;
+            entity.arayanWebAdresi = vmodel.arayanWebAdresi;
+            entity.arayanSehir = vmodel.arayanSehir;
+            entity.arayanilce = vmodel.arayanilce;
+            entity.arayanAdres = vmodel.arayanAdres;
+            if (vmodel.arayanRefKonumID.HasValue)
+            {
+                entity.arayanRefKonumID = vmodel.arayanRefKonumID;
+                entity.arayanFirmaKayitDurum = true;
+            }
+            else
+            {
+                entity.arayanRefKonumID = Db.Konums.SingleOrDefault(m => m.Konum1 == "Antalya").KonumID;
+            }
+            entity.arayanKonu = Fonksiyonlar.KarakterDuzenle(vmodel.arayanKonu);
+            entity.arayanNot = Fonksiyonlar.KarakterDuzenle(vmodel.arayanNot);
+            entity.arayanBegendigiWebSiteleri = vmodel.arayanBegendigiWebSiteleri;
+            if (vmodel.arayanKayitTarih.HasValue)
+            {
+                entity.arayanKayitTarih = new DateTime(vmodel.arayanKayitTarih.Value.Year, vmodel.arayanKayitTarih.Value.Month,
+                    vmodel.arayanKayitTarih.Value.Day, 0, 0, 0);
+                if (!string.IsNullOrEmpty(Request["SaatDakika"]))
+                {
+                    string[] ary = Request["SaatDakika"].Split(':');
+                    entity.arayanKayitTarih = new DateTime(vmodel.arayanKayitTarih.Value.Year, vmodel.arayanKayitTarih.Value.Month, vmodel.arayanKayitTarih.Value.Day,
+                        Convert.ToInt32(ary[0]), Convert.ToInt32(ary[1]), 0);
+                }
+            }
+            else
+            {
+                entity.arayanKayitTarih = DateTime.Now;
+            }
+            entity.arayanDomainKategoriID = vmodel.arayanDomainKategoriID;
+            entity.arayanSektorID = vmodel.arayanSektorID;
+            //entity.arayanGrupID = vmodel.araciVarmi ? ARACI_VAR : ARACI_YOK;
+            entity.arayanMailSablonuId = vmodel.arayanMailSablonuId;
+            if (vmodel.arayanKayitliRefFirmaID.HasValue)
+            {
+                entity.arayanKayitliRefFirmaID = vmodel.arayanKayitliRefFirmaID;
+                entity.arayanKayitliMusterimi = true;
+                entity.arayanFirmaKayitDurum = true;
+            }
+            else
+            {
+                entity.arayanKayitliMusterimi = false;
+                entity.arayanFirmaKayitDurum = false;
+            }
+            Db.SaveChanges();
+            TempData[SUCESS] = "Kaydedildi";
             if (Request["oncekiSayfa"] != "")
             {
                 string rd = Request["oncekiSayfa"].Trim();
@@ -274,8 +326,7 @@ namespace Portal.Controllers
             }
             else
             {
-                var arayan = Db.Arayanlars.SingleOrDefault(x => x.arayanID == id);
-                return View(model);
+                return View("ArayanListesi");
             }
             
         }

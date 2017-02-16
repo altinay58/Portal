@@ -567,6 +567,7 @@
     <Content Include="Views\Firmalar\Tumu.cshtml" />
     <Content Include="Views\Firmalar\FirmaKaydet.cshtml" />
     <Content Include="Views\Arayanlar\ArayanDuzenle.cshtml" />
+    <Content Include="Views\Isler\IsEkleDuzenle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -77,7 +77,7 @@
                         <td><div ng-bind-html="kontrolTicket(x.Ticket) | to_trusted"></div></td>
                         <td> {{x.StrTarih}} </td>
                         <td><div ng-bind-html="kontrolKayitDurumu(x) | to_trusted"></div> </td>
-                        <td> <span><a href="/Arayanlar/ArayanDuzenle/{{x.Id}}">Düzenle</a><span>&nbsp;/&nbsp;</span><span><a href="#">Detay</a></span></span> </td>
+                        <td> <span><a href="/Arayanlar/ArayanDuzenle/{{x.Id}}">Düzenle</a></span> </td>
                     </tr>
                 
                
@@ -118,7 +118,7 @@
 
 
 <script src="/js/services/arayanListService.js?v=1.0.8"></script>
-<script src="/js/controllers/arayanListeCtrl.js?v=1.0.22"></script>
+<script src="/js/controllers/arayanListeCtrl.js?v=1.0.23"></script>
 
 <script>
     function printPage() {

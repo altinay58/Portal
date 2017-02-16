@@ -40,7 +40,7 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
           if (ticket === null) {
               return '-';
           } else {
-              return "<a href='#'>" + ticket + "</a>";
+              return `<a href='/Isler/IsEkleDuzenle/${ticket}'>${ticket}</a>`;
           }
       }
       self.firmaKaydet = function (index) {
@@ -81,13 +81,7 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
           let eskiSayfa = ov[0];
           if (yeniSayfa != eskiSayfa) {
               self.getirData();
-          }
-          //newValues.forEach((item,i)=> {
-          //    console.log(item+" "+i);
-          //});
-          // do stuff here
-          // newValues and oldValues contain the new and respectively old value
-          // of the observed collection array
+          }         
       });
 
   });
