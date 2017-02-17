@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "ListIsler";
+}
+
+<div ng-controller="listIslerCtrl" ng-init="init()">
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" is-date="1" class="form-control" name="basTarih" ng-model="basTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+                <span class="input-group-btn">
+                    <button class="btn default" type="button">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" is-date="1" class="form-control" name="bitisTarih" ng-model="bitisTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+                <span class="input-group-btn">
+                    <button class="btn default" type="button">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+
+                </span>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-default green" ng-click="getirData()">Filtrele</button>
+        <button type="button" class="btn btn-default red clearfix" style="float:right" onclick="printPage()">Yazdır</button>
+    </form>
+    <div style="position:absolute;top:45%;left:55%;right:0;margin:auto" ng-show="yukleniyor">
+        <i class="fa fa-refresh fa-spin fa-3x fa-fw font-blue"></i>
+    </div>
+    <div class="portlet-body flip-scroll" style="margin-top:15px">
+        <table class="table table-bordered table-striped table-condensed flip-content">
+            <thead class="flip-content">
+                <tr>
+                    <th> Id </th>
+                    <th> İş Adı </th>
+                    <th> Firma</th>
+                    <th> Domain </th>
+                    <th> İşi Veren Kişi</th>
+                    <th> İşi Yapacak Kişi(ler) </th>
+                    <th> İşin Durumu </th>                   
+                    <th> Tarih </th>                 
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> </td>
+                    <td> <input type="text" name="isAdi" ng-model="isAdi" ng-keyup="getirData(isAdi)" placeholder="İş Adı" autocomplete="off" class="form-control" /></td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td> &nbsp; </td>
+                    <td>  </td>
+                    <td> </td>
+                    <td> &nbsp; </td>
+                    <td>  </td>
+                </tr>
+
+                <tr ng-repeat="x in isler">
+                    <td>{{x.Id}} </td>
+                    <td> {{x.IsAdi}} </td>
+                    <td> {{x.Firma}} </td>
+                    <td> {{x.Domain}} </td>
+                    <td> {{x.IsiVerenKisi}} </td>
+                    <td> {{x.IsiYapacakKisi}} </td>
+                    <td> {{x.IsinDurumu}} </td>
+                    <td> {{tarihFormat(x.Tarih)}} </td>                 
+                  
+                    <td> <span><a href="/Isler/IsEkleDuzenle/{{x.Id}}">Düzenle</a></span> </td>
+                </tr>
+
+
+
+
+            </tbody>
+        </table>
+    </div>
+    <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+        boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="page" ng-change="pageChanged()"></ul>
+</div>
+@section css{
+
+    <link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .clearfix:after {
+            content: ".";
+            visibility: hidden;
+            display: block;
+            height: 0;
+            clear: both;
+        }
+
+        .datepicker.dropdown-menu {
+            z-index: 9999 !important;
+        }
+
+        .flip-content a {
+            color: #32c5d2 !important;
+            font-weight: 600 !important;
+        }
+    </style>
+}
+@section scripts{
+    <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
+
+
+    <script src="/js/services/listIslerService.js?v=2"></script>
+    <script src="/js/controllers/listIslerCtrl.js?v=2"></script>
+<script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    <script>
+    function printPage() {
+        window.print();
+    }
+    $(function () {
+        $.fn.datepicker.dates['tr'] = {
+            days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+            daysMin: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+            months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+            monthsShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+            today: "Bugün"
+        };
+
+
+        $("input[is-date='1']").datepicker({
+            autoclose: true,
+            language: 'tr'
+        });
+        @*$("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");*@
+        $("input[is-date='1']").datepicker('update');
+        $("input[is-date='1']").parent('.input-group').on('click', '.input-group-btn', function (e) {
+            e.preventDefault();
+            $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
+        });
+    })
+
+    </script>
+}

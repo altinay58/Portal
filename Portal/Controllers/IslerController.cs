@@ -568,6 +568,33 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
            
         }
         #endregion iş ekle
+        #region list işler
+        public ActionResult ListIsler()
+        {
+            return View();
+        }
+        public JsonResult ListIsAra(int page,string basTarih, string bitisTarih, string isAdi)
+        {
+            int baslangic = (page - 1) * PagerCount;
+            JsonCevap jsn = new JsonCevap();
+            var query = Db.IslerListesis.Where(x => (!string.IsNullOrEmpty(isAdi) ? x.IsAdi.Contains(isAdi) : true));
+            if (!string.IsNullOrEmpty(basTarih) && !string.IsNullOrEmpty(bitisTarih))
+            {
+                DateTime tBas = DateTime.Parse(basTarih);
+                DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
+                jsn.ToplamSayi = query.Where(x => x.Tarih >= tBas && x.Tarih <= tBit).Count();
+                query = query.Where(x => x.Tarih >= tBas && x.Tarih <= tBit).OrderByDescending(x => x.Tarih).Skip(baslangic).Take(PagerCount);
+                jsn.Data = query.ToList();
+            }
+            else
+            {
+                jsn.ToplamSayi = query.Count();
+                query = query.OrderByDescending(x => x.Tarih).Skip(baslangic).Take(20);
+                jsn.Data = query.ToList();
+            }
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        #endregion list işler
     }
 
 }

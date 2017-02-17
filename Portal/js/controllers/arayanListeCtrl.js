@@ -62,7 +62,7 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
          
       }
       function setIfEmpty(obj) {
-          if (obj == undefined) {
+          if (obj === undefined) {
               return "";
           } else {
               return obj;
@@ -79,7 +79,7 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
           document.location.href = q;
           let yeniSayfa = nw[0];
           let eskiSayfa = ov[0];
-          if (yeniSayfa != eskiSayfa) {
+          if (yeniSayfa !== eskiSayfa) {
               self.getirData();
           }         
       });

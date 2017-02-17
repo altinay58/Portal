@@ -693,6 +693,21 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <Property Name="Bolge" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="IslerListesi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IsAdi" Type="nvarchar" MaxLength="250" />
+          <Property Name="Firma" Type="nvarchar" MaxLength="250" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsiVerenKisi" Type="nvarchar(max)" />
+          <Property Name="IsiYapacakKisi" Type="varchar" MaxLength="3000" />
+          <Property Name="IsinDurumu" Type="varchar" MaxLength="17" />
+          <Property Name="Tarih" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RandevularView">
           <Key>
@@ -1651,6 +1666,18 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
     [ArayanListesi].[Bolge] AS [Bolge]
     FROM [dbo].[ArayanListesi] AS [ArayanListesi]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="IslerListesi" EntityType="Self.IslerListesi" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [IslerListesi].[Id] AS [Id], 
+    [IslerListesi].[IsAdi] AS [IsAdi], 
+    [IslerListesi].[Firma] AS [Firma], 
+    [IslerListesi].[Domain] AS [Domain], 
+    [IslerListesi].[IsiVerenKisi] AS [IsiVerenKisi], 
+    [IslerListesi].[IsiYapacakKisi] AS [IsiYapacakKisi], 
+    [IslerListesi].[IsinDurumu] AS [IsinDurumu], 
+    [IslerListesi].[Tarih] AS [Tarih]
+    FROM [dbo].[IslerListesi] AS [IslerListesi]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="RandevularView" EntityType="Self.RandevularView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [RandevularView].[RandevuID] AS [RandevuID], 
@@ -2317,6 +2344,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="FirmaKisi" EntitySet="FirmaKisis" />
           </AssociationSet>
           <EntitySet Name="RandevularViews" EntityType="PortalModel.RandevularView" />
+          <EntitySet Name="IslerListesis" EntityType="PortalModel.IslerListesi" />
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -3977,6 +4005,19 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="Kiminle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RandevuRefFirmaID" Type="Int32" />
         </EntityType>
+        <EntityType Name="IslerListesi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IsAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Firma" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsiVerenKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsiYapacakKisi" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <Property Name="IsinDurumu" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4732,6 +4773,20 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="RandevuTarihi" ColumnName="RandevuTarihi" />
                 <ScalarProperty Name="RandevuYeri" ColumnName="RandevuYeri" />
                 <ScalarProperty Name="RandevuID" ColumnName="RandevuID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IslerListesis">
+            <EntityTypeMapping TypeName="PortalModel.IslerListesi">
+              <MappingFragment StoreEntitySet="IslerListesi">
+                <ScalarProperty Name="IsinDurumu" ColumnName="IsinDurumu" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="IsiYapacakKisi" ColumnName="IsiYapacakKisi" />
+                <ScalarProperty Name="IsiVerenKisi" ColumnName="IsiVerenKisi" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="Firma" ColumnName="Firma" />
+                <ScalarProperty Name="IsAdi" ColumnName="IsAdi" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

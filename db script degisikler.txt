@@ -253,6 +253,46 @@ SELECT    RandevuID,RandevuRefFirmaID, RandevuYeri, RandevuTarihi, CASE WHEN Ran
 FROM      dbo.Randevu
 GO
 -----------------------
+USE [Karayel]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[IsiYapanKullaniciAdSoyad]    Script Date: 17.02.2017 13:54:04 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date, ,>
+-- Description:	<Description, ,>
+-- =============================================
+CREATE FUNCTION [dbo].[IsiYapanKullaniciAdSoyad]
+(
+	-- Add the parameters for the function here
+	@isId int
+)
+RETURNS varchar(3000)
+AS
+BEGIN
+	-- Declare the return variable here
+	 declare @results varchar(3000)
+	
+
+	-- Add the T-SQL statements to compute the return value here
+	select @results = coalesce(@results + ',', '') +  convert(varchar(128),a.Isim+' '+a.SoyIsim)
+from IsiYapacakKisi y inner join AspNetUsers a on(y.RefIsiYapacakKisiUserID=a.Id)
+where RefIsID=@isId
+
+
+	-- Return the result of the function
+	RETURN @results
+
+END
+
+GO
+-----------------------
 
 
 
