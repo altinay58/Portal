@@ -1,0 +1,154 @@
+﻿@model Portal.Models.SanalPos
+@using Portal.Models;
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>Düzenle</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>SanalPos</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.firmaID, "Firma Adı", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="FirmaAdi" name="FirmaAdi" type="text" value="@Model.Firma.FirmaAdi" size="50" maxlength="250" />
+                <input type="hidden" name="firmaID" id="firmaID" value="@Model.firmaID" />
+                @Html.ValidationMessageFor(model => model.firmaID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.banka, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.banka)
+                @Html.ValidationMessageFor(model => model.banka)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.magaza, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.magaza)
+                @Html.ValidationMessageFor(model => model.magaza)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.kullaniciAdi, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.kullaniciAdi)
+                @Html.ValidationMessageFor(model => model.kullaniciAdi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sifre, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sifre)
+                @Html.ValidationMessageFor(model => model.sifre)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.parola, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.parola)
+                @Html.ValidationMessageFor(model => model.parola)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kaydet" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section css{
+
+
+    <style>
+        .datepicker.dropdown-menu {
+            z-index: 9999 !important;
+        }
+
+        .autocomplete-suggestions {
+            border: 1px solid #999;
+            background: #FFF;
+            overflow: auto;
+        }
+
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .autocomplete-selected {
+            background: #F0F0F0;
+        }
+
+        .autocomplete-suggestions strong {
+            font-weight: normal;
+            color: #3399FF;
+        }
+
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+
+            .autocomplete-group strong {
+                display: block;
+                border-bottom: 1px solid #000;
+            }
+    </style>
+
+}
+@section scripts{
+    <script src="/js/jquery.autocomplete.js"></script>
+
+    <script>
+
+        $(function () {
+
+            $("#FirmaAdi").autocomplete({
+                minChars: 2,
+                transformResult: function (response) {
+                    return {
+                        suggestions: $.map(response, function (dataItem) {
+                            return { value: dataItem["label"], data: dataItem["value"], kayitlimi: dataItem.Kayitlimi };
+                        })
+                    };
+                },
+                onSearchStart: function (query) {
+                },
+                paramName: 'firmaAdi',
+                serviceUrl: '/Isler/FirmalariGetir',
+                onSelect: function (suggestion) {
+                    $("#firmaID").val(suggestion.data);
+                },
+                dataType: "json",
+                noCache: true,
+                tabDisabled: true
+            });
+
+
+
+
+
+        })
+
+    </script>
+
+}
+
+

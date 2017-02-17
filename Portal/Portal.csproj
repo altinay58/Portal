@@ -215,12 +215,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArayanlarController.cs" />
+    <Compile Include="Controllers\ArgeBolumuController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DomainController.cs" />
     <Compile Include="Controllers\FirmalarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IslerController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SanalPostController.cs" />
     <Compile Include="Controllers\SatisBolumuController.cs" />
     <Compile Include="Controllers\StandartProjeIslerisController.cs" />
     <Compile Include="Controllers\WhoisController.cs" />
@@ -574,9 +576,15 @@
     <Content Include="Views\Arayanlar\ArayanDuzenle.cshtml" />
     <Content Include="Views\Isler\IsEkleDuzenle.cshtml" />
     <Content Include="Views\Isler\ListIsler.cshtml" />
+    <Content Include="Views\SanalPost\List.cshtml" />
+    <Content Include="Views\SanalPost\Create.cshtml" />
+    <Content Include="Views\SanalPost\Edit.cshtml" />
+    <Content Include="Views\SanalPost\Details.cshtml" />
+    <Content Include="Views\SanalPost\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ArgeBolumu\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Whois\" />
   </ItemGroup>

@@ -48,10 +48,10 @@ angModule.controller("listIslerCtrl", function ($scope,listIslerService) {
     self.$watchCollection('[page,basTarih,bitisTarih,isAdi]', function (nw, ov) {
         console.log(nw[0] + "-" + ov[0]);
         let q = `#?page=${nw[0]}`;
-        if (nw[3]!=null && nw[3] != "") {
+        if (nw[3]!==null && nw[3] !== "") {
             q = q + `&isAdi:${setIfEmpty(nw[3])}`;
         }
-        if (nw[1] != "" && nw[2] != "") {
+        if (nw[1] !== "" && nw[2] !== "") {
             q = q + `&basTarih:${setIfEmpty(nw[1])}&bitisTarih:${setIfEmpty(nw[2])}`;
         }      
         document.location.href = q;

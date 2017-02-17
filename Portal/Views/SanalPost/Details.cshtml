@@ -1,0 +1,66 @@
+﻿@model Portal.Models.SanalPos
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SanalPos</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.banka)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.banka)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.magaza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.magaza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.kullaniciAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kullaniciAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sifre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sifre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.parola)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.parola)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Firma.FirmaAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Firma.FirmaAdi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</p>

@@ -62,7 +62,7 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
          
       }
       function setIfEmpty(obj) {
-          if (obj === undefined) {
+          if (obj===null || typeof obj === 'undefined') {
               return "";
           } else {
               return obj;

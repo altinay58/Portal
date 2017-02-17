@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Portal.Models.SanalPos>
+
+@{
+    ViewBag.Title = "ListSanalPost";
+}
+
+<h3>SanalPos Şifreleri Listeleniyor</h3>
+
+<p>
+    @Html.ActionLink("Yeni Kayıt", "Create")
+</p>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.banka)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.magaza)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.kullaniciAdi)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.sifre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.parola)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Firma.FirmaAdi)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.banka)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.magaza)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.kullaniciAdi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.sifre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.parola)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Firma.FirmaAdi)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Düzenle", "Edit", new { id = item.id }) |
+                            @Html.ActionLink("Detay", "Details", new { id = item.id }) |
+                            @Html.ActionLink("Sil", "Delete", new { id = item.id })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </td>
+    </tr>
+</table>
