@@ -1,0 +1,119 @@
+﻿@model Portal.Models.Seo
+@using Portal.Models;
+@{
+    ViewBag.Title = "Create";
+}
+<script>
+    //autoComplete İşlemleri için yazıldı. ileride geliştirilebilir.
+    $(function () {
+        var availableTags = [
+            @{
+                foreach (Domain domainlerim in Partial.DomainleriGoruntule())
+                {
+                   <text>
+                         {label: "@domainlerim.DomainAdi", value:"@domainlerim.DomainID"},
+
+                   </text>
+
+                }
+                }
+
+        ];
+        for(var sayi=0;sayi<availableTags.length;sayi++){
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#304;/g,"I");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#305;/g,"i");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#214;/g,"Ö");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#246;/g,"ö");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&Ouml;/g,"Ö");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&ouml;/g,"ö");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#220;/g,"Ü");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#252;/g,"ü");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&Uuml;/g,"Ü");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&uuml;/g,"ü");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#199;/g,"Ç");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#231;/g, "ç");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&Ccedil;/g,"Ç");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&ccedil;/g,"ç");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#286;/g,"G");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#287;/g,"g");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#350;/g,"S");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#351;/g,"s");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&hellip;/g,"...");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&rsquo;/g,"'");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&ldquo;/g,"“");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&rdquo;/g,"”");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&#39;/g,"'");
+            availableTags[sayi].label = availableTags[sayi].label.replace(/&amp;/g ,"&");
+
+        }
+        $( "#tags" ).autocomplete({
+            source: availableTags,
+            select: function(event, ui) {
+                var selectedObj = ui.item;
+                $(this).val(selectedObj.label);
+                $('input[name="SeoRefDomainID"]').val(selectedObj.value);
+                return false;
+            }
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    function allnumeric() {
+        var domainId = document.getElementById("SeoRefDomainID").value;
+        if (domainId == "") {
+            alert("Lütfen Domain Seçmeyi Unutmayınız");
+            return false;
+        }
+
+    }
+</script>
+
+<h2>Yeni Kayıt</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SeoGoogleSearchAdres, "Google Adres", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="text-box single-line" id="SeoGoogleSearchAdres" name="SeoGoogleSearchAdres" type="text" value="" style="width:350px;">
+                @Html.ValidationMessageFor(model => model.SeoGoogleSearchAdres)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SeoAdi, "Kelime", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="text-box single-line" id="SeoAdi" name="SeoAdi" type="text" value="" style="width:350px;">
+                @Html.ValidationMessageFor(model => model.SeoAdi)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SeoRefDomainID, "Domain", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <input id="tags" style="width:350px;"><br />
+                <input type="hidden" name="SeoRefDomainID" id="SeoRefDomainID" value="" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kaydet" class="btn btn-default" onclick="return allnumeric();" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</div>

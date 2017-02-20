@@ -220,10 +220,13 @@
     <Compile Include="Controllers\DomainController.cs" />
     <Compile Include="Controllers\FirmalarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HtmlTasarimlarController.cs" />
     <Compile Include="Controllers\IslerController.cs" />
+    <Compile Include="Controllers\MailSablonlariController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SanalPostController.cs" />
     <Compile Include="Controllers\SatisBolumuController.cs" />
+    <Compile Include="Controllers\SeoController.cs" />
     <Compile Include="Controllers\StandartProjeIslerisController.cs" />
     <Compile Include="Controllers\WhoisController.cs" />
     <Compile Include="Database.cs" />
@@ -581,6 +584,21 @@
     <Content Include="Views\SanalPost\Edit.cshtml" />
     <Content Include="Views\SanalPost\Details.cshtml" />
     <Content Include="Views\SanalPost\Delete.cshtml" />
+    <Content Include="Views\Seo\List.cshtml" />
+    <Content Include="Views\Seo\Details.cshtml" />
+    <Content Include="Views\Seo\Create.cshtml" />
+    <Content Include="Views\Seo\Edit.cshtml" />
+    <Content Include="Views\Seo\Delete.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\List.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Details.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Create.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Edit.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Delete.cshtml" />
+    <Content Include="Views\MailSablonlari\List.cshtml" />
+    <Content Include="Views\MailSablonlari\Details.cshtml" />
+    <Content Include="Views\MailSablonlari\Create.cshtml" />
+    <Content Include="Views\MailSablonlari\Edit.cshtml" />
+    <Content Include="Views\MailSablonlari\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

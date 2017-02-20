@@ -1,0 +1,59 @@
+﻿@model Portal.Models.Tema
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Tema</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.temaID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.temaAdresi, "Tema Adresi", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.temaAdresi)
+                @Html.ValidationMessageFor(model => model.temaAdresi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.temaDemoAdi, "Demo Adresi", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.temaDemoAdi)
+                @Html.ValidationMessageFor(model => model.temaDemoAdi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.temaDomainKategoriID, "Proje Tipi", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("temaDomainKategoriID", String.Empty)
+                @Html.ValidationMessageFor(model => model.temaDomainKategoriID)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.temaFirmaAdi, "Firma Adı", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.temaFirmaAdi)
+                @Html.ValidationMessageFor(model => model.temaFirmaAdi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kaydet" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</div>

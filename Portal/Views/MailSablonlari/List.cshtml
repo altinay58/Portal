@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Portal.Models.MailSablonu>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MailSablonuAdi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MailSablonu1)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MailSablonuAdi)
+            </td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MailSablonuID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.MailSablonuID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MailSablonuID })
+            </td>
+        </tr>
+    }
+
+</table>

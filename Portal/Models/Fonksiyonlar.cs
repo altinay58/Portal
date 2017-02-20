@@ -276,6 +276,12 @@ namespace Portal.Models
             telefonNo=Regex.Replace(telefonNo, @"[^\d]", "");
             return telefonNo;
         }
+        public static string DomainAdiGetir(int DomainID)
+        {
+            string domainAdi = Database.DbHelper.GetDb.Domains.Find(DomainID).DomainAdi;  
+
+            return domainAdi;
+        }
     }
 
 }

@@ -1,0 +1,50 @@
+﻿@model Portal.Models.Tema
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tema</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tema Adresi
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.temaAdresi)
+        </dd>
+
+        <dt>
+            Firma Adı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.temaFirmaAdi)
+        </dd>
+
+        <dt>
+            Demo Adı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.temaDemoAdi)
+        </dd>
+
+        <dt>
+            Proje  Tipi
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.temaID }) |
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</p>

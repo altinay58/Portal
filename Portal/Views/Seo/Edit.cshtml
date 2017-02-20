@@ -1,0 +1,52 @@
+﻿@model Portal.Models.Seo
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Düzenleniyor</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.SeoID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SeoGoogleSearchAdres, "Google Adres", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="text-box single-line" id="SeoGoogleSearchAdres" name="SeoGoogleSearchAdres" type="text" value="@Model.SeoGoogleSearchAdres" style="width:350px;">
+                @Html.ValidationMessageFor(model => model.SeoAdi)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SeoAdi, "Kelime", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="text-box single-line" id="SeoAdi" name="SeoAdi" type="text" value="@Model.SeoAdi" style="width:350px;">
+                @Html.ValidationMessageFor(model => model.SeoAdi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SeoRefDomainID, "SeoRefDomainID", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SeoRefDomainID", String.Empty)
+                @Html.ValidationMessageFor(model => model.SeoRefDomainID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</div>

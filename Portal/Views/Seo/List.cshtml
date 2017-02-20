@@ -1,0 +1,188 @@
+﻿@model IEnumerable<Portal.Models.Seo>
+@using Portal.Models;
+@{
+    ViewBag.Title = "List";
+
+    int i = 0;
+}
+
+<h2>Seo Yapılacak Kelimeler Listeleniyor </h2>
+@section css{
+<link href="/Scripts/1.11.0/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+}
+@section scripts{
+    <script src="/Scripts/1.11.0/jquery-ui.min.js"></script>
+ <script>
+    //Burası Otamatik Google sıralaması için yazıldı GetirGoogleSıralamasi actionresult ile bağlı
+    $(function () {
+        $('[class=click11]').click(function (e) {
+            var domainAdi = "";
+            var seoAdi = "";
+            var idDeger = $(this).attr('id');
+            var dizi = idDeger.split("+");
+            domainAdi = dizi[0];
+            seoAdi = dizi[1];
+            SeoID = dizi[2];
+            siralamaID = dizi[3];
+            seoEskiSiraNumarasi = dizi[4];
+            seoGoogleAdres = dizi[5];
+            domainAdi = "http://" + domainAdi;
+            $.ajax({
+                url: "@Url.Action("GetirGoogleSiralamasi")",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    SeoGoogleSearchAdres:seoGoogleAdres,
+                    urlString:domainAdi,
+                    kelime: seoAdi,
+                    id: SeoID
+                },
+                error: function (response) {
+                   // alert(response.responseText);
+                },
+                success: function (response) {
+                    if (response != 0) {
+                        if (seoEskiSiraNumarasi == response)
+                        { response = "<img src=" + "/Content/Resimler/ayni.png>"; }
+                        else if (seoEskiSiraNumarasi > response)
+                        { response = "<img src=" + "/Content/Resimler/yukselis.png> Yeni Sıra: " + response; }
+                        else
+                        { response = "<img src=" + "/Content/Resimler/dusus.jpg> Yeni Sıra :" + response; }
+                    }
+                    else {
+                        response = "Aramalarda Yok";
+                    }
+                    $('[class='+siralamaID+']').html(response);
+                }
+            });
+        });
+    });
+</script>
+
+
+<script>
+
+
+        $(function () {
+            var availableTags = [
+                @{
+                    foreach(Domain domain in Partial.DomainleriGoruntule())
+                    {
+                       <text> {
+                    label: "@domain.DomainAdi", the_link: "/Seo/SeoKelimeriniGetir/@domain.DomainID"
+                       },</text>
+                }
+                }
+
+            ];
+            for (var sayi = 0; sayi < availableTags.length; sayi++) {
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#304;/g, "I");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#305;/g, "i");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#214;/g, "Ö");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#246;/g, "ö");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&Ouml;/g, "Ö");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&ouml;/g, "ö");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#220;/g, "Ü");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#252;/g, "ü");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&Uuml;/g, "Ü");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&uuml;/g, "ü");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#199;/g, "Ç");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#231;/g, "ç");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&Ccedil;/g, "Ç");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&ccedil;/g, "ç");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#286;/g, "G");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#287;/g, "g");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#350;/g, "S");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#351;/g, "s");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&hellip;/g, "...");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&rsquo;/g, "'");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&ldquo;/g, "“");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&rdquo;/g, "”");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&#39;/g, "'");
+                availableTags[sayi].label = availableTags[sayi].label.replace(/&amp;/g, "&");
+
+            }
+            $("#tags").autocomplete({
+                source: availableTags,
+                select: function (e, ui) {
+                    location.href = ui.item.the_link;
+                    console.log(ui.item.the_link);
+                }
+            });
+        });
+
+</script>
+}
+<div class="input-prepend">
+    <div class="btn-group">
+        <a class=" btn btn-default" href="@Url.Action("Create","Seo")"> YeniKayıt </a>
+        <a class=" btn btn-default" href="javascript:history.go(-1)"> Geri </a>
+        <input id="tags" style="width:350px;"><br />
+
+    </div>
+</div>
+
+
+<table class=" table table-striped table-bordered">
+    <tr>
+        <td>
+            <table class="table table-striped table-bordered">
+                <tr>
+
+                    <th>
+                        Kelime
+                    </th>
+                    <th>
+                        Domain Adı
+                    </th>
+                    <th>Google Adres</th>
+                    <th>
+                        Tarih
+                    </th>
+                    <th>Google Eski Sırası</th>
+                    <th> Göster</th>
+                    <th>Google Yeni Sıralaması</th>
+
+                    <th></th>
+                </tr>
+
+
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>
+                            <a href="http://www.@item.SeoGoogleSearchAdres/search?q=@item.SeoAdi" target="_blank">@item.SeoAdi</a>
+                        </td>
+                        <td>
+                            @Fonksiyonlar.DomainAdiGetir(item.SeoRefDomainID ?? 0)
+                        </td>
+                        <td>
+                            @item.SeoGoogleSearchAdres
+                        </td>
+                        <td>
+                            @item.SeoGoogleSiralamaTarihi
+                        </td>
+                        <td>
+                            @item.SeoGoogleSiralamasi
+                        </td>
+
+                        <td>
+                            <input type="button" value="Güncel Sıralama" id="@item.Domain.DomainAdi+@item.SeoAdi+@item.SeoID+@i+@item.SeoGoogleSiralamasi+@item.SeoGoogleSearchAdres" class="click11" />
+
+                        </td>
+                        <td>@MvcHtmlString.Create("<span class=" + @i + "></span>")</td>
+
+                        <td>
+                            @Html.ActionLink("Düzenle", "Edit", new { id = item.SeoID }) |
+                            @Html.ActionLink("Detay", "Details", new { id = item.SeoID })
+                            @*@Html.ActionLink("Sil", "Delete", new { id=item.SeoID })*@
+                        </td>
+                    </tr>
+                    i = i + 1;
+                }
+
+            </table>
+        </td>
+    </tr>
+</table>

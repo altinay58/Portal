@@ -1,0 +1,38 @@
+﻿@model Portal.Models.Seo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Seo</h4>
+    <hr />
+    <dl class="dl-haorizontal">
+        <dt>Google Adres </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SeoGoogleSearchAdres)
+        </dd>
+        <dt>
+            Kelime
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SeoAdi)
+        </dd>
+
+        <dt>
+            Domain Adı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Domain.DomainAdi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SeoID }) |
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</p>
