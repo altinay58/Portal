@@ -227,6 +227,7 @@
     <Compile Include="Controllers\SanalPostController.cs" />
     <Compile Include="Controllers\SatisBolumuController.cs" />
     <Compile Include="Controllers\SeoController.cs" />
+    <Compile Include="Controllers\SifresController.cs" />
     <Compile Include="Controllers\StandartProjeIslerisController.cs" />
     <Compile Include="Controllers\WhoisController.cs" />
     <Compile Include="Database.cs" />
@@ -459,6 +460,7 @@
     <Content Include="js\controllers\firmaKisiListCtrl.js" />
     <Content Include="js\controllers\listIslerCtrl.js" />
     <Content Include="js\controllers\randevularCtrl.js" />
+    <Content Include="js\controllers\sifreListCtrl.js" />
     <Content Include="js\extensions.js" />
     <Content Include="js\portalApp.js" />
     <Content Include="js\services\arayanListService.js" />
@@ -467,6 +469,7 @@
     <Content Include="js\services\firmaKisiListService.js" />
     <Content Include="js\services\listIslerService.js" />
     <Content Include="js\services\randevularService.js" />
+    <Content Include="js\services\sifreListService.js" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -599,6 +602,11 @@
     <Content Include="Views\MailSablonlari\Create.cshtml" />
     <Content Include="Views\MailSablonlari\Edit.cshtml" />
     <Content Include="Views\MailSablonlari\Delete.cshtml" />
+    <Content Include="Views\Sifres\List.cshtml" />
+    <Content Include="Views\Sifres\Details.cshtml" />
+    <Content Include="Views\Sifres\Create.cshtml" />
+    <Content Include="Views\Sifres\Edit.cshtml" />
+    <Content Include="Views\Sifres\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

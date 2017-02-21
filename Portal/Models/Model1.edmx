@@ -169,6 +169,7 @@
           <Property Name="SatisOncelikli" Type="bit" Nullable="false" />
           <Property Name="GuncellemeSozlesmesiVarmi" Type="bit" Nullable="false" />
           <Property Name="OdemesiAlindi" Type="bit" Nullable="false" />
+          <Property Name="Note" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -2615,6 +2616,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="SatisOncelikli" Type="Boolean" Nullable="false" />
           <Property Name="GuncellemeSozlesmesiVarmi" Type="Boolean" Nullable="false" />
           <Property Name="OdemesiAlindi" Type="Boolean" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DomainKategori">
           <Key>
@@ -4227,6 +4229,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySetMapping Name="Domains">
             <EntityTypeMapping TypeName="PortalModel.Domain">
               <MappingFragment StoreEntitySet="Domain">
+                <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="OdemesiAlindi" ColumnName="OdemesiAlindi" />
                 <ScalarProperty Name="GuncellemeSozlesmesiVarmi" ColumnName="GuncellemeSozlesmesiVarmi" />
                 <ScalarProperty Name="SatisOncelikli" ColumnName="SatisOncelikli" />

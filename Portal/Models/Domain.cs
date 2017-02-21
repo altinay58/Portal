@@ -48,6 +48,7 @@ namespace Portal.Models
         public bool SatisOncelikli { get; set; }
         public bool GuncellemeSozlesmesiVarmi { get; set; }
         public bool OdemesiAlindi { get; set; }
+        public string Note { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
         public virtual Firma Firma { get; set; }

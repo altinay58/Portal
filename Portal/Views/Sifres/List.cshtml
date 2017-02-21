@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Portal.Models.Sifre>
+    @{
+        ViewBag.Title = "List";
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget-container fluid-height clearfix">
+                <div class="heading">
+                    <a href="@Url.Action("Create", "Sifres")" class="label label-danger">Ekle</a>
+                </div>
+                <div class="widget-content padded">
+                    Yeni sistemlerde Veri Tabanı kısmında veri tabanının adı yazıyor. Bu şekilde her veri tabanına bir yönetici ekliyoruz. UID yazan kısımlar eskiden kalma. Kenarları yeşil olanlar site adresi düzeltilmesi gerekenler.
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div ng-controller="sifreListCtrl">
+
+
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-icon right">
+                    <i class="icon-magnifier"></i>
+                    <input type="text" class="form-control" ng-model="q"  ng-keyup="getirData(q)" placeholder="En az Üç harf ">
+                </div>
+            </div>
+        </div>
+
+
+        <button type="button" class="btn btn-default green" ng-click="getirData(q)">Filtrele</button>
+
+    </form>
+    <div style="position:absolute;top:45%;left:55%;right:0;margin:auto" ng-show="yukleniyor">
+        <i class="fa fa-refresh fa-spin fa-3x fa-fw font-blue"></i>
+    </div>
+    <div ng-repeat="item in sifreler">
+        @*class="fa fa-star ng-class:{ 'sari':domainBilgi.SatisOncelikli }"*@ 
+        <div class="row note ng-class:demoMu(item) ? 'note-success': 'note-info' " >
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{item.SifreWebSitesi}} <a href="/Sifres/Edit/{{item.SifreID}}" class="label label-danger">Düzelt</a> 
+                        <a class="label label-warning" href="/Sifres/Delete/{{item.SifreID}}" >Sil</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="widget-content padded">
+                            <address><strong>Veri Tabanı</strong><br>{{item.SifreUserID}}<br></address>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget-content padded">
+                            <address><strong>{{item.SifreKullaniciAdi}}</strong><br>{{item.SifreSifre}}<br></address>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget-content padded">
+                            <address><strong>{{item.SifreGmailAdresi}}</strong><br>{{item.SifreGmail}}<br></address>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="widget-content padded">
+                            <address><strong>{{item.SifreDiger1}}</strong><br>{{item.SifreDiger2}}<br></address>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@section scripts{
+<script src="/js/services/sifreListService.js?v=2"></script>
+<script src="/js/controllers/sifreListCtrl.js?v=3"></script>
+}

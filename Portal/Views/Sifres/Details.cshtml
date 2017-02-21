@@ -1,0 +1,114 @@
+﻿@model IsTakip.Models.Sifre
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Sifre</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreUserID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreUserID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreWebSitesi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreWebSitesi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreKullaniciAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreKullaniciAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreSifre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreSifre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreGmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreGmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreGmailAdresi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreGmailAdresi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreDiger1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreDiger1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreDiger2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreDiger2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreDiger3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreDiger3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreDiger4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreDiger4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreDiger5)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreDiger5)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SifreDiger6)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SifreDiger6)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SifreID }) |
+    @Html.ActionLink("Back to List", "List")
+</p>
