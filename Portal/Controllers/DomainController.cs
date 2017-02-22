@@ -376,6 +376,14 @@ namespace Portal.Controllers
             }            
         }
         #endregion
+        public JsonResult ColumnNoteEkle(int pk,string value)
+        {
+            JsonCevap jsn = new JsonCevap();
+            Domain domain = Db.Domains.SingleOrDefault(x => x.DomainID == pk);
+            domain.Note = value;
+            Db.SaveChanges();
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }        
         private void SetViewBagEkle()
         {
             ViewBag.DomainKayitliFirmalar = Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);

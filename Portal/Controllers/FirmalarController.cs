@@ -17,6 +17,7 @@ namespace Portal.Controllers
             ViewBag.guncelMenu = "Firmalar";
         }
         #region firma tumu
+        [Authorize(Roles = "Satis,Muhasebe")]
         public ActionResult Tumu(int? sayfaNo,string q)
         {
             //if (!User.IsInRole("Muhasebe") && durum != "musteri")
@@ -25,7 +26,7 @@ namespace Portal.Controllers
             //    TempData["KirmiziMesaj"] = "Bu bölüme giriş yetkiniz bulunmuyor.";
             //    return RedirectToAction("Index", "Home");
             //}
-
+           
             ViewBag.SayfaAdi = "Firmalar";
             ViewBag.Durum = "tumu";
 
@@ -39,24 +40,35 @@ namespace Portal.Controllers
                 domainBaslangic = (SayfaNo - 1) * PagerCount;
             }
 
-            var viewData = Db.Firmas.TumFirmalar()
-                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q): true)
-                .Skip(domainBaslangic).Take(PagerCount).ToList();
-                
-                //.GetirFirmalar(PagerCount, domainBaslangic, "tumu");
+            var list = Db.Firmas.TumFirmalar()
+                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
+               
+            if (User.IsInRole("Satis"))
+            {
+                list = list.Where(x=>(x.Personel!=true && x.Kasa!=true));
+            }
+            list=list.Skip(domainBaslangic).Take(PagerCount);
+            //.GetirFirmalar(PagerCount, domainBaslangic, "tumu");
 
 
             ViewBag.BulunduguSayfa = SayfaNo;
-            int totalCount = Db.Firmas.TumFirmalar()
-                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true).Count();
+             var qTotal = Db.Firmas.TumFirmalar()
+                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
+
+            if (User.IsInRole("Satis"))
+            {
+                qTotal = qTotal.Where(x => (x.Personel != true && x.Kasa != true));
+            }
+            int totalCount = qTotal.Count();
             PaginatedList pager = new PaginatedList((sayfaNo ?? 1), PagerCount, totalCount);
             //sayfalama
             ViewData["queryData"] =  q;
             ViewBag.Sayfalama = pager;
             //ViewBag.Domainler = Db.Domains.GetirDomainler(id);
 
-            return View(viewData);
+            return View(list.ToList());
         }
+        [Authorize(Roles = "Muhasebe")]
         public ActionResult FirmaSil(int id)
         {
             var firma = Db.Firmas.SingleOrDefault(x => x.FirmaID == id);
@@ -67,6 +79,7 @@ namespace Portal.Controllers
         }
         #endregion firma tuu
         #region firmakaydet
+        [Authorize(Roles = "Satis,Muhasebe")]
         public ActionResult FirmaKaydet(int? id)
         {
             Firma firma = new Firma();
@@ -78,6 +91,7 @@ namespace Portal.Controllers
             ViewBag.Konumlar = Db.Konums.GetirKonumlar();
             return View(firma);
         }
+        [Authorize(Roles = "Satis,Muhasebe")]
         [ValidateInput(false)]
         [HttpPost]
         public ActionResult FirmaKaydet(Firma model,FormCollection frm)

@@ -607,6 +607,7 @@
     <Content Include="Views\Sifres\Create.cshtml" />
     <Content Include="Views\Sifres\Edit.cshtml" />
     <Content Include="Views\Sifres\Delete.cshtml" />
+    <Content Include="Views\MailSablonlari\TanitimMaili.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

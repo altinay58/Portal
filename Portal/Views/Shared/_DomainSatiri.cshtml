@@ -47,10 +47,24 @@
         @Model.DomainKategori.DomainKategoriAdi
     </td>
     <td>
-       
-        <a href="@Url.Action("CariHareketDetay", "Web", new { firmaID = Model.RefDomainFirmaID })">
+       @if (!string.IsNullOrEmpty(Model.Firma.FirmaAdi) && Model.Firma.FirmaAdi.Length > 20)
+       {
+        <a class="uc-nokta" title="@Model.Firma.FirmaAdi" href="@Url.Action("CariHareketDetay", "Web", new { firmaID = Model.RefDomainFirmaID })">
+            <text>@Model.Firma.FirmaAdi.Substring(0, 20)</text>...
+        </a>
+       }
+       else
+       {
+        <a class="uc-nokta" href="@Url.Action("CariHareketDetay", "Web", new { firmaID = Model.RefDomainFirmaID })">
             @Model.Firma.FirmaAdi
         </a>
+      
+       }      
+
+
+</td>
+    <td>
+        <a href="#" class="domain-note" data-type="text" data-pk="@Model.DomainID" data-title="Note giriniz">@Model.Note</a>
     </td>
     <td>
        
@@ -58,25 +72,28 @@
             {
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="btn btn-warning" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">
-                            Düzenle
+                        <a class="btn btn-warning" title="Düzenle" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">                         
+                            <i class="fa fa-edit"></i>
                         </a>
                         
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="btn  btn-info" onclick="domainUzatmaMailiGonder(this,'@Model.DomainAdi',@Model.DomainID)" href="javascript:void(0)"> Mail Gönder  </a>
+                        <a class="btn  btn-info" onclick="domainUzatmaMailiGonder(this,'@Model.DomainAdi',@Model.DomainID)" title="Mail Gönder" href="javascript:void(0)"> 
+                            <i class="fa fa-mail-forward"></i> </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="btn btn-success" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Domain", new {  domainID = Model.DomainID })'"> Uzat  </a>
+                        <a class="btn btn-success" title="Uzat" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Domain", new {  domainID = Model.DomainID })'"> 
+                            <i class="fa fa-arrows-h"></i> </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="btn  btn-danger" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Domain", new {  id = Model.DomainID })'"> Domaini Sil </a>
+                        <a class="btn  btn-danger" title="Domain Sil" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Domain", new {  id = Model.DomainID })'"> 
+                            <i class="fa fa-trash"></i></a>
                     </div>
                 </div>
             }
@@ -94,39 +111,9 @@
 
 
 </td>
-</tr>
-@Html.Partial("_Modal")
-<script>
 
-    function gosterDomain(domain) {
-        commonAjaxService.getDomainInfo(domain).done(function (data) {
-            $("#domainInfo .modal-title").html("Domain Sorgula")
-            $("#domainInfo .modal-body").html(data);
-            $("#domainInfo").modal("show");
-        });
-    }
-    function domainUzatmaMailiGonder(btn, domainAdi, domainId) {
-      
-        
-        if (confirm( domainAdi +' Domain Uzatılacak  Maili Gönderilecek Emin misiniz?'))
-        {
-            $(btn).addClass("disabled");
-            $(btn).html("Gönderiliyor..");
-            commonAjaxService.domainUzatmaMailiGonder(domainId).done(function (data) {
-                $("#domainInfo").modal("show");
-                $("#domainInfo .modal-title").html("Mail Cevap");
-                $(btn).removeClass("disabled");
-                $(btn).html("Mail Gönder");
-                if (data.Basarilimi) {
-                    
-                    $("#domainInfo .modal-body").html('Gönderildi');
-                   
-                } else {
-                    $("#domainInfo .modal-body").html('Hata oldu,gönderilemedi');
-                }
-            });
-        }
-           
-    }
-  
-</script>
+</tr>
+
+
+
+

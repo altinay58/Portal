@@ -810,7 +810,7 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item  ">
-                                    <a href="javasript:void(0)" class="nav-link ">
+                                    <a href="@Url.Action("Domainler","Domain")" class="nav-link ">
                                         <span class="title">Domainler</span>
                                     </a>
                                 </li>
@@ -873,8 +873,20 @@
 
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("TanitimMaili","MailSablonlari",new { sablon="Tanitim"})" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Tanıtım Maili</span>
 
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("TanitimMaili","MailSablonlari",new { sablon="Hosting"})" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Hosting Maili</span>
 
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     

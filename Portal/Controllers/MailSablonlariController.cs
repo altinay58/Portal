@@ -109,6 +109,39 @@ namespace Portal.Controllers
             Db.SaveChanges();
             return RedirectToAction("Index");
         }
+        public ActionResult TanitimMaili(string sablon)
+        {
+
+            ViewBag.MailSablonu = Db.MailSablonus.FirstOrDefault(a => a.MailSablonuAdi == sablon).MailSablonu1;
+            ViewBag.Sablon = sablon;
+            return View();
+        }
+
+        [ValidateInput(false)]
+        [AcceptVerbs("POST"), ActionName("TanitimMaili")]
+        public ActionResult TanitimMaili_Post(string mail, string baslik, string mesaj, string sablon)
+        {
+            MailKontrol yeniKontrol = new MailKontrol();
+            yeniKontrol.MailBaslik = baslik;
+            yeniKontrol.MailAdresi = mail;
+            yeniKontrol.MailOkundumu = false;
+            yeniKontrol.MailGondermeTarihi = DateTime.Now;
+            Db.MailKontrols.Add(yeniKontrol);
+            Db.SaveChanges();
+
+            mesaj = mesaj + "<img src=\"http://is.karayeltasarim.com/mail/oku/" + yeniKontrol.MailKontrolID + "\" width=\"1\" height=\"1\" />";
+
+            if (sablon == "Hosting")
+            {
+                Fonksiyonlar.MailGonderOdeme(mail, baslik, mesaj);
+            }
+            else
+            {
+                Fonksiyonlar.MailGonder(mail, baslik, mesaj);
+            }
+
+            return View(new { sablon = sablon });
+        }
 
     }
 }

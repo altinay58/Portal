@@ -282,6 +282,67 @@ namespace Portal.Models
 
             return domainAdi;
         }
+        public static string MailGonderOdeme(string gidecekMailAdresleri, string baslik, string mesaj)
+        {
+
+            // KarayelEntities db = new KarayelEntities();
+
+            //db.Database.ExecuteSqlCommand("insert into Mail.dbo.MailGonder values ('info@antalyawebtasarim.com','Awt@1234',1,'smtp.live.com',587,'" + gidecekMailAdresleri + "','" + baslik + "','" + mesaj + "')");
+
+            string MailAdresi = "satis@karayeltasarim.com";
+
+            string MailSifresi = "Kwt112107";
+            bool MailSsl = true;
+            string SMTPAdresi = "smtp.live.com";
+            string Port = "587";
+            string[] MailAdresleri = gidecekMailAdresleri.Split(',');
+
+            string ilkMailAdresi = MailAdresleri[0];
+
+            if (String.IsNullOrEmpty(ilkMailAdresi))
+            {
+                ilkMailAdresi = MailAdresi;
+            }
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(MailAdresi);
+            try
+            {
+
+                foreach (string mailim in MailAdresleri)
+                {
+                    if (String.IsNullOrEmpty(mailim))
+                    {
+                        continue;
+                    }
+                    message.To.Add(mailim); // <-- this one
+                }
+
+                message.Subject = baslik;
+                //message.CC.Add("info@antalyacarhire.com");
+                message.Body = mesaj;
+
+                message.IsBodyHtml = true;
+
+                SmtpClient client = new SmtpClient(SMTPAdresi, Convert.ToInt32(Port));
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential(MailAdresi, MailSifresi);
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = MailSsl;
+
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            if (message != null)
+            {
+                message.Dispose();
+            }
+            return "";
+        }
     }
 
 }
