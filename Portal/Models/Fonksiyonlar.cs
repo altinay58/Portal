@@ -343,6 +343,24 @@ namespace Portal.Models
             }
             return "";
         }
+        public static IEnumerable<CariHareket> GetirCariHareketler(int firmaID)
+        {
+            var Db = Database.DbHelper.GetDb;
+            var kategoriler = from a in Db.CariHarekets
+                              where a.RefFirmaID == firmaID
+                              orderby a.ChTarihi descending
+                              select a;
+            return kategoriler;
+        }
+        public static IEnumerable<Domain> GetirFirmaDomainleri(int firmaID)
+        {
+            var Db = Database.DbHelper.GetDb;
+            IEnumerable<Domain> domainler = Db.Domains.ToList();
+            IEnumerable<Domain> yeniDomainler = Db.Domains.ToList();
+            domainler = domainler.Where(a => a.RefDomainFirmaID == firmaID && a.DomainDurum == true).ToList();
+            domainler = domainler.OrderByDescending(m => m.IpAdres).ToList();
+            return domainler;
+        }
     }
 
 }

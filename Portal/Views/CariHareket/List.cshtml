@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Portal.Models.CariHareket>
+@using Portal.Models;
+@using Portal.Extensions;
+@using Portal.Controllers;
+@{
+    ViewBag.Title = "List";
+}
+<div class="table-scrollable">
+<table class="table table-striped table-bordered table-hover">
+<thead class="flip-content">
+    <tr>
+        <th>
+            No
+        </th>
+        <th>
+            Tarih
+        </th>
+        <th>
+            Firma
+        </th>
+        <th align="right" width="100">
+            Alacak
+        </th>
+        <th align="right" width="100">
+            Borç
+        </th>
+        <th>
+            Not
+        </th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ChID</td>
+            <td>
+                @String.Format("{0:dd/MM/yyyy}", item.ChTarihi)
+            </td>
+            <td>
+                <a href="@Url.Action("Detay", "CariHareket", new { id = item.RefFirmaID } )">
+                    @item.Firma.FirmaAdi
+                </a>
+            </td>
+            <td align="right">
+                @item.ChSatisFiyati
+            </td>
+            <td align="right">
+                @item.ChAlinanOdeme
+            </td>
+            <td>
+                @item.ChNot
+            </td>
+        </tr>
+    }
+</tbody>
+
+</table>
+</div>
+@if (ViewBag.Sayfalama.TotalCount > 0)
+{
+    @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                        string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.List(page))))
+}

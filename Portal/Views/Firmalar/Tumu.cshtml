@@ -8,7 +8,7 @@
 <form method="post" id="ekleForm" name="form1" action="@Url.Action("Tumu","Firmalar")" enctype="multipart/form-data">
     <div class="row" style="margin-bottom:5px">
         <div class="col-md-3">
-            <input type="text" class="form-control" name="q" placeholder="Ara..." value="" />
+            <input type="text" class="form-control" name="q" placeholder="Ara..." value="@ViewData["queryData"]" />
         </div>
         <div class="col-md-2">
             <button class="btn btn-default blue" type="submit">Ara</button>

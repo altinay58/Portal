@@ -217,8 +217,10 @@
     <Compile Include="Controllers\ArayanlarController.cs" />
     <Compile Include="Controllers\ArgeBolumuController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CariHareketController.cs" />
     <Compile Include="Controllers\DomainController.cs" />
     <Compile Include="Controllers\FirmalarController.cs" />
+    <Compile Include="Controllers\GidilenMusteriController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HtmlTasarimlarController.cs" />
     <Compile Include="Controllers\IslerController.cs" />
@@ -249,6 +251,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ArayanlarModels\ArayanModel.cs" />
+    <Compile Include="Models\ArayanlarModels\GidilenMusteriView.cs" />
     <Compile Include="Models\ArayanListesi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -608,6 +611,14 @@
     <Content Include="Views\Sifres\Edit.cshtml" />
     <Content Include="Views\Sifres\Delete.cshtml" />
     <Content Include="Views\MailSablonlari\TanitimMaili.cshtml" />
+    <Content Include="Views\Arayanlar\GonderilenMailler.cshtml" />
+    <Content Include="Views\GidilenMusteri\List.cshtml" />
+    <Content Include="Views\GidilenMusteri\Details.cshtml" />
+    <Content Include="Views\GidilenMusteri\Create.cshtml" />
+    <Content Include="Views\GidilenMusteri\Edit.cshtml" />
+    <Content Include="Views\GidilenMusteri\Delete.cshtml" />
+    <Content Include="Views\CariHareket\List.cshtml" />
+    <Content Include="Views\CariHareket\Detay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

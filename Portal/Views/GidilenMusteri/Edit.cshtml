@@ -1,0 +1,184 @@
+﻿@model Portal.Models.ArayanlarModels.GidilenMusteriView
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.GidilenMusteriID)
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriFirmaAdi, "Firma Adı", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriFirmaAdi)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriFirmaAdi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriAdi, "Adı", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriAdi)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriAdi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriSoyadi, "Soyadı", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriSoyadi)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriSoyadi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriTelefon, "Telefon", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriTelefon)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriTelefon)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriCepTelNo, "Cep-Tel-No", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriCepTelNo)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriCepTelNo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriAdres, "Tam Adres", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriAdres)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriAdres)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriMailAdres, "Mail-Adres", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriMailAdres)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriMailAdres)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriSehir, "Şehir", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriSehir)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriSehir)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriilce, "İlçe", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriilce)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriilce)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriWebAdresi, "Web Adresi", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriWebAdresi)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriWebAdresi)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriKonu, "Konu", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GidilenMusteriKonu)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriKonu)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriTarih, "Tarih", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.GidilenMusteriTarih, new { @class = "tarih", data_date_format = "dd.mm.yyyy" })
+                @Html.ValidationMessageFor(model => model.GidilenMusteriTarih)
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriKonumID, "Konum", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("GidilenMusteriKonumID", String.Empty)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriKonumID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriDomainKategoriID, "Proje Tipi", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("GidilenMusteriDomainKategoriID", String.Empty)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriDomainKategoriID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GidilenMusteriSektorID, "Sektor Adı", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("GidilenMusteriSektorID", String.Empty)
+                @Html.ValidationMessageFor(model => model.GidilenMusteriSektorID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kaydet" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</div>
+
+@section css{
+    <link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .datepicker.dropdown-menu {
+            z-index: 9999 !important;
+        }
+    </style>
+
+}
+@section scripts{
+    <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script>
+     $(function () {
+         $.fn.datepicker.dates['tr'] = {
+             days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+             daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+             daysMin: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+             months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+             monthsShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+             today: "Bugün"
+         };
+         $(".tarih").datepicker({
+             autoclose: true,
+             todayHighlight: true,
+             language: 'tr'
+         });
+         $('.tarih').parent('.input-group').on('click', '.input-group-btn', function (e) {
+             e.preventDefault();
+             $(this).parent('.input-group').find('#Tarih').datepicker('show');
+         });
+     });
+    </script>
+
+}

@@ -200,5 +200,11 @@ namespace Portal.Models
                     orderby d.arayanKayitTarih descending
                     select d).ToList();
         }
+        public static IEnumerable<CariHareket> GetirCariHareketler(this IEnumerable<CariHareket> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
+        {
+            return (from q in kaynakTablo
+                    orderby q.ChTarihi descending
+                    select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+        }
     }
 }

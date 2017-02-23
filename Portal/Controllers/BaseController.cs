@@ -16,12 +16,16 @@ namespace Portal.Controllers
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("tr-TR");
-        }
+        }      
         protected readonly string DEFAULT_USER_ID = "f5f53da2-c311-44c9-af6a-b15ca29aee57";
         protected readonly int  PagerCount = 20;
         //basarili
         protected readonly string SUCESS = "Success";
         protected readonly string ERROR = "Error";
+        protected dynamic GuncelMenu {
+            get { return ViewBag.guncelMenu; }
+            set { ViewBag.guncelMenu = value;   }
+        }
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);

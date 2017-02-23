@@ -1,0 +1,146 @@
+﻿@model Portal.Models.GidilenMusteri
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            FirmaAdi
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriFirmaAdi)
+        </dd>
+
+        <dt>
+            Adi
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriAdi)
+        </dd>
+
+        <dt>
+            Soyadi
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriSoyadi)
+        </dd>
+
+        <dt>
+            Telefon
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriTelefon)
+        </dd>
+
+        <dt>
+            CepTelNo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriCepTelNo)
+        </dd>
+
+        <dt>
+            Tam Adres
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriAdres)
+        </dd>
+
+        <dt>
+            MailAdres
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriMailAdres)
+        </dd>
+
+        <dt>
+            Sehir
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriSehir)
+        </dd>
+
+        <dt>
+            ilce
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriilce)
+        </dd>
+
+        <dt>
+            WebAdresi
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriWebAdresi)
+        </dd>
+
+        <dt>
+            Konu
+        </dt>
+
+        <dd>
+            Konu
+        </dd>
+
+        <dt>
+            Tarih
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GidilenMusteriTarih)
+        </dd>
+
+        <dt>
+            Gorusen Kullanici
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser.Isim)
+        </dd>
+
+        <dt>
+            Proje Tipi
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dd>
+
+        <dt>
+            Konum
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Konum.Konum1)
+        </dd>
+
+        <dt>
+            Sektör Adı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sektorler.sektorAdi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.GidilenMusteriID }) |
+    @Html.ActionLink("Listeye Geri Dön", "List")
+</p>

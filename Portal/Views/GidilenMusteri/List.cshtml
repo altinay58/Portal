@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Portal.Models.GidilenMusteri>
+@using Portal.Models;
+@using Portal.Extensions;
+@using Portal.Controllers;
+@{
+    ViewBag.Title = "List";
+}
+<p>
+    @Html.ActionLink("Yeni Kayıt", "Create")
+</p>
+<div class="table-scrollable">
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="flip-content">
+            <tr>
+                <th>
+                    Firma Adi
+                </th>
+                <th>
+                    Adı/Soyadı
+                </th>
+                <th>
+                    Telefon/Cep-Tel
+                </th>
+
+
+                <th>
+                    Proje Tipi
+                </th>
+                <th>
+                    Konum
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GidilenMusteriFirmaAdi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GidilenMusteriAdi)/
+
+                        @Html.DisplayFor(modelItem => item.GidilenMusteriSoyadi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GidilenMusteriTelefon)
+                        /
+                        @Html.DisplayFor(modelItem => item.GidilenMusteriCepTelNo)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DomainKategori.DomainKategoriAdi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Konum.Konum1)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Düzenle", "Edit", new { id = item.GidilenMusteriID }) |
+                        @Html.ActionLink("Detay", "Details", new { id = item.GidilenMusteriID }) |
+                        @Html.ActionLink("Sil", "Delete", new { id = item.GidilenMusteriID })
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+@if (ViewBag.Sayfalama.TotalCount > 0)
+{
+    @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<GidilenMusteriController>(c => c.List(page))))
+}

@@ -331,5 +331,18 @@ namespace Portal.Controllers
             
         }
         #endregion arayan duzenle
+        public ActionResult GonderilenMailler()
+        {
+            return View(Db.MailKontrols.OrderByDescending(x=>x.MailKontrolID));
+        }
+        //public ActionResult MailOkundu(int id)
+        //{
+        //    MailKontrol yeniKontrol = Db.MailKontrols.FirstOrDefault(a => a.MailKontrolID == id);
+        //    yeniKontrol.MailOkundumu = true;
+        //    yeniKontrol.MailOkunmaTarihi = DateTime.Now;
+        //    Db.SaveChanges();
+
+        //    return View();
+        //}
     }
 }
