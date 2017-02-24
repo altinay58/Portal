@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Portal.Models.Sati>
+@using Portal.Models;
+@using Portal.Extensions;
+@using Portal.Controllers;
+@{
+    ViewBag.Title = "Satislar";
+    var Db = Database.DbHelper.GetDb;
+}
+<div class="table-scrollable">
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="flip-content">
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    Tarih
+                </th>
+                <th class="left">
+                    Firma
+                </th>
+                <th class="left">
+                    Satış
+                </th>
+                <th class="right">
+                    Alınan Ödeme
+                </th>
+                <th class="left">
+                    Aracı
+                </th>
+                <th class="left">
+                    Hakediş
+                </th>
+                <th class="right">
+                    Ödeme
+                </th>
+                <th class="right">
+                    Not
+                </th>
+                <th width="50">
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.SatisID
+                    </td>
+                    <td>
+                        @String.Format("{0:dd/MM/yyyy}", item.satisTarihi)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = item.SatisID })">
+                            @item.Firma.FirmaAdi
+                        </a>
+                    </td>
+                    <td>
+                        @item.musteriSatis
+                    </td>
+                    <td>
+                        @{
+                            int odemetoplami = (from m in Db.Satis
+                                                where m.refSatisID == item.SatisID
+                                                select m.musteridenAlinanOdeme).Sum() ?? 0;
+
+                            @((item.musteridenAlinanOdeme ?? 0) + odemetoplami)
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = item.SatisID })">
+                            @item.Firma1.FirmaAdi
+                        </a>
+                    </td>
+                    <td>
+                        @item.araciHakedis
+                    </td>
+                    <td>
+                        @{
+                            int hakedistoplami = (from m in Db.Satis
+                                                  where m.refSatisID == item.SatisID
+                                                  select m.araciyaOdenen).Sum() ?? 0;
+
+                            @((item.araciyaOdenen ?? 0) + hakedistoplami)
+                        }
+                    </td>
+                    <td align="right">
+                        @item.satisNot
+                    </td>
+                    <td>
+                        <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = item.SatisID })">
+                            <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
+                        </a>
+
+                    </td>
+                </tr>
+                            }
+        </tbody>
+
+    </table>
+</div>
+@if (ViewBag.Sayfalama.TotalCount > 0)
+{
+@Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.Satislar(page))))
+}
+

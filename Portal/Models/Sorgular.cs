@@ -206,5 +206,23 @@ namespace Portal.Models
                     orderby q.ChTarihi descending
                     select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
         }
+        public static IEnumerable<Sati> GetirSatislar(this IEnumerable<Sati> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
+        {
+            return (from q in kaynakTablo
+                    where q.refSatisID == null
+                    orderby q.satisTarihi descending
+                    select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+        }
+        public static IEnumerable<Sati> GetirAltOdemeler(this IEnumerable<Sati> kaynakTablo, int satisID)
+        {
+            return from q in kaynakTablo
+                   where q.refSatisID == satisID
+                   orderby q.SatisID descending
+                   select q;
+        }
+        public static Sati GetirSatis(this IEnumerable<Sati> kaynakTablo, int id)
+        {
+            return kaynakTablo.FirstOrDefault(q => q.SatisID == id);
+        }
     }
 }

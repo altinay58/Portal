@@ -1,0 +1,306 @@
+﻿@model IEnumerable<Portal.Models.Sati>
+@using Portal.Models;
+@{
+    Sati satis = ViewBag.Satis;
+    int toplamAlinanOdeme = satis.musteridenAlinanOdeme ?? 0;
+    int toplamHakedisOdeme = satis.araciyaOdenen ?? 0;
+
+    DateTime Tarih1 = DateTime.Now;
+
+    int Yil1 = Tarih1.Year;
+    int Ay1 = Tarih1.Month;
+    int Gun1 = Tarih1.Day;
+    int AydakiGunSayisi1 = DateTime.DaysInMonth(Yil1, Ay1);
+}
+@{
+    ViewBag.Title = "SatisOdemeEkle";
+}
+
+<div class="table-scrollable">
+    <table class="table table-striped table-bordered">
+        <tr>
+            <td>
+                <form method="post" name="forumadi" action="@Url.Action("SatisOdemeEkle", "CariHareket")" enctype="multipart/form-data">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td width="150">
+                                Tarih
+                            </td>
+                            <td colspan="2">
+                                <select name="day1" style="width: 50px;">
+                                    @for (int i = 1; i <= AydakiGunSayisi1; i++)
+                                    {
+                                        if (i == Gun1)
+                                        {
+                                            <option value="@(i.ToString())" selected="selected">@(i.ToString())</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@(i.ToString())">@(i.ToString())</option>
+                                        }
+
+                                    }
+                                </select>
+                                <select name="month1" style="width: 100px;">
+                                    <option value="01" @if (Ay1 == 1) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Ocak
+                                    </option>
+                                    <option value="02" @if (Ay1 == 2) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Subat
+                                    </option>
+                                    <option value="03" @if (Ay1 == 3) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Mart
+                                    </option>
+                                    <option value="04" @if (Ay1 == 4) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Nisan
+                                    </option>
+                                    <option value="05" @if (Ay1 == 5) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Mayis
+                                    </option>
+                                    <option value="06" @if (Ay1 == 6) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Haziran
+                                    </option>
+                                    <option value="07" @if (Ay1 == 7) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Temmuz
+                                    </option>
+                                    <option value="08" @if (Ay1 == 8) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Agustos
+                                    </option>
+                                    <option value="09" @if (Ay1 == 9) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Eylul
+                                    </option>
+                                    <option value="10" @if (Ay1 == 10) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Ekim
+                                    </option>
+                                    <option value="11" @if (Ay1 == 11) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Kasim
+                                    </option>
+                                    <option value="12" @if (Ay1 == 12) { @MvcHtmlString.Create("selected=\"selected\"")   }>
+                                        Aralik
+                                    </option>
+                                </select>
+                                <select name="year1" style="width: 100px;">
+                                    @for (int i = DateTime.Now.AddYears(-1).Year; i <= DateTime.Now.AddYears(1).Year; i++)
+                                    {
+                                        <option value="@(i)" @if (Yil1 == i) { @MvcHtmlString.Create("selected=\"selected\"")  }>@(i)</option>
+                                    }
+                                </select>
+                               
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td width="200">
+                                Alınan Ödeme
+                            </td>
+                            <td>
+                                Hakediş Ödeme
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input name="_musteridenAlinanOdeme" type="text" value="" size="5" />
+                                <select name="musteriKasaID" class="kasa">
+                                    @{
+                                        foreach (Firma firmaDetay in ViewBag.Kasa)
+                                        {
+                                            <option value="@(firmaDetay.FirmaID)">@(firmaDetay.FirmaAdi)</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <input name="_araciyaOdenen" type="text" value="" size="5" />
+                                <select name="araciKasaID" class="kasa">
+                                    @{
+                                        foreach (Firma firmaDetay in ViewBag.Kasa)
+                                        {
+                                            <option value="@(firmaDetay.FirmaID)">@(firmaDetay.FirmaAdi)</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Not
+                            </td>
+                            <td colspan="2">
+                                <textarea rows="5" cols="50" name="satisNot"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <input name="satisID" type="hidden" value="@satis.SatisID" />
+                                <input name="musteriID" type="hidden" value="@satis.musteriFirmaID" />
+                                <input name="araciID" type="hidden" value="@satis.araciFirmaID" />
+                                <input type="submit" value="Kaydet" name="submit" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                No
+                            </th>
+                            <th>
+                                Tarih
+                            </th>
+                            <th class="left">
+                                Firma
+                            </th>
+                            <th class="left">
+                                Satış
+                            </th>
+                            <th class="right">
+                                Alınan Ödeme
+                            </th>
+                            <th class="left">
+                                Aracı
+                            </th>
+                            <th class="left">
+                                Hakediş
+                            </th>
+                            <th class="right">
+                                Ödeme
+                            </th>
+                            <th class="right">
+                                Not
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @satis.SatisID
+                            </td>
+                            <td>
+                                @String.Format("{0:dd/MM/yyyy}", satis.satisTarihi)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Detay", "CariHareket", new { id = satis.musteriFirmaID })">
+                                    @satis.Firma.FirmaAdi
+                                </a>
+                            </td>
+                            <td>
+                                @satis.musteriSatis
+                            </td>
+                            <td>
+                                @satis.musteridenAlinanOdeme
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Detay", "CariHareket", new { id = satis.araciFirmaID })">
+                                    @satis.Firma1.FirmaAdi
+                                </a>
+                            </td>
+                            <td>
+                                @satis.araciHakedis
+                            </td>
+                            <td>
+                                @satis.araciyaOdenen
+                            </td>
+                            <td align="right">
+                                @satis.satisNot
+                            </td>
+                        </tr>
+                        @{ foreach (Sati cariVerisi in ViewData.Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @cariVerisi.SatisID
+                                    </td>
+                                    <td>
+                                        @String.Format("{0:dd/MM/yyyy}", cariVerisi.satisTarihi)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Detay", "CariHareket", new { id = cariVerisi.musteriFirmaID })">
+                                            @cariVerisi.Firma.FirmaAdi
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @cariVerisi.musteriSatis
+                                    </td>
+                                    <td>
+                                        @cariVerisi.musteridenAlinanOdeme
+                                        @{ toplamAlinanOdeme = toplamAlinanOdeme + (cariVerisi.musteridenAlinanOdeme ?? 0); }
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Detay", "CariHareket", new { id = cariVerisi.araciFirmaID })">
+                                            @cariVerisi.Firma1.FirmaAdi
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @cariVerisi.araciHakedis
+                                    </td>
+                                    <td>
+                                        @cariVerisi.araciyaOdenen
+                                        @{ toplamHakedisOdeme = toplamHakedisOdeme + (cariVerisi.araciyaOdenen ?? 0); }
+                                    </td>
+                                    <td align="right">
+                                        @cariVerisi.satisNot
+                                    </td>
+                                </tr>
+
+                                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>
+                            </th>
+                            <th class="left">
+                            </th>
+                            <th class="left">
+                                Satış
+                            </th>
+                            <th class="right">
+                                Toplam
+                            </th>
+                            <th class="left">
+                                Satış Kalan
+                            </th>
+                            <th class="left">
+                                Hakediş
+                            </th>
+                            <th class="right">
+                                Ödeme
+                            </th>
+                            <th class="right">
+                                Hakediş Kalan
+                            </th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                @satis.musteriSatis
+                            </td>
+                            <td>
+                                @toplamAlinanOdeme
+                            </td>
+                            <td style="font-weight: bold; color: Red;">
+                                @(satis.musteriSatis - toplamAlinanOdeme)
+                            </td>
+                            <td>
+                                @satis.araciHakedis
+                            </td>
+                            <td>
+                                @toplamHakedisOdeme
+                            </td>
+                            <td style="font-weight: bold; color: Red;">
+                                @(satis.araciHakedis - toplamHakedisOdeme)
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

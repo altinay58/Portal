@@ -83,7 +83,7 @@
                                             @String.Format("{0:dd/MM/yyyy}", cariVerisi.satisTarihi)
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "Web", new { satisID = cariVerisi.SatisID })">
+                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
                                                 @cariVerisi.Firma.FirmaAdi
                                             </a>
                                         </td>
@@ -101,7 +101,7 @@
                                         </td>
                                         <td>@(cariVerisi.musteriSatis - ((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami))</td>
                                         <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "Web", new { satisID = cariVerisi.SatisID })">
+                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
                                                 @cariVerisi.Firma1.FirmaAdi
                                             </a>
                                         </td>
@@ -125,7 +125,7 @@
                                             @cariVerisi.satisNot
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "Web", new { satisID = cariVerisi.SatisID })">
+                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
                                                 <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
                                             </a>
 
@@ -266,7 +266,7 @@
                                             @String.Format("{0:dd/MM/yyyy}", cariVerisi.satisTarihi)
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "Web", new { satisID = cariVerisi.SatisID })">
+                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
                                                 @cariVerisi.Firma.FirmaAdi
                                             </a>
                                         </td>
@@ -283,7 +283,7 @@
                                             }
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "Web", new { satisID = cariVerisi.SatisID })">
+                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
                                                 @cariVerisi.Firma1.FirmaAdi
                                             </a>
                                         </td>
@@ -303,7 +303,7 @@
                                             @cariVerisi.satisNot
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "Web", new { satisID = cariVerisi.SatisID })">
+                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
                                                 <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
                                             </a>
 
@@ -718,7 +718,7 @@
                                             @String.Format("{0:dd/MM/yyyy}", cariVerisi.ChTarihi)
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("CariHareketDetay", "Web", new { firmaID = cariVerisi.RefFirmaID })">
+                                            <a href="@Url.Action("Detay", "CariHareket", new { firmaID = cariVerisi.RefFirmaID })">
                                                 @cariVerisi.Firma.FirmaAdi
                                             </a>
                                         </td>

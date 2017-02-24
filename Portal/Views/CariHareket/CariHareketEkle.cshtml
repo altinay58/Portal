@@ -1,0 +1,226 @@
+﻿
+@using Portal.Models;
+
+@{
+    DateTime Tarih1 = DateTime.Now;
+
+    int Yil1 = Tarih1.Year;
+    int Ay1 = Tarih1.Month;
+    int Gun1 = Tarih1.Day;
+    int AydakiGunSayisi1 = DateTime.DaysInMonth(Yil1, Ay1);
+}
+<div class="table-scrollable">
+    <table class="table table-striped table-bordered">
+        <tr>
+            <td>
+                <form method="post" name="forumadi" action="@Url.Action("CariHareketEkle", "CariHareket")" enctype="multipart/form-data">
+                    <table class="table table-striped table-bordered">
+                        <tr>
+                            <td width="150">
+                                Tarih
+                            </td>
+                            <td colspan="3">
+                                <select name="day1" style="width: 50px;">
+                                    @for (int i = 1; i <= AydakiGunSayisi1; i++)
+                                {
+                                    if (i == Gun1)
+                                    {
+                                <option value="@(i.ToString())" selected="selected">@(i.ToString())</option>
+                                    }
+                                    else
+                                    {
+                                <option value="@(i.ToString())">@(i.ToString())</option>
+                                    }
+
+                                }
+                                </select>
+                                <select name="month1" style="width: 100px;">
+                                    <option value="01" @if (Ay1 == 1) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Ocak
+                                    </option>
+                                    <option value="02" @if (Ay1 == 2) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Subat
+                                    </option>
+                                    <option value="03" @if (Ay1 == 3) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Mart
+                                    </option>
+                                    <option value="04" @if (Ay1 == 4) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Nisan
+                                    </option>
+                                    <option value="05" @if (Ay1 == 5) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Mayis
+                                    </option>
+                                    <option value="06" @if (Ay1 == 6) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Haziran
+                                    </option>
+                                    <option value="07" @if (Ay1 == 7) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Temmuz
+                                    </option>
+                                    <option value="08" @if (Ay1 == 8) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Agustos
+                                    </option>
+                                    <option value="09" @if (Ay1 == 9) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Eylul
+                                    </option>
+                                    <option value="10" @if (Ay1 == 10) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Ekim
+                                    </option>
+                                    <option value="11" @if (Ay1 == 11) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Kasim
+                                    </option>
+                                    <option value="12" @if (Ay1 == 12) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Aralik
+                                    </option>
+                                </select>
+                                <select name="year1" style="width: 100px;">
+                                    @for (int i = DateTime.Now.AddYears(-1).Year; i <= DateTime.Now.AddYears(1).Year; i++)
+                                {
+                                <option value="@(i)" @if (Yil1 == i) { @MvcHtmlString.Create("selected=\"selected\"")  }>@(i)</option>
+                                }
+                                </select>
+                              
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Personel
+                            </td>
+                            <td colspan="3">
+
+                                <input id="cariHareketFirma" name="cariHareketFirma" type="text" value="" size="50" maxlength="250" />
+                                <input type="hidden" name="personelID" id="personelID" value="" />
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td width="100">
+                                Kasadan Çıkış
+                            </td>
+                            <td width="75">
+                                Kasaya Giriş
+                            </td>
+                            <td>
+                                Kasa
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input name="_chOdenen" type="text" value="" size="5" />
+                            </td>
+                            <td>
+                                <input name="_chAlinan" type="text" value="" size="5" />
+                            </td>
+                            <td>
+                                <select name="kasaID">
+                                    @{
+                                    foreach (Firma firmaDetay in ViewBag.Kasa)
+                                    {
+                                <option value="@(firmaDetay.FirmaID)">@(firmaDetay.FirmaAdi)</option>
+                                    }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Not
+                            </td>
+                            <td colspan="3">
+                                <textarea rows="5" cols="50" name="satisNot"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="3">
+                                <input type="submit" value="Kaydet" name="submit" />
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+@section css{
+
+
+    <style>
+        .datepicker.dropdown-menu {
+            z-index: 9999 !important;
+        }
+
+        .autocomplete-suggestions {
+            border: 1px solid #999;
+            background: #FFF;
+            overflow: auto;
+        }
+
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .autocomplete-selected {
+            background: #F0F0F0;
+        }
+
+        .autocomplete-suggestions strong {
+            font-weight: normal;
+            color: #3399FF;
+        }
+
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+
+            .autocomplete-group strong {
+                display: block;
+                border-bottom: 1px solid #000;
+            }
+    </style>
+
+}
+@section scripts{
+    <script src="/js/jquery.autocomplete.js"></script>
+
+    <script>
+
+        $(function () {
+
+            $("#cariHareketFirma").autocomplete({
+                minChars: 2,
+                transformResult: function (response) {
+                    return {
+                        suggestions: $.map(response, function (dataItem) {
+                            return { value: dataItem["label"], data: dataItem["value"], kayitlimi: dataItem.Kayitlimi };
+                        })
+                    };
+                },
+                onSearchStart: function (query) {
+                    query.sadeceFirma = true;
+                    query.sadeceArayanlar = true;
+                },
+                paramName: 'firmaAdi',
+                serviceUrl: '/Isler/FirmalariGetir',
+                onSelect: function (suggestion) {
+                    $("#personelID").val(suggestion.data);
+                },
+                dataType: "json",
+                noCache: true,
+                tabDisabled: true
+            });
+
+
+
+
+
+        })
+
+    </script>
+
+}

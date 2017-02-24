@@ -619,6 +619,11 @@
     <Content Include="Views\GidilenMusteri\Delete.cshtml" />
     <Content Include="Views\CariHareket\List.cshtml" />
     <Content Include="Views\CariHareket\Detay.cshtml" />
+    <Content Include="Views\CariHareket\Satislar.cshtml" />
+    <Content Include="Views\CariHareket\SatisOdemeEkle.cshtml" />
+    <Content Include="Views\CariHareket\CariHareketSatisEkle.cshtml" />
+    <Content Include="Views\CariHareket\CariHareketEkle.cshtml" />
+    <Content Include="Views\CariHareket\PersonelMaasOdeme.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

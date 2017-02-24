@@ -1,0 +1,150 @@
+﻿@using Portal.Models;
+@{
+    DateTime Tarih1 = DateTime.Now;
+
+    int Yil1 = Tarih1.Year;
+    int Ay1 = Tarih1.Month;
+    int Gun1 = Tarih1.Day;
+    int AydakiGunSayisi1 = DateTime.DaysInMonth(Yil1, Ay1);
+}
+<div class="table-scrollable">
+    <table class="table table-striped table-bordered">
+        <tr>
+            <td>
+                <form method="post" name="forumadi" action="@Url.Action("PersonelMaasOdeme", "CariHareket")" enctype="multipart/form-data">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td width="150">
+                                Tarih
+                            </td>
+                            <td colspan="2">
+                                <select name="day1" style="width: 50px;">
+                                    @for (int i = 1; i <= AydakiGunSayisi1; i++)
+                                    {
+                                        if (i == Gun1)
+                                        {
+                                            <option value="@(i.ToString())" selected="selected">@(i.ToString())</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@(i.ToString())">@(i.ToString())</option>
+                                        }
+
+                                    }
+                                </select>
+                                <select name="month1" style="width: 100px;">
+                                    <option value="01" @if (Ay1 == 1) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Ocak
+                                    </option>
+                                    <option value="02" @if (Ay1 == 2) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Subat
+                                    </option>
+                                    <option value="03" @if (Ay1 == 3) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Mart
+                                    </option>
+                                    <option value="04" @if (Ay1 == 4) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Nisan
+                                    </option>
+                                    <option value="05" @if (Ay1 == 5) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Mayis
+                                    </option>
+                                    <option value="06" @if (Ay1 == 6) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Haziran
+                                    </option>
+                                    <option value="07" @if (Ay1 == 7) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Temmuz
+                                    </option>
+                                    <option value="08" @if (Ay1 == 8) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Agustos
+                                    </option>
+                                    <option value="09" @if (Ay1 == 9) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Eylul
+                                    </option>
+                                    <option value="10" @if (Ay1 == 10) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Ekim
+                                    </option>
+                                    <option value="11" @if (Ay1 == 11) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Kasim
+                                    </option>
+                                    <option value="12" @if (Ay1 == 12) { @MvcHtmlString.Create("selected=\"selected\"")     }>
+                                        Aralik
+                                    </option>
+                                </select>
+                                <select name="year1" style="width: 100px;">
+                                    @{
+                                        int basYil = 2012;
+                                        int sonYil = DateTime.Now.Year;
+                                        for (int i = basYil; i <=sonYil; i++)
+                                        {
+                                            <option value="@i" @if (Yil1 == i) { @MvcHtmlString.Create("selected=\"selected\"")       }>
+                                                @i
+                                            </option>
+
+                                        }
+                                    }                                 
+
+                                </select>
+                               
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Personel
+                            </td>
+                            <td colspan="2">
+                                <select name="personelID">
+                                    @{
+                                        foreach (Firma firmaDetay in ViewBag.Personel)
+                                        {
+                                            <option value="@(firmaDetay.FirmaID)">@(firmaDetay.FirmaAdi)</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td width="75">
+                                Ödeme
+                            </td>
+                            <td>
+                                Kasa
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input name="_maasOdeme" type="text" value="" size="5" />
+                            </td>
+                            <td>
+                                <select name="kasaID">
+                                    @{
+                                        foreach (Firma firmaDetay in ViewBag.Kasa)
+                                        {
+                                            <option value="@(firmaDetay.FirmaID)">@(firmaDetay.FirmaAdi)</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Not
+                            </td>
+                            <td colspan="2">
+                                <textarea rows="5" cols="50" name="satisNot"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <input type="submit" class="btn btn-info" value="Kaydet" name="submit" />
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
