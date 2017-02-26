@@ -6,6 +6,16 @@
     ViewBag.Title = "Satislar";
     var Db = Database.DbHelper.GetDb;
 }
+<form method="post" class="" id="ekleForm" name="form1" action="@Url.Action("Satislar","CariHareket")" enctype="multipart/form-data">
+    <div class="row" style="margin-bottom:5px">
+        <div class="col-md-3">
+            <input type="text" class="form-control" name="q" placeholder="Ara..." value="@ViewData["queryData"]" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default blue" type="submit">Ara</button>
+        </div>
+    </div>
+</form>
 <div class="table-scrollable">
     <table class="table table-striped table-bordered table-hover">
         <thead class="flip-content">
@@ -90,10 +100,15 @@
                         @item.satisNot
                     </td>
                     <td>
-                        <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = item.SatisID })">
-                            <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
-                        </a>
-
+                        <span>
+                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = item.SatisID })">
+                                <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
+                            </a>
+                            
+                            <a href="@Url.Action("SatisDuzenle", "CariHareket", new { satisID = item.SatisID })">
+                              Düzenle
+                            </a>
+                        </span>
                     </td>
                 </tr>
                             }
@@ -104,6 +119,6 @@
 @if (ViewBag.Sayfalama.TotalCount > 0)
 {
 @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
-                string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.Satislar(page))))
+                string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.Satislar(page,queryData))))
 }
 

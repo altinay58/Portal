@@ -18,6 +18,7 @@ namespace Portal.Models
         public Sati()
         {
             this.Satis1 = new HashSet<Sati>();
+            this.CariHarekets = new HashSet<CariHareket>();
         }
     
         public int SatisID { get; set; }
@@ -36,5 +37,7 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sati> Satis1 { get; set; }
         public virtual Sati Sati1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CariHareket> CariHarekets { get; set; }
     }
 }

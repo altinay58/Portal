@@ -132,6 +132,7 @@
           <Property Name="ChSatisFiyati" Type="int" />
           <Property Name="ChNot" Type="nvarchar" MaxLength="250" />
           <Property Name="ChTuru" Type="nvarchar" MaxLength="50" />
+          <Property Name="RefSatisId" Type="int" />
         </EntityType>
         <EntityType Name="Chat">
           <Key>
@@ -1378,6 +1379,18 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Satis_RefSatidId">
+          <End Role="Satis" Type="Self.Satis" Multiplicity="0..1" />
+          <End Role="CariHareket" Type="Self.CariHareket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Satis">
+              <PropertyRef Name="SatisID" />
+            </Principal>
+            <Dependent Role="CariHareket">
+              <PropertyRef Name="RefSatisId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Satis_Satis">
           <End Role="Firma" Type="Self.Firma" Multiplicity="0..1" />
           <End Role="Satis" Type="Self.Satis" Multiplicity="*" />
@@ -1906,6 +1919,10 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="Firma" EntitySet="Firma" />
             <End Role="Satis" EntitySet="Satis" />
           </AssociationSet>
+          <AssociationSet Name="FK_Satis_RefSatidId" Association="Self.FK_Satis_RefSatidId">
+            <End Role="Satis" EntitySet="Satis" />
+            <End Role="CariHareket" EntitySet="CariHareket" />
+          </AssociationSet>
           <AssociationSet Name="FK_Satis_Satis" Association="Self.FK_Satis_Satis">
             <End Role="Firma" EntitySet="Firma" />
             <End Role="Satis" EntitySet="Satis" />
@@ -2346,6 +2363,10 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           </AssociationSet>
           <EntitySet Name="RandevularViews" EntityType="PortalModel.RandevularView" />
           <EntitySet Name="IslerListesis" EntityType="PortalModel.IslerListesi" />
+          <AssociationSet Name="FK_Satis_RefSatidId" Association="PortalModel.FK_Satis_RefSatidId">
+            <End Role="Sati" EntitySet="Satis" />
+            <End Role="CariHareket" EntitySet="CariHarekets" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2568,6 +2589,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="ChNot" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ChTuru" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Firma" Relationship="PortalModel.FK_CariHareket_Firma" FromRole="CariHareket" ToRole="Firma" />
+          <Property Name="RefSatisId" Type="Int32" />
+          <NavigationProperty Name="Sati" Relationship="PortalModel.FK_Satis_RefSatidId" FromRole="CariHareket" ToRole="Sati" />
         </EntityType>
         <EntityType Name="Chat">
           <Key>
@@ -2939,6 +2962,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="Firma1" Relationship="PortalModel.FK_Satis_Satis" FromRole="Sati" ToRole="Firma" />
           <NavigationProperty Name="Satis1" Relationship="PortalModel.FK_Satis_Satis1" FromRole="Sati" ToRole="Sati1" />
           <NavigationProperty Name="Sati1" Relationship="PortalModel.FK_Satis_Satis1" FromRole="Sati1" ToRole="Sati" />
+          <NavigationProperty Name="CariHarekets" Relationship="PortalModel.FK_Satis_RefSatidId" FromRole="Sati" ToRole="CariHareket" />
         </EntityType>
         <EntityType Name="SatisNotu">
           <Key>
@@ -4020,6 +4044,18 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="Tarih" Type="DateTime" Precision="3" />
           <Property Name="IsinDurumu" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
         </EntityType>
+        <Association Name="FK_Satis_RefSatidId">
+          <End Type="PortalModel.Sati" Role="Sati" Multiplicity="0..1" />
+          <End Type="PortalModel.CariHareket" Role="CariHareket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sati">
+              <PropertyRef Name="SatisID" />
+            </Principal>
+            <Dependent Role="CariHareket">
+              <PropertyRef Name="RefSatisId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4206,6 +4242,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySetMapping Name="CariHarekets">
             <EntityTypeMapping TypeName="PortalModel.CariHareket">
               <MappingFragment StoreEntitySet="CariHareket">
+                <ScalarProperty Name="RefSatisId" ColumnName="RefSatisId" />
                 <ScalarProperty Name="ChTuru" ColumnName="ChTuru" />
                 <ScalarProperty Name="ChNot" ColumnName="ChNot" />
                 <ScalarProperty Name="ChSatisFiyati" ColumnName="ChSatisFiyati" />

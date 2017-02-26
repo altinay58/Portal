@@ -39,7 +39,7 @@ namespace Portal.Models
                    orderby q.DomainID descending
                    select q;
         }
-        public static IEnumerable<Firma> GetirFirmalar(this IEnumerable<Firma> kaynakTablo, string durum)
+        public static IEnumerable<Firma> GetirFirmalar(this IQueryable<Firma> kaynakTablo, string durum)
         {
             if (durum == "personel")
             {
@@ -200,19 +200,29 @@ namespace Portal.Models
                     orderby d.arayanKayitTarih descending
                     select d).ToList();
         }
-        public static IEnumerable<CariHareket> GetirCariHareketler(this IEnumerable<CariHareket> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
+        public static IEnumerable<CariHareket> GetirCariHareketler(this IQueryable<CariHareket> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic,string searchVal)
         {
             return (from q in kaynakTablo
+                    where (string.IsNullOrEmpty(searchVal)?true:q.Firma.FirmaAdi.ToUpper().Contains(searchVal.ToUpper()))
                     orderby q.ChTarihi descending
                     select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
         }
-        public static IEnumerable<Sati> GetirSatislar(this IEnumerable<Sati> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
+        public static IEnumerable<Sati> GetirSatislar(this IQueryable<Sati> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic, string searchVal)
         {
-            return (from q in kaynakTablo
-                    where q.refSatisID == null
-                    orderby q.satisTarihi descending
-                    select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            var query = (from q in kaynakTablo
+                         where q.refSatisID == null && (string.IsNullOrEmpty(searchVal) ? true : q.Firma.FirmaAdi.ToUpper().Contains(searchVal.ToUpper()))
+                         orderby q.satisTarihi descending
+                         select q);
+            return query.Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
         }
+        //public static IEnumerable<Sati> GetirSatislar(this IEnumerable<Sati> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic, string searchVal)
+        //{
+        //    var query = (from q in kaynakTablo
+        //                 where q.refSatisID == null && (string.IsNullOrEmpty(searchVal) ? true : q.Firma.FirmaAdi.ToUpper().Contains(searchVal.ToUpper()))
+        //                 orderby q.satisTarihi descending
+        //                 select q);
+        //    return query.Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+        //}
         public static IEnumerable<Sati> GetirAltOdemeler(this IEnumerable<Sati> kaynakTablo, int satisID)
         {
             return from q in kaynakTablo

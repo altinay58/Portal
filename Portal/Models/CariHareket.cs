@@ -21,7 +21,9 @@ namespace Portal.Models
         public Nullable<int> ChSatisFiyati { get; set; }
         public string ChNot { get; set; }
         public string ChTuru { get; set; }
+        public Nullable<int> RefSatisId { get; set; }
     
         public virtual Firma Firma { get; set; }
+        public virtual Sati Sati { get; set; }
     }
 }
