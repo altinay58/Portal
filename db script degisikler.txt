@@ -253,8 +253,7 @@ SELECT    RandevuID,RandevuRefFirmaID, RandevuYeri, RandevuTarihi, CASE WHEN Ran
 FROM      dbo.Randevu
 GO
 -----------------------
-USE [Karayel]
-GO
+
 
 /****** Object:  UserDefinedFunction [dbo].[IsiYapanKullaniciAdSoyad]    Script Date: 17.02.2017 13:54:04 ******/
 SET ANSI_NULLS ON
@@ -294,7 +293,32 @@ END
 GO
 -----------------------
 
+GO
 
+/****** Object:  View [dbo].[ArayanListesi]    Script Date: 17.02.2017 14:04:22 ******/
+SET ANSI_NULLS ON
+GO
 
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[IslerListesi]
+AS
+
+select i.islerID as Id,i.islerAdi as IsAdi,f.FirmaAdi as Firma,d.DomainAdi as Domain,
+(SELECT   TOP 1 a.Isim+' '+a.SoyIsim FROM      dbo.AspNetUsers AS a WHERE i.islerisiVerenKisi=a.Id ) AS IsiVerenKisi
+,dbo.IsiYapanKullaniciAdSoyad(i.islerID) as IsiYapacakKisi,i.islerTarih Tarih
+from isler i inner join firma f on (i.islerRefFirmaID=f.FirmaID)
+     inner join Domain d on (i.islerRefDomainID=d.DomainID)
+
+GO
+---------------------------------------------
+--25.02.2017
+--CariHareket tablosuna RefSatisId ozelligi eklendi
+  GO
+  ALTER TABLE [dbo].[CariHareket]
+	ADD RefSatisId int NULL
+GO
+ALTER TABLE [dbo].[CariHareket]  WITH CHECK ADD  CONSTRAINT [FK_Satis_RefSatidId] FOREIGN KEY([RefSatisId])
+REFERENCES [dbo].[Satis] ([SatisID])
 
 
