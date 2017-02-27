@@ -37,6 +37,9 @@
         <th>
             Not
         </th>
+        <th>
+
+        </th>
     </tr>
 </thead>
 <tbody>
@@ -61,6 +64,14 @@
             <td>
                 @item.ChNot
             </td>
+            <td>
+                <span>
+                    <a href="/CariHareket/CariHareketDuzenle/@item.ChID">Düzenle</a>
+                </span>
+                <span>
+                    <a href="#" onclick="cariHareketSil(@item.ChID)">Sil</a>
+                </span>
+            </td>
         </tr>
     }
 </tbody>
@@ -74,3 +85,12 @@
                         string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.List(page,queryData))))
     }
 </div>
+@section scripts{
+    <script>
+        function cariHareketSil(id) {
+            if (confirm("Silmek istediğinizden eminmisiniz?")) {
+                location.href = "/CariHareket/CariHareketSil/" + id;
+            }
+        }
+    </script>
+    }

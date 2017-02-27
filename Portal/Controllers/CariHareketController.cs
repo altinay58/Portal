@@ -66,13 +66,63 @@ namespace Portal.Controllers
 
             DateTime dt1 = new DateTime(year1, month1, day1);
 
-            CariHesapHareketEkle(kasaID, _chOdenen ?? 0, _chAlinan ?? 0, satisNot, dt1, "odeme",null);
+            CariHesapHareketEkle(kasaID, _chOdenen ?? 0, _chAlinan ?? 0, satisNot, dt1, "odemeKasa",null);
 
             CariHesapHareketEkle(personelID, _chAlinan ?? 0, _chOdenen ?? 0, satisNot, dt1, "odeme",null);
             Db.SaveChanges();
             return RedirectToAction("Detay", "CariHareket", new { id = personelID });
         }
-
+        [Authorize(Roles ="Muhasebe")]
+        public ActionResult CariHareketDuzenle(int id)
+        {
+            ViewBag.Kasa = Db.Firmas.GetirFirmalar("kasa");
+            var model = Db.CariHarekets.SingleOrDefault(x => x.ChID == id);
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        [Authorize(Roles = "Muhasebe")]
+        public ActionResult CariHareketDuzenle(int id,DateTime chTarihi,int? firmaID,int? _chOdenen,int? _chAlinan,int? kasaID,string satisNot)
+        {
+            ViewBag.Kasa = Db.Firmas.GetirFirmalar("kasa");
+            var entity = Db.CariHarekets.SingleOrDefault(x => x.ChID == id);
+            //kasa
+            if(entity.ChTuru=="odemeKasa" && _chOdenen.HasValue && entity.ChAlinanOdeme != null)
+            {
+                entity.ChAlinanOdeme = _chOdenen;
+                entity.RefFirmaID = kasaID;
+            }
+            if (entity.ChTuru == "odemeKasa" && _chAlinan.HasValue && entity.ChSatisFiyati != null)
+            {
+                entity.ChSatisFiyati = _chAlinan;
+                entity.RefFirmaID = kasaID;
+            }
+            //end kasa
+            if (entity.ChTuru == "odeme" && _chOdenen.HasValue && entity.ChSatisFiyati != null)
+            {
+                entity.ChSatisFiyati = _chOdenen;
+                entity.RefFirmaID = firmaID;
+            }
+            if (entity.ChTuru == "odeme" && _chAlinan.HasValue && entity.ChAlinanOdeme != null)
+            {
+                entity.ChAlinanOdeme = _chAlinan;
+                entity.RefFirmaID = firmaID;
+            }
+            entity.ChTarihi = chTarihi;
+            entity.ChNot = satisNot;
+            Db.SaveChanges();
+            TempData[SUCESS] = "Kaydedildi";
+            return RedirectToAction("List");
+        }
+        [Authorize(Roles = "Muhasebe")]
+        public ActionResult CariHareketSil(int id)
+        {
+            CariHareket entity = Db.CariHarekets.SingleOrDefault(x => x.ChID == id);
+            Db.CariHarekets.Remove(entity);
+            Db.SaveChanges();
+            TempData[SUCESS] = "Kayıt silindi";
+            return RedirectToAction("List");
+        }
         #endregion carihareket
         #region satislar
         [Authorize(Roles = "Muhasebe,Satis")]
@@ -162,6 +212,7 @@ namespace Portal.Controllers
                 nchMusteriSatisFiyat.ChTarihi = model.satisTarihi;
                 nchMusteriSatisFiyat.ChNot = model.satisNot;
                 nchMusteriSatisFiyat.RefSatisId = model.SatisID;
+                nchMusteriSatisFiyat.ChTuru = "satis";
                 Db.CariHarekets.Add(nchMusteriSatisFiyat);
              
             }
@@ -182,6 +233,7 @@ namespace Portal.Controllers
                 nchMusteriAlinanOdeme.ChTarihi = model.satisTarihi;
                 nchMusteriAlinanOdeme.ChNot = model.satisNot;
                 nchMusteriAlinanOdeme.RefSatisId = model.SatisID;
+                nchMusteriAlinanOdeme.ChTuru = "satis";
                 Db.CariHarekets.Add(nchMusteriAlinanOdeme);
               
             }
@@ -205,6 +257,7 @@ namespace Portal.Controllers
                     nchAraciAlinanOdeme.ChTarihi = model.satisTarihi;
                     nchAraciAlinanOdeme.ChNot = model.satisNot;
                     nchAraciAlinanOdeme.RefSatisId = model.SatisID;
+                    nchAraciAlinanOdeme.ChTuru = "araci";
                     Db.CariHarekets.Add(nchAraciAlinanOdeme);
                   
                 }
@@ -224,6 +277,7 @@ namespace Portal.Controllers
                     nchAraciSatisFiyat.ChTarihi = model.satisTarihi;
                     nchAraciSatisFiyat.ChNot = model.satisNot;
                     nchAraciSatisFiyat.RefSatisId = model.SatisID;
+                    nchAraciSatisFiyat.ChTuru = "araci";
                     Db.CariHarekets.Add(nchAraciSatisFiyat);
                   
                 }
@@ -243,10 +297,34 @@ namespace Portal.Controllers
                     naraciKasa.ChTarihi = model.satisTarihi;
                     naraciKasa.ChNot = model.satisNot;
                     naraciKasa.RefSatisId = model.SatisID;
+                    naraciKasa.ChTuru = "araciKasa";
                     Db.CariHarekets.Add(naraciKasa);
                     
                 }
-            }else
+
+                CariHareket satisKasa = Db.CariHarekets.SingleOrDefault(x => x.RefSatisId == model.SatisID
+              && x.ChTuru == "satisKasa");
+                if (satisKasa != null)
+                {
+                    satisKasa.RefFirmaID = araciKasaID;
+                    satisKasa.ChSatisFiyati = model.araciHakedis ?? 0;
+                    satisKasa.ChTarihi = model.satisTarihi;
+                    satisKasa.ChNot = model.satisNot;
+                }
+                else if (model.araciHakedis.HasValue && model.araciHakedis.Value > 0)
+                {
+                    var nsatisKasa = new CariHareket();
+                    nsatisKasa.RefFirmaID = araciKasaID;
+                    nsatisKasa.ChSatisFiyati = model.araciHakedis ?? 0;
+                    nsatisKasa.ChTarihi = model.satisTarihi;
+                    nsatisKasa.ChNot = model.satisNot;
+                    nsatisKasa.RefSatisId = model.SatisID;
+                    nsatisKasa.ChTuru = "satisKasa";
+                    Db.CariHarekets.Add(nsatisKasa);
+
+                }
+            }
+            else
             {
                 //daha önce aracı var ise temizle
                 List<CariHareket> list = Db.CariHarekets.Where(x => x.RefSatisId == model.SatisID && (x.ChTuru == "araci" || x.ChTuru == "araciKasa")).ToList();
@@ -259,25 +337,6 @@ namespace Portal.Controllers
 
          
 
-            CariHareket satisKasa = Db.CariHarekets.SingleOrDefault(x => x.RefSatisId == model.SatisID
-          && x.ChTuru == "satisKasa");
-            if (satisKasa != null)
-            {
-                satisKasa.RefFirmaID = araciKasaID;
-                satisKasa.ChSatisFiyati = model.araciHakedis ?? 0;
-                satisKasa.ChTarihi = model.satisTarihi;
-                satisKasa.ChNot = model.satisNot;
-            }else if(model.araciHakedis.HasValue && model.araciHakedis.Value > 0)
-            {
-                var nsatisKasa = new CariHareket();
-                nsatisKasa.RefFirmaID = araciKasaID;
-                nsatisKasa.ChSatisFiyati = model.araciHakedis ?? 0;
-                nsatisKasa.ChTarihi = model.satisTarihi;
-                nsatisKasa.ChNot = model.satisNot;
-                nsatisKasa.RefSatisId = model.SatisID;
-                Db.CariHarekets.Add(nsatisKasa);
-              
-            }
             entity.satisTarihi = model.satisTarihi;
             entity.musteriFirmaID = model.musteriFirmaID;
             entity.musteridenAlinanOdeme = model.musteridenAlinanOdeme;
@@ -291,6 +350,28 @@ namespace Portal.Controllers
             Db.SaveChanges();
             TempData[SUCESS] = "Kaydedildi";
             return RedirectToAction("Satislar", "CariHareket");
+        }
+        [Authorize(Roles = "Muhasebe")]
+        public ActionResult SatisSil(int id)
+        {
+            var carihareketler = Db.CariHarekets.Where(x => x.RefSatisId == id).ToList();
+            foreach(var ch in carihareketler)
+            {
+                Db.CariHarekets.Remove(ch);
+            }
+            var satis = Db.Satis.SingleOrDefault(x => x.SatisID == id);
+            Db.Satis.Remove(satis);
+            Db.SaveChanges();
+            TempData[SUCESS] = "Kayıt silindi";
+            return RedirectToAction("Satislar");
+        }
+        public JsonResult SatisFiyatDegistir(int pk, int value)
+        {
+            JsonCevap jsn = new JsonCevap();
+            Sati item = Db.Satis.SingleOrDefault(x => x.SatisID == pk);
+            item.musteriSatis = value;
+            Db.SaveChanges();
+            return Json(jsn, JsonRequestBehavior.AllowGet);
         }
         #endregion satislar
         [Authorize(Roles = "Muhasebe")]

@@ -68,7 +68,8 @@
                         </a>
                     </td>
                     <td>
-                        @item.musteriSatis
+                       
+                     <a href="#" class="satisFiyat"  data-pk="@item.SatisID" data-title="Fiyat giriniz">@item.musteriSatis </a> 
                     </td>
                     <td>
                         @{
@@ -108,6 +109,9 @@
                             <a href="@Url.Action("SatisDuzenle", "CariHareket", new { satisID = item.SatisID })">
                               Düzenle
                             </a>
+                            <a href="#" onclick="satisSil(@item.SatisID)">
+                                Sil
+                            </a>
                         </span>
                     </td>
                 </tr>
@@ -116,9 +120,46 @@
 
     </table>
 </div>
-@if (ViewBag.Sayfalama.TotalCount > 0)
-{
-@Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
-                string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.Satislar(page,queryData))))
-}
+<div style="text-align:center">
 
+    @if (ViewBag.Sayfalama.TotalCount > 0)
+    {
+        @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.Satislar(page, queryData))))
+    }
+</div>
+@section scripts{
+<script src="/Content/assets/global/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.js" type="text/javascript"></script>
+    <script>
+        function satisSil(id) {
+            if (confirm("Silmek istediğinizden eminmisiniz?")) {
+                location.href = "/CariHareket/SatisSil/" + id;
+            }
+        }
+        $(function () {
+            $.fn.editable.defaults.mode = 'popup';
+            $('.satisFiyat').editable({
+                url: '/CariHareket/SatisFiyatDegistir',
+                //params: { domainId: $(this).data('pk'), note: $(this).data('name') },
+                type: 'text',
+                name: 'Fiyat',
+                title: 'Fiyat Giriniz',
+                success: function (response, newValue) {
+                    console.log(newValue);
+                    //userModel.set('username', newValue); //update backbone model
+                },
+                validate: function (x) {
+                    let result= confirm("Fiyat değişecek emin misiniz?", function (result) {
+                        if (result == false) {
+                            return "invalid";
+                        } else {
+                            return "";
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+    
+    }

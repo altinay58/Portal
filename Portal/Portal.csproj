@@ -625,6 +625,7 @@
     <Content Include="Views\CariHareket\CariHareketEkle.cshtml" />
     <Content Include="Views\CariHareket\PersonelMaasOdeme.cshtml" />
     <Content Include="Views\CariHareket\SatisDuzenle.cshtml" />
+    <Content Include="Views\CariHareket\CariHareketDuzenle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
