@@ -39,9 +39,9 @@ namespace Portal.Models
                    orderby q.DomainID descending
                    select q;
         }
-        public static IEnumerable<Firma> GetirFirmalar(this IQueryable<Firma> kaynakTablo, string durum)
+        public static IQueryable<Firma> GetirFirmalar(this IQueryable<Firma> kaynakTablo, string durum)
         {
-            if (durum == "personel")
+            if (durum=="personel")
             {
                 return from q in kaynakTablo
                        where q.Personel == true && q.FirmaSilindi == false

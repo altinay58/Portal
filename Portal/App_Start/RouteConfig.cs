@@ -12,12 +12,17 @@ namespace Portal
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.MapRoute(
+              name: "Firma",
+              url: "{controller}/{durum}",
+              defaults: new { controller = "Firmalar", action = "List" }
+          );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+          
         }
     }
 }

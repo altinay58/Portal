@@ -18,55 +18,93 @@ namespace Portal.Controllers
         }
         #region firma tumu
         [Authorize(Roles = "Satis,Muhasebe")]
-        public ActionResult Tumu(int? sayfaNo,string q)
+        public ActionResult List(string durum,int? p,string q)
         {
-            //if (!User.IsInRole("Muhasebe") && durum != "musteri")
-            //{
+            if (!User.IsInRole("Muhasebe") && durum != "musteri")
+            {
 
-            //    TempData["KirmiziMesaj"] = "Bu bölüme giriş yetkiniz bulunmuyor.";
-            //    return RedirectToAction("Index", "Home");
-            //}
-           
+                TempData[ERROR] = "Bu bölüme giriş yetkiniz bulunmuyor.";
+                return RedirectToAction("Index", "Home");
+            }
+
             ViewBag.SayfaAdi = "Firmalar";
-            ViewBag.Durum = "tumu";
+            ViewBag.Durum = durum;
 
 
-            int SayfaNo = sayfaNo ?? 0;
-
-
-            int domainBaslangic = 0;
-            if (SayfaNo > 1)
+            int SayfaNo = p ?? 1;
+            int domainBaslangic = domainBaslangic = (SayfaNo - 1) * PagerCount;
+            List<Firma> result = new List<Firma>();      
+            if(durum== "BorcluFirmalar")
             {
-                domainBaslangic = (SayfaNo - 1) * PagerCount;
-            }
+                var list2 = Db.Firmas.TumFirmalar().Where(x => x.Musteri == true)
+                     .Where(a => (a.CariHarekets.Sum(c => c.ChSatisFiyati) - a.CariHarekets.Sum(c => c.ChAlinanOdeme)) > 0)
+                     .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
+                
+                if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
+                {
+                    list2 = list2.Where(x => (x.Personel != true && x.Kasa != true));
+                }
+                var qTotal2 = list2;
+                result=list2.OrderByDescending(x => x.CariHarekets.Sum(c => c.ChSatisFiyati) - x.CariHarekets.Sum(c => c.ChAlinanOdeme))
+                    .Skip(domainBaslangic).Take(PagerCount).ToList();
 
-            var list = Db.Firmas.TumFirmalar()
-                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
-               
-            if (User.IsInRole("Satis"))
+                int totalCount = qTotal2.Count();
+                PaginatedList pager = new PaginatedList((p ?? 1), PagerCount, totalCount);
+
+                ViewData["queryData"] = q;
+                ViewBag.Sayfalama = pager;
+            }
+            else if(durum == "BakimAntlasmasi")
             {
-                list = list.Where(x=>(x.Personel!=true && x.Kasa!=true));
+                var list3 = (from f in Db.Firmas.TumFirmalar()
+                             join d in Db.Domains on f.FirmaID equals d.RefDomainFirmaID
+                             orderby f.FirmaAdi descending
+                             where d.GuncellemeSozlesmesiVarmi==true
+                             select f
+                           );
+                if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
+                {
+                    list3 = list3.Where(x => (x.Personel != true && x.Kasa != true));
+                }
+
+                var qT = list3;
+                int totalCount = qT.Count();
+                PaginatedList pager = new PaginatedList((p ?? 1), PagerCount, totalCount);
+
+                ViewData["queryData"] = q;
+                ViewBag.Sayfalama = pager;
+                result = list3.Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true)
+                    .Skip(domainBaslangic).Take(PagerCount).ToList();
+
             }
-            list=list.Skip(domainBaslangic).Take(PagerCount);
-            //.GetirFirmalar(PagerCount, domainBaslangic, "tumu");
-
-
-            ViewBag.BulunduguSayfa = SayfaNo;
-             var qTotal = Db.Firmas.TumFirmalar()
-                .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
-
-            if (User.IsInRole("Satis"))
+            else
             {
-                qTotal = qTotal.Where(x => (x.Personel != true && x.Kasa != true));
+                var list = Db.Firmas.GetirFirmalar(durum.ToLower())
+               .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
+
+                if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
+                {
+                    list = list.Where(x => (x.Personel != true && x.Kasa != true));
+                }
+                list = list.Skip(domainBaslangic).Take(PagerCount);
+                var qTotal = Db.Firmas.GetirFirmalar(durum.ToLower())
+                   .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
+
+                if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
+                {
+                    qTotal = qTotal.Where(x => (x.Personel != true && x.Kasa != true));
+                }
+                int totalCount = qTotal.Count();
+                PaginatedList pager = new PaginatedList((p ?? 1), PagerCount, totalCount);
+
+                ViewData["queryData"] = q;
+                ViewBag.Sayfalama = pager;
+                result = list.ToList();
             }
-            int totalCount = qTotal.Count();
-            PaginatedList pager = new PaginatedList((sayfaNo ?? 1), PagerCount, totalCount);
-            //sayfalama
-            ViewData["queryData"] =  q;
-            ViewBag.Sayfalama = pager;
+           
             //ViewBag.Domainler = Db.Domains.GetirDomainler(id);
 
-            return View(list.ToList());
+            return View(result);
         }
         [Authorize(Roles = "Muhasebe")]
         public ActionResult FirmaSil(int id)

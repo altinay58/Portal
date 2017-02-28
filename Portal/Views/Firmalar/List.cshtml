@@ -3,9 +3,11 @@
 @using Portal.Extensions;
 @using Portal.Controllers;
 @{
-    ViewBag.Title = "Tumu";
+    string durum = ViewBag.Durum;
+    ViewBag.Title = durum;
+
 }
-<form method="post" id="ekleForm" name="form1" action="@Url.Action("Tumu","Firmalar")" enctype="multipart/form-data">
+<form method="post" id="ekleForm" name="form1" action="@Url.Action("List","Firmalar",new { durum=durum})" enctype="multipart/form-data">
     <div class="row" style="margin-bottom:5px">
         <div class="col-md-3">
             <input type="text" class="form-control" name="q" placeholder="Ara..." value="@ViewData["queryData"]" />
@@ -73,7 +75,7 @@
                         <td>@firmaVerisi.FirmaID</td>
                         <td class="text-right"> @String.Format("{0:0,0}", (satis - alinan)) TL</td>
                         <td>
-                            <a href="@Url.Action("CariHareketDetay", "Web", new { firmaID = firmaVerisi.FirmaID })">
+                            <a href="@Url.Action("Detay", "CariHareket", new { id = firmaVerisi.FirmaID })">
                                 @firmaVerisi.FirmaAdi
                             </a>
                         </td>
@@ -115,17 +117,19 @@
                     </tr>
 
                 }
-                string durum = ViewBag.Durum;
+               
             }
         </tbody>
 
     </table>
 </div>
-@if (ViewBag.Sayfalama.TotalCount > 0)
-{
-    @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
-                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<FirmalarController>(c => c.Tumu(page, queryData))))
-}
+<div style="text-align:center">
+    @if (ViewBag.Sayfalama.TotalCount > 0)
+    {
+        @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<FirmalarController>(c => c.List(durum, page, queryData))))
+    }
+</div>
 @section scripts{
 <script>
     function firmaSil(id) {
