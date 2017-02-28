@@ -14,7 +14,7 @@ namespace Portal
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
               name: "Firma",
-              url: "{controller}/{durum}",
+              url: "{controller}/{action}/{durum}",
               defaults: new { controller = "Firmalar", action = "List" }
           );
             routes.MapRoute(
