@@ -230,8 +230,10 @@
     <Compile Include="Controllers\SatisBolumuController.cs" />
     <Compile Include="Controllers\SeoController.cs" />
     <Compile Include="Controllers\SifresController.cs" />
+    <Compile Include="Controllers\SiteKontrolsController.cs" />
     <Compile Include="Controllers\StandartProjeIslerisController.cs" />
     <Compile Include="Controllers\WhoisController.cs" />
+    <Compile Include="Controllers\YonetimselController.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Extensions\HtmlHelperExtension.cs" />
     <Compile Include="Filters\JsonNetFilterAttribute .cs" />
@@ -462,6 +464,7 @@
     <Content Include="js\controllers\domainNotlariCtrl.js" />
     <Content Include="js\controllers\firmaKisiListCtrl.js" />
     <Content Include="js\controllers\listIslerCtrl.js" />
+    <Content Include="js\controllers\mesaiCizelgesiCtrl.js" />
     <Content Include="js\controllers\randevularCtrl.js" />
     <Content Include="js\controllers\sifreListCtrl.js" />
     <Content Include="js\extensions.js" />
@@ -471,6 +474,7 @@
     <Content Include="js\services\domainNotlariService.js" />
     <Content Include="js\services\firmaKisiListService.js" />
     <Content Include="js\services\listIslerService.js" />
+    <Content Include="js\services\mesaiCizelgesiService.js" />
     <Content Include="js\services\randevularService.js" />
     <Content Include="js\services\sifreListService.js" />
     <Content Include="Models\Model1.Context.tt">
@@ -626,6 +630,13 @@
     <Content Include="Views\CariHareket\PersonelMaasOdeme.cshtml" />
     <Content Include="Views\CariHareket\SatisDuzenle.cshtml" />
     <Content Include="Views\CariHareket\CariHareketDuzenle.cshtml" />
+    <Content Include="Views\SiteKontrols\List.cshtml" />
+    <Content Include="Views\SiteKontrols\Details.cshtml" />
+    <Content Include="Views\SiteKontrols\Create.cshtml" />
+    <Content Include="Views\SiteKontrols\Edit.cshtml" />
+    <Content Include="Views\SiteKontrols\Delete.cshtml" />
+    <Content Include="Views\Yonetimsel\WebLog.cshtml" />
+    <Content Include="Views\Yonetimsel\MesaiCizelgesi.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

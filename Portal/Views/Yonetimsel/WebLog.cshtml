@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Portal.Models.WebLog>
+@using Portal.Controllers;
+@using Portal.Models;
+@using Portal.Extensions;
+@{
+    ViewBag.Title = "WebLog";
+}
+<div class="table-scrollable">
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="flip-content">
+            <tr>
+                <th>ID</th>
+                <th>Kullanıcı</th>
+                <th>Tarih</th>
+                <th>SQL</th>
+                <th>IP</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var weblogu in Model)
+            {
+                <tr>
+                    <td>@weblogu.WebLogID</td>
+                    <td>@Fonksiyonlar.KullaniciAdi(User.Identity.Name)</td>
+                    <td>@weblogu.WebLogTarih</td>
+                    <td>@(weblogu.WebLogWebSayfasi)</td>
+                    <td>@weblogu.WebLogIP</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div style="text-align:center">
+    @if (ViewBag.Sayfalama.TotalCount > 0)
+    {
+        @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<YonetimselController>(c => c.WebLog(page))))
+    }
+</div>

@@ -183,10 +183,16 @@
 <script src="/Content/assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script> 
 <script>
     $(function () {
-        $('.silindimiKontrol').iCheck({
-            checkboxClass: 'icheckbox_minimal-red',
-            radioClass: 'iradio_minimal-red',
-            increaseArea: '20%'  // optional</span>
+        //$('.silindimiKontrol').iCheck({
+        //    checkboxClass: 'icheckbox_minimal-red',
+        //    radioClass: 'iradio_minimal-red',
+        //    increaseArea: '20%'  // optional</span>
+        //});
+        $("input.silindimiKontrol").on("click", function () {
+            let url=`/SiteKontrols/SilinenDomainKontrol?domainID=${$(this).data("domainid")}&kontrol=${$(this).data("silinen")}&deger=${$(this).is(':checked')}`;
+          
+            $.post(url);
+       
         });
     });
     function gosterDomain(domain) {

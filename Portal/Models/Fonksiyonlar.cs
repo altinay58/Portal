@@ -361,6 +361,20 @@ namespace Portal.Models
             domainler = domainler.OrderByDescending(m => m.IpAdres).ToList();
             return domainler;
         }
+        public static string KullaniciAdi(string userNameOrEmail)
+        {
+            var db = Database.DbHelper.GetDb;
+            if (db.AspNetUsers.FirstOrDefault(a => a.UserName == userNameOrEmail) != null)
+            {
+                AspNetUser kullanici = db.AspNetUsers.FirstOrDefault(a => a.UserName == userNameOrEmail);
+                string kullaniciIsmi = kullanici.Isim + " " + kullanici.SoyIsim;
+                return kullaniciIsmi;
+            }
+            else
+            {
+                return "Kullanıcı Adı Bulunamadı";
+            }
+        }
     }
 
 }

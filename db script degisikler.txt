@@ -320,5 +320,8 @@ GO
 GO
 ALTER TABLE [dbo].[CariHareket]  WITH CHECK ADD  CONSTRAINT [FK_Satis_RefSatidId] FOREIGN KEY([RefSatisId])
 REFERENCES [dbo].[Satis] ([SatisID])
+--01.03.2017
+GO
+ALTER TABLE [dbo].[Domain] ADD Note nvarchar (150) NULL
 
 
