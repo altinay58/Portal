@@ -1,12 +1,12 @@
 ﻿angModule.service("mesaiCizelgesiService",
     function ($http, $q) {
         return ({
-            getListData: function (basTar, bitTar, isAdi, page) {
+            getListData: function (kullaniciId, ay, yil) {
                 var request = $http({
                     method: "get",
-                    url: "/Isler/ListIsAra",
+                    url: "/Yonetimsel/GetMesaiCizelgesi",
                     params: {
-                        basTarih: basTar, bitisTarih: bitTar, isAdi: isAdi, page: page
+                        kullaniciId:kullaniciId, ay: ay, yil: yil
                     },
                     dataType: "json"
                 });

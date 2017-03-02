@@ -18,4 +18,8 @@ namespace Portal.Models
     {
         BeklemeyeAl=1,YayinaAl,YayiniDurdur
     }
+    public enum MesaiDurum
+    {
+        Mesai=1,HaftaSonu,ResmiTatil,Rapor,UcretliIzin,UcretsizIzin,YillikIzin
+    }
 }

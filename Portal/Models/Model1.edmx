@@ -427,6 +427,18 @@
           <Property Name="MakaleKategoriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MakaleKategoriAdi" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="MesaiCizelgesi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tarih" Type="date" Nullable="false" />
+          <Property Name="GirisSaat" Type="nchar" MaxLength="10" />
+          <Property Name="CikisSaat" Type="nchar" MaxLength="10" />
+          <Property Name="MesaiSuresi" Type="nchar" MaxLength="10" />
+          <Property Name="Durum" Type="int" Nullable="false" />
+          <Property Name="KullaniciId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="Notlar">
           <Key>
             <PropertyRef Name="NotID" />
@@ -1642,6 +1654,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="MailSablonu" EntityType="Self.MailSablonu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Makale" EntityType="Self.Makale" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MakaleKategori" EntityType="Self.MakaleKategori" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MesaiCizelgesi" EntityType="Self.MesaiCizelgesi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notlar" EntityType="Self.Notlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OdemeBildirimi" EntityType="Self.OdemeBildirimi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proje" EntityType="Self.Proje" Schema="dbo" store:Type="Tables" />
@@ -2367,6 +2380,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="Sati" EntitySet="Satis" />
             <End Role="CariHareket" EntitySet="CariHarekets" />
           </AssociationSet>
+          <EntitySet Name="MesaiCizelgesis" EntityType="PortalModel.MesaiCizelgesi" />
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -4056,6 +4070,18 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MesaiCizelgesi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tarih" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="GirisSaat" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CikisSaat" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="MesaiSuresi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Durum" Type="Int32" Nullable="false" />
+          <Property Name="KullaniciId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4826,6 +4852,19 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="Domain" ColumnName="Domain" />
                 <ScalarProperty Name="Firma" ColumnName="Firma" />
                 <ScalarProperty Name="IsAdi" ColumnName="IsAdi" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MesaiCizelgesis">
+            <EntityTypeMapping TypeName="PortalModel.MesaiCizelgesi">
+              <MappingFragment StoreEntitySet="MesaiCizelgesi">
+                <ScalarProperty Name="KullaniciId" ColumnName="KullaniciId" />
+                <ScalarProperty Name="Durum" ColumnName="Durum" />
+                <ScalarProperty Name="MesaiSuresi" ColumnName="MesaiSuresi" />
+                <ScalarProperty Name="CikisSaat" ColumnName="CikisSaat" />
+                <ScalarProperty Name="GirisSaat" ColumnName="GirisSaat" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

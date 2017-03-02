@@ -83,5 +83,6 @@ namespace Portal.Models
         public virtual DbSet<FirmaKisi> FirmaKisis { get; set; }
         public virtual DbSet<RandevularView> RandevularViews { get; set; }
         public virtual DbSet<IslerListesi> IslerListesis { get; set; }
+        public virtual DbSet<MesaiCizelgesi> MesaiCizelgesis { get; set; }
     }
 }
