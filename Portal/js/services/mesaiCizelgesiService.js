@@ -11,7 +11,29 @@
                     dataType: "json"
                 });
                 return (request.then(handleSuccess, handleError));
-            }
+            },
+            durumDegistir: function (id, value, column, jsnObj) {
+                var request = $http({
+                    method: "get",
+                    url: "/Yonetimsel/MesaiCizelgeDegistir",
+                    params: {
+                        pk: id, value: value, ccolumn: column,jsnObj:jsnObj
+                    },
+                    dataType: "json"
+                });
+                return (request.then(handleSuccess, handleError));
+            },
+            hesaplaMesai: function (kullaniciId, yil, ay) {
+                var request = $http({
+                    method: "get",
+                    url: "/Yonetimsel/HesaplaMesai",
+                    params: {
+                        kullanici: kullaniciId, yil: yil, ay: ay
+                    },
+                    dataType: "json"
+                });
+                return (request.then(handleSuccess, handleError));
+            },
         });
         /// private methods
         function handleError(response) {

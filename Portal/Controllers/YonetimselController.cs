@@ -37,7 +37,7 @@ namespace Portal.Controllers
                                       Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
             return View();
         }
-        
+        [JsonNetFilter]
         public JsonResult GetMesaiCizelgesi(string kullaniciId, int ay, int  yil)
         {          
             JsonCevap jsn = new JsonCevap();
@@ -47,12 +47,14 @@ namespace Portal.Controllers
             jsn.Data = list;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult MesaiCizelgeDegistir(int? pk, string value,string ccolumn)
+        [JsonNetFilter]
+        public JsonResult MesaiCizelgeDegistir(int? pk, string value,string ccolumn,string jsnObj)
         {
             JsonCevap jsn = new JsonCevap();
             //Sati item = Db.Satis.SingleOrDefault(x => x.SatisID == pk);
             //item.musteriSatis = value;
             //Db.SaveChanges();
+            jsnObj = jsnObj.Replace("Empty", "");
             MesaiCizelgesi entity = new Models.MesaiCizelgesi();
             if (pk.HasValue)
             {
@@ -60,13 +62,64 @@ namespace Portal.Controllers
             }
             else
             {
-                Db.MesaiCizelgesis.Add(entity);
+                var mdf = new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                    DateTimeZoneHandling = DateTimeZoneHandling.Local
+                };
+              
+                if (!string.IsNullOrEmpty(jsnObj))
+                {
+                    entity = JsonConvert.DeserializeObject<MesaiCizelgesi>(jsnObj,mdf);
+                }
+                if (entity.Id > 0)
+                {
+                    entity = Db.MesaiCizelgesis.SingleOrDefault(x => x.Id == entity.Id);
+                }
+                else
+                {
+                    Db.MesaiCizelgesis.Add(entity);
+                }
+               
             }
             //var propertyInfo = entity.GetType().GetProperty(ccolumn, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
             //propertyInfo.SetValue(entity, value, null);
-            entity.GetType().GetProperty(ccolumn).SetValue(entity, value);
+            if(ccolumn == "MesaiSuresi")
+            {
+                entity.MesaiSuresi = Convert.ToDecimal(value);
+            }else if (ccolumn == "Durum")
+            {
+                entity.Durum = Convert.ToInt32(value);
+            }
+            else
+            {
+                var pr = entity.GetType().GetProperty(ccolumn);        
+                object val_c = Convert.ChangeType(value, pr.PropertyType);
+                pr.SetValue(entity, val_c);
+              
+
+            }
+          
+            //entity.GetType().GetProperty(ccolumn).SetValue(entity, value);
             Db.SaveChanges();
+            jsn.Data = entity;
             return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult HesaplaMesai(string kullanici,int yil,int ay)
+        {
+            var dataAylik = (from m in Db.MesaiCizelgesis
+                        where m.Durum==(int)MesaiDurum.Mesai && m.MesaiSuresi!=null &&
+                        m.KullaniciId==kullanici && m.Tarih.Month==ay && m.Tarih.Year==yil
+                        select m
+                        ).ToList().Sum(x=>Convert.ToDecimal(x.MesaiSuresi));
+            var dataYillik = (from m in Db.MesaiCizelgesis
+                             where m.Durum == (int)MesaiDurum.Mesai && m.MesaiSuresi!=null &&
+                             m.KullaniciId == kullanici && m.Tarih.Year==yil
+                              select m
+                        ).ToList().Sum(x => Convert.ToDecimal(x.MesaiSuresi));
+            var data = new { aylikToplam = dataAylik, yillikToplam = dataYillik };
+            
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }

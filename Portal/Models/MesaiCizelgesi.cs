@@ -18,8 +18,8 @@ namespace Portal.Models
         public System.DateTime Tarih { get; set; }
         public string GirisSaat { get; set; }
         public string CikisSaat { get; set; }
-        public string MesaiSuresi { get; set; }
-        public int Durum { get; set; }
+        public Nullable<decimal> MesaiSuresi { get; set; }
+        public Nullable<int> Durum { get; set; }
         public string KullaniciId { get; set; }
     }
 }

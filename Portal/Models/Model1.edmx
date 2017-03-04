@@ -435,8 +435,8 @@
           <Property Name="Tarih" Type="date" Nullable="false" />
           <Property Name="GirisSaat" Type="nchar" MaxLength="10" />
           <Property Name="CikisSaat" Type="nchar" MaxLength="10" />
-          <Property Name="MesaiSuresi" Type="nchar" MaxLength="10" />
-          <Property Name="Durum" Type="int" Nullable="false" />
+          <Property Name="MesaiSuresi" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Durum" Type="int" />
           <Property Name="KullaniciId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Notlar">
@@ -4078,8 +4078,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="Tarih" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="GirisSaat" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="CikisSaat" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="MesaiSuresi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Durum" Type="Int32" Nullable="false" />
+          <Property Name="MesaiSuresi" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Durum" Type="Int32" />
           <Property Name="KullaniciId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
