@@ -113,7 +113,7 @@ namespace Portal.Controllers
             Db.Firmas.Remove(firma);
             TempData[SUCESS] = "Kayıt Silindi";
             Db.SaveChanges();
-            return RedirectToAction("Tumu");
+            return RedirectToAction("List",new { durum="Tumu"});
         }
         #endregion firma tuu
         #region firmakaydet
@@ -181,7 +181,7 @@ namespace Portal.Controllers
             }
             Db.SaveChanges();
             TempData[SUCESS] = "Kaydedildi";
-            return RedirectToAction("Tumu");
+            return RedirectToAction("List", new { durum = "Tumu" });
         }
         private  string Temizle(string Kelime)
         {

@@ -19,7 +19,9 @@ namespace Portal.Controllers
         {
             int baslangic = ((p ?? 1) - 1) * PagerCount;
             var datas = Db.CariHarekets.GetirCariHareketler(PagerCount, baslangic,q);
-            int totalCount = datas.Count();
+
+            int totalCount = Db.CariHarekets.Where(c=>(string.IsNullOrEmpty(q) ? true : c.Firma.FirmaAdi.ToUpper().Contains(q.ToUpper())))
+                            .Count();
             PaginatedList pager = new PaginatedList((p ?? 1), PagerCount, totalCount);
 
             ViewBag.Sayfalama = pager;
@@ -130,7 +132,9 @@ namespace Portal.Controllers
         {
             int baslangic = ((p ?? 1) - 1) * PagerCount;
             var datas = Db.Satis.GetirSatislar(PagerCount, baslangic,q);
-            int totalCount = datas.Count();
+            int totalCount = Db.Satis.Where(x => x.refSatisID == null && (string.IsNullOrEmpty(q) ? true : x.Firma.FirmaAdi.ToUpper().Contains(q.ToUpper())))
+                            .Count();
+
             PaginatedList pager = new PaginatedList((p ?? 1), PagerCount, totalCount);
 
             ViewBag.Sayfalama = pager;
