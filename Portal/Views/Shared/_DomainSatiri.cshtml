@@ -49,13 +49,13 @@
     <td>
        @if (!string.IsNullOrEmpty(Model.Firma.FirmaAdi) && Model.Firma.FirmaAdi.Length > 20)
        {
-        <a class="uc-nokta" title="@Model.Firma.FirmaAdi" href="@Url.Action("CariHareketDetay", "Web", new { firmaID = Model.RefDomainFirmaID })">
+        <a class="uc-nokta" title="@Model.Firma.FirmaAdi" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
             <text>@Model.Firma.FirmaAdi.Substring(0, 20)</text>...
         </a>
        }
        else
        {
-        <a class="uc-nokta" href="@Url.Action("CariHareketDetay", "Web", new { firmaID = Model.RefDomainFirmaID })">
+        <a class="uc-nokta" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
             @Model.Firma.FirmaAdi
         </a>
       
@@ -101,7 +101,7 @@
             else
             {
 
-                <a class="btn btn-danger" href="@Url.Action("DomainDuzenle", new { controller = "Web", id = Model.DomainID })">
+                <a class="btn btn-danger" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">
                     Silindi
                 </a>
 

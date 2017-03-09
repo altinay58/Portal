@@ -54,17 +54,46 @@ namespace Portal.Controllers
             
             return View();
         }
-        public ActionResult Domainler(int? page)
+        public ActionResult Domainler(int? page,string ara,string aramaType)
         {
-           
+            Dictionary<string, string> aramatypes = new Dictionary<string, string>
+    { {"UzatmaTarihi","Uzatma Tarihine Göre" } , {"Alfabetik","Alfabetik" } , {"Hosting","Hosting" } , {  "Ip", "Ip"} };
+            ViewBag.aramatypes = aramatypes;
             int domainBaslangic = ((page ?? 1) - 1) * PagerCount;
-            var viewData = Db.Domains.GetirDomainler(PagerCount, domainBaslangic);
-            int totalCount = Db.Domains.GetirDomainler().Count();
+            var viewData = Db.Domains.Where(x => ((!string.IsNullOrEmpty(ara)) ? x.DomainAdi.ToUpper().Contains(ara.ToUpper()) : true)
+            || ((!string.IsNullOrEmpty(ara)) ? x.Firma.FirmaAdi.Contains(ara) : true)
+            || (!string.IsNullOrEmpty(ara) ? x.Hosting.HostingAdi.ToUpper().Contains(ara.ToUpper()) : true)
+            || (!string.IsNullOrEmpty(ara) ? x.IpAdres.Contains(ara.ToUpper()) : true)
+            );
+            var qt = viewData;
+            if (aramaType == "UzatmaTarihi")
+            {
+                viewData = viewData.OrderByDescending(x => x.UzatmaTarihi);
+            }
+            else if (aramaType == "Alfabetik")
+            {
+                viewData = viewData.OrderBy(x => x.DomainAdi);
+            }else if (aramaType == "Hosting")
+            {
+                viewData = viewData.OrderBy(x => x.Hosting.HostingAdi);
+            }else if(aramaType=="Ip")
+            {
+                viewData = viewData.OrderByDescending(x => x.IpAdres);
+            }else
+            {
+                viewData = viewData.OrderByDescending(x => x.DomainID);
+            }
+          
+           viewData = viewData.Skip(domainBaslangic).Take(PagerCount);
+
+            int totalCount = qt.Count() ;
             ViewBag.Firmalar = Db.Firmas.GetirFirmalar("");
             ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
             
             PaginatedList pager = new PaginatedList((page ?? 1), PagerCount, totalCount);
-       
+
+            ViewData["queryData"] = ara;
+            ViewData["aramaType"] = aramaType;
             ViewBag.Sayfalama = pager;
             return View(viewData);
 

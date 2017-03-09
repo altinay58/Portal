@@ -486,15 +486,13 @@
                         </li>
                         <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
                         <li class="sidebar-search-wrapper">
-                            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
-                            <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
-                            <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
-                            <form class="sidebar-search  " action="page_general_search_3.html" method="POST">
+                           
+                            <form class="sidebar-search  " action="@Url.Action("List","Firmalar",new { durum="Tumu"})" method="POST">
                                 <a href="javascript:;" class="remove">
                                     <i class="icon-close"></i>
                                 </a>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search...">
+                                    <input type="text" name="q" class="form-control" placeholder="Firma Ara...">
                                     <span class="input-group-btn">
                                         <a href="javascript:;" class="btn submit">
                                             <i class="icon-magnifier"></i>
@@ -502,7 +500,24 @@
                                     </span>
                                 </div>
                             </form>
-                            <!-- END RESPONSIVE QUICK SEARCH FORM -->
+                           
+                        </li>
+                        <li class="sidebar-search-wrapper">
+
+                            <form class="sidebar-search  " action="@Url.Action("Domainler","Domain")" method="POST">
+                                <a href="javascript:;" class="remove">
+                                    <i class="icon-close"></i>
+                                </a>
+                                <div class="input-group">
+                                    <input type="text" name="ara" class="form-control" placeholder="Domain Ara...">
+                                    <span class="input-group-btn">
+                                        <a href="javascript:;" class="btn submit">
+                                            <i class="icon-magnifier"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </form>
+
                         </li>
                         <li class="heading">
                             <h3 class="">
@@ -611,7 +626,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
-                                    <a href="table_static_basic.html" class="nav-link ">
+                                    <a href="@Url.Action("Konum","SatisBolumu")" class="nav-link ">
                                         <i class="icon-bulb"></i>
                                         <span class="title">Konum</span>
                                     </a>
@@ -898,10 +913,10 @@
                     </div>
                     <h3 class="page-title"></h3>
                     <div class="alert alert-success @(TempData["Success"]==null ? "display-hide" :"")">
-                        <button class="close" data-close="alert"></button> @TempData["Success"]
+                        <button class="close" data-close="alert"></button>@Html.Raw(HttpUtility.HtmlDecode((String)@TempData["Success"]))
                     </div>
                     <div class="alert alert-danger @(TempData["Error"]==null ? "display-hide" :"")">
-                        <button class="close" data-close="alert"></button> @TempData["Error"]
+                        <button class="close" data-close="alert"></button>Html.Raw(HttpUtility.HtmlDecode((String)@TempData["Error"])) 
                     </div>
                   
                     @RenderBody()
@@ -1548,14 +1563,14 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->  
         <script src="http://ifightcrime.github.io/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
         <script src="/js/extensions.js"></script>    
-        @*<script src="/scripts/angular.min.js"></script>*@
-       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+        <script src="/scripts/angular.min.js"></script>
+       @*<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>*@
         <script src="/Scripts/ui-bootstrap-tpls-2.5.0.min.js"></script>
     
         @*<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>*@
         <script src="/js/angModule.js?v=1.0.3"></script>
         @RenderSection("scripts", required: false)
-        <script src="/Scripts/ajaxService.js"></script>
+        <script src="/Scripts/ajaxService.js?v=0.1"></script>
         <script src="/js/portalApp.js?v=2.1"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
  <script>

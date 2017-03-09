@@ -5,29 +5,35 @@
 @using Portal.Models;
 @{
     ViewBag.Title = "Domainler";
+  
 }
 
+<form class="form-inline" action="/Domain/Domainler" role="form" style="background-color:#e7ecf1">
+    <div class="form-group">
+        <input type="text" value="@ViewData["queryData"]" class="form-control" name="ara" placeholder="Domain Ara..." />
+    </div>
+    <div class="form-group">
+        <select class="form-control" name="aramaType">
+            @foreach (var item in (Dictionary<string,string>)ViewBag.aramatypes)
+            {
+                if (item.Key == (string)ViewData["aramaType"])
+                {
+                    <option value="@item.Key" selected="selected">@item.Value</option>
+                }
+                else
+                {
+                    <option value="@item.Key">@item.Value</option>
+                }
+            }
+      
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default green">Ara</button>
+    </div>
 
-<div class="row">
-    <div class="col-md-3">
-        <input type="text" class="form-control" name="txtAra" placeholder="Domain Ara..." />
-    </div>
-</div>
-<div class="row" style="margin-top:5px;margin-bottom:5px">
-    <div class="col-md-3">
-        <input type="text" class="form-control" name="txtTarih" placeholder="Uzatma Tarihine Göre" />
-    </div>
-    <div class="col-md-3">
-        <input type="text" class="form-control" name="txtAlfabetik" placeholder="Alfabetik" />
-    </div>
-    <div class="col-md-3">
-        <input type="text" class="form-control" name="txtHosting" placeholder="Hosting" />
-    </div>
-    <div class="col-md-3">
-        <input type="text" class="form-control" name="txtIp" placeholder="IP" />
-    </div>
-</div>
-
+  
+</form>
 <div class="portlet-body flip-scroll">
     <table class="table table-bordered table-striped table-condensed flip-content">
         <thead class="flip-content">
@@ -43,15 +49,18 @@
     </table>
 </div>
 @Html.Partial("_Modal")
-<div class="pagination">
-    @*@MvcHtmlString.Create(ViewBag.Sayfalama)*@
-    @if (ViewBag.Sayfalama.TotalCount > 0)
-    {
-        @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
-                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<DomainController>(c => c.Domainler(page))))
-    }
-    
+<div style="text-align:center">
+    <div class="pagination">
+        @*@MvcHtmlString.Create(ViewBag.Sayfalama)*@
+        @if (ViewBag.Sayfalama.TotalCount > 0)
+        {
+            @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<DomainController>(c => c.Domainler(page, queryData, (string)ViewData["aramaType"]))))
+        }
+
+    </div>
 </div>
+
 @section css{
  
     <link href="/Content/assets/global/plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css" />

@@ -19,6 +19,15 @@ var commonAjaxService = {
             dataType: "json",
             cache: false
         });
+    },
+    getDataFromRemote: function (url, data) {
+        return $.ajax({
+            url: url,
+            method: "get",
+            data: data,
+            dataType: "json",
+            cache: false
+        });
     }
 
 }

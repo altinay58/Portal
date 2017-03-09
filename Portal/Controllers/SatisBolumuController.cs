@@ -156,5 +156,40 @@ namespace Portal.Controllers
             return RedirectToAction("Randevular");
         }
         #endregion randevular
+        #region konum
+        public ActionResult Konum()
+        {           
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Konum(Koordinat konum)
+        {
+            Koordinat entity = new Koordinat();
+            if (konum.KoordinatID <= 0)
+            {                
+                Db.Koordinats.Add(entity);
+            }else
+            {
+                entity = Db.Koordinats.SingleOrDefault(x => x.KoordinatID == konum.KoordinatID);
+            }
+            entity.RefFirmaID = konum.RefFirmaID;
+            entity.KoordinatBoylam = konum.KoordinatBoylam;
+            entity.KoordinatEnlem = konum.KoordinatEnlem;
+            Db.SaveChanges();
+            TempData[SUCESS] = $"Kaydedildi <a href='#'> id:  {entity.KoordinatID}</a>";
+            return View();
+        }
+        public JsonResult GetirFirmaKonum(int firmaId)
+        {
+            var konum = Db.Koordinats.SingleOrDefault(x => x.RefFirmaID == firmaId);
+            object obj = null;
+            if (konum != null)
+            {
+                obj = new { boylam = konum.KoordinatBoylam, enlem = konum.KoordinatEnlem ,id=konum.KoordinatID};
+            }
+          
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        #endregion konum
     }
 }

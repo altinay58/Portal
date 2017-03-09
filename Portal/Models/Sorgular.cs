@@ -84,7 +84,7 @@ namespace Portal.Models
                    orderby d.DomainKategoriAdi ascending
                    select d;
         }
-        public static IEnumerable<Domain> GetirDomainler(this IEnumerable<Domain> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
+        public static IEnumerable<Domain> GetirDomainler(this IQueryable<Domain> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic)
         {
             return (from q in kaynakTablo
                     where q.DomainDurum == true
