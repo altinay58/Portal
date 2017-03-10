@@ -22,4 +22,8 @@ namespace Portal.Models
     {
         Mesai=1,HaftaSonu,ResmiTatil,Rapor,UcretliIzin,UcretsizIzin,YillikIzin
     }
+    public enum TodoDurum:byte
+    {
+        Beklemede=0,Tamamlanmis=1
+    }
 }

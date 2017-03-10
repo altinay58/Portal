@@ -55,5 +55,44 @@ namespace Portal.Controllers
 
             return View();
         }
+        #region todo
+        public JsonResult TodoList()
+        {
+            var userid = User.Identity.GetUserId();
+            var list= Db.ToDoes.Where(x => x.KulId == userid ).OrderByDescending(x => x.Tarih).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult EkleTodo(string aciklama)
+        {
+            
+            JsonCevap jsn = new JsonCevap();
+            if (!string.IsNullOrEmpty(aciklama)){
+                ToDo ent = new ToDo();
+                ent.Aciklama = aciklama;
+                ent.Durum = 0;
+                ent.KulId = User.Identity.GetUserId();
+                ent.Tarih = DateTime.Now;
+                Db.ToDoes.Add(ent);
+                Db.SaveChanges();
+                jsn.Basarilimi = true;
+                jsn.Data = ent;
+            }
+            else
+            {
+                jsn.Basarilimi = false;
+            }
+        
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult TodoDurumDegistir(int id,int yeniDurum)
+        {
+            JsonCevap jsn = new JsonCevap();
+            ToDo ent = Db.ToDoes.SingleOrDefault(x => x.Id == id);          
+            ent.Durum = yeniDurum;
+            Db.SaveChanges();
+            jsn.Basarilimi = true;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        #endregion todo
     }
 }

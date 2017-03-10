@@ -441,6 +441,9 @@
     <Compile Include="Models\Tema.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ToDo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\WebLog.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -470,6 +473,7 @@
     <Content Include="js\controllers\mesaiCizelgesiCtrl.js" />
     <Content Include="js\controllers\randevularCtrl.js" />
     <Content Include="js\controllers\sifreListCtrl.js" />
+    <Content Include="js\controllers\toDoCtrl.js" />
     <Content Include="js\extensions.js" />
     <Content Include="js\portalApp.js" />
     <Content Include="js\services\arayanListService.js" />
@@ -480,6 +484,7 @@
     <Content Include="js\services\mesaiCizelgesiService.js" />
     <Content Include="js\services\randevularService.js" />
     <Content Include="js\services\sifreListService.js" />
+    <Content Include="js\services\toDoService.js" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>

@@ -659,6 +659,16 @@
           <Property Name="temaFirmaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="temaDomainKategoriID" Type="int" />
         </EntityType>
+        <EntityType Name="ToDo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KulId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Aciklama" Type="nvarchar(max)" />
+          <Property Name="Durum" Type="int" Nullable="false" />
+          <Property Name="Tarih" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="WebLog">
           <Key>
             <PropertyRef Name="WebLogID" />
@@ -1674,6 +1684,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="TeklifSonuc" EntityType="Self.TeklifSonuc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeklifTuru" EntityType="Self.TeklifTuru" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tema" EntityType="Self.Tema" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ToDo" EntityType="Self.ToDo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WebLog" EntityType="Self.WebLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YorumDurum" EntityType="Self.YorumDurum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ZamanIs" EntityType="Self.ZamanIs" Schema="dbo" store:Type="Tables" />
@@ -2381,6 +2392,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="CariHareket" EntitySet="CariHarekets" />
           </AssociationSet>
           <EntitySet Name="MesaiCizelgesis" EntityType="PortalModel.MesaiCizelgesi" />
+          <EntitySet Name="ToDoes" EntityType="PortalModel.ToDo" />
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -4082,6 +4094,16 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="Durum" Type="Int32" />
           <Property Name="KullaniciId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ToDo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KulId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Aciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Durum" Type="Int32" Nullable="false" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4865,6 +4887,17 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="CikisSaat" ColumnName="CikisSaat" />
                 <ScalarProperty Name="GirisSaat" ColumnName="GirisSaat" />
                 <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ToDoes">
+            <EntityTypeMapping TypeName="PortalModel.ToDo">
+              <MappingFragment StoreEntitySet="ToDo">
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="Durum" ColumnName="Durum" />
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+                <ScalarProperty Name="KulId" ColumnName="KulId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

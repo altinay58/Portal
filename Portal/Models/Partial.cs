@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using Microsoft.AspNet.Identity;
 namespace Portal.Models
 {
     public static class Partial
@@ -143,5 +143,27 @@ namespace Portal.Models
 
         //    }
         //}
+        public static int YapilacaklarSayisi()
+        {            
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            int count = Database.DbHelper.GetDb.ToDoes.Where(x => x.KulId == userId && x.Durum==(int)TodoDurum.Beklemede).Count();
+            return count;
+         }
+        public static string KulllaniciIsmi()
+        {
+            string name = "";
+            object guncelKullanici = HttpContext.Current.Session["user"];
+            if (guncelKullanici != null)
+            {
+                name = ((AspNetUser)guncelKullanici).Isim;
+            }else
+            {
+                var userId = HttpContext.Current.User.Identity.GetUserId();
+                AspNetUser user = Database.DbHelper.GetDb.AspNetUsers.SingleOrDefault(x => x.Id == userId);
+                guncelKullanici = user;
+                name = user.Isim;
+            }
+            return name;
+        }
     }
 }

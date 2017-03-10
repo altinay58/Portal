@@ -349,5 +349,35 @@ CREATE TABLE [dbo].[MesaiCizelgesi](
 ) ON [PRIMARY]
 
 GO
+---------------------------------------------------------------------
+--09.03.2017
+-- içerik formu için
+ insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsAtanacakKullanici','4f22211e-614c-4eca-baf3-9fc6e195574d')
+ insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsKontrolEdenKullanici','d8c319cd-1e3b-40a7-b6fb-fb2861dcf720')
+--------------------------------------------------------------------------------------
+--10.03.2017
+--todo list
+/****** Object:  Table [dbo].[ToDo]    Script Date: 10.03.2017 16:23:53 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ToDo](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[KulId] [nvarchar](128) NOT NULL,
+	[Aciklama] [nvarchar](max) NULL,
+	[Durum] [int] NOT NULL CONSTRAINT [DF_ToDo_Durum]  DEFAULT ((0)),
+	[Tarih] [datetime] NOT NULL CONSTRAINT [DF_ToDo_Tarih]  DEFAULT (getdate()),
+ CONSTRAINT [PK_ToDo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+
 
 
