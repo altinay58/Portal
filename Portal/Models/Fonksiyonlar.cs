@@ -361,12 +361,12 @@ namespace Portal.Models
             domainler = domainler.OrderByDescending(m => m.IpAdres).ToList();
             return domainler;
         }
-        public static string KullaniciAdi(string userNameOrEmail)
+        public static string KullaniciAdi(string userNameOrEmailorId)
         {
             var db = Database.DbHelper.GetDb;
-            if (db.AspNetUsers.FirstOrDefault(a => a.UserName == userNameOrEmail) != null)
-            {
-                AspNetUser kullanici = db.AspNetUsers.FirstOrDefault(a => a.UserName == userNameOrEmail);
+            var kullanici = db.AspNetUsers.FirstOrDefault(a => a.UserName == userNameOrEmailorId || a.Id == userNameOrEmailorId);
+            if (kullanici != null)
+            {            
                 string kullaniciIsmi = kullanici.Isim + " " + kullanici.SoyIsim;
                 return kullaniciIsmi;
             }

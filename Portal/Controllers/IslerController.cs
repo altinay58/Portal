@@ -206,6 +206,7 @@ namespace Portal.Controllers
                        ); 
             return Json(list.ToList(), JsonRequestBehavior.AllowGet);
         }
+        [ValidateInput(false)]
         public JsonResult YorumKaydet(string kullaniciId,string aciklama,int isId)
         {
             JsonCevap jsn = new JsonCevap();

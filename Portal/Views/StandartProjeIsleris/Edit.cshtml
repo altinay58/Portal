@@ -18,45 +18,50 @@
         @Html.HiddenFor(model => model.StandartProjeIsleriId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RefStandartProjeIsleriYapacakKullaniciId, "RefStandartProjeIsleriYapacakKullaniciId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("RefStandartProjeIsleriYapacakKullaniciId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RefStandartProjeIsleriYapacakKullaniciId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StandartProjeIsleriSirasi, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StandartProjeIsleriSirasi,"Sıra", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.StandartProjeIsleriSirasi, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StandartProjeIsleriSirasi, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.StandartProjeIsleriIsAdi, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StandartProjeIsleriIsAdi, "İş Adı", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.StandartProjeIsleriIsAdi, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StandartProjeIsleriIsAdi, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.StandartProjeIsleriTarih, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StandartProjeIsleriAciklama, "İş Açıklama", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StandartProjeIsleriTarih, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StandartProjeIsleriTarih, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.StandartProjeIsleriAciklama, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StandartProjeIsleriIsAdi, "", new { @class = "text-danger" })
             </div>
-        </div>
-
+        </div> 
         <div class="form-group">
-            @Html.LabelFor(model => model.RefStandartProjeIsleriKontrolEdecekKullaniciId, "RefStandartProjeIsleriKontrolEdecekKullaniciId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.RefStandartProjeIsleriYapacakKullaniciId, "Yapacak Kişi", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RefStandartProjeIsleriYapacakKullaniciId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RefStandartProjeIsleriYapacakKullaniciId, "", new { @class = "text-danger" })
+            </div>
+        </div>     
+
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.RefStandartProjeIsleriKontrolEdecekKullaniciId, "Kontrol Eden", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("RefStandartProjeIsleriKontrolEdecekKullaniciId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RefStandartProjeIsleriKontrolEdecekKullaniciId, "", new { @class = "text-danger" })
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.StandartProjeIsleriIdAnahtarIsmi, "Anahtar ismi", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StandartProjeIsleriIdAnahtarIsmi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StandartProjeIsleriIsAdi, "", new { @class = "text-danger" })
+            </div>
+        </div> 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

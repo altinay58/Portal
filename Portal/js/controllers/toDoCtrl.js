@@ -4,6 +4,7 @@ angModule.controller('toDoCtrl', function ($scope, $timeout, toDoService) {
     let self = $scope;
     self.yukleniyor = false;
     self.lists = [];
+    $scope.maxSize = 5;
     const DURUM_BEKLEMEDE=0;
     const DURUM_TAMAMLANMIS = 1;
     self.guncelDurum = DURUM_BEKLEMEDE;
@@ -14,12 +15,16 @@ angModule.controller('toDoCtrl', function ($scope, $timeout, toDoService) {
     });
     self.getirData = function () {
         self.yukleniyor = true;
-        toDoService.getListData().then(res=> {
+        toDoService.getListData(self.page).then(res=> {
             self.yukleniyor = false;
-            self.lists = res;
+            $scope.totalItems = res.ToplamSayi;
+            self.lists = res.Data;
             extendArray();
         });      
 
+    };
+    self.pageChanged = function () {      
+        self.getirData();
     };
     self.ekle = function () {
         if (self.aciklama!==null  && typeof self.aciklama!=='undefined' && self.aciklama!=="") {
@@ -60,11 +65,11 @@ angModule.controller('toDoCtrl', function ($scope, $timeout, toDoService) {
         }
     };
     self.tarihFormatStr = function (tarih) {
-        let formattedDate = moment(tarih).format('DD/MM/YY H');
+        let formattedDate = moment(tarih).format('DD/MM/YY');
         return formattedDate;
     };
     function hesaplaBeklemedeSayisi() {
-        let count = self.lists.filter(e=> { return e.Durum === DURUM_BEKLEMEDE }).length;
+        let count = self.lists.filter(e=> { return e.Durum === DURUM_BEKLEMEDE }).length + 1;
         $("#todo-count").text(count);
     }
     function extendArray() {

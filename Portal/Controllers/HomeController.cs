@@ -56,11 +56,15 @@ namespace Portal.Controllers
             return View();
         }
         #region todo
-        public JsonResult TodoList()
+        public JsonResult TodoList(int?page)
         {
+            JsonCevap jsn = new JsonCevap();
+            int baslangis = ((page ?? 1) - 1) * PagerCount;
             var userid = User.Identity.GetUserId();
-            var list= Db.ToDoes.Where(x => x.KulId == userid ).OrderByDescending(x => x.Tarih).ToList();
-            return Json(list, JsonRequestBehavior.AllowGet);
+            var list= Db.ToDoes.Where(x => x.KulId == userid ).OrderByDescending(x => x.Tarih);
+            jsn.ToplamSayi = list.Count();
+            jsn.Data = list.Skip(baslangis).Take(PagerCount).ToList();
+            return Json(jsn, JsonRequestBehavior.AllowGet);
         }
         public JsonResult EkleTodo(string aciklama)
         {

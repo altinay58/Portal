@@ -10,14 +10,18 @@ using Portal.Models;
 
 namespace Portal.Controllers
 {
-    public class StandartProjeIslerisController : Controller
+    public class StandartProjeIslerisController : BaseController
     {
-        private PortalEntities db = new PortalEntities();
+        public StandartProjeIslerisController()
+        {
+            GuncelMenu = "Isler";
+        }
+        //private PortalEntities db = new PortalEntities();
 
         // GET: StandartProjeIsleris
         public ActionResult Index()
         {
-            var standartProjeIsleris = db.StandartProjeIsleris.Include(s => s.AspNetUser).Include(s => s.AspNetUser1);
+            var standartProjeIsleris = Db.StandartProjeIsleris.Include(s => s.AspNetUser).Include(s => s.AspNetUser1);
             return View(standartProjeIsleris.ToList());
         }
 
@@ -28,7 +32,7 @@ namespace Portal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StandartProjeIsleri standartProjeIsleri = db.StandartProjeIsleris.Find(id);
+            StandartProjeIsleri standartProjeIsleri = Db.StandartProjeIsleris.Find(id);
             if (standartProjeIsleri == null)
             {
                 return HttpNotFound();
@@ -39,8 +43,8 @@ namespace Portal.Controllers
         // GET: StandartProjeIsleris/Create
         public ActionResult Create()
         {
-            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(db.AspNetUsers.TumKullanicilar().ToList(), "Id", "Isim");
-            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(db.AspNetUsers.TumKullanicilar().ToList(), "Id", "Isim");
+            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(Db.AspNetUsers.TumKullanicilar().ToList(), "Id", "Isim");
+            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(Db.AspNetUsers.TumKullanicilar().ToList(), "Id", "Isim");
             return View();
         }
 
@@ -53,13 +57,13 @@ namespace Portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.StandartProjeIsleris.Add(standartProjeIsleri);
-                db.SaveChanges();
+                Db.StandartProjeIsleris.Add(standartProjeIsleri);
+                Db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriYapacakKullaniciId);
-            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriKontrolEdecekKullaniciId);
+            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(Db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriYapacakKullaniciId);
+            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(Db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriKontrolEdecekKullaniciId);
             return View(standartProjeIsleri);
         }
 
@@ -70,13 +74,13 @@ namespace Portal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StandartProjeIsleri standartProjeIsleri = db.StandartProjeIsleris.Find(id);
+            StandartProjeIsleri standartProjeIsleri = Db.StandartProjeIsleris.Find(id);
             if (standartProjeIsleri == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriYapacakKullaniciId);
-            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriKontrolEdecekKullaniciId);
+            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(Db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriYapacakKullaniciId);
+            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(Db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriKontrolEdecekKullaniciId);
             return View(standartProjeIsleri);
         }
 
@@ -90,12 +94,12 @@ namespace Portal.Controllers
             if (ModelState.IsValid)
             {
                 standartProjeIsleri.StandartProjeIsleriTarih = DateTime.Now;
-                db.Entry(standartProjeIsleri).State = EntityState.Modified;
-                db.SaveChanges();
+                Db.Entry(standartProjeIsleri).State = EntityState.Modified;
+                Db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriYapacakKullaniciId);
-            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriKontrolEdecekKullaniciId);
+            ViewBag.RefStandartProjeIsleriYapacakKullaniciId = new SelectList(Db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriYapacakKullaniciId);
+            ViewBag.RefStandartProjeIsleriKontrolEdecekKullaniciId = new SelectList(Db.AspNetUsers, "Id", "UserName", standartProjeIsleri.RefStandartProjeIsleriKontrolEdecekKullaniciId);
             return View(standartProjeIsleri);
         }
 
@@ -106,7 +110,7 @@ namespace Portal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StandartProjeIsleri standartProjeIsleri = db.StandartProjeIsleris.Find(id);
+            StandartProjeIsleri standartProjeIsleri = Db.StandartProjeIsleris.Find(id);
             if (standartProjeIsleri == null)
             {
                 return HttpNotFound();
@@ -119,19 +123,19 @@ namespace Portal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            StandartProjeIsleri standartProjeIsleri = db.StandartProjeIsleris.Find(id);
-            db.StandartProjeIsleris.Remove(standartProjeIsleri);
-            db.SaveChanges();
+            StandartProjeIsleri standartProjeIsleri = Db.StandartProjeIsleris.Find(id);
+            Db.StandartProjeIsleris.Remove(standartProjeIsleri);
+            Db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        Db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

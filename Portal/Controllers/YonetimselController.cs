@@ -29,6 +29,7 @@ namespace Portal.Controllers
             ViewBag.Sayfalama = pager;
             return View(data);
         }
+        #region mesai
         public ActionResult MesaiCizelgesi()
         {
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
@@ -120,6 +121,11 @@ namespace Portal.Controllers
             var data = new { aylikToplam = dataAylik, yillikToplam = dataYillik };
             
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        #endregion mesai
+        public ActionResult Takvim()
+        {
+            return View();
         }
     }
 }
