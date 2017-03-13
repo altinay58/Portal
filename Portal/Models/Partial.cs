@@ -7,6 +7,104 @@ namespace Portal.Models
 {
     public static class Partial
     {
+
+        //#region Domain Sorguları
+
+        //public static IEnumerable<Domain> SQLDomainler()
+        //{
+        //    using (var dbc = new PortalEntities())
+        //    {
+        //        return dbc.Domains.ToList();
+        //    }
+        //}
+
+        //public static IEnumerable<Domain> tumDomainler = SQLDomainler();
+
+        //public static IEnumerable<Domain> Domainler()
+        //{
+        //    return tumDomainler.Where(a => a.DomainDurum == true);
+        //}
+
+        //public static IEnumerable<Domain> SilinenDomainler()
+        //{
+        //    return tumDomainler.Where(a => a.DomainDurum == false);
+        //}
+
+
+        //public static string DomainAdi(int domainID)
+        //{
+        //    if(tumDomainler.FirstOrDefault(a=>a.DomainID == domainID) != null)
+        //    {
+        //        return tumDomainler.FirstOrDefault(a => a.DomainID == domainID).DomainAdi;
+        //    }
+        //    else
+        //    {
+        //        return "Domain Bulunamadı";
+        //    }
+        //}
+
+        //#endregion Domain Sorguları
+
+
+        public static IEnumerable<Domain> GetirUzatmasiGelenler()
+        {
+            using (var dbc = new PortalEntities())
+            {
+                DateTime uTarih = DateTime.Now.AddMonths(2);
+                return (from a in dbc.Domains
+                       where a.DomainDurum == true && a.UzatmaTarihi <= uTarih
+                       orderby a.UzatmaTarihi ascending
+                       select a).ToList();
+            }
+        }
+
+        public static string KisiAdiGetir(string KisiID)
+        {
+            string Isim = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                if (dbc.AspNetUsers.Find(KisiID) == null)
+                {
+                    return "Kullanıcı Yok.";
+                }
+                Isim = dbc.AspNetUsers.Find(KisiID).Isim.ToString();
+
+            }
+
+            return Isim;
+        }
+
+        public static BildirimlerView KullaniciBildirim(string KullaniciID)
+        {
+            BildirimlerView bildirimler = new BildirimlerView();
+
+            if (!string.IsNullOrEmpty(KullaniciID))
+                using (var dbc = new PortalEntities())
+                {
+                    DateTime tarih = DateTime.Now;
+                    IEnumerable<isler> Yeniislerim = dbc.islers.GetirIsler(false, false, KullaniciID, null).ToList();
+                    IEnumerable<isler> KontrolBekleyenIsler = dbc.islers.GetirIsler(true, false, KullaniciID, null).ToList();
+                    IEnumerable<Randevu> Randevular = dbc.Randevus.Where(m => m.RandevuYetkiliKisiID == KullaniciID && m.RandevuTarihi.Value.Year + m.RandevuTarihi.Value.Month + m.RandevuTarihi.Value.Day == tarih.Year + tarih.Month + tarih.Day).ToList();
+                    bildirimler.BildirimSayisi = Yeniislerim.ToList().Count + KontrolBekleyenIsler.ToList().Count + Randevular.ToList().Count;
+                    bildirimler.yeniIsler = Yeniislerim;
+                    bildirimler.kontrolBekleyenIsler = KontrolBekleyenIsler;
+                    bildirimler.Randevular = Randevular;
+                }
+
+            return bildirimler;
+        }
+
+        public static IEnumerable<isler> CevaplananIslerOkunmayanlar(string KullaniciID)
+        {
+
+            using (var dbc = new PortalEntities())
+            {
+                List<int> yorumlananIsIdleri = dbc.YorumDurums.Where(a => a.RefUserID == KullaniciID).Select(a => a.RefIsID).ToList();
+
+                return dbc.islers.Where(a => yorumlananIsIdleri.Contains(a.islerID)).ToList();
+
+            }
+        }
         public static IEnumerable<TeklifDetay> TeklifDetaylariGoruntule(int teklifDetayRefTeklifID)
         {
             using (var dbc = new PortalEntities())
@@ -27,6 +125,52 @@ namespace Portal.Models
             }
 
         }
+
+        public static string DomainAdi(int id)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                return dbc.Domains.FirstOrDefault(a => a.DomainID == id).DomainAdi;
+            }
+
+        }
+
+        public static string FirmaAdi(int id)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                return dbc.Firmas.FirstOrDefault(a => a.FirmaID == id).FirmaAdi;
+            }
+
+        }
+
+        public static string HostingAdi(int id)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                return dbc.Hostings.FirstOrDefault(a => a.HostingID == id).HostingAdi;
+            }
+
+        }
+
+        public static string KayitliFirmaAdi(int id)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                return dbc.KayitliFirmas.FirstOrDefault(a => a.KayitliFirmaID == id).KayitliFirmaAdi;
+            }
+
+        }
+
+        public static string DomainKategoriAdi(int id)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                return dbc.DomainKategoris.FirstOrDefault(a => a.DomainKategoriID == id).DomainKategoriAdi;
+            }
+
+        }
+
 
         public static IEnumerable<Firma> FirmalariGoruntule()
         {

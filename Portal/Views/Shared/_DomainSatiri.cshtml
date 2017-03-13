@@ -9,8 +9,7 @@
     }
 }
 <tr class="domainSiralama @(renk)" data-ip="@(Model.IpAdres)">
-    <td>@String.Format("{0:dd MMMM yyyy}", Model.Tarih)</td>
-    <td>@String.Format("{0:dd MMMM yyyy}", Model.UzatmaTarihi)</td>
+    <td>@String.Format("{0:dd MMMM yyyy}", Model.Tarih)<br /> @String.Format("{0:dd MMMM yyyy}", Model.UzatmaTarihi)</td>
     <td>
         @if (Model.DomainDurum ?? false)
         { @Fonksiyonlar.DomainUzatmaSuresineKalanGun(Model.UzatmaTarihi)}
@@ -21,8 +20,6 @@
     </td>
     <td>
         <a onclick="gosterDomain('@Model.DomainAdi')" data-toggle="domainInfo" href="javascript:void(0)">@Model.DomainAdi</a>
-    </td>
-    <td>
         <a href="http://www.@(Model.DomainAdi)" target="_blank">
             <span class="icon-stack">
                 <i class="icon-link"></i>
@@ -30,7 +27,7 @@
         </a>
     </td>
     <td>
-        @Model.Hosting.HostingAdi
+        @Partial.HostingAdi(Model.RefHostingID??0)
     </td>
     <td>
         <span id="@Model.DomainID" class="ipGetir domain@(Model.DomainID)">
@@ -41,22 +38,22 @@
         </span>
     </td>
     <td>
-        @Model.KayitliFirma.KayitliFirmaAdi
+      @Partial.KayitliFirmaAdi(Model.RefDomainKayitliFirmaId)
     </td>
     <td>
-        @Model.DomainKategori.DomainKategoriAdi
+      @Partial.DomainKategoriAdi(Model.RefDomainKategori ?? 0)
     </td>
     <td>
-       @if (!string.IsNullOrEmpty(Model.Firma.FirmaAdi) && Model.Firma.FirmaAdi.Length > 20)
+       @if (!string.IsNullOrEmpty(Partial.FirmaAdi(Model.RefDomainFirmaID)) && Partial.FirmaAdi(Model.RefDomainFirmaID).Length > 20)
        {
-        <a class="uc-nokta" title="@Model.Firma.FirmaAdi" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
-            <text>@Model.Firma.FirmaAdi.Substring(0, 20)</text>...
+        <a class="uc-nokta" title="@Partial.FirmaAdi(Model.RefDomainFirmaID)" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
+            <text>@Partial.FirmaAdi(Model.RefDomainFirmaID).Substring(0, 20)</text>...
         </a>
        }
        else
        {
         <a class="uc-nokta" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
-            @Model.Firma.FirmaAdi
+            @Partial.FirmaAdi(Model.RefDomainFirmaID)
         </a>
       
        }      
