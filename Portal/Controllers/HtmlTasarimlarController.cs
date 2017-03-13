@@ -87,6 +87,7 @@ namespace Portal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "temaID,temaAdresi,temaDemoAdi,temaProjeTipi,temaFirmaAdi")] Tema tema)
         {
+            var entity = Db.Temas.AsNoTracking().SingleOrDefault(x => x.temaID == tema.temaID);
             if (ModelState.IsValid)
             {
                 var file = Request.Files["ResimYolu"];
@@ -95,6 +96,10 @@ namespace Portal.Controllers
                     string filePath = Path.Combine(Server.MapPath("~/upload"), file.FileName);
                     file.SaveAs(filePath);
                     tema.ResimYolu = "/upload/"+file.FileName;
+                }
+                else
+                {
+                    tema.ResimYolu = entity.ResimYolu;
                 }
                 Db.Entry(tema).State = EntityState.Modified;
                 Db.SaveChanges();
