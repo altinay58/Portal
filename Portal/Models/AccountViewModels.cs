@@ -3,6 +3,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Portal.Models
 {
+
+    public class BildirimlerView
+    {
+
+        public IEnumerable<Randevu> Randevular { get; set; }
+        public IEnumerable<isler> yeniIsler { get; set; }
+        public IEnumerable<isler> kontrolBekleyenIsler { get; set; }
+        public int BildirimSayisi { get; set; }
+
+
+    }
+
     public class ExternalLoginConfirmationViewModel
     {
         [Required]

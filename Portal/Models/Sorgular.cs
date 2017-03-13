@@ -108,16 +108,7 @@ namespace Portal.Models
         {
             return kaynakTablo.FirstOrDefault(q => q.DomainID == id && q.DomainDurum == true);
         }
-        public static IEnumerable<Domain> GetirUzatmasiGelenler(this IEnumerable<Domain> kaynakTablo)
-        {
 
-            return from a in kaynakTablo
-                   where a.DomainDurum == true && a.UzatmaTarihi <= DateTime.Now.AddMonths(2)
-                   orderby a.UzatmaTarihi ascending
-                   select a;
-
-
-        }
         public static bool KategorideDomainVarmi(this IEnumerable<Domain> kaynakTablo, int kategoriID)
         {
             if (kaynakTablo.FirstOrDefault(q => q.RefDomainKategori == kategoriID) == null)

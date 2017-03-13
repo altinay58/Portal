@@ -216,7 +216,7 @@ namespace Portal.Controllers
         //Eski yeri WebController,eski adi UzatmaSuresiGelenler Uzatılacak Domainler
         public ActionResult UzatilacakDomainler()
         {
-            var viewData = Db.Domains.GetirUzatmasiGelenler();
+            var viewData = Partial.GetirUzatmasiGelenler();
 
             return View(viewData);
         }
