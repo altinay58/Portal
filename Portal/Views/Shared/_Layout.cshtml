@@ -473,39 +473,43 @@
                         </li>
                         <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
                         <li class="sidebar-search-wrapper">
-                           
-                            <form class="sidebar-search  " action="@Url.Action("List","Firmalar",new { durum="Tumu"})" method="POST">
+
+                            <div class="sidebar-search">
                                 <a href="javascript:;" class="remove">
                                     <i class="icon-close"></i>
                                 </a>
                                 <div class="input-group">
-                                    <input type="text" name="q" class="form-control" placeholder="Firma Ara...">
+                                    <input type="text" name="q" id="firmaAra" autocomplete="off" class="form-control" placeholder="Firma Ara...">
                                     <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn submit">
+                                        <button type="submit" class="btn submit">
                                             <i class="icon-magnifier"></i>
-                                        </a>
+                                        </button>
+                                        @*<a href="javascript:;" class="btn submit">
+                            <i class="icon-magnifier"></i>
+                        </a>*@
                                     </span>
                                 </div>
-                            </form>
-                           
+                               
+                            </div>
+
                         </li>
                         <li class="sidebar-search-wrapper">
-
-                            <form class="sidebar-search  " action="@Url.Action("Domainler","Domain")" method="POST">
+                            <div class="sidebar-search">
                                 <a href="javascript:;" class="remove">
                                     <i class="icon-close"></i>
                                 </a>
                                 <div class="input-group">
-                                    <input type="text" name="ara" class="form-control" placeholder="Domain Ara...">
+                                    <input type="text" id="domainAra" name="ara" autocomplete="off" class="form-control" placeholder="Domain Ara...">
                                     <span class="input-group-btn">
                                         <a href="javascript:;" class="btn submit">
                                             <i class="icon-magnifier"></i>
                                         </a>
                                     </span>
                                 </div>
-                            </form>
+                            </div>
 
-                        </li>
+                        </li>                  
+                       
                         <li class="heading">
                             <h3 class="">
                             <a href="/" class="anasayfa">Anasayfa</a>
@@ -1651,6 +1655,21 @@
        
             <script>
                 $(function () {
+                    $("#firmaAra").keypress(function (event) {
+                        if (event.which == 13) {
+                            event.preventDefault();
+                            location.href = "/Firmalar/List?durum=Tumu&q=" + $(this).val();
+                           
+                        }
+                    });
+                    $("#domainAra").keypress(function (event) {
+                        if (event.which == 13) {
+                            event.preventDefault();
+                            let v=$(this).val();
+                            location.href = `/Domain/Domainler?ara=${v}&aramaType=UzatmaTarihi`;
+                          
+                        }
+                    });
                     ayarlaMenu();
                 });
                 function ayarlaMenu() {

@@ -362,7 +362,7 @@ namespace Portal.Controllers
         [HttpPost]
         public ActionResult DomainNoteEkle(DomainNot model, FormCollection frm)
         {
-            bool isAjax = Request["isAjax"] != "";
+            bool isAjax = Request["isAjax"] != null;
             if (!isAjax)
             {
                 DomainNot entity = new DomainNot();

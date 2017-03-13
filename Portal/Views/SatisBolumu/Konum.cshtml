@@ -144,6 +144,9 @@
             });
         });
         function getirFirmaKonum(firmaId) {
+            $("#KoordinatID").val("");
+            $("#KoordinatBoylam").val("");
+            $("#KoordinatEnlem").val("");
             commonAjaxService.getDataFromRemote(url = "/SatisBolumu/GetirFirmaKonum", data = { firmaId: firmaId })
                 .done(function (data) {
                     console.log(data);

@@ -97,6 +97,12 @@ namespace Portal.Controllers
             jsn.Basarilimi = true;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
+        public  JsonResult YapilacaklarSayisi()
+        {
+            var userId = User.Identity.GetUserId();
+            int count = Database.DbHelper.GetDb.ToDoes.Where(x => x.KulId == userId && x.Durum == (int)TodoDurum.Beklemede).Count();
+            return Json(count,JsonRequestBehavior.AllowGet);
+        }
         #endregion todo
     }
 }

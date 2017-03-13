@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -48,6 +49,15 @@ namespace Portal.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var file = Request.Files["ResimYolu"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    string filePath = Path.Combine(Server.MapPath("~/upload"), file.FileName);
+                    file.SaveAs(filePath);
+                    tema.ResimYolu = "/upload/" + file.FileName;
+                }
+
                 Db.Temas.Add(tema);
                 Db.SaveChanges();
                 return RedirectToAction("List");
@@ -79,6 +89,13 @@ namespace Portal.Controllers
         {
             if (ModelState.IsValid)
             {
+                var file = Request.Files["ResimYolu"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    string filePath = Path.Combine(Server.MapPath("~/upload"), file.FileName);
+                    file.SaveAs(filePath);
+                    tema.ResimYolu = "/upload/"+file.FileName;
+                }
                 Db.Entry(tema).State = EntityState.Modified;
                 Db.SaveChanges();
                 return RedirectToAction("List");

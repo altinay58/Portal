@@ -1,3 +1,4 @@
+var myObj,dataDrop;
 var AppCalendar = function() {
 
     return {
@@ -56,8 +57,10 @@ var AppCalendar = function() {
             var initDrag = function(el) {
                 // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
                 // it doesn't need to have a start or end
+				console.log("init drag");
                 var eventObject = {
-                    title: $.trim(el.text()) // use the element's text as the event title
+                    title: $.trim(el.text()), // use the element's text as the event title
+					userId:$("#kullanici option:selected").val()
                 };
                 // store the Event Object in the DOM element so we can get to it later
                 el.data('eventObject', eventObject);
@@ -77,6 +80,7 @@ var AppCalendar = function() {
             };
 
             $('#external-events div.external-event').each(function() {
+				console.log("ne zaman");
                 initDrag($(this));
             });
 
@@ -87,13 +91,14 @@ var AppCalendar = function() {
 
             //predefined events
             $('#event_box').html("");
-            addEvent("My Event 1");
+            /*
+			addEvent("My Event 1");
             addEvent("My Event 2");
             addEvent("My Event 3");
             addEvent("My Event 4");
             addEvent("My Event 5");
             addEvent("My Event 6");
-
+            */
             $('#calendar').fullCalendar('destroy'); // destroy the calendar
             $('#calendar').fullCalendar({ //re-initialize the calendar
 			    locale:'tr',
@@ -102,6 +107,23 @@ var AppCalendar = function() {
                 slotMinutes: 15,
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar !!!
+				eventDrop: function(event, delta, revertFunc) {
+					//alert(event.title + " was dropped on " + event.start.format());
+                    dataDrop=event;
+					if (!confirm("Are you sure about this change?")) {
+						revertFunc();
+					}
+
+				},
+				eventResize: function(event, delta, revertFunc) {
+
+				console.log("user id:"+event.userId+ event.title +  " end is now " + event.end.format());
+                
+				if (!confirm("is this okay?")) {
+					revertFunc();
+				}
+
+                },
                 drop: function(date, allDay) { // this function is called when something is dropped
 
                     // retrieve the dropped element's stored Event Object
@@ -117,7 +139,9 @@ var AppCalendar = function() {
                     // render the event on the calendar
                     // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
                     $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
+					myObj=copiedEventObject;
+					console.log(copiedEventObject);
+                    console.log("burada");
                     // is the "remove after drop" checkbox checked?
                     if ($('#drop-remove').is(':checked')) {
                         // if so, remove the element from the "Draggable Events" list

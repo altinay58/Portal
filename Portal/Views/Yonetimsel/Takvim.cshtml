@@ -1,7 +1,9 @@
-﻿
+﻿@using Portal.Models;
 @{
     ViewBag.Title = "Takvim";
+    var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
 }
+
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit bordered calendar">
@@ -18,6 +20,12 @@
                         <h3 class="event-form-title margin-bottom-20">Draggable Events</h3>
                         <div id="external-events">
                             <form class="inline-form">
+                                <select id="kullanici" name="kullanici" class="form-control" style="margin-bottom:2px">
+                                    @foreach(var item in kullanicilar)
+                                    {
+                                        <option value="@item.Id"><text>@item.Isim</text>&nbsp;<text>@item.SoyIsim</text></option>
+                                    }
+                                </select>
                                 <input type="text" value="" class="form-control" placeholder="Event Title..." id="event_title" />
                                 <br />
                                 <a href="javascript:;" id="event_add" class="btn green"> Add Event </a>
@@ -58,7 +66,7 @@
 <script src="/Content/assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
             <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="/Content/assets/apps/scripts/calendar.js" type="text/javascript"></script>
+<script src="/Content/assets/apps/scripts/calendar.js?v=2" type="text/javascript"></script>
 <script src="https://fullcalendar.io/js/fullcalendar-3.2.0/locale-all.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
     <script>

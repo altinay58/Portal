@@ -301,6 +301,7 @@
     <Compile Include="Models\Ayar.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CacheManagement.cs" />
     <Compile Include="Models\CariHareket.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

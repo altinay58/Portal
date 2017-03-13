@@ -19,6 +19,7 @@ namespace Portal.Models
         public string temaDemoAdi { get; set; }
         public string temaFirmaAdi { get; set; }
         public Nullable<int> temaDomainKategoriID { get; set; }
+        public string ResimYolu { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
     }

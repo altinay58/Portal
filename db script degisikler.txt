@@ -293,24 +293,6 @@ END
 GO
 -----------------------
 
-GO
-
-/****** Object:  View [dbo].[ArayanListesi]    Script Date: 17.02.2017 14:04:22 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[IslerListesi]
-AS
-
-select i.islerID as Id,i.islerAdi as IsAdi,f.FirmaAdi as Firma,d.DomainAdi as Domain,
-(SELECT   TOP 1 a.Isim+' '+a.SoyIsim FROM      dbo.AspNetUsers AS a WHERE i.islerisiVerenKisi=a.Id ) AS IsiVerenKisi
-,dbo.IsiYapanKullaniciAdSoyad(i.islerID) as IsiYapacakKisi,i.islerTarih Tarih
-from isler i inner join firma f on (i.islerRefFirmaID=f.FirmaID)
-     inner join Domain d on (i.islerRefDomainID=d.DomainID)
-
-GO
 ---------------------------------------------
 --25.02.2017
 --CariHareket tablosuna RefSatisId ozelligi eklendi
@@ -377,6 +359,40 @@ CREATE TABLE [dbo].[ToDo](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
+----
+--13.03.2017
+GO
+
+/****** Object:  View [dbo].[IslerListesi]    Script Date: 13.03.2017 13:49:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE VIEW [dbo].[IslerListesi]
+AS
+
+select i.islerID as Id,i.islerAdi as IsAdi,f.FirmaAdi as Firma,d.DomainAdi as Domain,
+(SELECT   TOP 1 a.Isim+' '+a.SoyIsim FROM      dbo.AspNetUsers AS a WHERE i.islerisiVerenKisi=a.Id ) AS IsiVerenKisi
+,dbo.IsiYapanKullaniciAdSoyad(i.islerID) as IsiYapacakKisi,
+(case i.islerIsinDurumu  when 1 then 'Yapılacak'
+                         when 2 then 'YapılacakDeadline'
+						 when 3 then 'Yapiliyor'
+						 when 4 then 'KontrolBekleyen'
+						 when 5 then 'Biten'
+						 end
+) as IsinDurumu,i.islerTarih Tarih
+from isler i inner join firma f on (i.islerRefFirmaID=f.FirmaID)
+     inner join Domain d on (i.islerRefDomainID=d.DomainID)
+
+
+
+GO
+----
+--resim yolu eklendi
+ALTER TABLE [dbo].[Tema] ADD ResimYolu nvarchar (400) NULL
 
 
 

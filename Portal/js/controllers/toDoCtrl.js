@@ -69,8 +69,10 @@ angModule.controller('toDoCtrl', function ($scope, $timeout, toDoService) {
         return formattedDate;
     };
     function hesaplaBeklemedeSayisi() {
-        let count = self.lists.filter(e=> { return e.Durum === DURUM_BEKLEMEDE }).length + 1;
-        $("#todo-count").text(count);
+        commonAjaxService.getDataFromRemote(url = "/Home/YapilacaklarSayisi", data = {}).done(res=> {
+            console.log(res);
+            $("#todo-count").text(res);
+        });     
     }
     function extendArray() {
         self.lists.forEach(e=> {

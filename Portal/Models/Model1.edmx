@@ -658,6 +658,7 @@
           <Property Name="temaDemoAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="temaFirmaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="temaDomainKategoriID" Type="int" />
+          <Property Name="ResimYolu" Type="nvarchar" MaxLength="400" />
         </EntityType>
         <EntityType Name="ToDo">
           <Key>
@@ -3126,6 +3127,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="temaFirmaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="temaDomainKategoriID" Type="Int32" />
           <NavigationProperty Name="DomainKategori" Relationship="PortalModel.FK_Tema_DomainKategori" FromRole="Tema" ToRole="DomainKategori" />
+          <Property Name="ResimYolu" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="WebLog">
           <Key>
@@ -4753,6 +4755,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySetMapping Name="Temas">
             <EntityTypeMapping TypeName="PortalModel.Tema">
               <MappingFragment StoreEntitySet="Tema">
+                <ScalarProperty Name="ResimYolu" ColumnName="ResimYolu" />
                 <ScalarProperty Name="temaDomainKategoriID" ColumnName="temaDomainKategoriID" />
                 <ScalarProperty Name="temaFirmaAdi" ColumnName="temaFirmaAdi" />
                 <ScalarProperty Name="temaDemoAdi" ColumnName="temaDemoAdi" />
