@@ -22,5 +22,6 @@ namespace Portal.Models
         public string IsiYapacakKisi { get; set; }
         public Nullable<System.DateTime> Tarih { get; set; }
         public string IsinDurumu { get; set; }
+        public Nullable<int> DomainId { get; set; }
     }
 }

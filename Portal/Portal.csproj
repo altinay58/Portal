@@ -495,6 +495,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="js\angModule.js" />
+    <Content Include="js\controllers\anaSayfaCtrl.js" />
     <Content Include="js\controllers\arayanListeCtrl.js" />
     <Content Include="js\controllers\domainIslerCtrl.js" />
     <Content Include="js\controllers\domainNotlariCtrl.js" />
@@ -506,6 +507,7 @@
     <Content Include="js\controllers\toDoCtrl.js" />
     <Content Include="js\extensions.js" />
     <Content Include="js\portalApp.js" />
+    <Content Include="js\services\anaSayfaService.js" />
     <Content Include="js\services\arayanListService.js" />
     <Content Include="js\services\domainIslerService.js" />
     <Content Include="js\services\domainNotlariService.js" />

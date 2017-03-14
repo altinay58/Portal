@@ -12,36 +12,50 @@ namespace Portal.Controllers
     {
         public ActionResult Index()
         {
-            string sql = @"select d.*
- from
- (
- select  i.islerRefDomainID as DomainID,i.islerTarih,
- (select count(i2.islerRefDomainID) from isler i2 where i2.islerRefDomainID=i.islerRefDomainID) cnt,
- row_number() over (partition by i.islerRefDomainID order by i.islerTarih desc) as seqnum
- from isler i inner join Domain d on (i.islerRefDomainID=d.DomainID)
 
- ) r,Domain d
- where seqnum=1 and 
- d.DomainID=r.DomainID
-  order by islerTarih desc";
-            var list = Db.Database.SqlQuery<Domain>(sql).ToList();
-
-            string userid = User.Identity.GetUserId();
-
-            List<int> idler = Db.IsiYapacakKisis.Where(a => a.RefIsiYapacakKisiUserID == userid).Select(x => x.RefIsID).ToList();
-
-            var yapacagiisler = Db.islers.Where(a => idler.Contains(a.islerID) && a.islerisinTamamlanmaDurumu != true).OrderBy(a => a.islerTarih).ToList();
-
-            var verdigiisler = Db.islers.Where(a => a.islerisiVerenKisi == userid && a.islerisinTamamlanmaDurumu != true).OrderBy(a => a.islerSira).ToList();
-
-            //IEnumerable<isler> yeniIslerim = Partial.KullaniciBildirim(userid).yeniIsler;
-            //IEnumerable<isler> kontrolBekleyenIsler = Partial.KullaniciBildirim(userid).kontrolBekleyenIsler;
-            //IEnumerable<isler> okunmayanIsler = Partial.CevaplananIslerOkunmayanlar(userid);
-            //IEnumerable<Randevu> randevular = Partial.KullaniciBildirim(iduserid.Randevular;
-            //int bildirimSayisi = Partial.KullaniciBildirim(userid).BildirimSayisi;
-            return View(list);
+            return View();
         }
-
+        public JsonResult ListIsAra(int page, string basTarih, string bitisTarih, string isAdi,
+            string firma,string domain,string isiKontrolEden,string isiYapacakKisi,string isinDurumu)
+        {
+            int baslangic = (page - 1) * PagerCount;
+            JsonCevap jsn = new JsonCevap();
+            var userId = User.Identity.GetUserId();
+            var guncelKullanici = Db.AspNetUsers.SingleOrDefault(x => x.Id == userId);
+            var query = Db.IslerListesis.Where(x => (!string.IsNullOrEmpty(isAdi) ? x.IsAdi.Contains(isAdi) : true));
+            query = query.Where(x => 
+                 (!string.IsNullOrEmpty(firma) ? x.Firma.Contains(firma) : true)
+                 && (!string.IsNullOrEmpty(domain) ? x.Domain.Contains(domain) : true)
+                  && (!string.IsNullOrEmpty(isinDurumu) ? x.IsinDurumu.Contains(isinDurumu) : true)
+                 );
+            if (!User.IsInRole("Muhasebe"))
+            {
+                string adSoyad = guncelKullanici.Isim + " " + guncelKullanici.SoyIsim;
+                query = query.Where(x => x.IsiVerenKisi.Contains(adSoyad) || x.IsiYapacakKisi.Contains(adSoyad));
+                query = query.Where(x=> (!string.IsNullOrEmpty(isiKontrolEden)? x.IsiVerenKisi.Contains(isiKontrolEden):true)  
+                 && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true));
+            }
+            else
+            {
+                query = query.Where(x => (!string.IsNullOrEmpty(isiKontrolEden) ? x.IsiVerenKisi.Contains(isiKontrolEden) : true)
+                 && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true));
+            }
+            if (!string.IsNullOrEmpty(basTarih) && !string.IsNullOrEmpty(bitisTarih))
+            {
+                DateTime tBas = DateTime.Parse(basTarih);
+                DateTime tBit = DateTime.Parse(bitisTarih).AddHours(23).AddMinutes(59);
+                jsn.ToplamSayi = query.Where(x => x.Tarih >= tBas && x.Tarih <= tBit).Count();
+                query = query.Where(x => x.Tarih >= tBas && x.Tarih <= tBit).OrderByDescending(x => x.Tarih).Skip(baslangic).Take(PagerCount);
+                jsn.Data = query.ToList();
+            }
+            else
+            {
+                jsn.ToplamSayi = query.Count();
+                query = query.OrderByDescending(x => x.Tarih).Skip(baslangic).Take(20);
+                jsn.Data = query.ToList();
+            }
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

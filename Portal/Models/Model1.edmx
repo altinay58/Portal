@@ -731,6 +731,7 @@ warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary 
           <Property Name="IsiYapacakKisi" Type="varchar" MaxLength="3000" />
           <Property Name="IsinDurumu" Type="varchar" MaxLength="17" />
           <Property Name="Tarih" Type="datetime" />
+          <Property Name="DomainId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1714,7 +1715,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
     [IslerListesi].[IsiVerenKisi] AS [IsiVerenKisi], 
     [IslerListesi].[IsiYapacakKisi] AS [IsiYapacakKisi], 
     [IslerListesi].[IsinDurumu] AS [IsinDurumu], 
-    [IslerListesi].[Tarih] AS [Tarih]
+    [IslerListesi].[Tarih] AS [Tarih], 
+    [IslerListesi].[DomainId] AS [DomainId]
     FROM [dbo].[IslerListesi] AS [IslerListesi]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="RandevularView" EntityType="Self.RandevularView" store:Type="Views" store:Schema="dbo">
@@ -4071,6 +4073,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="IsiYapacakKisi" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
           <Property Name="Tarih" Type="DateTime" Precision="3" />
           <Property Name="IsinDurumu" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+          <Property Name="DomainId" Type="Int32" />
         </EntityType>
         <Association Name="FK_Satis_RefSatidId">
           <End Type="PortalModel.Sati" Role="Sati" Multiplicity="0..1" />
@@ -4870,6 +4873,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySetMapping Name="IslerListesis">
             <EntityTypeMapping TypeName="PortalModel.IslerListesi">
               <MappingFragment StoreEntitySet="IslerListesi">
+                <ScalarProperty Name="DomainId" ColumnName="DomainId" />
                 <ScalarProperty Name="IsinDurumu" ColumnName="IsinDurumu" />
                 <ScalarProperty Name="Tarih" ColumnName="Tarih" />
                 <ScalarProperty Name="IsiYapacakKisi" ColumnName="IsiYapacakKisi" />

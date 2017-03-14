@@ -62,11 +62,15 @@ namespace Portal.Controllers
         //[OutputCache(Duration = 3600, VaryByParam = "domainId")]
         public JsonResult DomainAitIsler(int domainId)
         {
+            bool adminMi = User.IsInRole("Muhasebe");
+            string userId = User.Identity.GetUserId();
             var list = (from p in Db.islers.Include(x => x.IsiYapacakKisis).Include(x=>x.isYorums)
                         join a in Db.AspNetUsers on p.islerisiVerenKisi equals a.Id
                         join z in Db.ZamanIs on p.islerID equals z.RefIsId into temp
                         from zz in temp.DefaultIfEmpty()
-                        where p.islerRefDomainID == domainId 
+                        let users = p.IsiYapacakKisis.Select(x=>x.RefIsiYapacakKisiUserID)
+                        let isAdmin = adminMi
+                        where p.islerRefDomainID == domainId && (isAdmin || (p.islerisiVerenKisi == userId || users.Contains(userId)))
                         orderby p.islerIsinDurumu ascending,p.islerID descending
                         select new DomainIs
                         {
@@ -296,7 +300,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             if (ModelState.IsValid && (isAtanacakKullanici!=null && isKontrolEdenKullanici!=null) &&
                 (!string.IsNullOrEmpty(isAtanacakKullanici.AyarDeger) && !(string.IsNullOrEmpty(isKontrolEdenKullanici.AyarDeger)) ))
             {
-                var listStandardIsler = Db.StandartProjeIsleris.ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
+                var listStandardIsler = Db.StandartProjeIsleris.Where(x=>string.IsNullOrEmpty(x.StandartProjeIsleriIdAnahtarIsmi)).ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
                 var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
                 var isHtml = string.Format("<p>Firma Adı:{0}</p>",icerik.FirmaAdi);
                 isHtml += string.Format("<p>Domain Adı:{0}</p>", icerik.DomainAdi);
@@ -321,7 +325,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 }
 
                 isler ilkIs = new isler();
-                ilkIs.islerAciklama = string.Format("Domain:{0}-Firma:{1}", icerik.DomainAdi, icerik.FirmaAdi);
+                ilkIs.islerAciklama = isHtml;
                 ilkIs.islerAdi=icerik.DomainAdi+" bilgileri";
                 ilkIs.islerRefDomainID = icerik.DomainId;
                 ilkIs.islerRefFirmaID = icerik.FirmaId;
@@ -334,6 +338,10 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 //isler.Add(ilkIs);
                 ilkIs.islerSiraNo = 1;
                 ilkIs.islerIsinDurumu = (int)IsinDurumu.Yapilacak;
+                IsiYapacakKisi kisi2 = new IsiYapacakKisi();
+                kisi2.RefIsiYapacakKisiUserID = isAtanacakKullanici.AyarDeger;
+                kisi2.isler = ilkIs;
+                Db.IsiYapacakKisis.Add(kisi2);
                 Db.islers.Add(ilkIs);
                 int siraNo = 2;
                 foreach (var standardIs in listStandardIsler)
@@ -360,7 +368,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 Db.SaveChanges();
                 TempData["Success"] = "Kaydedildi";
 
-                return RedirectToAction("Index",new { kontrolBekleyenIsler=false,  onaylananIsler=false });
+                return RedirectToAction("ListIsler");
 
             }
             else
