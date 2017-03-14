@@ -1,5 +1,4 @@
-﻿
-@model Portal.Models.Domain
+﻿@model Portal.Models.Domain
 @using Portal.Models;
 @{
     string renk = "";
@@ -8,26 +7,44 @@
         renk = "Silindi";
     }
 }
+
 <tr class="domainSiralama @(renk)" data-ip="@(Model.IpAdres)">
     <td>@String.Format("{0:dd MMMM yyyy}", Model.Tarih)<br /> @String.Format("{0:dd MMMM yyyy}", Model.UzatmaTarihi)</td>
     <td>
         @if (Model.DomainDurum ?? false)
-        { @Fonksiyonlar.DomainUzatmaSuresineKalanGun(Model.UzatmaTarihi)}
+        { 
+            @Fonksiyonlar.DomainUzatmaSuresineKalanGun(Model.UzatmaTarihi)
+        }
         else
-        {<a class="btn btn-danger" href="@Url.Action("DomainDuzenle", new { controller = "Web", id = Model.DomainID })">
-            Silindi
-        </a>}
+        {
+            <a class="btn btn-danger" href="@Url.Action("DomainDuzenle", new { controller = "Web", id = Model.DomainID })">
+                Silindi
+            </a>
+        }
     </td>
-    <td>
+    <td class="duzenle">
         <a onclick="gosterDomain('@Model.DomainAdi')" data-toggle="domainInfo" href="javascript:void(0)">@Model.DomainAdi</a>
-        <a href="http://www.@(Model.DomainAdi)" target="_blank">
-            <span class="icon-stack">
-                <i class="icon-link"></i>
-            </span>
-        </a>
+        <a href="http://www.@(Model.DomainAdi)" target="_blank">Siteyi Göster</a>
+        <div class="row gizle" >
+            <div class="col-lg-12">
+                @if (Model.DomainDurum ?? false)
+            {
+                <a title="Düzenle" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">Düzenle</a><span> | </span>
+                <a title="Uzat" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Domain", new {  domainID = Model.DomainID })'">Uzat</a><span> | </span>
+                <a onclick="domainUzatmaMailiGonder(this,'@Model.DomainAdi',@Model.DomainID)" title="Mail Gönder" href="javascript:void(0)">Mail Gönder</a><span> | </span>
+                <a title="Domain Sil" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Domain", new {  id = Model.DomainID })'">Sil</a>
+            }
+            else
+            {
+                <a class="btn btn-danger" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">
+                    Silindi
+                </a>
+            }
+        </div>
+    </div>
     </td>
     <td>
-        @Partial.HostingAdi(Model.RefHostingID??0)
+        @Partial.KayitliFirmaAdi(Model.RefDomainKayitliFirmaId) <br /> @Partial.HostingAdi(Model.RefHostingID ?? 0)
     </td>
     <td>
         <span id="@Model.DomainID" class="ipGetir domain@(Model.DomainID)">
@@ -38,79 +55,22 @@
         </span>
     </td>
     <td>
-      @Partial.KayitliFirmaAdi(Model.RefDomainKayitliFirmaId)
+        @Partial.DomainKategoriAdi(Model.RefDomainKategori ?? 0)
     </td>
     <td>
-      @Partial.DomainKategoriAdi(Model.RefDomainKategori ?? 0)
-    </td>
-    <td>
-       @if (!string.IsNullOrEmpty(Partial.FirmaAdi(Model.RefDomainFirmaID)) && Partial.FirmaAdi(Model.RefDomainFirmaID).Length > 20)
-       {
-        <a class="uc-nokta" title="@Partial.FirmaAdi(Model.RefDomainFirmaID)" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
-            <text>@Partial.FirmaAdi(Model.RefDomainFirmaID).Substring(0, 20)</text>...
-        </a>
-       }
-       else
-       {
-        <a class="uc-nokta" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
-            @Partial.FirmaAdi(Model.RefDomainFirmaID)
-        </a>
-      
-       }      
-
-
-</td>
-    <td>
+        @if (!string.IsNullOrEmpty(Partial.FirmaAdi(Model.RefDomainFirmaID)) && Partial.FirmaAdi(Model.RefDomainFirmaID).Length > 20)
+        {
+            <a class="uc-nokta" title="@Partial.FirmaAdi(Model.RefDomainFirmaID)" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
+                <text>@Partial.FirmaAdi(Model.RefDomainFirmaID).Substring(0, 20)</text>...
+            </a>
+        }
+        else
+        {
+            <a class="uc-nokta" href="@Url.Action("Detay", "CariHareket", new { id = Model.RefDomainFirmaID })">
+                @Partial.FirmaAdi(Model.RefDomainFirmaID)
+            </a>
+        }
+        <br />
         <a href="#" class="domain-note" data-type="text" data-pk="@Model.DomainID" data-title="Note giriniz">@Model.Note</a>
     </td>
-    <td>
-       
-            @if (Model.DomainDurum ?? false)
-            {
-                <div class="row">
-                    <div class="col-md-3">
-                        <a class="btn btn-warning" title="Düzenle" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">                         
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <a class="btn  btn-info" onclick="domainUzatmaMailiGonder(this,'@Model.DomainAdi',@Model.DomainID)" title="Mail Gönder" href="javascript:void(0)"> 
-                            <i class="fa fa-mail-forward"></i> </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <a class="btn btn-success" title="Uzat" href="javascript:if(confirm('@(Model.DomainAdi) Domain Uzatılacak Emin misiniz?'))location.href='@Url.Action("DomainUzat", "Domain", new {  domainID = Model.DomainID })'"> 
-                            <i class="fa fa-arrows-h"></i> </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <a class="btn  btn-danger" title="Domain Sil" href="javascript:if(confirm('@(Model.DomainAdi) Domain Silinecek Emin misiniz?'))location.href='@Url.Action("DomainSil", "Domain", new {  id = Model.DomainID })'"> 
-                            <i class="fa fa-trash"></i></a>
-                    </div>
-                </div>
-            }
-           
-            else
-            {
-
-                <a class="btn btn-danger" href="@Url.Action("Duzenle", new { controller = "Domain", id = Model.DomainID })">
-                    Silindi
-                </a>
-
-            }
-
-
-
-
-</td>
-
 </tr>
-
-
-
-
