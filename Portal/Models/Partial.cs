@@ -155,10 +155,15 @@ namespace Portal.Models
 
         public static string KayitliFirmaAdi(int id)
         {
-            using (var dbc = new PortalEntities())
+       
+            var firma = Database.DbHelper.GetDb.KayitliFirmas.FirstOrDefault(a => a.KayitliFirmaID == id);
+            if (firma != null)
             {
-                return dbc.KayitliFirmas.FirstOrDefault(a => a.KayitliFirmaID == id).KayitliFirmaAdi;
-            }
+                return firma.KayitliFirmaAdi;
+            }else
+            {
+                return "";
+            }           
 
         }
 

@@ -2,7 +2,7 @@
 var ss;
 angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     let self = $scope;
-    self.isler = [], self.yukleniyor = true;
+    self.isler = [], self.yukleniyor = false;
     $scope.maxSize = 5;
     self.seciliKontrolEden, self.seciliYapacakKisi;
     self.isinDurumlari = ["Yapilacak", "YapilacakDeadline", "Yapiliyor", "KontrolBekleyen", "Biten"];
@@ -11,7 +11,8 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         "Yapiliyor": { color: "#26c281" }, "KontrolBekleyen": { color: "#c49f47" },
         "Biten": { color: "darkgrey" }
     };
-    let models = ["page","basTarih", "bitisTarih", "isAdi","domain", "firma", "seciliKontrolEden", "seciliYapacakKisi", "seciliIsDurum"];
+    let models = ["page", "basTarih", "bitisTarih", "isAdi", "domain", "firma", "seciliKontrolEden", "seciliYapacakKisi", "seciliIsDurum"];
+    let loaded = false;
     angular.element(document).ready(function () {
         self.getirData();
         ss = self;
@@ -20,7 +21,7 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         //aryanListService.getListData(self.basTarih, self.bitisTarih);
         self.basTarih = qs("basTarih");
         self.bitisTarih = qs("bitisTarih");
-        self.page = qs("page") === null ? 1 : parseInt(qs("page"));
+        self.page = qs("page"); //=== null ? 1 : parseInt(qs("page"));
         self.isAdi = qs("isAdi");
         self.firma = qs("firma");
         self.domain = qs("domain");
@@ -46,6 +47,11 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
 
     };
     self.pageChanged = function () {
+        if (!loaded) {
+            self.page = qs("page") === null ? 1 : parseInt(qs("page"));
+            loaded = true;
+        }
+     
         console.log(self.page);
     };
     self.tarihFormat = function (tarih) {
@@ -71,7 +77,7 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
                     q = `#?${models[i]}=${setIfEmpty(nw[i])}`;
                     first = false;
                 } else {
-                    q = q + `&${models[i]}:${setIfEmpty(nw[i])}`;
+                    q = q + `&${models[i]}=${setIfEmpty(nw[i])}`;
                 }
               
             }
@@ -89,7 +95,10 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         //if (nw[5] !== null && nw[5] !== "") {
         //    q = q + `&domain:${setIfEmpty(nw[5])}`;
         //}
-        document.location.href = q;
+        if (q) {
+            document.location.href = q;
+        }
+       
         let yeniSayfa = nw[0];
         let eskiSayfa = ov[0];
         if (yeniSayfa !== eskiSayfa || nw[6] !== ov[6] || nw[7] !== ov[7] || nw[8] !== ov[8]) {
