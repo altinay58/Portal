@@ -137,6 +137,9 @@
         <AssociationConnector Association="PortalModel.FK_Satis_RefSatidId" />
         <EntityTypeShape EntityType="PortalModel.MesaiCizelgesi" Width="1.5" PointX="14.375" PointY="4.75" />
         <EntityTypeShape EntityType="PortalModel.ToDo" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PortalModel.TeknikRapor" Width="1.5" PointX="3" PointY="24.5" />
+        <AssociationConnector Association="PortalModel.FK_TeknikRapor_isler" />
+        <AssociationConnector Association="PortalModel.FK_TeknikRapor_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,6 +14,10 @@ namespace Portal.Controllers
 {
     public class IslerController : BaseController
     {
+
+
+
+
        public IslerController()
         {
             ViewBag.guncelMenu = "Isler";
@@ -44,6 +48,31 @@ namespace Portal.Controllers
         // Parameters:
         //   id:domain id
         //  
+        [HttpPost]
+        public ActionResult TeknikRapor(string islerisiYapacakKisi,DateTime basTarih, DateTime bitisTarih)
+        {
+
+            List<string> yeniisiYapacakKisiler = islerisiYapacakKisi.Split(',').ToList();
+
+            ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
+
+            IEnumerable<TeknikRapor> rapor = Db.TeknikRapors.Where(a => basTarih != null ? a.TeknikRaporTarih >= basTarih : 1==1
+            && bitisTarih != null ? a.TeknikRaporTarih <= bitisTarih : 1 == 1
+            && yeniisiYapacakKisiler.Contains(a.RefTeknikRaporUserID)).OrderBy(x => x.RefTeknikRaporUserID).ToList();
+
+            return View(rapor);
+        }
+
+        public ActionResult TeknikRapor()
+        {
+            ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
+            DateTime tarih = DateTime.Now.Date;
+           IEnumerable<TeknikRapor> rapor = Db.TeknikRapors.Where(a => a.TeknikRaporTarih == tarih).OrderBy(x=>x.RefTeknikRaporUserID).ToList();
+
+            return View(rapor);
+        }
+
+
         #region domain isler   
         public ActionResult DomainIsler(int? id)
         {
@@ -127,7 +156,7 @@ namespace Portal.Controllers
                 ZamanI zamanIs = Db.ZamanIs.SingleOrDefault(x => x.RefIsId == obj.IsId);
                 if(zamanIs!=null)
                 {
-                    if (yeniisDurum == IsinDurumu.Yapiliyor)
+                    if (yeniisDurum == IsinDurumu.Yapiliyor) // İşi başlattığı zaman burası çalışır İş Yeşil olur
                     {                       
                         zamanIs.ZamanIsBasTarih = DateTime.Now;                        
                         obj.IsGecenZaman.ZamanBasTarih = DateTime.Now;                      
@@ -135,17 +164,21 @@ namespace Portal.Controllers
                     else
                     {
                         //islerIsinDurumu Yapilacak veya YapilacakDeadline
-                        if (obj.IsDurum == (int)IsinDurumu.Yapiliyor)
+                        if (obj.IsDurum == (int)IsinDurumu.Yapiliyor) // Durum Yapılıyorken Tamamlaya yada durdura bastığımızda bu kısım çalışıyor. Tamamlaya basarsak isdurum 4  KontrolBekleyen olur. durdura basarsak isdurum 1 Yapilacak olur.
                         {
                             var diffInSeconds = (DateTime.Now - obj.IsGecenZaman.ZamanBasTarih.Value).TotalSeconds;
                             zamanIs.GecenZamanSaniye = zamanIs.GecenZamanSaniye + (long)diffInSeconds;
                             zamanIs.ZamanIsBasTarih = DateTime.Now;
                             obj.IsGecenZaman.ZamanBasTarih = DateTime.Now;
                             obj.IsGecenZaman.GecenZamanSaniye = zamanIs.GecenZamanSaniye;
+
+                            TeknikRaporEkle(obj.IsId, (int)yeniisDurum, (long)diffInSeconds);
+
                         }
                       
                     }
-                }else
+                }
+                else
                 {
                     //zamanis kayit yok ise islerIsinDurumu Yapilacak veya YapilacakDeadline dir
                     zamanIs = new ZamanI() { GecenZamanSaniye = 0, RefIsId = obj.IsId, ZamanIsBasTarih = DateTime.Now };
@@ -154,6 +187,9 @@ namespace Portal.Controllers
                     obj.IsGecenZaman.GecenZamanSaniye = 0;
 
                 }
+
+
+
                 isler job = Db.islers.SingleOrDefault(x => x.islerID == obj.IsId);
                 job.islerIsinDurumu = (int)yeniisDurum;
                 obj.IsDurum= (int)yeniisDurum;
@@ -167,6 +203,35 @@ namespace Portal.Controllers
           
             return Json(jsn,JsonRequestBehavior.AllowGet);
         }
+
+        public void TeknikRaporEkle(int isID, int isDurum, long isZaman)
+        {
+            DateTime tarih = DateTime.Now.Date;
+            string userID = User.Identity.GetUserId();
+
+            TeknikRapor Rapor = Db.TeknikRapors.FirstOrDefault(a => a.TeknikRaporTarih == tarih && a.RefTeknikRaporUserID == userID && a.RefTeknikRaporIsID == isID);
+
+            if (Rapor == null)
+            {
+                TeknikRapor tekRap = new TeknikRapor()
+                {
+                    RefTeknikRaporIsID = isID,
+                    TeknikRaporDurum = isDurum,
+                    TeknikRaporTarih = DateTime.Now.Date,
+                    TeknikRaporZaman = isZaman,
+                    RefTeknikRaporUserID = userID
+                };
+                Db.TeknikRapors.Add(tekRap);
+            }
+            else
+            {
+                Rapor.TeknikRaporDurum = isDurum;
+                Rapor.TeknikRaporZaman = Rapor.TeknikRaporZaman + isZaman;
+            }
+            Db.SaveChanges();
+        }
+
+
         public JsonResult GetirDomainNotlari(int domainId)
         {
             var list = (from dn in Db.DomainNots

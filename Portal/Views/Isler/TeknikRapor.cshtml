@@ -1,0 +1,128 @@
+﻿@using Portal.Models
+@model IEnumerable<Portal.Models.TeknikRapor>
+
+@{
+    ViewBag.Title = "TeknikRapor";
+}
+@section scripts{
+<link href="/Content/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="/Content/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="/Content/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+<style>
+    .datepicker.dropdown-menu {
+        z-index: 9999 !important;
+    }
+</style>
+<script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script>  $(function () {
+      $(".select2").select2({ width: 'resolve' });
+    $(".select2-multiple").select2({
+        tags: true,
+        width: 'resolve'
+    });
+    $(".tarih").datepicker({
+        autoclose: true,
+        language: 'tr'
+    });
+  });
+    </script>    
+}
+<h2>TeknikRapor</h2>
+<form class="form-inline" role="form" method="post" action="@Url.Action("TeknikRapor", "Isler")">
+    <div class="col-md-4">
+        <label class="control-label col-md-2">Kişi(ler)</label>
+        <div class="col-md-10">
+            <select class="select2-multiple" name="islerisiYapacakKisi" multiple="multiple" style="width:100%">
+                @foreach (Portal.Models.AspNetUser user in ViewBag.kullanicilar)
+                {
+                    @*if (Model.IsiYapacakKisis.ToList().FindIndex(x => x.AspNetUser.Id == user.Id) > -1)
+                    {
+                        <option value="@user.Id" selected="selected"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                    }
+                    else
+                    {*@
+                        <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                    @*}*@
+
+                }
+            </select>
+        </div>
+
+    </div>
+    <div class="col-md-8">
+        <div class="input-group">
+            <input type="text" is-date="1" class="form-control tarih" name="basTarih" ng-model="basTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+            <span class="input-group-btn">
+                <button class="btn default" type="button">
+                    <i class="fa fa-calendar"></i>
+                </button>
+
+            </span>
+        </div>
+        <div class="input-group">
+            <input type="text" is-date="1" class="form-control tarih" name="bitisTarih" ng-model="bitisTarih" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+            <span class="input-group-btn">
+                <button class="btn default" type="button">
+                    <i class="fa fa-calendar"></i>
+                </button>
+
+            </span>
+        </div>
+        <input type="submit" class="btn btn-default green" value="Filtrele" />
+    </div>
+    
+</form>
+<br />
+<br />
+<table class="table">
+    <tr>
+        <th>
+            Personel
+        </th>
+        <th>
+            Durum
+        </th>
+        <th>
+            İş
+        </th>
+        <th>
+            Zaman
+        </th>
+        <th>
+            Tarih
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Partial.KisiAdiGetir(item.RefTeknikRaporUserID)
+        </td>
+        <td>
+            @if(item.TeknikRaporDurum==4)
+            {
+                <span>TAMAMLANDI</span>
+            }
+            else if(item.TeknikRaporDurum==1)
+            {
+                <span>ATLANDI</span>
+            }
+            else
+            {
+                <span>BİLİNMİYOR</span>
+            }
+        </td>
+        <td>
+            @Partial.IsinAdi(item.RefTeknikRaporIsID)
+        </td>
+        <td>
+            @Convert.ToInt32(item.TeknikRaporZaman/60):@(item.TeknikRaporZaman%60)
+        </td>
+        <td>
+            @item.TeknikRaporTarih.ToShortDateString()
+        </td>
+    </tr>
+}
+
+</table>

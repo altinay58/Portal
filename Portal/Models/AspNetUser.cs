@@ -32,6 +32,7 @@ namespace Portal.Models
             this.YorumDurums = new HashSet<YorumDurum>();
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.DomainNots = new HashSet<DomainNot>();
+            this.TeknikRapors = new HashSet<TeknikRapor>();
         }
     
         public string Id { get; set; }
@@ -82,5 +83,7 @@ namespace Portal.Models
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DomainNot> DomainNots { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TeknikRapor> TeknikRapors { get; set; }
     }
 }

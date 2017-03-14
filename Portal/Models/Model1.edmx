@@ -54,8 +54,8 @@
           <Property Name="arayanFirmaKayitDurum" Type="bit" />
           <Property Name="arayanKayitliMusterimi" Type="bit" />
           <Property Name="arayanKayitliRefFirmaID" Type="int" />
-          <Property Name="ArayanAraciAdi" Type="nvarchar" MaxLength="100" />
           <Property Name="arayanMailSablonuId" Type="int" />
+          <Property Name="ArayanAraciAdi" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -340,11 +340,11 @@
           <Property Name="islerCalisanTipi" Type="varchar" MaxLength="50" />
           <Property Name="islerDosyaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="islerSira" Type="int" />
-          <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
           <Property Name="islerGelisYontemi" Type="nvarchar" MaxLength="100" />
           <Property Name="islerBitisTarihiVarmi" Type="bit" Nullable="false" />
           <Property Name="islerBitisTarihi" Type="date" />
           <Property Name="islerSiraNo" Type="int" />
+          <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="isOncelikSira">
           <Key>
@@ -649,6 +649,17 @@
           <Property Name="teklifTuruID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="teklifTuruAdi" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="TeknikRapor">
+          <Key>
+            <PropertyRef Name="TeknikRaporID" />
+          </Key>
+          <Property Name="TeknikRaporID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefTeknikRaporIsID" Type="int" Nullable="false" />
+          <Property Name="TeknikRaporDurum" Type="int" Nullable="false" />
+          <Property Name="TeknikRaporZaman" Type="bigint" Nullable="false" />
+          <Property Name="TeknikRaporTarih" Type="date" Nullable="false" />
+          <Property Name="RefTeknikRaporUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tema">
           <Key>
             <PropertyRef Name="temaID" />
@@ -658,6 +669,7 @@
           <Property Name="temaDemoAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="temaFirmaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="temaDomainKategoriID" Type="int" />
+          <Property Name="ResimYolu" Type="nvarchar" MaxLength="400" />
         </EntityType>
         <EntityType Name="ToDo">
           <Key>
@@ -698,7 +710,7 @@
           <Property Name="GecenZamanSaniye" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Portal.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ArayanListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -717,7 +729,7 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <Property Name="Bolge" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Portal.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="IslerListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -732,7 +744,7 @@ warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary 
           <Property Name="Tarih" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RandevularView">
           <Key>
             <PropertyRef Name="RandevuID" />
@@ -1593,6 +1605,30 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TeknikRapor_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="TeknikRapor" Type="Self.TeknikRapor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TeknikRapor">
+              <PropertyRef Name="RefTeknikRaporUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeknikRapor_isler">
+          <End Role="isler" Type="Self.isler" Multiplicity="1" />
+          <End Role="TeknikRapor" Type="Self.TeknikRapor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="isler">
+              <PropertyRef Name="islerID" />
+            </Principal>
+            <Dependent Role="TeknikRapor">
+              <PropertyRef Name="RefTeknikRaporIsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Tema_DomainKategori">
           <End Role="DomainKategori" Type="Self.DomainKategori" Multiplicity="0..1" />
           <End Role="Tema" Type="Self.Tema" Multiplicity="*" />
@@ -1683,6 +1719,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="TeklifDetay" EntityType="Self.TeklifDetay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeklifSonuc" EntityType="Self.TeklifSonuc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeklifTuru" EntityType="Self.TeklifTuru" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeknikRapor" EntityType="Self.TeknikRapor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tema" EntityType="Self.Tema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ToDo" EntityType="Self.ToDo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WebLog" EntityType="Self.WebLog" Schema="dbo" store:Type="Tables" />
@@ -2006,6 +2043,14 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <AssociationSet Name="FK_TeklifDetay_TeklifDetay" Association="Self.FK_TeklifDetay_TeklifDetay">
             <End Role="Arayanlar" EntitySet="Arayanlar" />
             <End Role="TeklifDetay" EntitySet="TeklifDetay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeknikRapor_AspNetUsers" Association="Self.FK_TeknikRapor_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="TeknikRapor" EntitySet="TeknikRapor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeknikRapor_isler" Association="Self.FK_TeknikRapor_isler">
+            <End Role="isler" EntitySet="isler" />
+            <End Role="TeknikRapor" EntitySet="TeknikRapor" />
           </AssociationSet>
           <AssociationSet Name="FK_Tema_DomainKategori" Association="Self.FK_Tema_DomainKategori">
             <End Role="DomainKategori" EntitySet="DomainKategori" />
@@ -2393,6 +2438,15 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           </AssociationSet>
           <EntitySet Name="MesaiCizelgesis" EntityType="PortalModel.MesaiCizelgesi" />
           <EntitySet Name="ToDoes" EntityType="PortalModel.ToDo" />
+          <EntitySet Name="TeknikRapors" EntityType="PortalModel.TeknikRapor" />
+          <AssociationSet Name="FK_TeknikRapor_isler" Association="PortalModel.FK_TeknikRapor_isler">
+            <End Role="isler" EntitySet="islers" />
+            <End Role="TeknikRapor" EntitySet="TeknikRapors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeknikRapor_AspNetUsers" Association="PortalModel.FK_TeknikRapor_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="TeknikRapor" EntitySet="TeknikRapors" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2432,6 +2486,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="islerBitisTarihi" Type="DateTime" Precision="0" />
           <NavigationProperty Name="ZamanIs" Relationship="PortalModel.FK_Domain_RefIsId" FromRole="isler" ToRole="ZamanI" />
           <Property Name="islerSiraNo" Type="Int32" />
+          <NavigationProperty Name="TeknikRapors" Relationship="PortalModel.FK_TeknikRapor_isler" FromRole="isler" ToRole="TeknikRapor" />
         </EntityType>
         <EntityType Name="IsiYapacakKisi">
           <Key>
@@ -2602,6 +2657,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="YorumDurums" Relationship="PortalModel.FK_YorumDurum_AspNetUsers" FromRole="AspNetUser" ToRole="YorumDurum" />
           <NavigationProperty Name="AspNetRoles" Relationship="PortalModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="DomainNots" Relationship="PortalModel.FK_Domain_RefKayitYapanKullanici" FromRole="AspNetUser" ToRole="DomainNot" />
+          <NavigationProperty Name="TeknikRapors" Relationship="PortalModel.FK_TeknikRapor_AspNetUsers" FromRole="AspNetUser" ToRole="TeknikRapor" />
         </EntityType>
         <EntityType Name="CariHareket">
           <Key>
@@ -3126,6 +3182,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="temaFirmaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="temaDomainKategoriID" Type="Int32" />
           <NavigationProperty Name="DomainKategori" Relationship="PortalModel.FK_Tema_DomainKategori" FromRole="Tema" ToRole="DomainKategori" />
+          <Property Name="ResimYolu" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="WebLog">
           <Key>
@@ -4104,6 +4161,43 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="Durum" Type="Int32" Nullable="false" />
           <Property Name="Tarih" Type="DateTime" Precision="3" Nullable="false" />
         </EntityType>
+        <EntityType Name="TeknikRapor">
+          <Key>
+            <PropertyRef Name="TeknikRaporID" />
+          </Key>
+          <Property Name="TeknikRaporID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefTeknikRaporIsID" Type="Int32" Nullable="false" />
+          <Property Name="TeknikRaporDurum" Type="Int32" Nullable="false" />
+          <Property Name="TeknikRaporZaman" Type="Int64" Nullable="false" />
+          <Property Name="TeknikRaporTarih" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="isler" Relationship="PortalModel.FK_TeknikRapor_isler" FromRole="TeknikRapor" ToRole="isler" />
+          <Property Name="RefTeknikRaporUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_TeknikRapor_AspNetUsers" FromRole="TeknikRapor" ToRole="AspNetUser" />
+        </EntityType>
+        <Association Name="FK_TeknikRapor_isler">
+          <End Type="PortalModel.isler" Role="isler" Multiplicity="1" />
+          <End Type="PortalModel.TeknikRapor" Role="TeknikRapor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="isler">
+              <PropertyRef Name="islerID" />
+            </Principal>
+            <Dependent Role="TeknikRapor">
+              <PropertyRef Name="RefTeknikRaporIsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeknikRapor_AspNetUsers">
+          <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="PortalModel.TeknikRapor" Role="TeknikRapor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TeknikRapor">
+              <PropertyRef Name="RefTeknikRaporUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4753,6 +4847,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySetMapping Name="Temas">
             <EntityTypeMapping TypeName="PortalModel.Tema">
               <MappingFragment StoreEntitySet="Tema">
+                <ScalarProperty Name="ResimYolu" ColumnName="ResimYolu" />
                 <ScalarProperty Name="temaDomainKategoriID" ColumnName="temaDomainKategoriID" />
                 <ScalarProperty Name="temaFirmaAdi" ColumnName="temaFirmaAdi" />
                 <ScalarProperty Name="temaDemoAdi" ColumnName="temaDemoAdi" />
@@ -4899,6 +4994,18 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
                 <ScalarProperty Name="KulId" ColumnName="KulId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeknikRapors">
+            <EntityTypeMapping TypeName="PortalModel.TeknikRapor">
+              <MappingFragment StoreEntitySet="TeknikRapor">
+                <ScalarProperty Name="RefTeknikRaporUserID" ColumnName="RefTeknikRaporUserID" />
+                <ScalarProperty Name="TeknikRaporTarih" ColumnName="TeknikRaporTarih" />
+                <ScalarProperty Name="TeknikRaporZaman" ColumnName="TeknikRaporZaman" />
+                <ScalarProperty Name="TeknikRaporDurum" ColumnName="TeknikRaporDurum" />
+                <ScalarProperty Name="RefTeknikRaporIsID" ColumnName="RefTeknikRaporIsID" />
+                <ScalarProperty Name="TeknikRaporID" ColumnName="TeknikRaporID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

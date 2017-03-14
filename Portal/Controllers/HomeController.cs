@@ -10,6 +10,7 @@ namespace Portal.Controllers
 {
     public class HomeController : BaseController
     {
+
         public ActionResult Index()
         {
             string sql = @"select d.*

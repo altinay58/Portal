@@ -12,15 +12,16 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Tema
+    public partial class TeknikRapor
     {
-        public int temaID { get; set; }
-        public string temaAdresi { get; set; }
-        public string temaDemoAdi { get; set; }
-        public string temaFirmaAdi { get; set; }
-        public Nullable<int> temaDomainKategoriID { get; set; }
-        public string ResimYolu { get; set; }
+        public int TeknikRaporID { get; set; }
+        public int RefTeknikRaporIsID { get; set; }
+        public int TeknikRaporDurum { get; set; }
+        public long TeknikRaporZaman { get; set; }
+        public System.DateTime TeknikRaporTarih { get; set; }
+        public string RefTeknikRaporUserID { get; set; }
     
-        public virtual DomainKategori DomainKategori { get; set; }
+        public virtual isler isler { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }
