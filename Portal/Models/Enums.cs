@@ -11,8 +11,11 @@ namespace Portal.Models
     }
     public enum IsinDurumu:byte
     {
-        Yapilacak=1,YapilacakDeadline,Yapiliyor,
-        KontrolBekleyen,Biten
+        Yapilacak = 1,
+        YapilacakDeadline,
+        Yapiliyor,
+        KontrolBekleyen,
+        Biten
     }
     public enum DomainAksiyon : byte
     {

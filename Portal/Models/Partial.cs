@@ -58,6 +58,21 @@ namespace Portal.Models
             }
         }
 
+        public static string IsinAdi(int isID)
+        {
+            string Isim = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                if (dbc.islers.FirstOrDefault(a=>a.islerID == isID) == null)
+                {
+                    return "Kullanıcı Yok.";
+                }
+                Isim = dbc.islers.FirstOrDefault(a => a.islerID == isID).islerAdi.ToString();
+            }
+            return Isim;
+        }
+
+
         public static string KisiAdiGetir(string KisiID)
         {
             string Isim = string.Empty;

@@ -21,6 +21,7 @@ namespace Portal.Models
             this.isYorums = new HashSet<isYorum>();
             this.YorumDurums = new HashSet<YorumDurum>();
             this.ZamanIs = new HashSet<ZamanI>();
+            this.TeknikRapors = new HashSet<TeknikRapor>();
         }
     
         public int islerID { get; set; }
@@ -62,5 +63,7 @@ namespace Portal.Models
         public virtual ICollection<YorumDurum> YorumDurums { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ZamanI> ZamanIs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TeknikRapor> TeknikRapors { get; set; }
     }
 }
