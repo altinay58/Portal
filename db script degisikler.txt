@@ -393,6 +393,40 @@ GO
 ----
 --resim yolu eklendi
 ALTER TABLE [dbo].[Tema] ADD ResimYolu nvarchar (400) NULL
+---
+
+/****** Object:  View [dbo].[IslerListesi]    Script Date: 14.03.2017 23:54:34 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+ALTER VIEW [dbo].[IslerListesi]
+AS
+
+select i.islerID as Id,i.islerAdi as IsAdi,f.FirmaAdi as Firma,d.DomainAdi as Domain,
+(SELECT   TOP 1 a.Isim+' '+a.SoyIsim FROM      dbo.AspNetUsers AS a WHERE i.islerisiVerenKisi=a.Id ) AS IsiVerenKisi
+,dbo.IsiYapanKullaniciAdSoyad(i.islerID) as IsiYapacakKisi,
+(case i.islerIsinDurumu  when 1 then 'Yapilacak'
+                         when 2 then 'YapilacakDeadline'
+						 when 3 then 'Yapiliyor'
+						 when 4 then 'KontrolBekleyen'
+						 when 5 then 'Biten'
+						 end
+) as IsinDurumu,i.islerTarih Tarih,i.islerRefDomainID as DomainId
+from isler i inner join firma f on (i.islerRefFirmaID=f.FirmaID)
+     inner join Domain d on (i.islerRefDomainID=d.DomainID)
+
+
+
+
+GO
+
+
+
 
 
 

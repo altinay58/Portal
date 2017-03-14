@@ -366,7 +366,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 (!string.IsNullOrEmpty(isAtanacakKullanici.AyarDeger) && !(string.IsNullOrEmpty(isKontrolEdenKullanici.AyarDeger)) ))
             {
                 var listStandardIsler = Db.StandartProjeIsleris.Where(x=>string.IsNullOrEmpty(x.StandartProjeIsleriIdAnahtarIsmi)).ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
-                var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
+                var dinamiStandartIsler = Db.StandartProjeIsleris.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null).OrderBy(x=>x.StandartProjeIsleriSirasi).ToList();
                 var isHtml = string.Format("<p>Firma Adı:{0}</p>",icerik.FirmaAdi);
                 isHtml += string.Format("<p>Domain Adı:{0}</p>", icerik.DomainAdi);
                 isHtml += string.Format("<p>Telefon 1:{0}</p>", icerik.Telefon1);
@@ -382,7 +382,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                     string anahtar = dinamikIs.StandartProjeIsleriIdAnahtarIsmi + "Alindi";
                     if (frm[anahtar].Contains("true"))
                     {
-                        isHtml += string.Format("<p>{0} Alındı:{1}</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi,frm[anahtar]);
+                        isHtml += string.Format("<p>{0} Alındı:{1}</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi,frm[dinamikIs.StandartProjeIsleriIdAnahtarIsmi]);
                     }else
                     {
                         isHtml += string.Format("<p>{0} Alınmadı</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi);
