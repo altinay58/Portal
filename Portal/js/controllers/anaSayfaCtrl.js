@@ -97,6 +97,8 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         //}
         if (q) {
             document.location.href = q;
+        } else {
+            document.location.href = "#";
         }
        
         let yeniSayfa = nw[0];
