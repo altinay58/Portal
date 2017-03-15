@@ -24,7 +24,7 @@
 
                 <label class="control-label col-md-2">Domain</label>
                 <div class="col-md-4">
-                    <select name="islerRefDomainID" id="islerRefDomainID" class="form-control select2">
+                    <select name="islerRefDomainID" id="islerRefDomainID" class="form-control select2" >
                         @if (ViewBag.domainler != null)
                         {
                             foreach (Domain item in ViewBag.domainler)
@@ -333,6 +333,36 @@
                 tabDisabled: true
             });
 
+            $('#islerRefDomainID').select2({
+                minimumInputLength: 2,
+                ajax: {
+                    url: "/Isler/DomainArama",
+                    dataType: 'json',
+                    data: function (term, page) {
+                      // console.log(term);
+                        return {
+                            term: term.term
+                        };
+                    },
+                    processResults: function (data) {
+                        console.log(data);
+                        // parse the results into the format expected by Select2.
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data
+                        return {
+                            results: data
+                        };
+                    }
+                }
+
+            });
+
+            //$('#islerRefDomainID').on('select2:select', function (evt) {
+            //    console.log(evt);
+            //    $("#islerRefFirmaID").val(evt.params.data.firmaid);
+            //    $("#Firma_FirmaAdi").val(evt.params.data.firmaadi);
+            //});
+
            
 
             $('#domainAdi').change(function () {
@@ -360,7 +390,9 @@
                             .attr("value", item.value)
                             .text(item.label));
                 });
+                $('#islerRefDomainID').select2();
             });
+            
         }
       
         function addRule() {
@@ -401,7 +433,7 @@
                 rules: {
                     "Firma.FirmaAdi": {
                         minlength: 2,
-                        required: true
+                        required: false
                     },
                     islerRefDomainID: {
                         zorunluAlan: true

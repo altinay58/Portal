@@ -348,6 +348,24 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             return Json(list!=null ? list.DomainNotNot: "", JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        public ActionResult DomainArama(string term)
+        {
+            var domainler = new List<object>();
+
+            IEnumerable<Domain> veriler = from sonuclar in Db.Domains
+                                                                    where  sonuclar.DomainAdi.Contains(term.ToLower())
+                                                                    select sonuclar;
+
+            foreach (Domain domainn in veriler)
+            {
+                domainler.Add(new { id = domainn.DomainID.ToString(), text = domainn.DomainAdi, firmaadi = domainn.Firma.FirmaAdi , firmaid = domainn.Firma.FirmaID  });
+            }
+
+            return this.Json(domainler, JsonRequestBehavior.AllowGet);
+        }
+
+
         #region içerik formu
         public ActionResult IcerikFormu()
         {
@@ -596,7 +614,14 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 Db.islers.Add(entity);
                
             }
-            entity.islerRefFirmaID = model.islerRefFirmaID;
+            if(model.islerRefFirmaID == null)
+            {
+                entity.islerRefFirmaID = Db.Domains.FirstOrDefault(a=>a.DomainID == model.islerRefDomainID).RefDomainFirmaID;
+            }
+            else
+            {
+                entity.islerRefFirmaID = model.islerRefFirmaID;
+            }
             entity.islerRefDomainID = model.islerRefDomainID;
             entity.islerAdi =Fonksiyonlar.KarakterDuzenle(model.islerAdi);
             entity.islerAciklama =Fonksiyonlar.KarakterDuzenle(model.islerAciklama);
