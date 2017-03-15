@@ -432,6 +432,45 @@ update isler set islerIsinDurumu=4 where islerinisinOnayDurumu=0 and islerisinTa
 
 
 update isler set islerIsinDurumu=5 where islerinisinOnayDurumu=1 and islerisinTamamlanmaDurumu=1  -- biten
+---
+
+/****** Object:  Table [dbo].[TeknikRapor]    Script Date: 15.3.2017 17:47:57 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TeknikRapor](
+	[TeknikRaporID] [int] IDENTITY(1,1) NOT NULL,
+	[RefTeknikRaporIsID] [int] NOT NULL,
+	[TeknikRaporDurum] [int] NOT NULL,
+	[TeknikRaporZaman] [bigint] NOT NULL,
+	[TeknikRaporTarih] [date] NOT NULL,
+	[RefTeknikRaporUserID] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_TeknikRapor] PRIMARY KEY CLUSTERED 
+(
+	[TeknikRaporID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[TeknikRapor]  WITH CHECK ADD  CONSTRAINT [FK_TeknikRapor_AspNetUsers] FOREIGN KEY([RefTeknikRaporUserID])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+
+ALTER TABLE [dbo].[TeknikRapor] CHECK CONSTRAINT [FK_TeknikRapor_AspNetUsers]
+GO
+
+ALTER TABLE [dbo].[TeknikRapor]  WITH CHECK ADD  CONSTRAINT [FK_TeknikRapor_isler] FOREIGN KEY([RefTeknikRaporIsID])
+REFERENCES [dbo].[isler] ([islerID])
+GO
+
+ALTER TABLE [dbo].[TeknikRapor] CHECK CONSTRAINT [FK_TeknikRapor_isler]
+GO
+
+
 
 
 

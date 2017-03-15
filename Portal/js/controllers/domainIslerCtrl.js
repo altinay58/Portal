@@ -69,23 +69,27 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
                 $.connection.hub.start();
             }, 5000); // Restart connection after 5 seconds.
         });
-        signalDomain.client.yorumEklendi = function (index, jsnYorum, fromId, toId) {
+        signalDomain.client.yorumEklendi = function (isId, jsnYorum, fromId, toId) {
             if (self.guncelKullanici.Id !== fromId) {
-                let yeniYorum = JSON.parse(jsnYorum);
-                self.domainIsler[index].Yorumlar.push(yeniYorum);
-                if (toId.indexOf( self.guncelKullanici.Id)>-1) {
-                    portalApp.mesajGoster("#" + self.domainIsler[index].IsId + " ticket yeni yorum eklendi");
-                    self.domainIsler[index].yorumEklendi = true;
+                let index = self.domainIsler.findIndex(f=> { return f.IsId === isId });
+                if (index > -1) {
+                    let yeniYorum = JSON.parse(jsnYorum);
+                    self.domainIsler[index].Yorumlar.push(yeniYorum);
+                    if (toId.indexOf(self.guncelKullanici.Id) > -1) {
+                        portalApp.mesajGoster("#" + self.domainIsler[index].IsId + " ticket yeni yorum eklendi");
+                        self.domainIsler[index].yorumEklendi = true;
+                    }
+
+                    self.$apply();
+                    $timeout(function () {
+                        self.domainIsler[index].yorumEklendi = false;
+                    }, 2100);
+                    //self.$apply(() => {
+
+
+                    //});
                 }
-
-                self.$apply();
-                $timeout(function () {
-                    self.domainIsler[index].yorumEklendi = false;
-                }, 2100);
-                //self.$apply(() => {
-
-
-                //});
+               
             }
 
         };
@@ -94,7 +98,10 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
             if (self.guncelKullanici.Id !== fromId) {
                 let di = JSON.parse(jsnDomainIs);
                 let index = self.domainIsler.findIndex(f=> { return f.IsId === di.IsId });
-                self.domainIsler[index] = di;
+
+                self.domainIsler[index].IsDurum = di.IsDurum;
+                self.domainIsler[index].iBtnClass = di.iBtnClass;
+                self.domainIsler[index].IsGecenZaman = di.IsGecenZaman;
                 portalApp.mesajGoster("#"+di.IsId+ " ticket durumu değişti");
                 zamanAyarla(self.domainIsler[index]);
                 self.$apply();
@@ -345,7 +352,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
                 domainIs.IsiYapacakKullanicilar.forEach(x=> {
                     toIds = toIds+","+String(x.Id);
                 });
-                signalDomain.server.gonderYorumEklendi(index,JSON.stringify(yeniYorum), self.guncelKullanici.Id,
+                signalDomain.server.gonderYorumEklendi(domainIs.IsId,JSON.stringify(yeniYorum), self.guncelKullanici.Id,
                     toIds);
             });
 
@@ -383,16 +390,19 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
     }
 
     function durumDegistir(domainIs, yeniDurum, iBtnClass) {
-        domainIslerService.IsDurumuDegistir(domainIs, yeniDurum)
+        let strObj = JSON.stringify(domainIs);
+        let objNew = JSON.parse(strObj);
+        delete objNew.Yorumlar;
+        domainIslerService.IsDurumuDegistir(objNew, yeniDurum)
        .then(function (res) {
            if (res.Basarilimi) {
-               domainIs.IsDurum = yeniDurum;
-               domainIs.iBtnClass = iBtnClass;
-               domainIs.IsGecenZaman = res.Data.IsGecenZaman;
+               objNew.IsDurum = domainIs.IsDurum = yeniDurum;
+               objNew.iBtnClass = domainIs.iBtnClass = iBtnClass;
+               objNew.IsGecenZaman = domainIs.IsGecenZaman = res.Data.IsGecenZaman;
                self.timelineBodyClassBelirleDurumaGore(domainIs.IsDurum);
                self.timelineArrowClassBelirleDurumaGore(domainIs.IsDurum)
                zamanAyarla(domainIs);
-               signalDomain.server.gonderDurumDegisti(JSON.stringify(domainIs),self.guncelKullanici.Id);
+               signalDomain.server.gonderDurumDegisti(JSON.stringify(objNew),self.guncelKullanici.Id);
                //angular.copy(res.Data, domainIs);
                //self.$apply();
            }

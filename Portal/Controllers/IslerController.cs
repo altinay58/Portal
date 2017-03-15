@@ -200,8 +200,9 @@ namespace Portal.Controllers
                 jsn.Data = obj;
                 Db.SaveChanges();
             }
-            catch
+            catch(Exception exc)
             {
+                jsn.Data = exc.Message;
                 jsn.Basarilimi = false;
             }
           
