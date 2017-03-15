@@ -645,6 +645,9 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
         #region list işler
         public ActionResult ListIsler()
         {
+            string userId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+            ViewBag.guncelKullanici = Db.AspNetUsers.Where(x => x.Id == userId).
+                                    Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
             return View();
         }
         public JsonResult ListIsAra(int page,string basTarih, string bitisTarih, string isAdi)

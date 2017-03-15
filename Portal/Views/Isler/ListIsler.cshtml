@@ -1,11 +1,13 @@
-﻿
+﻿@using Newtonsoft.Json;
+@using Portal.Models.IslerModels;
 @using Portal.Models;
 @{
     ViewBag.Title = "Home Page";
-    var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
+    var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
+    .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
 }
 
-<div ng-controller="anaSayfaCtrl" ng-init="init()">
+<div ng-controller="anaSayfaCtrl" ng-init="init('@JsonConvert.SerializeObject(kullanicilar)','@ViewBag.guncelKullanici.Id')">
     <form class="form-inline" role="form">
         <div class="form-group">
             <div class="input-group">
@@ -58,31 +60,19 @@
                     <td> <input type="text" ng-model="firma" ng-keyup="getirData(firma)" placeholder="firma" autocomplete="off" class="form-control" /> </td>
                     <td> <input type="text" ng-model="domain" ng-keyup="getirData(domain)" placeholder="domain" autocomplete="off" class="form-control" /></td>
                     <td>
-                        @if (HttpContext.Current.User.IsInRole("Muhasebe"))
-                        {
-                            <select ng-model="seciliKontrolEden" class="form-control">
-                                <option value="">Hepsi</option>
-                                @foreach (var item in kullanicilar)
-                                {
-                                    string adSoyad = item.Isim + " " + item.SoyIsim;
-                                    <option value="@adSoyad">@adSoyad</option>
-                                }
-                            </select>
-                        }
+                        <select ng-model="seciliKontrolEden" class="form-control">
+                            <option value="">Hepsi</option>
+
+                            <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
+
+                        </select>
 
                     </td>
                     <td>
-                        @if (HttpContext.Current.User.IsInRole("Muhasebe"))
-                        {
-                            <select ng-model="seciliYapacakKisi" class="form-control">
-                                <option value="">Hepsi</option>
-                                @foreach (var item in kullanicilar)
-                                {
-                                    string adSoyad = item.Isim + " " + item.SoyIsim;
-                                    <option value="@adSoyad">@adSoyad</option>
-                                }
-                            </select>
-                        }
+                        <select ng-model="seciliYapacakKisi" class="form-control">
+                            <option value="">Hepsi</option>
+                            <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
+                        </select>
                     </td>
                     <td>
                         <select class="form-control" ng-model="seciliIsDurum">
