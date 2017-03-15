@@ -72,6 +72,34 @@ namespace Portal.Models
             return Isim;
         }
 
+        public static string DomainAdiGetirIsId(int isID)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                isler isimiz = dbc.islers.FirstOrDefault(a => a.islerID == isID);
+                if (isimiz == null)
+                {
+                    return "İş Bulunamadı. Hata : D001";
+                }
+                return Partial.DomainAdi(isimiz.islerRefDomainID??0);
+            }
+        }
+
+        public static int DomainIdGetirIsId(int isID)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                isler isimiz = dbc.islers.FirstOrDefault(a => a.islerID == isID);
+                if (isimiz == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return isimiz.islerRefDomainID ?? 0;
+                }
+            }
+        }
 
         public static string KisiAdiGetir(string KisiID)
         {
