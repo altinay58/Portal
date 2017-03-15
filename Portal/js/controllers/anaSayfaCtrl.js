@@ -17,8 +17,10 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         self.getirData();
         ss = self;
     });
-    self.init = function () {
+    self.init = function (kullanicilar, guncelKullaniciId) {
         //aryanListService.getListData(self.basTarih, self.bitisTarih);
+        self.kullanicilar = JSON.parse(kullanicilar);
+        self.guncelKullanici = self.kullanicilar.find(x=> { return x.Id === guncelKullaniciId }).AdSoyad;
         self.basTarih = qs("basTarih");
         self.bitisTarih = qs("bitisTarih");
         self.page = qs("page"); //=== null ? 1 : parseInt(qs("page"));
@@ -26,7 +28,7 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         self.firma = qs("firma");
         self.domain = qs("domain");
         self.seciliKontrolEden = qs("seciliKontrolEden");
-        self.seciliYapacakKisi = qs("seciliYapacakKisi");
+        self.seciliYapacakKisi = qs("seciliYapacakKisi") == null ? self.guncelKullanici : qs("seciliYapacakKisi");
         self.seciliIsDurum = qs("seciliIsDurum");
     };
     self.getirData = function (model) {

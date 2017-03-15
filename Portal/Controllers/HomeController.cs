@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Portal.Models;
 using Microsoft.AspNet.Identity;
+using Portal.Models.IslerModels;
 
 namespace Portal.Controllers
 {
@@ -13,7 +14,9 @@ namespace Portal.Controllers
 
         public ActionResult Index()
         {
-
+            string userId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+            ViewBag.guncelKullanici = Db.AspNetUsers.Where(x => x.Id == userId).
+                                    Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
             return View();
         }
         public JsonResult ListIsAra(int? page, string basTarih, string bitisTarih, string isAdi,
@@ -29,16 +32,18 @@ namespace Portal.Controllers
                  && (!string.IsNullOrEmpty(domain) ? x.Domain.Contains(domain) : true)
                   && (!string.IsNullOrEmpty(isinDurumu) ? x.IsinDurumu.Contains(isinDurumu) : true)
                  );
-            if (!User.IsInRole("Muhasebe"))
-            {
-                string adSoyad = guncelKullanici.Isim + " " + guncelKullanici.SoyIsim;
-                query = query.Where(x => x.IsiVerenKisi.Contains(adSoyad) || x.IsiYapacakKisi.Contains(adSoyad));              
-            }
-            else
-            {
-                query = query.Where(x => (!string.IsNullOrEmpty(isiKontrolEden) ? x.IsiVerenKisi.Contains(isiKontrolEden) : true)
-                 && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true));
-            }
+            //if (!User.IsInRole("Muhasebe"))
+            //{
+            //    string adSoyad = guncelKullanici.Isim + " " + guncelKullanici.SoyIsim;
+            //    query = query.Where(x => x.IsiVerenKisi.Contains(adSoyad) || x.IsiYapacakKisi.Contains(adSoyad));              
+            //}
+            //else
+            //{
+            //    query = query.Where(x => (!string.IsNullOrEmpty(isiKontrolEden) ? x.IsiVerenKisi.Contains(isiKontrolEden) : true)
+            //     && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true));
+            //}
+            query = query.Where(x => (!string.IsNullOrEmpty(isiKontrolEden) ? x.IsiVerenKisi.Contains(isiKontrolEden) : true)
+               && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true));
             if (!string.IsNullOrEmpty(basTarih) && !string.IsNullOrEmpty(bitisTarih))
             {
                 DateTime tBas = DateTime.Parse(basTarih);
