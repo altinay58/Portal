@@ -334,8 +334,8 @@ GO
 ---------------------------------------------------------------------
 --09.03.2017
 -- içerik formu için
- insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsAtanacakKullanici','4f22211e-614c-4eca-baf3-9fc6e195574d')
- insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsKontrolEdenKullanici','d8c319cd-1e3b-40a7-b6fb-fb2861dcf720')
+ insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsAtanacakKullanici','d8c319cd-1e3b-40a7-b6fb-fb2861dcf720')
+ insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsKontrolEdenKullanici','2f8e03fe-8234-431f-8c71-f1a16a301af8')
 --------------------------------------------------------------------------------------
 --10.03.2017
 --todo list
@@ -424,6 +424,15 @@ from isler i inner join firma f on (i.islerRefFirmaID=f.FirmaID)
 
 
 GO
+
+----eski iskarayel den yeni portal iş durumlarını akatarma
+--15.03.2017
+
+update isler set islerIsinDurumu=4 where islerinisinOnayDurumu=0 and islerisinTamamlanmaDurumu=1  --onay bekleyen
+
+
+update isler set islerIsinDurumu=5 where islerinisinOnayDurumu=1 and islerisinTamamlanmaDurumu=1  -- biten
+
 
 
 

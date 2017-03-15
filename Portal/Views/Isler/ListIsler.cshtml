@@ -48,7 +48,7 @@
                     <th> İşi Yapacak Kişi(ler) </th>
                     <th> İşin Durumu </th>
                     <th> Tarih </th>
-
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -91,7 +91,7 @@
                         </select>
                     </td>
                     <td></td>
-
+                    <td></td>
                 </tr>
 
                 <tr ng-repeat="x in isler" style="background-color:{{isRenkler[x.IsinDurumu].color}}">
@@ -103,7 +103,7 @@
                     <td> {{x.IsiYapacakKisi}} </td>
                     <td> {{x.IsinDurumu}} </td>
                     <td> {{tarihFormat(x.Tarih)}} </td>
-
+                    <td><a href="/Isler/IsEkleDuzenle/{{x.Id}}">Düzenle</a></td>
                 </tr>
 
 
