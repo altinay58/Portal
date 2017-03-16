@@ -46,6 +46,14 @@ namespace Portal.Models
         //#endregion Domain Sorguları
 
 
+            public static string Ayar(string adi)
+        {
+            using (var db = new PortalEntities())
+            {
+                return db.Ayars.FirstOrDefault(a => a.AyarAdi == adi).AyarDeger;
+            }
+        }
+
         public static IEnumerable<Domain> GetirUzatmasiGelenler()
         {
             using (var dbc = new PortalEntities())
