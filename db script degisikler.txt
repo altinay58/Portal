@@ -334,8 +334,8 @@ GO
 ---------------------------------------------------------------------
 --09.03.2017
 -- içerik formu için
- insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsAtanacakKullanici','4f22211e-614c-4eca-baf3-9fc6e195574d')
- insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsKontrolEdenKullanici','d8c319cd-1e3b-40a7-b6fb-fb2861dcf720')
+ insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsAtanacakKullanici','d8c319cd-1e3b-40a7-b6fb-fb2861dcf720')
+ insert into Ayar(AyarAdi,AyarDeger)values('IcerikFormuIsKontrolEdenKullanici','2f8e03fe-8234-431f-8c71-f1a16a301af8')
 --------------------------------------------------------------------------------------
 --10.03.2017
 --todo list
@@ -393,6 +393,88 @@ GO
 ----
 --resim yolu eklendi
 ALTER TABLE [dbo].[Tema] ADD ResimYolu nvarchar (400) NULL
+---
+
+/****** Object:  View [dbo].[IslerListesi]    Script Date: 14.03.2017 23:54:34 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+ALTER VIEW [dbo].[IslerListesi]
+AS
+
+select i.islerID as Id,i.islerAdi as IsAdi,f.FirmaAdi as Firma,d.DomainAdi as Domain,
+(SELECT   TOP 1 a.Isim+' '+a.SoyIsim FROM      dbo.AspNetUsers AS a WHERE i.islerisiVerenKisi=a.Id ) AS IsiVerenKisi
+,dbo.IsiYapanKullaniciAdSoyad(i.islerID) as IsiYapacakKisi,
+(case i.islerIsinDurumu  when 1 then 'Yapilacak'
+                         when 2 then 'YapilacakDeadline'
+						 when 3 then 'Yapiliyor'
+						 when 4 then 'KontrolBekleyen'
+						 when 5 then 'Biten'
+						 end
+) as IsinDurumu,i.islerTarih Tarih,i.islerRefDomainID as DomainId
+from isler i inner join firma f on (i.islerRefFirmaID=f.FirmaID)
+     inner join Domain d on (i.islerRefDomainID=d.DomainID)
+
+
+
+
+GO
+
+----eski iskarayel den yeni portal iş durumlarını akatarma
+--15.03.2017
+
+update isler set islerIsinDurumu=4 where islerinisinOnayDurumu=0 and islerisinTamamlanmaDurumu=1  --onay bekleyen
+
+
+update isler set islerIsinDurumu=5 where islerinisinOnayDurumu=1 and islerisinTamamlanmaDurumu=1  -- biten
+---
+
+/****** Object:  Table [dbo].[TeknikRapor]    Script Date: 15.3.2017 17:47:57 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TeknikRapor](
+	[TeknikRaporID] [int] IDENTITY(1,1) NOT NULL,
+	[RefTeknikRaporIsID] [int] NOT NULL,
+	[TeknikRaporDurum] [int] NOT NULL,
+	[TeknikRaporZaman] [bigint] NOT NULL,
+	[TeknikRaporTarih] [date] NOT NULL,
+	[RefTeknikRaporUserID] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_TeknikRapor] PRIMARY KEY CLUSTERED 
+(
+	[TeknikRaporID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[TeknikRapor]  WITH CHECK ADD  CONSTRAINT [FK_TeknikRapor_AspNetUsers] FOREIGN KEY([RefTeknikRaporUserID])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+
+ALTER TABLE [dbo].[TeknikRapor] CHECK CONSTRAINT [FK_TeknikRapor_AspNetUsers]
+GO
+
+ALTER TABLE [dbo].[TeknikRapor]  WITH CHECK ADD  CONSTRAINT [FK_TeknikRapor_isler] FOREIGN KEY([RefTeknikRaporIsID])
+REFERENCES [dbo].[isler] ([islerID])
+GO
+
+ALTER TABLE [dbo].[TeknikRapor] CHECK CONSTRAINT [FK_TeknikRapor_isler]
+GO
+
+
+
+
+
+
 
 
 

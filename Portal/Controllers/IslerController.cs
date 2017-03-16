@@ -200,8 +200,9 @@ namespace Portal.Controllers
                 jsn.Data = obj;
                 Db.SaveChanges();
             }
-            catch
+            catch(Exception exc)
             {
+                jsn.Data = exc.Message;
                 jsn.Basarilimi = false;
             }
           
@@ -384,7 +385,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 (!string.IsNullOrEmpty(isAtanacakKullanici.AyarDeger) && !(string.IsNullOrEmpty(isKontrolEdenKullanici.AyarDeger)) ))
             {
                 var listStandardIsler = Db.StandartProjeIsleris.Where(x=>string.IsNullOrEmpty(x.StandartProjeIsleriIdAnahtarIsmi)).ToList().OrderBy(x => x.StandartProjeIsleriSirasi);
-                var dinamiStandartIsler = listStandardIsler.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null);
+                var dinamiStandartIsler = Db.StandartProjeIsleris.Where(x => x.StandartProjeIsleriIdAnahtarIsmi != null).OrderBy(x=>x.StandartProjeIsleriSirasi).ToList();
                 var isHtml = string.Format("<p>Firma Adı:{0}</p>",icerik.FirmaAdi);
                 isHtml += string.Format("<p>Domain Adı:{0}</p>", icerik.DomainAdi);
                 isHtml += string.Format("<p>Telefon 1:{0}</p>", icerik.Telefon1);
@@ -400,7 +401,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                     string anahtar = dinamikIs.StandartProjeIsleriIdAnahtarIsmi + "Alindi";
                     if (frm[anahtar].Contains("true"))
                     {
-                        isHtml += string.Format("<p>{0} Alındı:{1}</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi,frm[anahtar]);
+                        isHtml += string.Format("<p>{0} Alındı:{1}</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi,frm[dinamikIs.StandartProjeIsleriIdAnahtarIsmi]);
                     }else
                     {
                         isHtml += string.Format("<p>{0} Alınmadı</p>", dinamikIs.StandartProjeIsleriIdAnahtarIsmi);
@@ -670,6 +671,9 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
         #region list işler
         public ActionResult ListIsler()
         {
+            string userId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+            ViewBag.guncelKullanici = Db.AspNetUsers.Where(x => x.Id == userId).
+                                    Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
             return View();
         }
         public JsonResult ListIsAra(int page,string basTarih, string bitisTarih, string isAdi)

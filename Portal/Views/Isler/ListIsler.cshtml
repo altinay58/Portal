@@ -1,9 +1,14 @@
-﻿
+﻿@using Newtonsoft.Json;
+@using Portal.Models.IslerModels;
+@using Portal.Models;
 @{
-    ViewBag.Title = "ListIsler";
+    ViewBag.Title = "İşler";
+    var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
+     .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
+
 }
 
-<div ng-controller="listIslerCtrl" ng-init="init()">
+<div ng-controller="anaSayfaCtrl" ng-init="init('@JsonConvert.SerializeObject(kullanicilar)','@ViewBag.guncelKullanici.Id')">
     <form class="form-inline" role="form">
         <div class="form-group">
             <div class="input-group">
@@ -42,37 +47,56 @@
                     <th> İş Adı </th>
                     <th> Firma</th>
                     <th> Domain </th>
-                    <th> İşi Veren Kişi</th>
+                    <th> İşi Kontrol Eden</th>
                     <th> İşi Yapacak Kişi(ler) </th>
-                    <th> İşin Durumu </th>                   
-                    <th> Tarih </th>                 
+                    <th> İşin Durumu </th>
+                    <th> Tarih </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td> </td>
+                    <td> <input type="text" name="isAdi" ng-model="isId" ng-keyup="getirData(isId)" placeholder="İş Id" autocomplete="off" class="form-control" /></td>
                     <td> <input type="text" name="isAdi" ng-model="isAdi" ng-keyup="getirData(isAdi)" placeholder="İş Adı" autocomplete="off" class="form-control" /></td>
-                    <td>  </td>
-                    <td>  </td>
-                    <td> &nbsp; </td>
-                    <td>  </td>
-                    <td> </td>
-                    <td> &nbsp; </td>
-                    <td>  </td>
+                    <td> <input type="text" ng-model="firma" ng-keyup="getirData(firma)" placeholder="firma" autocomplete="off" class="form-control" /> </td>
+                    <td> <input type="text" ng-model="domain" ng-keyup="getirData(domain)" placeholder="domain" autocomplete="off" class="form-control" /></td>
+                    <td>
+
+                        <select ng-model="seciliKontrolEden" class="form-control">
+                            <option value="">Hepsi</option>
+
+                            <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
+                        </select>
+
+                    </td>
+                    <td>
+
+                        <select ng-model="seciliYapacakKisi" class="form-control">
+                            <option value="">Hepsi</option>
+                            <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
+                        </select>
+
+                    </td>
+                    <td>
+                        <select class="form-control" ng-model="seciliIsDurum">
+                            <option value="">Hepsi</option>
+                            <option ng-repeat="k in isinDurumlari" value="{{k}}">{{k}}</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td></td>
                 </tr>
 
-                <tr ng-repeat="x in isler">
-                    <td>{{x.Id}} </td>
-                    <td> {{x.IsAdi}} </td>
-                    <td> {{x.Firma}} </td>
-                    <td> {{x.Domain}} </td>
+                <tr ng-repeat="x in isler" style="background-color:{{isRenkler[x.IsinDurumu].color}}">
+                    <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Id}}</a></td>
+                    <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.IsAdi}}</a></td>
+                    <td> <a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Firma}}</a> </td>
+                    <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Domain}}</a>   </td>
                     <td> {{x.IsiVerenKisi}} </td>
                     <td> {{x.IsiYapacakKisi}} </td>
                     <td> {{x.IsinDurumu}} </td>
-                    <td> {{tarihFormat(x.Tarih)}} </td>                 
-                  
-                    <td> <span><a href="/Isler/IsEkleDuzenle/{{x.Id}}">Düzenle</a></span> </td>
+                    <td> {{tarihFormat(x.Tarih)}} </td>
+                    <td><a href="/Isler/IsEkleDuzenle/{{x.Id}}">Düzenle</a></td>
                 </tr>
 
 
@@ -81,8 +105,12 @@
             </tbody>
         </table>
     </div>
-    <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
-        boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="page" ng-change="pageChanged()"></ul>
+    <div style="text-align:center">
+        <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+            boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="page" ng-change="pageChanged()"></ul>
+
+    </div>
+
 </div>
 @section css{
 
@@ -107,6 +135,10 @@
             color: #32c5d2 !important;
             font-weight: 600 !important;
         }
+
+        .flip-content a {
+            color: #3b4748 !important;
+        }
     </style>
 }
 @section scripts{
@@ -114,9 +146,9 @@
     <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 
 
-    <script src="/js/services/listIslerService.js?v=2"></script>
-    <script src="/js/controllers/listIslerCtrl.js?v=2"></script>
-<script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    <script src="/js/services/anaSayfaService.js?v=5"></script>
+    <script src="/js/controllers/anaSayfaCtrl.js?v=16"></script>
+
     <script>
     function printPage() {
         window.print();
@@ -146,3 +178,5 @@
 
     </script>
 }
+
+

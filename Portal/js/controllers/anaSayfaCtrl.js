@@ -11,14 +11,16 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         "Yapiliyor": { color: "#26c281" }, "KontrolBekleyen": { color: "#c49f47" },
         "Biten": { color: "darkgrey" }
     };
-    let models = ["page", "basTarih", "bitisTarih", "isAdi", "domain", "firma", "seciliKontrolEden", "seciliYapacakKisi", "seciliIsDurum"];
+    let models = ["page", "basTarih", "bitisTarih", "isAdi", "domain", "firma", "seciliKontrolEden", "seciliYapacakKisi", "seciliIsDurum","isId"];
     let loaded = false;
     angular.element(document).ready(function () {
         self.getirData();
         ss = self;
     });
-    self.init = function () {
+    self.init = function (kullanicilar, guncelKullaniciId) {
         //aryanListService.getListData(self.basTarih, self.bitisTarih);
+        self.kullanicilar = JSON.parse(kullanicilar);
+        self.guncelKullanici = self.kullanicilar.find(x=> { return x.Id === guncelKullaniciId }).AdSoyad;
         self.basTarih = qs("basTarih");
         self.bitisTarih = qs("bitisTarih");
         self.page = qs("page"); //=== null ? 1 : parseInt(qs("page"));
@@ -26,14 +28,15 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         self.firma = qs("firma");
         self.domain = qs("domain");
         self.seciliKontrolEden = qs("seciliKontrolEden");
-        self.seciliYapacakKisi = qs("seciliYapacakKisi");
+        self.seciliYapacakKisi = qs("seciliYapacakKisi") == null ? self.guncelKullanici : qs("seciliYapacakKisi");
         self.seciliIsDurum = qs("seciliIsDurum");
+        self.isId = qs("isId");
     };
     self.getirData = function (model) {
         self.yukleniyor = true;
         if ((model === undefined || model === "") || model.length >= 3) {
             anaSayfaService.getListData(qs("basTarih"), qs("bitisTarih"), qs("isAdi"), qs("page"), qs("firma"), qs("domain"),
-                qs("seciliKontrolEden"), qs("seciliYapacakKisi"), qs("seciliIsDurum"))
+                qs("seciliKontrolEden"), qs("seciliYapacakKisi"), qs("seciliIsDurum"),qs("isId"))
              .then(function (res) {
               self.isler = res.Data;
               self.yukleniyor = false;
@@ -67,7 +70,7 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     function qs(name) {
         return portalApp.getParameterByName(name);
     }
-    self.$watchCollection('[page,basTarih,bitisTarih,isAdi,domain,firma,seciliKontrolEden,seciliYapacakKisi,seciliIsDurum]', function (nw, ov) {
+    self.$watchCollection('[page,basTarih,bitisTarih,isAdi,domain,firma,seciliKontrolEden,seciliYapacakKisi,seciliIsDurum,isId]', function (nw, ov) {
         console.log(nw[0] + "-" + ov[0]);
         let q = "";//`#?page=${nw[0]}`;
         let first = true;

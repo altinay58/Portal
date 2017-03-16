@@ -9,13 +9,14 @@ angModule.controller('toDoCtrl', function ($scope, $timeout, toDoService) {
     const DURUM_TAMAMLANMIS = 1;
     self.guncelDurum = DURUM_BEKLEMEDE;
     angular.element(document).ready(function () {
-        self.getirData();
+        self.getirData(DURUM_BEKLEMEDE);
         ddd = self;
 
     });
-    self.getirData = function () {
+    self.getirData = function (durum) {
+        self.guncelDurum = durum;
         self.yukleniyor = true;
-        toDoService.getListData(self.page).then(res=> {
+        toDoService.getListData(self.page,durum).then(res=> {
             self.yukleniyor = false;
             $scope.totalItems = res.ToplamSayi;
             self.lists = res.Data;
@@ -24,7 +25,7 @@ angModule.controller('toDoCtrl', function ($scope, $timeout, toDoService) {
 
     };
     self.pageChanged = function () {      
-        self.getirData();
+        self.getirData(self.guncelDurum);
     };
     self.ekle = function () {
         if (self.aciklama!==null  && typeof self.aciklama!=='undefined' && self.aciklama!=="") {
@@ -65,7 +66,7 @@ angModule.controller('toDoCtrl', function ($scope, $timeout, toDoService) {
         }
     };
     self.tarihFormatStr = function (tarih) {
-        let formattedDate = moment(tarih).format('DD/MM/YY');
+        let formattedDate = moment(tarih).format('DD/MM/YYYY');
         return formattedDate;
     };
     function hesaplaBeklemedeSayisi() {

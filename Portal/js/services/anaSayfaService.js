@@ -1,14 +1,14 @@
 ﻿angModule.service("anaSayfaService",
     function ($http, $q) {
         return ({
-            getListData: function (basTar, bitTar, isAdi, page, firma, domain, isiKontrolEden, isiYapacakKisi, isinDurumu) {
+            getListData: function (basTar, bitTar, isAdi, page, firma, domain, isiKontrolEden, isiYapacakKisi, isinDurumu,isId) {
                 var request = $http({
                     method: "get",
                     url: "/Home/ListIsAra",
                     params: {
                         page: page,basTarih: basTar, bitisTarih: bitTar, isAdi: isAdi,
                         firma: firma, domain: domain, isiKontrolEden: isiKontrolEden,
-                        isiYapacakKisi: isiYapacakKisi, isinDurumu: isinDurumu
+                        isiYapacakKisi: isiYapacakKisi, isinDurumu: isinDurumu,isId:isId
                     },
                     dataType: "json"
                 });

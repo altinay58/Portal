@@ -1411,10 +1411,10 @@
                     <div class="tabbable-line">
                         <ul class="nav nav-tabs ">
                             <li class="active">
-                                <a href="#" ng-click="degistirGuncelDurum(0)" data-toggle="tab" aria-expanded="true"> Beklemede </a>
+                                <a href="#" ng-click="getirData(0)" data-toggle="tab" aria-expanded="true"> Beklemede </a>
                             </li>
                             <li class="">
-                                <a href="#" ng-click="degistirGuncelDurum(1)" data-toggle="tab" aria-expanded="false"> Tamamlanmış </a>
+                                <a href="#" ng-click="getirData(1)" data-toggle="tab" aria-expanded="false"> Tamamlanmış </a>
                             </li>
                         </ul>
                     </div>
@@ -1449,10 +1449,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slimScrollBar" style="background: rgb(187, 187, 187); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 612.84px;">
-            </div>
-            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;">
-            </div>
+       
             @*</div>*@
         </div>
     </div>
@@ -1499,8 +1496,8 @@
     @*<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>*@
     <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
     <script src="/js/angModule.js?v=1.0.3"></script>
-    <script src="/js/services/toDoService.js?v=6"></script>
-    <script src="/js/controllers/toDoCtrl.js?v=14"></script>
+    <script src="/js/services/toDoService.js?v=7"></script>
+    <script src="/js/controllers/toDoCtrl.js?v=16"></script>
     @RenderSection("scripts", required: false)
     <script src="/Scripts/ajaxService.js?v=0.1"></script>
     <script src="/js/portalApp.js?v=2.2"></script>
