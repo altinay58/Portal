@@ -2,7 +2,7 @@
 @using Portal.Models.IslerModels;
 @using Portal.Models;
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Ana Sayfa";
     var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
      .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
 
@@ -51,25 +51,22 @@
                     <th> İşi Yapacak Kişi(ler) </th>
                     <th> İşin Durumu </th>
                     <th> Tarih </th>
-                 
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td> </td>
+                    <td> <input type="text" name="isAdi" ng-model="isId" ng-keyup="getirData(isId)" placeholder="İş Id" autocomplete="off" class="form-control" /></td>
                     <td> <input type="text" name="isAdi" ng-model="isAdi" ng-keyup="getirData(isAdi)" placeholder="İş Adı" autocomplete="off" class="form-control" /></td>
                     <td> <input type="text"  ng-model="firma" ng-keyup="getirData(firma)" placeholder="firma" autocomplete="off" class="form-control" /> </td>
                     <td> <input type="text" ng-model="domain" ng-keyup="getirData(domain)" placeholder="domain" autocomplete="off" class="form-control" /></td>
                     <td>
-                        @*@if (HttpContext.Current.User.IsInRole("Muhasebe"))
-                        {*@
-                            <select ng-model="seciliKontrolEden" class="form-control">
-                                <option value="">Hepsi</option>                               
+                 
+                        <select ng-model="seciliKontrolEden" class="form-control">
+                            <option value="">Hepsi</option>                       
                          
-                                <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
-                     
-                            </select>
-                        @*}*@
+                            <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>                     
+                        </select>                    
 
                     </td>
                     <td>
@@ -87,19 +84,19 @@
                         </select>
                     </td>
                 <td></td>
-                  
+                  <td></td>
                 </tr>
 
                 <tr ng-repeat="x in isler" style="background-color:{{isRenkler[x.IsinDurumu].color}}">
                     <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Id}}</a></td>
                     <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.IsAdi}}</a></td>
-                    <td> {{x.Firma}} </td>
+                    <td> <a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Firma}}</a> </td>
                     <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Domain}}</a>   </td>
                     <td> {{x.IsiVerenKisi}} </td>
                     <td> {{x.IsiYapacakKisi}} </td>
                     <td> {{x.IsinDurumu}} </td>
                     <td> {{tarihFormat(x.Tarih)}} </td>
-                   
+                    <td><a href="/Isler/IsEkleDuzenle/{{x.Id}}">Düzenle</a></td>
                 </tr>
 
 
@@ -149,8 +146,8 @@
     <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 
 
-    <script src="/js/services/anaSayfaService.js?v=4"></script>
-    <script src="/js/controllers/anaSayfaCtrl.js?v=15"></script>
+    <script src="/js/services/anaSayfaService.js?v=5"></script>
+    <script src="/js/controllers/anaSayfaCtrl.js?v=16"></script>
     
     <script>
     function printPage() {

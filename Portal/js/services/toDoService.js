@@ -1,11 +1,11 @@
 ﻿angModule.service("toDoService", function ($http, $q) {
     return ({
-        getListData: function (page) {
+        getListData: function (page,durum) {
             var req = $http({
                 method: 'get',
                 url: '/Home/TodoList',
                 params: {
-                    page:page
+                    page:page,durum:durum
                 },
                 dataType: 'json'
             });

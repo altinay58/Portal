@@ -2,9 +2,10 @@
 @using Portal.Models.IslerModels;
 @using Portal.Models;
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "İşler";
     var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
-    .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
+     .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
+
 }
 
 <div ng-controller="anaSayfaCtrl" ng-init="init('@JsonConvert.SerializeObject(kullanicilar)','@ViewBag.guncelKullanici.Id')">
@@ -55,24 +56,26 @@
             </thead>
             <tbody>
                 <tr>
-                    <td> </td>
+                    <td> <input type="text" name="isAdi" ng-model="isId" ng-keyup="getirData(isId)" placeholder="İş Id" autocomplete="off" class="form-control" /></td>
                     <td> <input type="text" name="isAdi" ng-model="isAdi" ng-keyup="getirData(isAdi)" placeholder="İş Adı" autocomplete="off" class="form-control" /></td>
                     <td> <input type="text" ng-model="firma" ng-keyup="getirData(firma)" placeholder="firma" autocomplete="off" class="form-control" /> </td>
                     <td> <input type="text" ng-model="domain" ng-keyup="getirData(domain)" placeholder="domain" autocomplete="off" class="form-control" /></td>
                     <td>
+
                         <select ng-model="seciliKontrolEden" class="form-control">
                             <option value="">Hepsi</option>
 
                             <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
-
                         </select>
 
                     </td>
                     <td>
+
                         <select ng-model="seciliYapacakKisi" class="form-control">
                             <option value="">Hepsi</option>
                             <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
                         </select>
+
                     </td>
                     <td>
                         <select class="form-control" ng-model="seciliIsDurum">
@@ -85,9 +88,9 @@
                 </tr>
 
                 <tr ng-repeat="x in isler" style="background-color:{{isRenkler[x.IsinDurumu].color}}">
-                    <td>{{x.Id}}</td>
-                    <td> {{x.IsAdi}} </td>
-                    <td> {{x.Firma}} </td>
+                    <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Id}}</a></td>
+                    <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.IsAdi}}</a></td>
+                    <td> <a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Firma}}</a> </td>
                     <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Domain}}</a>   </td>
                     <td> {{x.IsiVerenKisi}} </td>
                     <td> {{x.IsiYapacakKisi}} </td>
@@ -143,8 +146,8 @@
     <script src="/Content/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 
 
-    <script src="/js/services/anaSayfaService.js?v=4"></script>
-    <script src="/js/controllers/anaSayfaCtrl.js?v=14"></script>
+    <script src="/js/services/anaSayfaService.js?v=5"></script>
+    <script src="/js/controllers/anaSayfaCtrl.js?v=16"></script>
 
     <script>
     function printPage() {
@@ -175,3 +178,5 @@
 
     </script>
 }
+
+

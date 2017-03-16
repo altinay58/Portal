@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Portal.Models;
 using Microsoft.AspNet.Identity;
 using Portal.Models.IslerModels;
+using System.Data.Entity.SqlServer;
 
 namespace Portal.Controllers
 {
@@ -20,7 +21,7 @@ namespace Portal.Controllers
             return View();
         }
         public JsonResult ListIsAra(int? page, string basTarih, string bitisTarih, string isAdi,
-            string firma,string domain,string isiKontrolEden,string isiYapacakKisi,string isinDurumu)
+            string firma,string domain,string isiKontrolEden,string isiYapacakKisi,string isinDurumu,int? isId)
         {
             int baslangic = ((page??1) - 1) * PagerCount;
             JsonCevap jsn = new JsonCevap();
@@ -28,10 +29,12 @@ namespace Portal.Controllers
             var guncelKullanici = Db.AspNetUsers.SingleOrDefault(x => x.Id == userId);
             var query = Db.IslerListesis.Where(x => (!string.IsNullOrEmpty(isAdi) ? x.IsAdi.Contains(isAdi) : true));
             query = query.Where(x => 
-                 (!string.IsNullOrEmpty(firma) ? x.Firma.Contains(firma) : true)
+                    (!string.IsNullOrEmpty(firma) ? x.Firma.Contains(firma) : true)
                  && (!string.IsNullOrEmpty(domain) ? x.Domain.Contains(domain) : true)
-                  && (!string.IsNullOrEmpty(isinDurumu) ? x.IsinDurumu.Contains(isinDurumu) : true)
+                 && (!string.IsNullOrEmpty(isinDurumu) ? x.IsinDurumu.Contains(isinDurumu) : true)
+                 && (isId.HasValue ? SqlFunctions.StringConvert((double)x.Id).Contains(isId.ToString()) : true) 
                  );
+          
             //if (!User.IsInRole("Muhasebe"))
             //{
             //    string adSoyad = guncelKullanici.Isim + " " + guncelKullanici.SoyIsim;
@@ -74,12 +77,12 @@ namespace Portal.Controllers
             return View();
         }
         #region todo
-        public JsonResult TodoList(int?page)
+        public JsonResult TodoList(int?page,int durum)
         {
             JsonCevap jsn = new JsonCevap();
             int baslangis = ((page ?? 1) - 1) * PagerCount;
             var userid = User.Identity.GetUserId();
-            var list= Db.ToDoes.Where(x => x.KulId == userid ).OrderByDescending(x => x.Tarih);
+            var list= Db.ToDoes.Where(x => x.KulId == userid && x.Durum==durum).OrderByDescending(x => x.Tarih);
             jsn.ToplamSayi = list.Count();
             jsn.Data = list.Skip(baslangis).Take(PagerCount).ToList();
             return Json(jsn, JsonRequestBehavior.AllowGet);
