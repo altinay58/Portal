@@ -30,12 +30,12 @@ namespace Portal.Models
 
             //db.Database.ExecuteSqlCommand("insert into Mail.dbo.MailGonder values ('info@antalyawebtasarim.com','Awt@1234',1,'smtp.live.com',587,'" + gidecekMailAdresleri + "','" + baslik + "','" + mesaj + "')");
 
-            string MailAdresi = "satis@karayeltasarim.com";
+            string MailAdresi = Partial.Ayar("MailAdresi");
 
-            string MailSifresi = "Kwt112107";
+            string MailSifresi = Partial.Ayar("MailSifresi");
             bool MailSsl = true;
-            string SMTPAdresi = "smtp.live.com";
-            string Port = "587";
+            string SMTPAdresi = Partial.Ayar("SMTPAdresi");
+            string Port = Partial.Ayar("Port");
             string[] MailAdresleri = gidecekMailAdresleri.Split(',');
 
             string ilkMailAdresi = MailAdresleri[0];
