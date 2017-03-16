@@ -39,7 +39,7 @@
                                 }
                             }
                         }                      
-                    </select>
+                    </select><span id="firmaaditext"></span>
                     <input type="hidden" name="domainId" id="domainId" />
                 </div>
 
@@ -357,11 +357,11 @@
 
             });
 
-            //$('#islerRefDomainID').on('select2:select', function (evt) {
-            //    console.log(evt);
-            //    $("#islerRefFirmaID").val(evt.params.data.firmaid);
-            //    $("#Firma_FirmaAdi").val(evt.params.data.firmaadi);
-            //});
+            $('#islerRefDomainID').on('select2:select', function (evt) {
+                //console.log(evt);
+                //$("#islerRefFirmaID").val(evt.params.data.firmaid);
+                $("#firmaaditext").html(evt.params.data.firmaadi +" <b> firmaya iş olarak eklenecek</b>");
+            });
 
            
 
