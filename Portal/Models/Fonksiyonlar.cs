@@ -15,6 +15,83 @@ namespace Portal.Models
 {
     public partial class Fonksiyonlar
     {
+
+        public static string SuresiDolanDomainleriMailGonder()
+        {
+            string mesaj = "<table>";
+
+            using (var db = new PortalEntities())
+            {
+                IEnumerable<Domain> domainler = db.Domains.GetirUzatmasiGelenler();
+
+                foreach (Domain domain in domainler)
+                {
+                    mesaj = mesaj + "<tr><td>" + domain.Firma.FirmaAdi + "</td><td>" + domain.DomainAdi + "</td><td>" + Fonksiyonlar.DomainUzatmaSuresineKalanGun(domain.UzatmaTarihi) + "</td></tr>";
+                }
+            }
+
+            mesaj = mesaj + "</table>";
+
+
+
+            Fonksiyonlar.MailGonder("info@karayeltasarim.com,satis@karayeltasarim.com", DateTime.Now.ToShortDateString() + " Domain Süresi Dolum Bildirimi", mesaj);
+
+            return "Gonderildi";
+        }
+
+        public static bool DomainMailGonderilsinMi()
+        {
+
+            if (DateTime.Now.Hour < 8 || DateTime.Now.Hour > 19)
+            {
+                return false;
+            }
+
+            using (var db = new PortalEntities())
+            {
+                Ayar mailTarih = db.Ayars.FirstOrDefault(a => a.AyarAdi == "DomainMailGonderilmeTarihi");
+
+                if (mailTarih != null)
+                {
+                    try
+                    {
+                        DateTime MailGonderimTarihi = Convert.ToDateTime(mailTarih.AyarDeger);
+
+                        if (MailGonderimTarihi.Date < DateTime.Now.Date)
+                        {
+                            mailTarih.AyarDeger = DateTime.Now.ToShortDateString();
+                            db.SaveChanges();
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+                    }
+                    catch
+                    {
+                        mailTarih.AyarDeger = DateTime.Now.ToShortDateString();
+                        db.SaveChanges();
+                        return true;
+                    }
+
+                }
+                else
+                {
+                    Ayar yeniayar = new Ayar()
+                    {
+                        AyarDeger = DateTime.Now.ToShortDateString(),
+                        AyarAdi = "DomainMailGonderilmeTarihi"
+                    };
+                    db.Ayars.Add(yeniayar);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+
+        }
+
         public static int DomainUzatmaSuresineKalanGun(DateTime uzatmaTarihi)
         {
 

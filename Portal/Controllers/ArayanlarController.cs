@@ -234,7 +234,7 @@ namespace Portal.Controllers
             Db.MailKontrols.Add(yeniKontrol);
             Db.SaveChanges();
             string mesaj= Db.MailSablonus.FirstOrDefault(a => a.MailSablonuAdi == "Tanitim").MailSablonu1;
-            mesaj = mesaj + "<img src=\"http://is.karayeltasarim.com/mail/oku/" + yeniKontrol.MailKontrolID + "\" width=\"1\" height=\"1\" />";
+            mesaj = mesaj + "<img src=\"http://portal.karayeltasarim.com/mail/oku/" + yeniKontrol.MailKontrolID + "\" width=\"1\" height=\"1\" />";
             Fonksiyonlar.MailGonder(mailAdres, baslik, mesaj);
            
         }

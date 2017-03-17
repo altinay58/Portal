@@ -1554,6 +1554,28 @@
                     });
                 }
             });
+
+            //Burası Otamatik Google sıralaması için yazıldı GetirGoogleSıralamasi actionresult ile bağlı
+            $(function () {
+                $(document).on('click', '.ipGetir', function () {
+                    var idDeger = $(this).attr('id');
+                    $.ajax({
+                        url: "/Whois/IPAdresi",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            domainID: idDeger
+                        },
+                        error: function (response) {
+                            // alert(idDeger + response);
+                        },
+                        success: function (response) {
+                            $("#" + idDeger).text(response);
+                        }
+                    });
+                });
+            });
+
         }
     </script>
 </body>
