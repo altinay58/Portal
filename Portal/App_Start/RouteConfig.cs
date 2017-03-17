@@ -12,11 +12,11 @@ namespace Portal
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-          //  routes.MapRoute(
-          //    name: "Firma",
-          //    url: "Firmalar/{action}/{durum}",
-          //    defaults: new { controller = "Firmalar", action = "List" }
-          //);
+            routes.MapRoute(
+                "MailOkundu",
+                "mail/oku/{id}",
+                new { Controller = "MailSablonlari", action = "MailOkundu", id = (int?)null }
+                );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

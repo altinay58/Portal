@@ -683,6 +683,7 @@
     <Content Include="Views\SatisBolumu\Konum.cshtml" />
     <Content Include="Views\Yonetimsel\Takvim.cshtml" />
     <Content Include="Views\Isler\TeknikRapor.cshtml" />
+    <Content Include="Views\MailSablonlari\MailOkundu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

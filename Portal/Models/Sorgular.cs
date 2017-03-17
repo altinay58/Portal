@@ -7,17 +7,23 @@ namespace Portal.Models
 {
     public static class Sorgular
     {
+        public static IEnumerable<Domain> GetirUzatmasiGelenler(this IEnumerable<Domain> kaynakTablo)
+        {
+            return from a in kaynakTablo
+                   where a.DomainDurum == true && a.UzatmaTarihi <= DateTime.Now.AddMonths(2)
+                   orderby a.UzatmaTarihi ascending
+                   select a;
+        }
+
         public static IEnumerable<isler> GetirIsler(this IEnumerable<isler> kaynakTablo, bool? kontrolBekleyenIsler, bool? onaylananIsler, string kullaniciID, int? RefBolgeID)
         {
-
             return (from d in kaynakTablo
                     where (kontrolBekleyenIsler == true ? d.islerinisinOnayDurumu == true : d.islerinisinOnayDurumu == false)
                     &&    (onaylananIsler == true ? d.islerinisinOnayDurumu == true : d.islerinisinOnayDurumu == false)
                     &&    (kullaniciID == null ? true : d.islerisiVerenKisi == kullaniciID)
                     select d).ToList();
-
-
         }
+
         public static bool DomainEklimi(this IEnumerable<Domain> kaynakTablo, string domainAdi)
         {
             if (kaynakTablo.FirstOrDefault(q => q.DomainAdi == domainAdi) == null)

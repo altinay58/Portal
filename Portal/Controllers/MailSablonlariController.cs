@@ -129,7 +129,7 @@ namespace Portal.Controllers
             Db.MailKontrols.Add(yeniKontrol);
             Db.SaveChanges();
 
-            mesaj = mesaj + "<img src=\"http://is.karayeltasarim.com/mail/oku/" + yeniKontrol.MailKontrolID + "\" width=\"1\" height=\"1\" />";
+            mesaj = mesaj + "<img src=\"http://portal.karayeltasarim.com/mail/oku/" + yeniKontrol.MailKontrolID + "\" width=\"1\" height=\"1\" />";
 
             if (sablon == "Hosting")
             {
@@ -141,6 +141,16 @@ namespace Portal.Controllers
             }
 
             return View(new { sablon = sablon });
+        }
+
+        public ActionResult MailOkundu(int id)
+        {
+            MailKontrol yeniKontrol = Db.MailKontrols.FirstOrDefault(a => a.MailKontrolID == id);
+            yeniKontrol.MailOkundumu = true;
+            yeniKontrol.MailOkunmaTarihi = DateTime.Now;
+            Db.SaveChanges();
+
+            return View();
         }
 
     }
