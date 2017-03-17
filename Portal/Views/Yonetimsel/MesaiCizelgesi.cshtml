@@ -73,7 +73,13 @@
            <h4>Yıllık Toplam :</h4>
         </div>
         <div class="form-group">
-            <h5>{{getYillikToplam()}}</h5>
+            <h5>{{getYillikToplamDakika()}}</h5>
+        </div>
+        <div class="form-group">
+            &nbsp;<span>dakika </span>
+        </div>
+        <div class="form-group">
+            <h5>{{getYillikToplamSaat()}}</h5>
         </div>
         <div class="form-group">
             &nbsp;<span>saat fazla mesai</span>
@@ -83,7 +89,13 @@
                 <h4>Aylık Toplam :</h4>
             </div>
             <div class="form-group">
-                <h5>{{getAylikToplam()}}</h5>
+                <h5>{{getAylikToplamDakika()}}</h5>
+            </div>
+            <div class="form-group">
+                &nbsp;<span>dakika </span>
+            </div>
+            <div class="form-group">
+                <h5>{{getAylikToplamSaat()}}</h5>
             </div>
             <div class="form-group">
                 &nbsp;<span>saat fazla mesai</span>
@@ -123,7 +135,7 @@
 
 
     <script src="/js/services/mesaiCizelgesiService.js?v=7"></script>
-    <script src="/js/controllers/mesaiCizelgesiCtrl.js?v=39"></script>
+    <script src="/js/controllers/mesaiCizelgesiCtrl.js?v=43"></script>
     <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
 <script src="/content/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
 <script src="/Content/assets/global/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.js" type="text/javascript"></script>
@@ -146,28 +158,7 @@
                 $(sb).val(2);
             }
         }
-    $(function () {
-        //$.fn.editable.defaults.mode = 'popup';
-        //$('.mesai').editable({
-        //    url: '/Yonetim/SatisFiyatDegistir',
-        //    //params: { domainId: $(this).data('pk'), note: $(this).data('name') },
-        //    type: 'text',
-        //    name: 'mesai',
-        //    title: '',
-        //    success: function (response, newValue) {
-        //        console.log(newValue);
-        //        //userModel.set('username', newValue); //update backbone model
-        //    },
-        //    validate: function (x) {
-        //        let result = confirm("Fiyat değişecek emin misiniz?", function (result) {
-        //            if (result == false) {
-        //                return "invalid";
-        //            } else {
-        //                return "";
-        //            }
-        //        });
-        //    }
-        //});
+    $(function () {    
     });
 
     </script>

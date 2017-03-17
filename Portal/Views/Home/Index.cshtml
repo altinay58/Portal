@@ -39,7 +39,7 @@
     <div style="position:absolute;top:45%;left:55%;right:0;margin:auto" ng-show="yukleniyor">
         <i class="fa fa-refresh fa-spin fa-3x fa-fw font-blue"></i>
     </div>
-    <div class="portlet-body flip-scroll" style="margin-top:15px">
+    <div class="portlet-body flip-scroll isler" style="margin-top:15px">
         <table class="table table-bordered table-striped table-condensed flip-content">
             <thead class="flip-content">
                 <tr>
@@ -131,14 +131,17 @@
             z-index: 9999 !important;
         }
 
-        .flip-content a {
+        /*.flip-content a {
             color: #32c5d2 !important;
             font-weight: 600 !important;
         }
    .flip-content a {
     color: #3b4748 !important;
    
-}
+}*/
+        .isler td,.isler a{
+            color:white !important;
+        }
     </style>
 }
 @section scripts{

@@ -28,7 +28,9 @@ angModule.controller("mesaiCizelgesiCtrl", function ($scope, mesaiCizelgesiServi
     self.mesaiDurumlar = [{ id: 1, ad: 'Mesai' }, { id: 2, ad: 'Hafta Sonu' }, { id: 3, ad: 'Resmi Tatil' },
     { id: 4, ad: 'Rapor' }, { id: 5, ad: 'Üçretli İzin' }, { id: 6, ad: 'Üçretsiz İzin' },
     { id: 7, ad: 'Yıllık İzin' }];
-  
+    let mesaiDurum = {
+        Mesai: 1, HaftaSonu: 2, ResmiTatil: 3, Rapor: 4, UcretliIzin: 5, UcretsizIzin: 6, YillikIzin: 7
+    };
     angular.element(document).ready(function () {
         self.getirData();
         gg = self;
@@ -116,14 +118,26 @@ angModule.controller("mesaiCizelgesiCtrl", function ($scope, mesaiCizelgesiServi
             return String(mesaiSuresi).replace(".", ",");
         }
     };
-    self.getYillikToplam = function () {
+    self.getYillikToplamDakika = function () {
         if (self.yillikToplam) {
             return String(self.yillikToplam).replace(".", ",");
         }
     };
-    self.getAylikToplam = function () {
+    self.getYillikToplamSaat = function () {
+        if (self.yillikToplam) {
+            let saatToplam = self.yillikToplam / 60;
+            return String(saatToplam.toFixed(2)).replace(".", ",");
+        }
+    };
+    self.getAylikToplamDakika = function () {
         if (self.aylikToplam) {
             return String(self.aylikToplam).replace(".", ",");
+        }
+    };
+    self.getAylikToplamSaat = function () {
+        if (self.aylikToplam) {
+            let saatToplam = self.aylikToplam / 60;
+            return String(saatToplam.toFixed(2)).replace(".", ",");
         }
     };
     function editable() {
@@ -180,7 +194,9 @@ angModule.controller("mesaiCizelgesiCtrl", function ($scope, mesaiCizelgesiServi
                 obj.Durum = null;
               
                 if (obj.Gun === "Pazar") {
-                    obj.Durum = 2;
+                    obj.Durum = mesaiDurum.HaftaSonu;//HaftaSonu
+                } else {
+                    obj.Durum = mesaiDurum.Mesai;//Mesai
                 }
                 self.mesailer.push(obj);
             } else {
