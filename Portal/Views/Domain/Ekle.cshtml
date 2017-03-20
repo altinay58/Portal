@@ -35,7 +35,7 @@
             </label>
             <div class="col-md-4">
               
-                    <select name="RefDomainKayitliFirmaId" class="form-control select2">
+                    <select name="RefDomainKayitliFirmaId" class="form-control">
                         @{
                             foreach (Portal.Models.DomainKayitliFirma kayitliFirma in ViewBag.DomainKayitliFirmalar)
                             {
@@ -50,7 +50,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Hosting</label>
             <div class="col-md-4">
-                <select name="RefHostingID" class="form-control select2">
+                <select name="RefHostingID" class="form-control ">
                     @{
                         foreach (var h in ViewBag.Hostingler)
                         {
@@ -90,7 +90,6 @@
             <label class="control-label col-md-2">Ip Adresi </label>
             <div class="col-md-4">
                 @Html.EditorFor(model => model.IpAdres, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IpAdres, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
@@ -213,8 +212,7 @@
                 messages: {
                     FirmaAdi: "Lütfen firma ismi giriniz.",
                     DomainAdi: "Lütfen Domain adi giriniz.",
-                    Tarih: "Lütfen tarih seçiniz.",
-                    IpAdres:"Lütfen ip adresi giriniz."
+                    Tarih: "Lütfen tarih seçiniz."
                 },
                 rules: {
                     FirmaAdi: {
@@ -228,12 +226,7 @@
                     Tarih: {
                         minlength: 9,
                         required: true
-                    },
-                    IpAdres: {
-                        minlength: 9,
-                        required: true
                     }
-
                 },
 
                 invalidHandler: function (event, validator) { //display error alert on form submit              
