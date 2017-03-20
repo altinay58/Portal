@@ -2,3 +2,16 @@
 a.domain-note.editable.editable-click {
     color: red;
 }
+
+.timeline-body-content p{
+    margin:0px !important;
+    padding:0px !important;
+}
+
+.bg-blue {
+    background: #578EBE !important;
+}
+
+.timeline-body > .arrow-yapilacak {
+    border-color: transparent #578EBE transparent transparent !important;
+}
