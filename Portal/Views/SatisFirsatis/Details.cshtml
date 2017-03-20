@@ -1,0 +1,122 @@
+﻿@model Portal.Models.SatisFirsati
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SatisFirsati</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fiyat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fiyat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tarih)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GecerlilikSuresi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GecerlilikSuresi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DuzeltmeTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DuzeltmeTarihi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DosyaYolu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DosyaYolu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefSorumluKisiId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefSorumluKisiId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefEkleyenKisiId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefEkleyenKisiId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReferansNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReferansNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Firma.FirmaAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Firma.FirmaAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirmaKisi.Ad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirmaKisi.Ad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SatisFirsatiAsama.Ad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SatisFirsatiAsama.Ad)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "List")
+</p>

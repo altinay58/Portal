@@ -257,6 +257,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SanalPostController.cs" />
     <Compile Include="Controllers\SatisBolumuController.cs" />
+    <Compile Include="Controllers\SatisFirsatisController.cs" />
     <Compile Include="Controllers\SeoController.cs" />
     <Compile Include="Controllers\SifresController.cs" />
     <Compile Include="Controllers\SiteKontrolsController.cs" />
@@ -432,6 +433,15 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Sati.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SatisFirsati.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SatisFirsatiAsama.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SatisFirsatiFiyatRevizyon.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SatisNotu.cs">
@@ -684,6 +694,11 @@
     <Content Include="Views\Yonetimsel\Takvim.cshtml" />
     <Content Include="Views\Isler\TeknikRapor.cshtml" />
     <Content Include="Views\MailSablonlari\MailOkundu.cshtml" />
+    <Content Include="Views\SatisFirsatis\Create.cshtml" />
+    <Content Include="Views\SatisFirsatis\Delete.cshtml" />
+    <Content Include="Views\SatisFirsatis\Details.cshtml" />
+    <Content Include="Views\SatisFirsatis\Edit.cshtml" />
+    <Content Include="Views\SatisFirsatis\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

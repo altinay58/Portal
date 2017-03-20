@@ -1,0 +1,128 @@
+﻿@model Portal.Models.SatisFirsati
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>SatisFirsati</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fiyat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fiyat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tarih)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GecerlilikSuresi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GecerlilikSuresi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DuzeltmeTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DuzeltmeTarihi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DosyaYolu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DosyaYolu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefSorumluKisiId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefSorumluKisiId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefEkleyenKisiId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefEkleyenKisiId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReferansNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReferansNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Firma.FirmaAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Firma.FirmaAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirmaKisi.Ad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirmaKisi.Ad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SatisFirsatiAsama.Ad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SatisFirsatiAsama.Ad)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "List")
+        </div>
+    }
+</div>

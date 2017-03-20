@@ -1,128 +1,140 @@
-﻿@model Portal.Models.Domain
+﻿@using Portal.Models.IslerModels;
+@using Microsoft.AspNet.Identity;
+@model Portal.Models.SatisFirsati
 
 @{
-    ViewBag.Title = "Ekle";
+    ViewBag.Title = "Create";
+    var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
+ .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
+    string userId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+    var guncelKullanici = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.Id == userId).
+                          Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
 }
 
-
-@using (@Html.BeginForm("Ekle", "Domain", FormMethod.Post,
-                 new { id = "ekleForm" }))
+<h2>Create</h2>
+@using (Html.BeginForm("Create", "SatisFirsatis", FormMethod.Post, new { enctype = "multipart/form-data" ,id= "ekleForm" }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-  
+        <h4>SatisFirsati</h4>
+        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="alert alert-danger display-hide">
-            <button class="close" data-close="alert"></button> Bazı alanları hatalı girdiniz! Lütfen formu kontrol ediniz.
-        </div>
-        <div class="alert alert-success display-hide">
-            <button class="close" data-close="alert"></button> Form validasyonu başarılı!
-        </div>
         <div class="form-group">
-            <label class="control-label col-md-2">
-                Domain Adı
-            </label>
-            <div class="col-md-4">
-                @Html.EditorFor(model => model.DomainAdi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DomainAdi, "", new { @class = "text-danger" })
-            </div>
-        </div>     
-
-        <div class="form-group">
-            <label class="control-label col-md-2">
-              Domain Kayıtlı Firma
-            </label>
-            <div class="col-md-4">
-              
-                    <select name="RefDomainKayitliFirmaId" class="form-control">
-                        @{
-                            foreach (Portal.Models.DomainKayitliFirma kayitliFirma in ViewBag.DomainKayitliFirmalar)
-                            {
-                                <option value="@(kayitliFirma.DomainKayitliFirmaId)">@(kayitliFirma.DomainKayitliFirmaAdi)</option>
-                            }
-                        }
-                    </select>
-
-              
+            @Html.LabelFor(model => model.RefFirmaId, "Firma", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="FirmaAdi" />
+                <input type="hidden" name="RefFirmaId" id="RefFirmaId" />
+                @*@Html.DropDownList("RefFirmaId", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.RefFirmaId, "", new { @class = "text-danger" })
             </div>
         </div>
+
         <div class="form-group">
-            <label class="control-label col-md-2">Hosting</label>
-            <div class="col-md-4">
-                <select name="RefHostingID" class="form-control ">
-                    @{
-                        foreach (var h in ViewBag.Hostingler)
-                        {
-                            <option value="@(h.HostingID)">@(h.HostingAdi)</option>
-                        }
-                    }
-                </select>
+            @Html.LabelFor(model => model.RefAsamaId, "Aşama", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RefAsamaId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RefAsamaId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Fiyat, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Fiyat, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Fiyat, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RefDomainKategoriId, "İstek Ürün", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RefDomainKategoriId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RefDomainKategoriId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RefYetkiliId, "Firma Yetkili", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RefYetkiliId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RefYetkiliId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Tarih, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
-              
-                <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
-                    <input type="text" class="form-control" name="Tarih" id="Tarih" data-date-format="dd.mm.yyyy" >
-                    <span class="input-group-btn">
-                        <button class="btn default" type="button">
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                    </span>
-                </div>
-            </div>
-        </div>    
-        <div class="form-group">
-            <label class="control-label col-md-2">
-                Firma
-            </label>
-            <div class="col-md-4">
-                <input type="text" id="FirmaAdi" name="FirmaAdi"  class="form-control" />
-                <input type="hidden" id="RefDomainFirmaID" name="RefDomainFirmaID" />
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Tarih, new { htmlAttributes = new { @class = "form-control", data_date_format = "dd.mm.yyyy" } })
+                @Html.ValidationMessageFor(model => model.Tarih, "", new { @class = "text-danger" })
             </div>
         </div>
-       
 
         <div class="form-group">
-            <label class="control-label col-md-2">Ip Adresi </label>
-            <div class="col-md-4">
-                @Html.EditorFor(model => model.IpAdres, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
             </div>
         </div>
+
         <div class="form-group">
-            <label class="control-label col-md-2">Kategori</label>
-            <div class="col-md-4">
-                <select name="RefDomainKategori" class="form-control select2">
-                    @{
-                        foreach (var h in ViewBag.DomainKategorileri)
+            @Html.LabelFor(model => model.GecerlilikSuresi, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GecerlilikSuresi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.GecerlilikSuresi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+     
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DosyaYolu,"Dosya",htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" id="dosya" name="dosya" /> 
+                @Html.LabelFor(model => model.DosyaYolu)
+                @*@Html.ValidationMessageFor(model => model.DosyaYolu, "", new { @class = "text-danger" })*@
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RefSorumluKisiId,"Sorumlu Kişi", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select ng-model="RefSorumluKisiId" class="form-control">
+                    @foreach(var item in kullanicilar)
+                    {
+                        if (guncelKullanici.Id == item.Id)
                         {
-                            <option value="@(h.DomainKategoriID)">@(h.DomainKategoriAdi)</option>
+                            <option value="@item.Id">@item.AdSoyad</option>
                         }
                     }
+
+                    <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
                 </select>
+                @*@Html.EditorFor(model => model.RefSorumluKisiId, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.RefSorumluKisiId, "", new { @class = "text-danger" })
             </div>
-        </div>
-      
+        </div>   
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-4">
-                <button type="submit" class="btn green">Kaydet</button>
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
-
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
 @section css{
     <link href="/Content/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="/Content/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-
+    <link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+ 
     <style>
-  .datepicker.dropdown-menu {
+     .datepicker.dropdown-menu {
             z-index: 9999 !important;
         }
 
@@ -161,17 +173,16 @@
 @section scripts{
     <script src="/Content/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
     <script src="/Content/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-<script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
 
-<script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-
+    <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <script src="/js/jquery.autocomplete.js"></script>
     <script>
         var dd;
         $(function () {
             validateForm();
             $(".select2").select2();
-           
+
             $.fn.datepicker.dates['tr'] = {
                 days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
                 daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
@@ -193,41 +204,6 @@
             //    $('#Tarih').datepicker('place'); //#modal is the id of the modal
             //});
             // firma autocomplete
-            //var firmas = new Bloodhound({
-            //    datumTokenizer: function (datum) {
-            //        return Bloodhound.tokenizers.whitespace(datum.label);
-            //    },
-            //    queryTokenizer: Bloodhound.tokenizers.whitespace,
-            //    remote: {
-            //        wildcard: '',
-            //        url: '/Isler/FirmalariGetir',
-            //        replace: function (url, query) {
-                        
-            //            url += "?firmaAdi=" + $("#FirmaAdi").val();
-
-            //            return url;
-            //        },
-            //        transform: function (response) {
-            //            return response;
-                       
-            //        }
-            //    }
-            //});
-            //$('#FirmaAdi').typeahead(null, {
-            //    display: 'label',
-            //    displayKey: 'value',
-            //    hint: true,
-            //    minLength: 1,
-            //    source: firmas
-            //});
-
-            //$('#FirmaAdi').on('typeahead:selected', function (event, datum) {
-            //    dd = datum;
-            //    console.log(datum);
-            //    $('#RefDomainFirmaID').val(datum.value);          
-
-            //});
-            //Firma autocomplete 
             $("#FirmaAdi").autocomplete({
                 minChars: 2,
                 transformResult: function (response) {
@@ -244,15 +220,16 @@
                 paramName: 'firmaAdi',
                 serviceUrl: '/Isler/FirmalariGetir',
                 onSelect: function (suggestion) {
-                    $("#RefDomainFirmaID").val(suggestion.data);
+                    $("#RefFirmaId").val(suggestion.data);
                 },
                 dataType: "json",
                 noCache: true,
                 tabDisabled: true
             });
+            //Firma autocomplete
         })
         function validateForm() {
-            //**validation 
+            //**validation
             var form1 = $('#ekleForm');
             var error1 = $('.alert-danger', form1);
             var success1 = $('.alert-success', form1);
@@ -282,7 +259,7 @@
                     }
                 },
 
-                invalidHandler: function (event, validator) { //display error alert on form submit              
+                invalidHandler: function (event, validator) { //display error alert on form submit
                     success1.hide();
                     error1.show();
                     App.scrollTo(error1, -200);

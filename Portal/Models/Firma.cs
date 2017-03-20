@@ -30,6 +30,7 @@ namespace Portal.Models
             this.Satis1 = new HashSet<Sati>();
             this.Teklifs = new HashSet<Teklif>();
             this.FirmaKisis = new HashSet<FirmaKisi>();
+            this.SatisFirsatis = new HashSet<SatisFirsati>();
         }
     
         public int FirmaID { get; set; }
@@ -91,5 +92,7 @@ namespace Portal.Models
         public virtual ICollection<Teklif> Teklifs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FirmaKisi> FirmaKisis { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
     }
 }

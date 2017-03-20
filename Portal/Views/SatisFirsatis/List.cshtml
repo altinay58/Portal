@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Portal.Models.SatisFirsati>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Fiyat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Note)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GecerlilikSuresi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DuzeltmeTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DosyaYolu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RefSorumluKisiId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RefEkleyenKisiId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReferansNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DomainKategori.DomainKategoriAdi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Firma.FirmaAdi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirmaKisi.Ad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SatisFirsatiAsama.Ad)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fiyat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tarih)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Note)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GecerlilikSuresi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DuzeltmeTarihi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DosyaYolu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RefSorumluKisiId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RefEkleyenKisiId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReferansNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DomainKategori.DomainKategoriAdi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Firma.FirmaAdi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirmaKisi.Ad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SatisFirsatiAsama.Ad)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

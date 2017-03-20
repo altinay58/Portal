@@ -140,6 +140,14 @@
         <EntityTypeShape EntityType="PortalModel.TeknikRapor" Width="1.5" PointX="3" PointY="24.5" />
         <AssociationConnector Association="PortalModel.FK_TeknikRapor_isler" />
         <AssociationConnector Association="PortalModel.FK_TeknikRapor_AspNetUsers" />
+        <EntityTypeShape EntityType="PortalModel.SatisFirsati" Width="1.5" PointX="15.25" PointY="26.25" />
+        <EntityTypeShape EntityType="PortalModel.SatisFirsatiAsama" Width="1.5" PointX="13" PointY="60.625" />
+        <EntityTypeShape EntityType="PortalModel.SatisFirsatiFiyatRevizyon" Width="1.5" PointX="17.5" PointY="27.625" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsati_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsati_Firma" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsati_FirmaKisi" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsati_SatisFirsatiAsama" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

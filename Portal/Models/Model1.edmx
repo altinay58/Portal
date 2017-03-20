@@ -54,8 +54,8 @@
           <Property Name="arayanFirmaKayitDurum" Type="bit" />
           <Property Name="arayanKayitliMusterimi" Type="bit" />
           <Property Name="arayanKayitliRefFirmaID" Type="int" />
-          <Property Name="arayanMailSablonuId" Type="int" />
           <Property Name="ArayanAraciAdi" Type="nvarchar" MaxLength="100" />
+          <Property Name="arayanMailSablonuId" Type="int" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -340,11 +340,11 @@
           <Property Name="islerCalisanTipi" Type="varchar" MaxLength="50" />
           <Property Name="islerDosyaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="islerSira" Type="int" />
+          <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
           <Property Name="islerGelisYontemi" Type="nvarchar" MaxLength="100" />
           <Property Name="islerBitisTarihiVarmi" Type="bit" Nullable="false" />
           <Property Name="islerBitisTarihi" Type="date" />
           <Property Name="islerSiraNo" Type="int" />
-          <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="isOncelikSira">
           <Key>
@@ -526,6 +526,42 @@
           <Property Name="satisNot" Type="nvarchar(max)" />
           <Property Name="satisTarihi" Type="date" />
           <Property Name="refSatisID" Type="int" />
+        </EntityType>
+        <EntityType Name="SatisFirsati">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefFirmaId" Type="int" />
+          <Property Name="RefAsamaId" Type="int" />
+          <Property Name="Fiyat" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RefDomainKategoriId" Type="int" />
+          <Property Name="RefYetkiliId" Type="int" />
+          <Property Name="Tarih" Type="datetime" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="GecerlilikSuresi" Type="int" Nullable="false" />
+          <Property Name="DuzeltmeTarihi" Type="datetime" />
+          <Property Name="DosyaYolu" Type="nvarchar" MaxLength="500" />
+          <Property Name="RefSorumluKisiId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RefEkleyenKisiId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ReferansNo" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SatisFirsatiAsama">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Sira" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SatisFirsatiFiyatRevizyon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefSatisFirsatiId" Type="int" Nullable="false" />
+          <Property Name="Fiyat" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Tarih" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="SatisNotu">
           <Key>
@@ -710,7 +746,7 @@
           <Property Name="GecenZamanSaniye" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Portal.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ArayanListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -729,7 +765,7 @@ warning 6002: The table/view 'Portal.dbo.ArayanListesi' does not have a primary 
           <Property Name="Bolge" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Portal.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="IslerListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -745,7 +781,7 @@ warning 6002: The table/view 'Portal.dbo.IslerListesi' does not have a primary k
           <Property Name="DomainId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RandevularView">
           <Key>
             <PropertyRef Name="RandevuID" />
@@ -1450,6 +1486,66 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SatisFirsati_DomainKategori">
+          <End Role="DomainKategori" Type="Self.DomainKategori" Multiplicity="0..1" />
+          <End Role="SatisFirsati" Type="Self.SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DomainKategori">
+              <PropertyRef Name="DomainKategoriID" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefDomainKategoriId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsati_Firma">
+          <End Role="Firma" Type="Self.Firma" Multiplicity="0..1" />
+          <End Role="SatisFirsati" Type="Self.SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firma">
+              <PropertyRef Name="FirmaID" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefFirmaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsati_FirmaKisi">
+          <End Role="FirmaKisi" Type="Self.FirmaKisi" Multiplicity="0..1" />
+          <End Role="SatisFirsati" Type="Self.SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FirmaKisi">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefYetkiliId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsati_SatisFirsatiAsama">
+          <End Role="SatisFirsatiAsama" Type="Self.SatisFirsatiAsama" Multiplicity="0..1" />
+          <End Role="SatisFirsati" Type="Self.SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SatisFirsatiAsama">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefAsamaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsatiFiyatRevizyon_SatisFirsati">
+          <End Role="SatisFirsati" Type="Self.SatisFirsati" Multiplicity="1" />
+          <End Role="SatisFirsatiFiyatRevizyon" Type="Self.SatisFirsatiFiyatRevizyon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SatisFirsati">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SatisFirsatiFiyatRevizyon">
+              <PropertyRef Name="RefSatisFirsatiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SatisNotu_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="SatisNotu" Type="Self.SatisNotu" Multiplicity="*" />
@@ -1709,6 +1805,9 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
           <EntitySet Name="Randevu" EntityType="Self.Randevu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SanalPos" EntityType="Self.SanalPos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Satis" EntityType="Self.Satis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SatisFirsati" EntityType="Self.SatisFirsati" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SatisFirsatiAsama" EntityType="Self.SatisFirsatiAsama" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SatisFirsatiFiyatRevizyon" EntityType="Self.SatisFirsatiFiyatRevizyon" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SatisNotu" EntityType="Self.SatisNotu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sektorler" EntityType="Self.Sektorler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Seo" EntityType="Self.Seo" Schema="dbo" store:Type="Tables" />
@@ -1993,6 +2092,26 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
           <AssociationSet Name="FK_Satis_Satis1" Association="Self.FK_Satis_Satis1">
             <End Role="Satis" EntitySet="Satis" />
             <End Role="Satis1" EntitySet="Satis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsati_DomainKategori" Association="Self.FK_SatisFirsati_DomainKategori">
+            <End Role="DomainKategori" EntitySet="DomainKategori" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsati" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsati_Firma" Association="Self.FK_SatisFirsati_Firma">
+            <End Role="Firma" EntitySet="Firma" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsati" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsati_FirmaKisi" Association="Self.FK_SatisFirsati_FirmaKisi">
+            <End Role="FirmaKisi" EntitySet="FirmaKisi" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsati" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsati_SatisFirsatiAsama" Association="Self.FK_SatisFirsati_SatisFirsatiAsama">
+            <End Role="SatisFirsatiAsama" EntitySet="SatisFirsatiAsama" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsati" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsatiFiyatRevizyon_SatisFirsati" Association="Self.FK_SatisFirsatiFiyatRevizyon_SatisFirsati">
+            <End Role="SatisFirsati" EntitySet="SatisFirsati" />
+            <End Role="SatisFirsatiFiyatRevizyon" EntitySet="SatisFirsatiFiyatRevizyon" />
           </AssociationSet>
           <AssociationSet Name="FK_SatisNotu_AspNetUsers" Association="Self.FK_SatisNotu_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -2449,6 +2568,29 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="TeknikRapor" EntitySet="TeknikRapors" />
           </AssociationSet>
+          <EntitySet Name="SatisFirsatis" EntityType="PortalModel.SatisFirsati" />
+          <EntitySet Name="SatisFirsatiAsamas" EntityType="PortalModel.SatisFirsatiAsama" />
+          <EntitySet Name="SatisFirsatiFiyatRevizyons" EntityType="PortalModel.SatisFirsatiFiyatRevizyon" />
+          <AssociationSet Name="FK_SatisFirsati_DomainKategori" Association="PortalModel.FK_SatisFirsati_DomainKategori">
+            <End Role="DomainKategori" EntitySet="DomainKategoris" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsatis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsati_Firma" Association="PortalModel.FK_SatisFirsati_Firma">
+            <End Role="Firma" EntitySet="Firmas" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsatis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsati_FirmaKisi" Association="PortalModel.FK_SatisFirsati_FirmaKisi">
+            <End Role="FirmaKisi" EntitySet="FirmaKisis" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsatis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsati_SatisFirsatiAsama" Association="PortalModel.FK_SatisFirsati_SatisFirsatiAsama">
+            <End Role="SatisFirsatiAsama" EntitySet="SatisFirsatiAsamas" />
+            <End Role="SatisFirsati" EntitySet="SatisFirsatis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SatisFirsatiFiyatRevizyon_SatisFirsati" Association="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati">
+            <End Role="SatisFirsati" EntitySet="SatisFirsatis" />
+            <End Role="SatisFirsatiFiyatRevizyon" EntitySet="SatisFirsatiFiyatRevizyons" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2736,6 +2878,7 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
           <NavigationProperty Name="Firmas" Relationship="PortalModel.FK_Firma_DomainKategori" FromRole="DomainKategori" ToRole="Firma" />
           <NavigationProperty Name="GidilenMusteris" Relationship="PortalModel.FK_GidilenMusteri_DomainKategori" FromRole="DomainKategori" ToRole="GidilenMusteri" />
           <NavigationProperty Name="Temas" Relationship="PortalModel.FK_Tema_DomainKategori" FromRole="DomainKategori" ToRole="Tema" />
+          <NavigationProperty Name="SatisFirsatis" Relationship="PortalModel.FK_SatisFirsati_DomainKategori" FromRole="DomainKategori" ToRole="SatisFirsati" />
         </EntityType>
         <EntityType Name="Firma">
           <Key>
@@ -2786,6 +2929,7 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
           <NavigationProperty Name="Satis1" Relationship="PortalModel.FK_Satis_Satis" FromRole="Firma" ToRole="Sati" />
           <NavigationProperty Name="Teklifs" Relationship="PortalModel.FK_Teklif_Firma" FromRole="Firma" ToRole="Teklif" />
           <NavigationProperty Name="FirmaKisis" Relationship="PortalModel.FK_FirmaKisi_Firma" FromRole="Firma" ToRole="FirmaKisi" />
+          <NavigationProperty Name="SatisFirsatis" Relationship="PortalModel.FK_SatisFirsati_Firma" FromRole="Firma" ToRole="SatisFirsati" />
         </EntityType>
         <EntityType Name="GelinmeyenGun">
           <Key>
@@ -4091,6 +4235,7 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FirmaId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Firma" Relationship="PortalModel.FK_FirmaKisi_Firma" FromRole="FirmaKisi" ToRole="Firma" />
+          <NavigationProperty Name="SatisFirsatis" Relationship="PortalModel.FK_SatisFirsati_FirmaKisi" FromRole="FirmaKisi" ToRole="SatisFirsati" />
         </EntityType>
         <Association Name="FK_FirmaKisi_Firma">
           <End Type="PortalModel.Firma" Role="Firma" Multiplicity="1" />
@@ -4198,6 +4343,109 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
             </Principal>
             <Dependent Role="TeknikRapor">
               <PropertyRef Name="RefTeknikRaporUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SatisFirsati">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefFirmaId" Type="Int32" />
+          <Property Name="RefAsamaId" Type="Int32" />
+          <Property Name="Fiyat" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="RefDomainKategoriId" Type="Int32" />
+          <Property Name="RefYetkiliId" Type="Int32" />
+          <Property Name="Tarih" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GecerlilikSuresi" Type="Int32" Nullable="false" />
+          <Property Name="DuzeltmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="DosyaYolu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RefSorumluKisiId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RefEkleyenKisiId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ReferansNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DomainKategori" Relationship="PortalModel.FK_SatisFirsati_DomainKategori" FromRole="SatisFirsati" ToRole="DomainKategori" />
+          <NavigationProperty Name="Firma" Relationship="PortalModel.FK_SatisFirsati_Firma" FromRole="SatisFirsati" ToRole="Firma" />
+          <NavigationProperty Name="FirmaKisi" Relationship="PortalModel.FK_SatisFirsati_FirmaKisi" FromRole="SatisFirsati" ToRole="FirmaKisi" />
+          <NavigationProperty Name="SatisFirsatiAsama" Relationship="PortalModel.FK_SatisFirsati_SatisFirsatiAsama" FromRole="SatisFirsati" ToRole="SatisFirsatiAsama" />
+          <NavigationProperty Name="SatisFirsatiFiyatRevizyons" Relationship="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" FromRole="SatisFirsati" ToRole="SatisFirsatiFiyatRevizyon" />
+        </EntityType>
+        <EntityType Name="SatisFirsatiAsama">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Sira" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SatisFirsatis" Relationship="PortalModel.FK_SatisFirsati_SatisFirsatiAsama" FromRole="SatisFirsatiAsama" ToRole="SatisFirsati" />
+        </EntityType>
+        <EntityType Name="SatisFirsatiFiyatRevizyon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefSatisFirsatiId" Type="Int32" Nullable="false" />
+          <Property Name="Fiyat" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Tarih" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="SatisFirsati" Relationship="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" FromRole="SatisFirsatiFiyatRevizyon" ToRole="SatisFirsati" />
+        </EntityType>
+        <Association Name="FK_SatisFirsati_DomainKategori">
+          <End Type="PortalModel.DomainKategori" Role="DomainKategori" Multiplicity="0..1" />
+          <End Type="PortalModel.SatisFirsati" Role="SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DomainKategori">
+              <PropertyRef Name="DomainKategoriID" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefDomainKategoriId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsati_Firma">
+          <End Type="PortalModel.Firma" Role="Firma" Multiplicity="0..1" />
+          <End Type="PortalModel.SatisFirsati" Role="SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firma">
+              <PropertyRef Name="FirmaID" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefFirmaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsati_FirmaKisi">
+          <End Type="PortalModel.FirmaKisi" Role="FirmaKisi" Multiplicity="0..1" />
+          <End Type="PortalModel.SatisFirsati" Role="SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FirmaKisi">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefYetkiliId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsati_SatisFirsatiAsama">
+          <End Type="PortalModel.SatisFirsatiAsama" Role="SatisFirsatiAsama" Multiplicity="0..1" />
+          <End Type="PortalModel.SatisFirsati" Role="SatisFirsati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SatisFirsatiAsama">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SatisFirsati">
+              <PropertyRef Name="RefAsamaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SatisFirsatiFiyatRevizyon_SatisFirsati">
+          <End Type="PortalModel.SatisFirsati" Role="SatisFirsati" Multiplicity="1" />
+          <End Type="PortalModel.SatisFirsatiFiyatRevizyon" Role="SatisFirsatiFiyatRevizyon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SatisFirsati">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SatisFirsatiFiyatRevizyon">
+              <PropertyRef Name="RefSatisFirsatiId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5010,6 +5258,45 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
                 <ScalarProperty Name="TeknikRaporDurum" ColumnName="TeknikRaporDurum" />
                 <ScalarProperty Name="RefTeknikRaporIsID" ColumnName="RefTeknikRaporIsID" />
                 <ScalarProperty Name="TeknikRaporID" ColumnName="TeknikRaporID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SatisFirsatis">
+            <EntityTypeMapping TypeName="PortalModel.SatisFirsati">
+              <MappingFragment StoreEntitySet="SatisFirsati">
+                <ScalarProperty Name="ReferansNo" ColumnName="ReferansNo" />
+                <ScalarProperty Name="RefEkleyenKisiId" ColumnName="RefEkleyenKisiId" />
+                <ScalarProperty Name="RefSorumluKisiId" ColumnName="RefSorumluKisiId" />
+                <ScalarProperty Name="DosyaYolu" ColumnName="DosyaYolu" />
+                <ScalarProperty Name="DuzeltmeTarihi" ColumnName="DuzeltmeTarihi" />
+                <ScalarProperty Name="GecerlilikSuresi" ColumnName="GecerlilikSuresi" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="RefYetkiliId" ColumnName="RefYetkiliId" />
+                <ScalarProperty Name="RefDomainKategoriId" ColumnName="RefDomainKategoriId" />
+                <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
+                <ScalarProperty Name="RefAsamaId" ColumnName="RefAsamaId" />
+                <ScalarProperty Name="RefFirmaId" ColumnName="RefFirmaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SatisFirsatiAsamas">
+            <EntityTypeMapping TypeName="PortalModel.SatisFirsatiAsama">
+              <MappingFragment StoreEntitySet="SatisFirsatiAsama">
+                <ScalarProperty Name="Sira" ColumnName="Sira" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SatisFirsatiFiyatRevizyons">
+            <EntityTypeMapping TypeName="PortalModel.SatisFirsatiFiyatRevizyon">
+              <MappingFragment StoreEntitySet="SatisFirsatiFiyatRevizyon">
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
+                <ScalarProperty Name="RefSatisFirsatiId" ColumnName="RefSatisFirsatiId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,23 +12,18 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FirmaKisi
+    public partial class SatisFirsatiAsama
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FirmaKisi()
+        public SatisFirsatiAsama()
         {
             this.SatisFirsatis = new HashSet<SatisFirsati>();
         }
     
         public int Id { get; set; }
         public string Ad { get; set; }
-        public string Soyad { get; set; }
-        public string Departman { get; set; }
-        public string Tel { get; set; }
-        public string Email { get; set; }
-        public int FirmaId { get; set; }
+        public int Sira { get; set; }
     
-        public virtual Firma Firma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
     }
