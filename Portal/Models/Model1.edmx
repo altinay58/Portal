@@ -545,7 +545,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RefFirmaId" Type="int" />
-          <Property Name="RefAsamaId" Type="int" />
+          <Property Name="EtiketSatisAsamaId" Type="int" />
           <Property Name="Fiyat" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RefDomainKategoriId" Type="int" />
           <Property Name="RefYetkiliId" Type="int" />
@@ -557,7 +557,7 @@
           <Property Name="RefSorumluKisiId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RefEkleyenKisiId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ReferansNo" Type="varchar" MaxLength="50" />
-          <Property Name="RefSatisFirsatiId" Type="int" />
+          <Property Name="EtiketSatisFirsatDurumuId" Type="int" />
         </EntityType>
         <EntityType Name="SatisFirsatiFiyatRevizyon">
           <Key>
@@ -4337,7 +4337,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RefFirmaId" Type="Int32" />
-          <Property Name="RefAsamaId" Type="Int32" />
           <Property Name="Fiyat" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="RefDomainKategoriId" Type="Int32" />
           <Property Name="RefYetkiliId" Type="Int32" />
@@ -4353,7 +4352,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="Firma" Relationship="PortalModel.FK_SatisFirsati_Firma" FromRole="SatisFirsati" ToRole="Firma" />
           <NavigationProperty Name="FirmaKisi" Relationship="PortalModel.FK_SatisFirsati_FirmaKisi" FromRole="SatisFirsati" ToRole="FirmaKisi" />
           <NavigationProperty Name="SatisFirsatiFiyatRevizyons" Relationship="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" FromRole="SatisFirsati" ToRole="SatisFirsatiFiyatRevizyon" />
-          <Property Name="RefSatisFirsatiId" Type="Int32" />
+          <Property Name="EtiketSatisAsamaId" Type="Int32" />
+          <Property Name="EtiketSatisFirsatDurumuId" Type="Int32" />
         </EntityType>
         <EntityType Name="SatisFirsatiFiyatRevizyon">
           <Key>
@@ -5240,7 +5240,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySetMapping Name="SatisFirsatis">
             <EntityTypeMapping TypeName="PortalModel.SatisFirsati">
               <MappingFragment StoreEntitySet="SatisFirsati">
-                <ScalarProperty Name="RefSatisFirsatiId" ColumnName="RefSatisFirsatiId" />
+                <ScalarProperty Name="EtiketSatisFirsatDurumuId" ColumnName="EtiketSatisFirsatDurumuId" />
+                <ScalarProperty Name="EtiketSatisAsamaId" ColumnName="EtiketSatisAsamaId" />
                 <ScalarProperty Name="ReferansNo" ColumnName="ReferansNo" />
                 <ScalarProperty Name="RefEkleyenKisiId" ColumnName="RefEkleyenKisiId" />
                 <ScalarProperty Name="RefSorumluKisiId" ColumnName="RefSorumluKisiId" />
@@ -5252,7 +5253,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="RefYetkiliId" ColumnName="RefYetkiliId" />
                 <ScalarProperty Name="RefDomainKategoriId" ColumnName="RefDomainKategoriId" />
                 <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
-                <ScalarProperty Name="RefAsamaId" ColumnName="RefAsamaId" />
                 <ScalarProperty Name="RefFirmaId" ColumnName="RefFirmaId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

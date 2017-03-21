@@ -22,7 +22,6 @@ namespace Portal.Models
     
         public int Id { get; set; }
         public Nullable<int> RefFirmaId { get; set; }
-        public Nullable<int> RefAsamaId { get; set; }
         public decimal Fiyat { get; set; }
         public Nullable<int> RefDomainKategoriId { get; set; }
         public Nullable<int> RefYetkiliId { get; set; }
@@ -34,7 +33,8 @@ namespace Portal.Models
         public string RefSorumluKisiId { get; set; }
         public string RefEkleyenKisiId { get; set; }
         public string ReferansNo { get; set; }
-        public Nullable<int> RefSatisFirsatiId { get; set; }
+        public Nullable<int> EtiketSatisAsamaId { get; set; }
+        public Nullable<int> EtiketSatisFirsatDurumuId { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
         public virtual Firma Firma { get; set; }

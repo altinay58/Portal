@@ -504,6 +504,94 @@ FROM      dbo.Arayanlar AS Extent1 LEFT OUTER JOIN
 GO
 
 
+GO
+
+/****** Object:  Table [dbo].[SatisFirsati]    Script Date: 21.03.2017 19:12:51 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[SatisFirsati](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RefFirmaId] [int] NULL,
+	[EtiketSatisAsamaId] [int] NULL,
+	[Fiyat] [decimal](18, 2) NOT NULL,
+	[RefDomainKategoriId] [int] NULL,
+	[RefYetkiliId] [int] NULL,
+	[Tarih] [datetime] NOT NULL,
+	[Note] [nvarchar](max) NULL,
+	[GecerlilikSuresi] [int] NOT NULL,
+	[DuzeltmeTarihi] [datetime] NULL,
+	[DosyaYolu] [nvarchar](500) NULL,
+	[RefSorumluKisiId] [nvarchar](128) NOT NULL,
+	[RefEkleyenKisiId] [nvarchar](128) NOT NULL,
+	[ReferansNo] [varchar](50) NULL,
+	[EtiketSatisFirsatDurumuId] [int] NULL,
+ CONSTRAINT [PK_SatisFirsati] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[SatisFirsati]  WITH CHECK ADD  CONSTRAINT [FK_SatisFirsati_DomainKategori] FOREIGN KEY([RefDomainKategoriId])
+REFERENCES [dbo].[DomainKategori] ([DomainKategoriID])
+GO
+
+ALTER TABLE [dbo].[SatisFirsati] CHECK CONSTRAINT [FK_SatisFirsati_DomainKategori]
+GO
+
+ALTER TABLE [dbo].[SatisFirsati]  WITH CHECK ADD  CONSTRAINT [FK_SatisFirsati_Firma] FOREIGN KEY([RefFirmaId])
+REFERENCES [dbo].[Firma] ([FirmaID])
+GO
+
+ALTER TABLE [dbo].[SatisFirsati] CHECK CONSTRAINT [FK_SatisFirsati_Firma]
+GO
+
+ALTER TABLE [dbo].[SatisFirsati]  WITH CHECK ADD  CONSTRAINT [FK_SatisFirsati_FirmaKisi] FOREIGN KEY([RefYetkiliId])
+REFERENCES [dbo].[FirmaKisi] ([Id])
+GO
+
+ALTER TABLE [dbo].[SatisFirsati] CHECK CONSTRAINT [FK_SatisFirsati_FirmaKisi]
+GO
+
+
+--------------------------
+GO
+
+/****** Object:  Table [dbo].[Etiket]    Script Date: 21.03.2017 19:13:23 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Etiket](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Kategori] [nvarchar](150) NOT NULL,
+	[Text] [nvarchar](250) NOT NULL,
+	[Sira] [int] NOT NULL,
+	[Renk] [nvarchar](150) NULL,
+	[FontIcon] [nvarchar](150) NULL,
+	[Value] [int] NOT NULL,
+ CONSTRAINT [PK_Etiket] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
 
 
 

@@ -53,7 +53,8 @@ namespace Portal.Controllers
             ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi",model.RefDomainKategoriId);
             //ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi");
             ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad",model.RefYetkiliId);
-            ViewBag.RefAsamaId = new SelectList(Db.Etikets.Where(x=>x.Kategori=="RefAsamaId"), "Value", "Text",model.RefAsamaId);
+            ViewBag.EtiketSatisAsamaId = new SelectList(Db.Etikets.Where(x=>x.Kategori== "EtiketSatisAsamaId").OrderBy(x=>x.Sira), "Value", "Text",model.EtiketSatisAsamaId);
+            ViewBag.EtiketSatisFirsatDurumuId = new SelectList(Db.Etikets.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").OrderBy(x=>x.Sira), "Value", "Text", model.EtiketSatisAsamaId);
             return View(model);
         }
 
@@ -62,11 +63,10 @@ namespace Portal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Kaydet([Bind(Include = "Id,RefFirmaId,RefAsamaId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DosyaYolu,RefSorumluKisiId")]
+        public ActionResult Kaydet([Bind(Include = "Id,RefFirmaId,EtiketSatisAsamaId,EtiketSatisFirsatDurumuId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DosyaYolu,RefSorumluKisiId")]
         SatisFirsati satisFirsati,int? id)
         {
-            //if (ModelState.IsValid)
-            //{      
+          
             ViewBag.Title = "Kaydet";
             int cnt = 0;
             if (Db.SatisFirsatis.Count() == 0)
@@ -122,14 +122,7 @@ namespace Portal.Controllers
 
 
             return RedirectToAction("List");
-      
-            //}
-
-            //ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi", satisFirsati.RefDomainKategoriId);
-            //ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
-            //ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
-            //ViewBag.RefAsamaId = new SelectList(Db.SatisFirsatiAsamas, "Id", "Ad", satisFirsati.RefAsamaId);
-            //return View(satisFirsati);
+ 
         }
 
         // GET: SatisFirsatis/Edit/5
@@ -148,7 +141,7 @@ namespace Portal.Controllers
             ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
             ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
            
-            ViewBag.RefAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "RefAsamaId"), "Value", "Text", satisFirsati.RefAsamaId);
+            ViewBag.EtiketSatisAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "EtiketSatisAsamaId"), "Value", "Text", satisFirsati.EtiketSatisAsamaId);
             return View(satisFirsati);
         }
 
@@ -157,7 +150,7 @@ namespace Portal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RefFirmaId,RefAsamaId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DuzeltmeTarihi,DosyaYolu,RefSorumluKisiId,RefEkleyenKisiId,ReferansNo")] SatisFirsati satisFirsati)
+        public ActionResult Edit([Bind(Include = "Id,RefFirmaId,EtiketSatisAsamaId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DuzeltmeTarihi,DosyaYolu,RefSorumluKisiId,RefEkleyenKisiId,ReferansNo")] SatisFirsati satisFirsati)
         {
             if (ModelState.IsValid)
             {
@@ -169,7 +162,7 @@ namespace Portal.Controllers
             ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
             ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
           
-            ViewBag.RefAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "RefAsamaId"), "Value", "Text", satisFirsati.RefAsamaId);
+            ViewBag.EtiketSatisAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "EtiketSatisAsamaId"), "Value", "Text", satisFirsati.EtiketSatisAsamaId);
             return View(satisFirsati);
         }
 

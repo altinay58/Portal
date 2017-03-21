@@ -5,15 +5,43 @@
    
 }
 @functions{
-    List<Portal.Models.Etiket> etiketler = Portal.Database.DbHelper.GetDb.Etikets.Where(x => x.Kategori == "RefAsamaId").ToList();
-    public string EtiketIsmi(int? value)
+    List<Portal.Models.Etiket> asamaEtiketler = Portal.Database.DbHelper.GetDb.Etikets.Where(x => x.Kategori == "EtiketSatisAsamaId").ToList();
+    List<Portal.Models.Etiket> etiketSatisFirsatDurumular= Portal.Database.DbHelper.GetDb.Etikets.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").ToList();
+    public string AsamaEtiketIsmi(int? value)
     {
         if (value == null)
         {
             return "";
         }else
         {
-            return etiketler.SingleOrDefault(x => x.Value == value).Text;
+            var etiket= asamaEtiketler.SingleOrDefault(x => x.Value == value);
+            if (etiket != null)
+            {
+                return etiket.Text;
+            }
+            else
+            {
+                return "";
+            }
+        }
+    }
+    public string EtiketSatisFirsatDurumuIsmi(int? value)
+    {
+        if (value == null)
+        {
+            return "";
+        }
+        else
+        {
+            var etiket = etiketSatisFirsatDurumular.SingleOrDefault(x => x.Value == value);
+            if (etiket != null)
+            {
+                return etiket.Text;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }
@@ -30,7 +58,10 @@
                 </th>             
                 <th>
                     Aşama
-                </th>     
+                </th>
+                <th>
+                    Fırsat Durumu
+                </th>          
                 <th>
                     @Html.DisplayNameFor(model => model.Fiyat)
                 </th>
@@ -66,7 +97,10 @@
                         @Html.DisplayFor(modelItem => item.Firma.FirmaAdi)
                     </td>
                     <td>
-                        @EtiketIsmi(item.RefAsamaId)
+                        @AsamaEtiketIsmi(item.EtiketSatisAsamaId)
+                    </td>
+                    <td>
+                        @EtiketSatisFirsatDurumuIsmi(item.EtiketSatisFirsatDurumuId)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Fiyat)
