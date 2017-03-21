@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Portal.Models;
 using System.IO;
+using Microsoft.AspNet.Identity;
 
 namespace Portal.Controllers
 {
@@ -22,7 +23,7 @@ namespace Portal.Controllers
         // GET: SatisFirsatis
         public ActionResult List()
         {
-            var satisFirsatis = Db.SatisFirsatis.Include(s => s.DomainKategori).Include(s => s.Firma).Include(s => s.FirmaKisi).Include(s => s.SatisFirsatiAsama);
+            var satisFirsatis = Db.SatisFirsatis.Include(s => s.DomainKategori).Include(s => s.Firma).Include(s => s.FirmaKisi);
             return View(satisFirsatis.ToList());
         }
 
@@ -42,13 +43,18 @@ namespace Portal.Controllers
         }
 
         // GET: SatisFirsatis/Create
-        public ActionResult Create()
+        public ActionResult Kaydet(int? id)
         {
-            ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi");
-            ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi");
-            ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad");
-            ViewBag.RefAsamaId = new SelectList(Db.SatisFirsatiAsamas, "Id", "Ad");
-            return View();
+            SatisFirsati model = new SatisFirsati();
+            if (id.HasValue)
+            {
+                model = Db.SatisFirsatis.SingleOrDefault(x => x.Id == id);
+            }
+            ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi",model.RefDomainKategoriId);
+            //ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi");
+            ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad",model.RefYetkiliId);
+            ViewBag.RefAsamaId = new SelectList(Db.Etikets.Where(x=>x.Kategori=="RefAsamaId"), "Value", "Text",model.RefAsamaId);
+            return View(model);
         }
 
         // POST: SatisFirsatis/Create
@@ -56,37 +62,74 @@ namespace Portal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,RefFirmaId,RefAsamaId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DosyaYolu,RefSorumluKisiId,RefEkleyenKisiId")] SatisFirsati satisFirsati)
+        public ActionResult Kaydet([Bind(Include = "Id,RefFirmaId,RefAsamaId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DosyaYolu,RefSorumluKisiId")]
+        SatisFirsati satisFirsati,int? id)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{      
+            ViewBag.Title = "Kaydet";
+            int cnt = 0;
+            if (Db.SatisFirsatis.Count() == 0)
             {
-                int id = 0;
-                if (Db.SatisFirsatis.Count() == 0)
+                cnt = 1;
+            }
+            else
+            {
+                cnt = Db.SatisFirsatis.Max(item => item.Id);
+            }
+            var file = Request.Files["dosya"];
+            if (file != null && file.ContentLength > 0)
+            {
+                string filePath = Path.Combine(Server.MapPath("~/upload/"), file.FileName);
+                file.SaveAs(filePath);
+                satisFirsati.DosyaYolu = "/upload/" + file.FileName;
+            }
+            if (id == null)
+            {
+                satisFirsati.ReferansNo = ("D" + satisFirsati.Tarih.Date.ToShortDateString() + "F" + satisFirsati.RefFirmaId + "T" + ++cnt).Replace(".", "");
+                satisFirsati.RefEkleyenKisiId = User.Identity.GetUserId();
+                Db.SatisFirsatis.Add(satisFirsati);              
+            }else
+            {
+             
+                SatisFirsati entity = Db.SatisFirsatis.AsNoTracking().SingleOrDefault(x => x.Id == id);
+                satisFirsati.RefEkleyenKisiId = entity.RefEkleyenKisiId;
+                satisFirsati.ReferansNo = entity.ReferansNo;
+                if (string.IsNullOrEmpty(satisFirsati.DosyaYolu))
                 {
-                    id = 1;
+                    satisFirsati.DosyaYolu = entity.DosyaYolu;
                 }
-                else
-                {
-                    id = Db.SatisFirsatis.Max(item => item.Id);
-                }
-                var file = Request.Files["dosya"];
-                if (file != null && file.ContentLength > 0)
-                {
-                    string filePath = Path.Combine(Server.MapPath("~/upload/teklif"), file.FileName);
-                    file.SaveAs(filePath);
-                    satisFirsati.DosyaYolu = "/upload/teklif/" + file.FileName;
-                }
-                satisFirsati.ReferansNo = "D" + satisFirsati.Tarih.Date.ToShortDateString() + "F" + satisFirsati.RefFirmaId + "T" + ++id;
-                Db.SatisFirsatis.Add(satisFirsati);
-                Db.SaveChanges();
-                return RedirectToAction("List");
+                Db.Entry(satisFirsati).State = EntityState.Modified;
+                satisFirsati.DuzeltmeTarihi = DateTime.Now;
             }
 
-            ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi", satisFirsati.RefDomainKategoriId);
-            ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
-            ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
-            ViewBag.RefAsamaId = new SelectList(Db.SatisFirsatiAsamas, "Id", "Ad", satisFirsati.RefAsamaId);
-            return View(satisFirsati);
+            try
+            {
+               Db.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        System.Diagnostics.Trace.TraceInformation("Property: {0} Error: {1}",
+                                                validationError.PropertyName,
+                                                validationError.ErrorMessage);
+                    }
+                }
+            }
+
+
+            return RedirectToAction("List");
+      
+            //}
+
+            //ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi", satisFirsati.RefDomainKategoriId);
+            //ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
+            //ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
+            //ViewBag.RefAsamaId = new SelectList(Db.SatisFirsatiAsamas, "Id", "Ad", satisFirsati.RefAsamaId);
+            //return View(satisFirsati);
         }
 
         // GET: SatisFirsatis/Edit/5
@@ -104,7 +147,8 @@ namespace Portal.Controllers
             ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi", satisFirsati.RefDomainKategoriId);
             ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
             ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
-            ViewBag.RefAsamaId = new SelectList(Db.SatisFirsatiAsamas, "Id", "Ad", satisFirsati.RefAsamaId);
+           
+            ViewBag.RefAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "RefAsamaId"), "Value", "Text", satisFirsati.RefAsamaId);
             return View(satisFirsati);
         }
 
@@ -124,7 +168,8 @@ namespace Portal.Controllers
             ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi", satisFirsati.RefDomainKategoriId);
             ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
             ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
-            ViewBag.RefAsamaId = new SelectList(Db.SatisFirsatiAsamas, "Id", "Ad", satisFirsati.RefAsamaId);
+          
+            ViewBag.RefAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "RefAsamaId"), "Value", "Text", satisFirsati.RefAsamaId);
             return View(satisFirsati);
         }
 

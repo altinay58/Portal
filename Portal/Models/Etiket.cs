@@ -12,19 +12,14 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SatisFirsatiAsama
+    public partial class Etiket
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SatisFirsatiAsama()
-        {
-            this.SatisFirsatis = new HashSet<SatisFirsati>();
-        }
-    
         public int Id { get; set; }
-        public string Ad { get; set; }
+        public string Kategori { get; set; }
+        public string Text { get; set; }
         public int Sira { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
+        public string Renk { get; set; }
+        public string FontIcon { get; set; }
+        public int Value { get; set; }
     }
 }

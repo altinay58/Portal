@@ -34,11 +34,11 @@ namespace Portal.Models
         public string RefSorumluKisiId { get; set; }
         public string RefEkleyenKisiId { get; set; }
         public string ReferansNo { get; set; }
+        public Nullable<int> RefSatisFirsatiId { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
         public virtual Firma Firma { get; set; }
         public virtual FirmaKisi FirmaKisi { get; set; }
-        public virtual SatisFirsatiAsama SatisFirsatiAsama { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
     }

@@ -125,5 +125,11 @@ namespace Portal.Controllers
             return Json(count,JsonRequestBehavior.AllowGet);
         }
         #endregion todo
+        public JsonResult FirmaKisiler(int firmaId)
+        {
+            var kisiler = Db.FirmaKisis.AsNoTracking().Where(x => x.FirmaId == firmaId).ToList()
+                .Select(x=>new { Id=x.Id,AdSoyad=$"{x.Ad} {x.Soyad}"});
+            return Json(kisiler, JsonRequestBehavior.AllowGet);
+        }
     }
 }

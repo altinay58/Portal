@@ -3,7 +3,7 @@
 @model Portal.Models.SatisFirsati
 
 @{
-    ViewBag.Title = "Create";
+
     var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
  .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
     string userId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
@@ -11,11 +11,9 @@
                           Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
 }
 
-<h2>Create</h2>
-@using (Html.BeginForm("Create", "SatisFirsatis", FormMethod.Post, new { enctype = "multipart/form-data" ,id= "ekleForm" }))
-{
+<form action="/SatisFirsatis/Kaydet/@Model.Id" method="post" id="ekleForm" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
-    
+    @Html.HiddenFor(x=>x.Id)
     <div class="form-horizontal">
         <h4>SatisFirsati</h4>
         <hr />
@@ -23,13 +21,42 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RefFirmaId, "Firma", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" class="form-control" id="FirmaAdi" />
-                <input type="hidden" name="RefFirmaId" id="RefFirmaId" />
+                @if (Model.Firma != null)
+                {
+                    <input type="text" class="form-control" id="FirmaAdi" name="FirmaAdi" value="@Model.Firma.FirmaAdi" />
+                    <input type="hidden" name="RefFirmaId" id="RefFirmaId" value="@Model.Firma.FirmaID" />
+                }
+                else
+                {
+                    <input type="text" class="form-control" id="FirmaAdi" name="FirmaAdi"  />
+                    <input type="hidden" name="RefFirmaId" id="RefFirmaId" />
+                }
                 @*@Html.DropDownList("RefFirmaId", null, htmlAttributes: new { @class = "form-control" })*@
                 @Html.ValidationMessageFor(model => model.RefFirmaId, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.RefYetkiliId, "Firma Yetkili", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @if (Model.Firma != null)
+               {
+                <select name="RefYetkiliId" id="RefYetkiliId" class="form-control">
+                    @if (Model.Firma.FirmaKisis != null)
+                    {
+                        foreach (var item in Model.Firma.FirmaKisis)
+                        {
+                            <option value="@item.Id"><text>@item.Ad</text>&nbsp;<text>@item.Soyad</text></option>
+                        }
+                    }
+                </select>
+               }
+               else
+               {
+                <select name="RefYetkiliId" id="RefYetkiliId" class="form-control"></select>
+               }
+                @Html.ValidationMessageFor(model => model.RefYetkiliId, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.RefAsamaId, "Aşama", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -55,17 +82,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RefYetkiliId, "Firma Yetkili", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("RefYetkiliId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RefYetkiliId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.Tarih, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Tarih, new { htmlAttributes = new { @class = "form-control", data_date_format = "dd.mm.yyyy" } })
+                @Html.EditorFor(model => model.Tarih, new { htmlAttributes = new { @class = "form-control", data_date_format = "dd.mm.yyyy", is_date = 1 } })
                 @Html.ValidationMessageFor(model => model.Tarih, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -86,44 +105,58 @@
             </div>
         </div>
 
-     
-
         <div class="form-group">
-            @Html.LabelFor(model => model.DosyaYolu,"Dosya",htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.RefSorumluKisiId, "Sorumlu Kişi", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" id="dosya" name="dosya" /> 
+                <select name="RefSorumluKisiId" class="form-control">
+                    @foreach (var item in kullanicilar)
+                    {
+                        if (Model.Id == 0)
+                        {
+                            if (guncelKullanici.Id == item.Id)
+                            {
+                                <option value="@item.Id" selected="selected">@item.AdSoyad</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.AdSoyad</option>
+                            }
+                        }
+                        else
+                        {
+                            if (Model.RefSorumluKisiId == item.Id)
+                            {
+                                <option value="@item.Id" selected="selected">@item.AdSoyad</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.AdSoyad</option>
+                            }
+                        }
+
+                    }
+
+                </select>
+
+                @Html.ValidationMessageFor(model => model.RefSorumluKisiId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DosyaYolu, "Dosya", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" id="dosya" name="dosya" />
                 @Html.LabelFor(model => model.DosyaYolu)
-                @*@Html.ValidationMessageFor(model => model.DosyaYolu, "", new { @class = "text-danger" })*@
+
 
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RefSorumluKisiId,"Sorumlu Kişi", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select ng-model="RefSorumluKisiId" class="form-control">
-                    @foreach(var item in kullanicilar)
-                    {
-                        if (guncelKullanici.Id == item.Id)
-                        {
-                            <option value="@item.Id">@item.AdSoyad</option>
-                        }
-                    }
-
-                    <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
-                </select>
-                @*@Html.EditorFor(model => model.RefSorumluKisiId, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.ValidationMessageFor(model => model.RefSorumluKisiId, "", new { @class = "text-danger" })
-            </div>
-        </div>   
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Kaydet" class="btn btn-default" />
             </div>
         </div>
     </div>
-}
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "List")
@@ -181,7 +214,7 @@
         var dd;
         $(function () {
             validateForm();
-            $(".select2").select2();
+
 
             $.fn.datepicker.dates['tr'] = {
                 days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -200,9 +233,8 @@
                 e.preventDefault();
                 $(this).parent('.input-group').find('#Tarih').datepicker('show');
             });
-            //$(document).scroll(function () {
-            //    $('#Tarih').datepicker('place'); //#modal is the id of the modal
-            //});
+            $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
+            $("input[is-date='1']").datepicker('update');
             // firma autocomplete
             $("#FirmaAdi").autocomplete({
                 minChars: 2,
@@ -221,6 +253,7 @@
                 serviceUrl: '/Isler/FirmalariGetir',
                 onSelect: function (suggestion) {
                     $("#RefFirmaId").val(suggestion.data);
+                    yukleFirmaKisi(suggestion.data);
                 },
                 dataType: "json",
                 noCache: true,
@@ -228,6 +261,19 @@
             });
             //Firma autocomplete
         })
+        function yukleFirmaKisi(firmaId) {
+            $('#RefYetkiliId').html("");
+            commonAjaxService.getDataFromRemote(url = "/Home/FirmaKisiler", data = { firmaId: firmaId })
+            .done(function (res) {
+                res.forEach(item=> {
+                    let adSoyad = `${item.Ad} ${item.Soyad}`;
+                    $('#RefYetkiliId')
+                        .append($("<option></option>")
+                            .attr("value", item.Id)
+                            .text(item.AdSoyad));
+                });
+            });
+        }
         function validateForm() {
             //**validation
             var form1 = $('#ekleForm');
@@ -241,20 +287,20 @@
                 ignore: "",  // validate all fields including form hidden input
                 messages: {
                     FirmaAdi: "Lütfen firma ismi giriniz.",
-                    DomainAdi: "Lütfen Domain adi giriniz.",
-                    Tarih: "Lütfen tarih seçiniz."
+                    Fiyat: "Lütfen Fiyat  giriniz.",
+                    GecerlilikSuresi: "Lütfen süre  giriniz.",
                 },
                 rules: {
                     FirmaAdi: {
+                        minlength: 3,
+                        required: true
+                    },
+                    Fiyat: {
                         minlength: 2,
                         required: true
                     },
-                    DomainAdi: {
-                        minlength: 2,
-                        required: true
-                    },
-                    Tarih: {
-                        minlength: 9,
+                    GecerlilikSuresi: {
+                        minlength: 1,
                         required: true
                     }
                 },

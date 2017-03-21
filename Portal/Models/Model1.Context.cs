@@ -87,7 +87,7 @@ namespace Portal.Models
         public virtual DbSet<ToDo> ToDoes { get; set; }
         public virtual DbSet<TeknikRapor> TeknikRapors { get; set; }
         public virtual DbSet<SatisFirsati> SatisFirsatis { get; set; }
-        public virtual DbSet<SatisFirsatiAsama> SatisFirsatiAsamas { get; set; }
         public virtual DbSet<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
+        public virtual DbSet<Etiket> Etikets { get; set; }
     }
 }
