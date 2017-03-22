@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Portal.Models;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity.SqlServer;
 
 namespace Portal.Controllers
 {
@@ -16,17 +17,19 @@ namespace Portal.Controllers
     {
         public SatisFirsatisController()
         {
-            GuncelMenu = "Satis Bolumu";
+            GuncelMenu = "Satis Bolumu";          
         }
         //private PortalEntities db = new PortalEntities();
 
         // GET: SatisFirsatis
         public ActionResult List()
-        {
+        {          
+            //CacheManagement.SetCache(CacheKeys.ETIKETS, Db.Etikets.ToList());           
+      
             var satisFirsatis = Db.SatisFirsatis.Include(s => s.DomainKategori).Include(s => s.Firma).Include(s => s.FirmaKisi);
             return View(satisFirsatis.ToList());
         }
-
+        #region details
         // GET: SatisFirsatis/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,17 +37,101 @@ namespace Portal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SatisFirsati satisFirsati = Db.SatisFirsatis.Find(id);
+            Db.Configuration.ProxyCreationEnabled = false;
+            SatisFirsati satisFirsati = Db.SatisFirsatis.AsNoTracking().SingleOrDefault(x=>x.Id==id);
+            decimal? sonFiyat = null;
+            var sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x=>x.RefSatisFirsatiId==id).OrderByDescending(x => x.Id).FirstOrDefault();
+            var tarih = satisFirsati.Tarih;
+            tarih = tarih.AddDays(satisFirsati.GecerlilikSuresi);
+            int kalanGun = (int)(tarih - satisFirsati.Tarih).TotalDays;
+            if (sonKayit != null)
+            {
+                sonFiyat = sonKayit.Fiyat;
+            }
+            else
+            {
+                sonFiyat = satisFirsati.Fiyat;
+            }
+          
+            var data = (from s in Db.SatisFirsatis.Include(s=>s.Firma) 
+                        where s.Id==id.Value
+                        let fiyat=sonFiyat
+                        select new
+                        {
+                            Id=s.Id,
+                            Musteri=s.Firma.YetkiliAdi +" "+s.Firma.YetkiliSoyAdi,
+                            DomainKategori = s.DomainKategori.DomainKategoriAdi,
+                            EtiketSatisAsamaId=s.EtiketSatisAsamaId,
+                            EtiketSatisFirsatDurumuId=s.EtiketSatisFirsatDurumuId,
+                            SonTeklif=fiyat,
+                            KalanSure=kalanGun,
+                            SatisFirsatiFiyatRevizyons=s.SatisFirsatiFiyatRevizyons,
+                            FirmaKisiler=s.Firma.FirmaKisis,
+                            DosyaYolu=s.DosyaYolu,
+                            FirmaAdi=s.Firma.FirmaAdi,
+                            Firma=new {Id=s.Firma.FirmaID,Ad=s.Firma.FirmaAdi}
+                        }
+                        ).FirstOrDefault();
+         
             if (satisFirsati == null)
             {
                 return HttpNotFound();
             }
-            return View(satisFirsati);
+            Db.Configuration.ProxyCreationEnabled = true;
+            return View(data);
         }
+        public JsonResult FirmaTeklifleri(int firmaId,int guncelTeklifId)
+        {
+            Db.Configuration.ProxyCreationEnabled = false;
+            var data = (from s in Db.SatisFirsatis.Include(s => s.Firma)
+                        where s.RefFirmaId ==firmaId && s.Id!=guncelTeklifId
+                      
+                        let tarih= SqlFunctions.DateAdd("day",(double)s.GecerlilikSuresi,s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
+                        let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
+                        select new
+                        {
+                            Id = s.Id,
+                            Musteri = s.Firma.YetkiliAdi + " " + s.Firma.YetkiliSoyAdi,
+                            DomainKategori = s.DomainKategori.DomainKategoriAdi,
+                            EtiketSatisAsamaId = s.EtiketSatisAsamaId,
+                            EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
+                            SonTeklif = (sonKayit!=null ? sonKayit.Fiyat :s.Fiyat),
+                            KalanSure = DbFunctions.DiffDays(tarih,s.Tarih),
+                            SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
+                            FirmaKisiler = s.Firma.FirmaKisis,
+                            DosyaYolu = s.DosyaYolu,
+                            FirmaAdi = s.Firma.FirmaAdi,
+                            Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi },
+                            Teklif=s.Fiyat
+                        }
+                     ).ToList();
+            Db.Configuration.ProxyCreationEnabled = true;
+            return Json(data.ToList(), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DegistirEtiketSatisAsama(int satisId,int yeniDurum)
+        {
+            JsonCevap jsn = new JsonCevap();
+            var entity = Db.SatisFirsatis.SingleOrDefault(x => x.Id == satisId);
+            entity.EtiketSatisAsamaId = yeniDurum;
+            Db.SaveChanges();
+            jsn.Basarilimi = true;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DegistirEtiketFirsatDuru(int satisId, int yeniDurum)
+        {
+            JsonCevap jsn = new JsonCevap();
+            var entity = Db.SatisFirsatis.SingleOrDefault(x => x.Id == satisId);
+            entity.EtiketSatisFirsatDurumuId = yeniDurum;
+            Db.SaveChanges();
+            jsn.Basarilimi = true;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        #endregion details
 
         // GET: SatisFirsatis/Create
         public ActionResult Kaydet(int? id)
         {
+            var butunEtiketler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS);
             SatisFirsati model = new SatisFirsati();
             if (id.HasValue)
             {
@@ -53,8 +140,8 @@ namespace Portal.Controllers
             ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi",model.RefDomainKategoriId);
             //ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi");
             ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad",model.RefYetkiliId);
-            ViewBag.EtiketSatisAsamaId = new SelectList(Db.Etikets.Where(x=>x.Kategori== "EtiketSatisAsamaId").OrderBy(x=>x.Sira), "Value", "Text",model.EtiketSatisAsamaId);
-            ViewBag.EtiketSatisFirsatDurumuId = new SelectList(Db.Etikets.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").OrderBy(x=>x.Sira), "Value", "Text", model.EtiketSatisAsamaId);
+            ViewBag.EtiketSatisAsamaId = new SelectList(butunEtiketler.Where(x=>x.Kategori== "EtiketSatisAsamaId").OrderBy(x=>x.Sira), "Value", "Text",model.EtiketSatisAsamaId);
+            ViewBag.EtiketSatisFirsatDurumuId = new SelectList(butunEtiketler.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").OrderBy(x=>x.Sira), "Value", "Text", model.EtiketSatisAsamaId);
             return View(model);
         }
 
@@ -125,46 +212,6 @@ namespace Portal.Controllers
  
         }
 
-        // GET: SatisFirsatis/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SatisFirsati satisFirsati = Db.SatisFirsatis.Find(id);
-            if (satisFirsati == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi", satisFirsati.RefDomainKategoriId);
-            ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
-            ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
-           
-            ViewBag.EtiketSatisAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "EtiketSatisAsamaId"), "Value", "Text", satisFirsati.EtiketSatisAsamaId);
-            return View(satisFirsati);
-        }
-
-        // POST: SatisFirsatis/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RefFirmaId,EtiketSatisAsamaId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DuzeltmeTarihi,DosyaYolu,RefSorumluKisiId,RefEkleyenKisiId,ReferansNo")] SatisFirsati satisFirsati)
-        {
-            if (ModelState.IsValid)
-            {
-                Db.Entry(satisFirsati).State = EntityState.Modified;
-                Db.SaveChanges();
-                return RedirectToAction("List");
-            }
-            ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi", satisFirsati.RefDomainKategoriId);
-            ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi", satisFirsati.RefFirmaId);
-            ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad", satisFirsati.RefYetkiliId);
-          
-            ViewBag.EtiketSatisAsamaId = new SelectList(Db.Etikets.Where(x => x.Kategori == "EtiketSatisAsamaId"), "Value", "Text", satisFirsati.EtiketSatisAsamaId);
-            return View(satisFirsati);
-        }
 
         // GET: SatisFirsatis/Delete/5
         public ActionResult Delete(int? id)
@@ -192,13 +239,7 @@ namespace Portal.Controllers
             return RedirectToAction("List");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
+
     }
 }

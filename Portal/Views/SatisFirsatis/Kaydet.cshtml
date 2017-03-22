@@ -90,7 +90,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Tarih, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Tarih, new { htmlAttributes = new { @class = "form-control", data_date_format = "dd.mm.yyyy", is_date = 1 } })
+                @if (Model.Id > 0)
+                {
+                 
+                   <input type="text" name="Tarih" id="Tarih" class="form-control" is-date="1" data-date-format = "dd.mm.yyyy" value="@Model.Tarih.ToString("dd.MM.yyyy")" />
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.Tarih, new { htmlAttributes = new { @class = "form-control", data_date_format = "dd.mm.yyyy", is_date = 1 } })
+                }
+              
                 @Html.ValidationMessageFor(model => model.Tarih, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -151,8 +160,8 @@
             @Html.LabelFor(model => model.DosyaYolu, "Dosya", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <input type="file" id="dosya" name="dosya" />
-                @Html.LabelFor(model => model.DosyaYolu)
-
+             
+                <p style="color:orangered">@Model.DosyaYolu</p>
 
             </div>
         </div>
@@ -239,8 +248,12 @@
                 e.preventDefault();
                 $(this).parent('.input-group').find('#Tarih').datepicker('show');
             });
-            $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
-            $("input[is-date='1']").datepicker('update');
+            let isNew=@Model.Id==0;
+            if(isNew){
+                $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
+                $("input[is-date='1']").datepicker('update');
+            }
+       
             // firma autocomplete
             $("#FirmaAdi").autocomplete({
                 minChars: 2,

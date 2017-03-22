@@ -517,6 +517,7 @@
     <Content Include="js\controllers\listIslerCtrl.js" />
     <Content Include="js\controllers\mesaiCizelgesiCtrl.js" />
     <Content Include="js\controllers\randevularCtrl.js" />
+    <Content Include="js\controllers\satisFirsatlarDetailCtrl.js" />
     <Content Include="js\controllers\sifreListCtrl.js" />
     <Content Include="js\controllers\toDoCtrl.js" />
     <Content Include="js\extensions.js" />
@@ -698,7 +699,6 @@
     <Content Include="Views\SatisFirsatis\Kaydet.cshtml" />
     <Content Include="Views\SatisFirsatis\Delete.cshtml" />
     <Content Include="Views\SatisFirsatis\Details.cshtml" />
-    <Content Include="Views\SatisFirsatis\Edit.cshtml" />
     <Content Include="Views\SatisFirsatis\List.cshtml" />
     <Content Include="Views\Etikets\Create.cshtml" />
     <Content Include="Views\Etikets\Delete.cshtml" />

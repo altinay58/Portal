@@ -10,14 +10,16 @@ using Portal.Models;
 
 namespace Portal.Controllers
 {
-    public class EtiketsController : Controller
+    public class EtiketsController : BaseController
     {
         private PortalEntities db = new PortalEntities();
 
         // GET: Etikets
         public ActionResult Index()
         {
-            return View(db.Etikets.ToList());
+            var data = db.Etikets.ToList();
+            CacheManagement.SetCache(CacheKeys.ETIKETS, data);
+            return View(data);
         }
 
         // GET: Etikets/Details/5

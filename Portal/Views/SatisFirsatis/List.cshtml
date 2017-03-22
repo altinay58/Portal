@@ -1,12 +1,13 @@
-﻿@model IEnumerable<Portal.Models.SatisFirsati>
+﻿@using Portal.Models;
+@model IEnumerable<Portal.Models.SatisFirsati>
 
 @{
     ViewBag.Title = "List";
    
 }
 @functions{
-    List<Portal.Models.Etiket> asamaEtiketler = Portal.Database.DbHelper.GetDb.Etikets.Where(x => x.Kategori == "EtiketSatisAsamaId").ToList();
-    List<Portal.Models.Etiket> etiketSatisFirsatDurumular= Portal.Database.DbHelper.GetDb.Etikets.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").ToList();
+
+
     public string AsamaEtiketIsmi(int? value)
     {
         if (value == null)
@@ -14,6 +15,8 @@
             return "";
         }else
         {
+            List<Etiket> butundegerler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS);
+            List<Etiket> asamaEtiketler = butundegerler.Where(x => x.Kategori == "EtiketSatisAsamaId").ToList();
             var etiket= asamaEtiketler.SingleOrDefault(x => x.Value == value);
             if (etiket != null)
             {
@@ -33,6 +36,8 @@
         }
         else
         {
+            List<Etiket> butundegerler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS);
+            List<Etiket> etiketSatisFirsatDurumular = butundegerler.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").ToList();
             var etiket = etiketSatisFirsatDurumular.SingleOrDefault(x => x.Value == value);
             if (etiket != null)
             {

@@ -1,0 +1,8 @@
+--arayen ekle ekranında
+
+  1. departman (dropdown muhasebe,satış,teknik diğer alanları olacak ve rule setleri oluşturulacak)
+  (not:departman bir tableda tutulacak)
+  not:aynı günde iş girildiyse eklendi,gelecek zaman iş girildiyse durumu atlandı olacak.
+  
+      1.1 muhasebe eklendi atlandı ve tamamlandı,iş eklencek tıklanması(zorunlu hale gelcek) ve iş eklencek aşşağıdaki kısımdan iş eklencek.
+	  

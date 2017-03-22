@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.Identity;
+using Portal.Models.IslerModels;
+
 namespace Portal.Models
 {
     public static class Partial
@@ -364,6 +366,13 @@ namespace Portal.Models
                 name = user.Isim;
             }
             return name;
+        }
+        public static Kullanici GuncelKullanici()
+        {
+            string userId = HttpContext.Current.User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+            var guncelKullanici = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.Id == userId).
+                                    Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
+            return guncelKullanici;
         }
     }
 }
