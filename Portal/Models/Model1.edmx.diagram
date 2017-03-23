@@ -147,6 +147,10 @@
         <AssociationConnector Association="PortalModel.FK_SatisFirsati_FirmaKisi" />
         <AssociationConnector Association="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" />
         <EntityTypeShape EntityType="PortalModel.Etiket" Width="1.5" PointX="18.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PortalModel.SatisGorusme" Width="1.5" PointX="19.25" PointY="19.125" />
+        <AssociationConnector Association="PortalModel.FK_SatisGorusme_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_SatisGorusme_Firma" />
+        <AssociationConnector Association="PortalModel.FK_SatisGorusme_FirmaKisi" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

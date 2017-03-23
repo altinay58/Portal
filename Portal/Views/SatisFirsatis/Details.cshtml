@@ -4,16 +4,20 @@
 @model object
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Satış Detay ";
     var butunEtiketler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS);
     var guncelKullanici = Partial.GuncelKullanici();
     var satisAsamaEtiketleri = butunEtiketler.Where(x=>x.Kategori== "EtiketSatisAsamaId");
     var firsatDurumEtiketleri = butunEtiketler.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId");
-    var satisFirsati = Model;
-}
+    var gorusmeEtiketleri = butunEtiketler.Where(x => x.Kategori == "EtiketSatisGorusmeTypeId");
+    //var satisFirsati = Model;
+    var satisFirsatiStr= JsonConvert.SerializeObject(Model, Formatting.Indented,
+        new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+ 
+ }
 <div ng-controller="satisFirsatlarDetailCtrl" ng-init="init(guncelKullanici='@JsonConvert.SerializeObject(guncelKullanici)',
-     satisAsamaEtiketleri='@JsonConvert.SerializeObject(satisAsamaEtiketleri)',satisFirsati='@JsonConvert.SerializeObject(satisFirsati)',
-     firsatDurumEtiketleri='@JsonConvert.SerializeObject(firsatDurumEtiketleri)')">
+     satisAsamaEtiketleri='@JsonConvert.SerializeObject(satisAsamaEtiketleri)',satisFirsati='@satisFirsatiStr',
+     firsatDurumEtiketleri='@JsonConvert.SerializeObject(firsatDurumEtiketleri)',gorusmeEtiketleri='@JsonConvert.SerializeObject(gorusmeEtiketleri)')">
     <div class="row">
         <div class="col-md-12">
             <div class="mt-element-step">
@@ -65,6 +69,10 @@
                         </div>
                     </div>
                     <div class="row static-info">
+                        <div class="col-md-5 name"> İlk Teklif: </div>
+                        <div class="col-md-7 value"> {{satisFirsati.Teklif}} TL </div>
+                    </div>
+                    <div class="row static-info">
                         <div class="col-md-5 name"> Son Teklif: </div>
                         <div class="col-md-7 value"> {{satisFirsati.SonTeklif}} TL </div>
                     </div>
@@ -87,6 +95,11 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-bell-o"></i>Teklif Revizeleri
+                    </div>
+                    <div class="actions">
+                        <a href="/SatisFirsatiFiyatRevizyons/Kaydet?satisFirsatId={{satisFirsati.Id}}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i> Yeni Revize Fiyat
+                        </a>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -128,370 +141,90 @@
     <div class="row">
         <div class="col-md-6 col-sm-6">
             <!-- BEGIN PORTLET-->
-            <div class="portlet light bordered">
-                <div class="portlet-title tabbable-line">
-                    <div class="caption">
-                        <i class="icon-globe font-dark hide"></i>
-                        <span class="caption-subject font-dark bold uppercase">Görüşmeler</span>
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="portlet-title">
+                        <div class="caption caption-md">
+                            <i class="icon-bar-chart font-dark hide"></i>
+                            <span class="caption-subject font-dark bold uppercase">Görüşmeler</span>
+                            <span class="caption-helper">{{satisFirsati.Gorusmeler.length}} görüşme.</span>
+                        </div>
+                    </div>   
                     </div>
-                </div>
-                <div class="portlet-body">
-                    <!--BEGIN TABS-->
-                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 339px;">
-                        <div class="scroller" style="height: 339px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
-                            <ul class="feeds">
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-warning">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Kurumsal web sitesi satın almak istiyor.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 12.10.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Randevu talep edildi.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 17.10.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-car"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc"><span class="label label-sm label-info">Kurumsal Web Sitesi</span> Görüşmeye gidildi. </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 15.11.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-warning">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Teklifi gelmediğini bildirdi.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 18.12.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-envelope"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc"><span class="label label-sm label-info">Kurumsal Web Sitesi</span> Teklif Gönderildi. </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 21.12.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
+                    <div class="portlet-body">
+                        <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
 
-                                                    Teklif ile ilgili durum soruldu..
-                                                </div>
+                            <div class="general-item-list">
+                                <div class="item" ng-repeat="item in satisFirsati.Gorusmeler">
+                                    <div class="item-head">
+                                        <div class="item-details">
+                                            <div class="label label-sm {{item.Etiket.Renk}}">
+                                                <i class="{{item.Etiket.FontIcon}}"></i>
                                             </div>
+                                            <a href="javascript:;" style="margin-left:2px" class="item-name primary-link">{{item.Gorusme.FirmaKisi.Ad}}&nbsp;
+{{item.Gorusme.FirmaKisi.Soyad}}</a>
+                                            <span class="item-label">{{tarihFormat(item.Gorusme.Tarih)}}</span>
                                         </div>
+                                        <span class="item-status">
+                                            <span class="badge badge-empty badge-success"></span> {{item.ProjeAdi}}
+                                        </span>
                                     </div>
-                                    <div class="col2">
-                                        <div class="date"> 01.01.2017 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-warning">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Kurumsal web sitesi satın almak istiyor.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 12.10.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Randevu talep edildi.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 17.10.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-car"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc"><span class="label label-sm label-info">Kurumsal Web Sitesi</span> Görüşmeye gidildi. </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 15.11.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-warning">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Teklifi gelmediğini bildirdi.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 18.12.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-envelope"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc"><span class="label label-sm label-info">Kurumsal Web Sitesi</span> Teklif Gönderildi. </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 21.12.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
+                                    <div class="item-body"> {{item.Gorusme.Note}} </div>
+                                </div>
 
-                                                    Teklif ile ilgili durum soruldu..
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 01.01.2017 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-warning">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Kurumsal web sitesi satın almak istiyor.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 12.10.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Randevu talep edildi.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 17.10.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-car"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc"><span class="label label-sm label-info">Kurumsal Web Sitesi</span> Görüşmeye gidildi. </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 15.11.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-warning">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
-                                                    Teklifi gelmediğini bildirdi.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 18.12.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-envelope"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc"><span class="label label-sm label-info">Kurumsal Web Sitesi</span> Teklif Gönderildi. </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 21.12.2016 </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="col1">
-                                        <div class="cont">
-                                            <div class="cont-col1">
-                                                <div class="label label-sm label-danger">
-                                                    <i class="fa fa-phone"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cont-col2">
-                                                <div class="desc">
-                                                    <span class="label label-sm label-info">Kurumsal Web Sitesi</span>
+                            </div>
+                        </div>
 
-                                                    Teklif ile ilgili durum soruldu..
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col2">
-                                        <div class="date"> 01.01.2017 </div>
-                                    </div>
-                                </li>
-                            </ul>
+                    </div>
+
+               
+            </div>
+            @*<div class="portlet light ">
+
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-globe font-dark hide"></i>
+                            <span class="caption-subject font-dark bold uppercase">Görüşmeler</span>
                         </div>
                     </div>
-                    <!--END TABS-->
+                    <div class="portlet-body">
+                        <!--BEGIN TABS-->
+                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 339px;">
+                            <div class="scroller" style="height: 339px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
+                                <ul class="feeds">
+                                    <li ng-repeat="item in satisFirsati.Gorusmeler">
+
+                                        <div class="col1">
+                                            <div class="cont">
+                                                <div class="cont-col1">
+                                                    <div class="label label-sm {{item.Etiket.Renk}}">
+                                                        <i class="{{item.Etiket.FontIcon}}"></i>
+                                                    </div>
+
+                                                </div>
+                                                <div class="cont-col2">
+                                                    <div class="desc">
+                                                        <span class="label label-sm label-info">{{item.ProjeAdi}}</span>
+                                                        {{item.Gorusme.Note}}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col2">
+                                            <div class="date">{{tarihFormat(item.Gorusme.Tarih)}} </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--END TABS-->
+                    </div>
                 </div>
-            </div>
-            <!-- END PORTLET-->
+                <!-- END PORTLET-->
+            </div>*@
         </div>
         <div class="col-md-6">
             <!-- BEGIN SAMPLE TABLE PORTLET-->
@@ -527,7 +260,7 @@
                                 <tr ng-repeat="item in firmaTeklifler">
                                     <td class="highlight">
                                         <div class="success"></div>
-                                        <a href="javascript:;">{{item.DomainKategori}} </a>
+                                        <a href="/SatisFirsatis/Details/{{item.Id}}" target="_blank">{{item.DomainKategori}} </a>
                                     </td>
                                     <td class="hidden-xs"> {{item.Musteri}} </td>
                                     <td> {{item.Teklif}} TL </td>
@@ -629,6 +362,6 @@
     
 }
 @section scripts{
-    <script src="~/js/controllers/satisFirsatlarDetailCtrl.js?v=7"></script>
+    <script src="~/js/controllers/satisFirsatlarDetailCtrl.js?v=9"></script>
     
     }

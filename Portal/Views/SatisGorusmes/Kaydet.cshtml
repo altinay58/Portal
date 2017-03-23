@@ -1,0 +1,288 @@
+﻿@model Portal.Models.SatisGorusme
+
+@{
+    ViewBag.Title = "Kaydet";
+}
+
+
+<form action="/SatisGorusmes/Kaydet/@Model.Id" method="post" id="ekleForm" enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>SatisGorusme</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.RefFirmaId, "Firma", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @if (Model.Firma != null)
+                    {
+                        <input type="text" class="form-control" id="FirmaAdi" name="FirmaAdi" value="@Model.Firma.FirmaAdi" />
+                        <input type="hidden" name="RefFirmaId" id="RefFirmaId" value="@Model.Firma.FirmaID" />
+                    }
+                    else
+                    {
+                        <input type="text" class="form-control" id="FirmaAdi" name="FirmaAdi" />
+                        <input type="hidden" name="RefFirmaId" id="RefFirmaId" />
+                    }
+               
+                    @Html.ValidationMessageFor(model => model.RefFirmaId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.RefYetkiliId, "Firma Yetkili", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @if (Model.Firma != null)
+                    {
+                        <select name="RefYetkiliId" id="RefYetkiliId" class="form-control">
+                            @if (Model.Firma.FirmaKisis != null)
+                            {
+                                foreach (var item in Model.Firma.FirmaKisis)
+                                {
+                                    <option value="@item.Id"><text>@item.Ad</text>&nbsp;<text>@item.Soyad</text></option>
+                                }
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <select name="RefYetkiliId" id="RefYetkiliId" class="form-control"></select>
+                    }
+                    @Html.ValidationMessageFor(model => model.RefYetkiliId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EtiketSatisGorusmeTypeId,"Gorüşme Tipi", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("EtiketSatisGorusmeTypeId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.EtiketSatisGorusmeTypeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RefDomainKategoriId, "İstek Ürün", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("RefDomainKategoriId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.RefDomainKategoriId, "", new { @class = "text-danger" })
+                </div>
+            </div>       
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Tarih, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @if (Model.Id > 0)
+                    {
+
+                        <input type="text" name="Tarih" id="Tarih" class="form-control" is-date="1" data-date-format="dd.mm.yyyy" value="@Model.Tarih.Value.ToString("dd.MM.yyyy")" />
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.Tarih, new { htmlAttributes = new { @class = "form-control", data_date_format = "dd.mm.yyyy", is_date = 1 } })
+                    }
+
+                    @Html.ValidationMessageFor(model => model.Tarih, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Kaydet" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+ </form>
+
+    <div>
+        @Html.ActionLink("Back to List", "List")
+    </div>
+@section css{
+    <link href="/Content/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .datepicker.dropdown-menu {
+            z-index: 9999 !important;
+        }
+
+        .autocomplete-suggestions {
+            border: 1px solid #999;
+            background: #FFF;
+            overflow: auto;
+        }
+
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .autocomplete-selected {
+            background: #F0F0F0;
+        }
+
+        .autocomplete-suggestions strong {
+            font-weight: normal;
+            color: #3399FF;
+        }
+
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+
+            .autocomplete-group strong {
+                display: block;
+                border-bottom: 1px solid #000;
+            }
+    </style>
+
+}
+@section scripts{
+    <script src="/Content/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="/Content/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+
+    <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.autocomplete.js"></script>
+    <script>
+        var dd;
+        $(function () {
+            validateForm();
+
+
+            $.fn.datepicker.dates['tr'] = {
+                days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+                daysMin: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+                months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                monthsShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+                today: "Bugün"
+            };
+            $("#Tarih").datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                language: 'tr'
+            });
+            $('#Tarih').parent('.input-group').on('click', '.input-group-btn', function (e) {
+                e.preventDefault();
+                $(this).parent('.input-group').find('#Tarih').datepicker('show');
+            });
+            let isNew=@Model.Id==0;
+            if(isNew){
+                $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
+                $("input[is-date='1']").datepicker('update');
+            }
+
+            // firma autocomplete
+            $("#FirmaAdi").autocomplete({
+                minChars: 2,
+                transformResult: function (response) {
+                    return {
+                        suggestions: $.map(response, function (dataItem) {
+                            return { value: dataItem["label"], data: dataItem["value"], kayitlimi: dataItem.Kayitlimi };
+                        })
+                    };
+                },
+                onSearchStart: function (query) {
+                    query.sadeceFirma = true;
+                    query.sadeceArayanlar = false;
+                },
+                paramName: 'firmaAdi',
+                serviceUrl: '/Isler/FirmalariGetir',
+                onSelect: function (suggestion) {
+                    $("#RefFirmaId").val(suggestion.data);
+                    yukleFirmaKisi(suggestion.data);
+                },
+                dataType: "json",
+                noCache: true,
+                tabDisabled: true
+            });
+            //Firma autocomplete
+        })
+        function yukleFirmaKisi(firmaId) {
+            $('#RefYetkiliId').html("");
+            commonAjaxService.getDataFromRemote(url = "/Home/FirmaKisiler", data = { firmaId: firmaId })
+            .done(function (res) {
+                res.forEach(item=> {
+                    let adSoyad = `${item.Ad} ${item.Soyad}`;
+                    $('#RefYetkiliId')
+                        .append($("<option></option>")
+                            .attr("value", item.Id)
+                            .text(item.AdSoyad));
+                });
+            });
+        }
+        function validateForm() {
+            //**validation
+            var form1 = $('#ekleForm');
+            var error1 = $('.alert-danger', form1);
+            var success1 = $('.alert-success', form1);
+
+            form1.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                messages: {
+                    FirmaAdi: "Lütfen firma ismi giriniz.",
+                    Note: "Lütfen Note  giriniz."                  
+                },
+                rules: {
+                    FirmaAdi: {
+                        minlength: 3,
+                        required: true
+                    },                   
+                    Note: {
+                        minlength: 3,
+                        required: true
+                    },      
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    success1.hide();
+                    error1.show();
+                    App.scrollTo(error1, -200);
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                },
+
+                submitHandler: function (form) {
+                    //success1.show();
+                    //error1.hide();
+                    $('#ekleForm')[0].submit();
+                }
+            });
+
+
+
+
+            //**end validation
+        }
+    </script>
+
+}
+
+

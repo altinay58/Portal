@@ -69,7 +69,20 @@ namespace Portal.Controllers
                             FirmaKisiler=s.Firma.FirmaKisis,
                             DosyaYolu=s.DosyaYolu,
                             FirmaAdi=s.Firma.FirmaAdi,
-                            Firma=new {Id=s.Firma.FirmaID,Ad=s.Firma.FirmaAdi}
+                            Firma=new {Id=s.Firma.FirmaID,Ad=s.Firma.FirmaAdi},
+                            Teklif = s.Fiyat,
+                            Gorusmeler=(from g in Db.SatisGorusmes
+                                        from e in Db.Etikets
+                                        where g.EtiketSatisGorusmeTypeId==e.Value && e.Kategori == "EtiketSatisGorusmeTypeId"
+                                        && g.RefFirmaId==s.RefFirmaId
+                                        orderby g.Tarih descending
+                                        select new
+                                        {                                       
+                                            ProjeAdi=g.DomainKategori.DomainKategoriAdi,
+                                            Gorusme=g,
+                                            Etiket=e                                            
+                                        }
+                                        ).ToList()
                         }
                         ).FirstOrDefault();
          
@@ -96,7 +109,7 @@ namespace Portal.Controllers
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
                             SonTeklif = (sonKayit!=null ? sonKayit.Fiyat :s.Fiyat),
-                            KalanSure = DbFunctions.DiffDays(tarih,s.Tarih),
+                            KalanSure = DbFunctions.DiffDays(s.Tarih,tarih),
                             SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
                             FirmaKisiler = s.Firma.FirmaKisis,
                             DosyaYolu = s.DosyaYolu,
@@ -139,7 +152,7 @@ namespace Portal.Controllers
             }
             ViewBag.RefDomainKategoriId = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi",model.RefDomainKategoriId);
             //ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi");
-            ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad",model.RefYetkiliId);
+            //ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad",model.RefYetkiliId);
             ViewBag.EtiketSatisAsamaId = new SelectList(butunEtiketler.Where(x=>x.Kategori== "EtiketSatisAsamaId").OrderBy(x=>x.Sira), "Value", "Text",model.EtiketSatisAsamaId);
             ViewBag.EtiketSatisFirsatDurumuId = new SelectList(butunEtiketler.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").OrderBy(x=>x.Sira), "Value", "Text", model.EtiketSatisAsamaId);
             return View(model);
@@ -171,7 +184,7 @@ namespace Portal.Controllers
                 file.SaveAs(filePath);
                 satisFirsati.DosyaYolu = "/upload/" + file.FileName;
             }
-            if (id == null)
+            if (id == null || id==0)
             {
                 satisFirsati.ReferansNo = ("D" + satisFirsati.Tarih.Date.ToShortDateString() + "F" + satisFirsati.RefFirmaId + "T" + ++cnt).Replace(".", "");
                 satisFirsati.RefEkleyenKisiId = User.Identity.GetUserId();

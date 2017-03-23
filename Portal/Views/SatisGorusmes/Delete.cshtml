@@ -1,0 +1,80 @@
+﻿@model Portal.Models.SatisGorusme
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>SatisGorusme</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EtiketTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EtiketTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefEkleyenKisiId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefEkleyenKisiId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tarih)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Firma.FirmaAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Firma.FirmaAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirmaKisi.Ad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirmaKisi.Ad)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

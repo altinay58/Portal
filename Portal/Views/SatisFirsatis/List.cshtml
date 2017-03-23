@@ -132,6 +132,10 @@
 
 
                     <td>
+                     
+                        <a href="/SatisFirsatiFiyatRevizyons/Kaydet?satisFirsatId=@item.Id" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i> Yeni Revize Fiyat
+                        </a> |
                         @Html.ActionLink("Edit", "Kaydet", new { id = item.Id }) |
                         @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id })

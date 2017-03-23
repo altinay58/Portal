@@ -1,0 +1,74 @@
+﻿@model Portal.Models.SatisGorusme
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SatisGorusme</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EtiketTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EtiketTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefEkleyenKisiId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefEkleyenKisiId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tarih)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DomainKategori.DomainKategoriAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Firma.FirmaAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Firma.FirmaAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirmaKisi.Ad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirmaKisi.Ad)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

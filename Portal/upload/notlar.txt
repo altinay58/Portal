@@ -1,0 +1,10 @@
+--portal notlar
+
+-------------içerik formu--------------------
+-StandartProjeIsleriIdAnahtarIsmi columnda eğer data var ise arayüzden input giriş izni veriliyor eğer data yok ise arayüzden
+input girişi yapılmadan iş açılıyor,işin açıklama alanı, StandartProjeIsleriAciklama columndaki değer oluyor.
+
+
+*StandartProjeIsleri tablosunda,StandartProjeIsleriIdKontrol column kullanılmıyor.
+
+

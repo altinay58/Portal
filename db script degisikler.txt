@@ -591,6 +591,81 @@ CREATE TABLE [dbo].[Etiket](
 
 GO
 
+--
+---Etiket dataları 23.03.2017
+
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisAsamaId','Randevu',1
+           ,null,null,1)
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisAsamaId','Görüşme',2
+           ,null,null,2)
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisAsamaId','Teklif',3
+           ,null,null,3)
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisAsamaId','Değerlendirme',4
+           ,null,null,4)
+
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisAsamaId','Sözleşme',5
+           ,null,null,5)
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisAsamaId','Satışa Dönüştü',6
+           ,null,null,6)
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisFirsatDurumuId','Kabul Edilmedi',1
+           ,'label-danger',null,1)
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisFirsatDurumuId','Açık',2
+           ,'label-warning',null,2)
+
+INSERT INTO [dbo].[Etiket]
+           ([Kategori],[Text],[Sira]
+           ,[Renk],[FontIcon],[Value])
+     VALUES
+           ('EtiketSatisFirsatDurumuId','Satışa Dönüştü',3
+           ,'label-success',null,3)
+ 
+ 
+
+
+
+
+
+
 
 
 

@@ -6,18 +6,12 @@ angModule.controller("satisFirsatlarDetailCtrl", function ($scope, $timeout) {
         dd = self;
         self.getirFirmaTeklifler();
     });
-    self.init = function (guncelKullanici, satisAsamaEtiketleri, satisFirsati, firsatDurumEtiketleri) {
+    self.init = function (guncelKullanici, satisAsamaEtiketleri, satisFirsati, firsatDurumEtiketleri, gorusmeEtiketleri) {
         self.guncelKullanici = JSON.parse(guncelKullanici);
         self.satisAsamaEtiketleri = JSON.parse(satisAsamaEtiketleri);
         self.satisFirsati = JSON.parse(satisFirsati);
         self.firsatDurumEtiketleri = JSON.parse(firsatDurumEtiketleri);
-    };
-    self.etiketClassBelirle = function (etiket) {
-        if (etiket.Value === self.satisFirsati.EtiketSatisAsamaId) {
-            return "bg-green-steel";
-        } else {
-            return "bg-grey-steel";
-        }
+        self.gorusmeEtiketleri = JSON.parse(gorusmeEtiketleri);
     };
     self.degistirEtiketSatisDurumu = function (etiket) {
         commonAjaxService.getDataFromRemote(url = "/SatisFirsatis/DegistirEtiketSatisAsama", data = { satisId: self.satisFirsati.Id, yeniDurum: etiket.Value })
@@ -51,15 +45,16 @@ angModule.controller("satisFirsatlarDetailCtrl", function ($scope, $timeout) {
        });
     };
     self.teklifSatisFirsatiDurumuText = function (EtiketSatisFirsatDurumuId) {
-        let durum = self.firsatDurumEtiketleri.find(x=> { return x.Value == EtiketSatisFirsatDurumuId });
+        let durum = self.firsatDurumEtiketleri.find(x=> { return x.Value === EtiketSatisFirsatDurumuId });
         if (durum) {
             return durum.Text;
         }
     };
     self.teklifSatisFirsatiDurumuRenk = function (EtiketSatisFirsatDurumuId) {
-        let durum = self.firsatDurumEtiketleri.find(x=> { return x.Value == EtiketSatisFirsatDurumuId });
+        let durum = self.firsatDurumEtiketleri.find(x=> { return x.Value === EtiketSatisFirsatDurumuId });
         if (durum) {
             return durum.Renk;
         }
     };
+ 
 });
