@@ -1,10 +1,9 @@
 ﻿@model IEnumerable<Portal.Models.SatisGorusme>
 @using Portal.Models;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Satış Görüşme List";
     List<Etiket> etiketler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x=>x.Kategori== "EtiketSatisGorusmeTypeId").ToList();
 }
-
 
 <p>
     @Html.ActionLink("Yeni", "Kaydet")
@@ -25,7 +24,7 @@
                 <th>
                    İstek Ürün
                 </th>
-               
+          
                 <th>
                     @Html.DisplayNameFor(model => model.Note)
                 </th>
@@ -49,7 +48,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.FirmaKisi.Ad)
                     </td>
-                    <td>
+                    <td>                   
                         @if (item.EtiketSatisGorusmeTypeId.HasValue)
                         {
                             @etiketler.SingleOrDefault(x => x.Value == item.EtiketSatisGorusmeTypeId).Text

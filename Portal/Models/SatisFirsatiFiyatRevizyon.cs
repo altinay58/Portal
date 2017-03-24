@@ -18,6 +18,7 @@ namespace Portal.Models
         public int RefSatisFirsatiId { get; set; }
         public decimal Fiyat { get; set; }
         public System.DateTime Tarih { get; set; }
+        public string Note { get; set; }
     
         public virtual SatisFirsati SatisFirsati { get; set; }
     }

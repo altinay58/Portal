@@ -65,7 +65,7 @@ namespace Portal.Controllers
                             EtiketSatisFirsatDurumuId=s.EtiketSatisFirsatDurumuId,
                             SonTeklif=fiyat,
                             KalanSure=kalanGun,
-                            SatisFirsatiFiyatRevizyons=s.SatisFirsatiFiyatRevizyons,
+                            SatisFirsatiFiyatRevizyons=s.SatisFirsatiFiyatRevizyons.OrderByDescending(x=>x.Id),
                             FirmaKisiler=s.Firma.FirmaKisis,
                             DosyaYolu=s.DosyaYolu,
                             FirmaAdi=s.Firma.FirmaAdi,

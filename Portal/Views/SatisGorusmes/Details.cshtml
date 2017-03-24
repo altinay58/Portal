@@ -11,12 +11,8 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.EtiketTypeId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EtiketTypeId)
-        </dd>
+            @Html.DisplayNameFor(model => model.EtiketSatisGorusmeTypeId)
+        </dt>      
 
         <dt>
             @Html.DisplayNameFor(model => model.RefEkleyenKisiId)
@@ -69,6 +65,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Kaydet", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "List")
 </p>

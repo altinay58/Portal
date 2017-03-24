@@ -567,6 +567,7 @@
           <Property Name="RefSatisFirsatiId" Type="int" Nullable="false" />
           <Property Name="Fiyat" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Tarih" Type="datetime" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="SatisGorusme">
           <Key>
@@ -4442,6 +4443,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="Fiyat" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="Tarih" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="SatisFirsati" Relationship="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" FromRole="SatisFirsatiFiyatRevizyon" ToRole="SatisFirsati" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_SatisFirsati_DomainKategori">
           <End Type="PortalModel.DomainKategori" Role="DomainKategori" Multiplicity="0..1" />
@@ -5391,6 +5393,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySetMapping Name="SatisFirsatiFiyatRevizyons">
             <EntityTypeMapping TypeName="PortalModel.SatisFirsatiFiyatRevizyon">
               <MappingFragment StoreEntitySet="SatisFirsatiFiyatRevizyon">
+                <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="Tarih" ColumnName="Tarih" />
                 <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
                 <ScalarProperty Name="RefSatisFirsatiId" ColumnName="RefSatisFirsatiId" />

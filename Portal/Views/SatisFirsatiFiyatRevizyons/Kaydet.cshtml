@@ -1,7 +1,7 @@
 ﻿@model Portal.Models.SatisFirsatiFiyatRevizyon
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Satış Fiyat Revizyon";
 }
 
 <h2>Kaydet</h2>
@@ -30,12 +30,18 @@
                 @Html.ValidationMessageFor(model => model.Fiyat, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+            </div>
+        </div>
    
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Kaydet" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -51,7 +57,7 @@
                     @Html.DisplayNameFor(model => model.Tarih)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.SatisFirsati.Note)
+                    @Html.DisplayNameFor(model => model.Note)
                 </th>
               
             </tr>
@@ -67,7 +73,7 @@
                         @Html.DisplayFor(modelItem => item.Tarih)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.SatisFirsati.Note)
+                        @Html.DisplayFor(modelItem => item.Note)
                     </td>
                   
                 </tr>

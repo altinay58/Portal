@@ -568,12 +568,11 @@ GO
 --------------------------
 GO
 
-/****** Object:  Table [dbo].[Etiket]    Script Date: 21.03.2017 19:13:23 ******/
-SET ANSI_NULLS ON
-GO
 
-SET QUOTED_IDENTIFIER ON
-GO
+		   
+
+--------------------------
+24.03.2017
 
 CREATE TABLE [dbo].[Etiket](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
@@ -590,74 +589,126 @@ CREATE TABLE [dbo].[Etiket](
 ) ON [PRIMARY]
 
 GO
+SET IDENTITY_INSERT [dbo].[Etiket] ON 
 
---
----Etiket dataları 23.03.2017
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (1, N'EtiketSatisAsamaId', N'Randevu', 1, NULL, NULL, 1)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (2, N'EtiketSatisAsamaId', N'Görüşme', 2, NULL, NULL, 2)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (3, N'EtiketSatisFirsatDurumuId', N'Kabul Edilmedi', 1, N'label-danger', NULL, 1)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (4, N'EtiketSatisFirsatDurumuId', N'Açık', 2, N'label-warning', NULL, 2)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (5, N'EtiketSatisAsamaId', N'Teklif', 3, NULL, NULL, 3)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (6, N'EtiketSatisAsamaId', N'Değerlendirme', 4, NULL, NULL, 4)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (7, N'EtiketSatisAsamaId', N'Sözleşme', 5, NULL, NULL, 5)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (8, N'EtiketSatisAsamaId', N'Satış', 6, NULL, NULL, 6)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (9, N'EtiketSatisFirsatDurumuId', N'Satışa Dönüştü', 3, N'label-success', NULL, 3)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (10, N'EtiketSatisGorusmeTypeId', N'Gelen Arama', 1, N'label-warning', N'fa fa-phone', 1)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (11, N'EtiketSatisGorusmeTypeId', N'Telefon ile Arama', 2, N'label-danger', N'fa fa-phone', 2)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (12, N'EtiketSatisGorusmeTypeId', N'Araba ile Ziyaret', 3, N'label-danger', N'fa fa-car', 3)
+GO
+INSERT [dbo].[Etiket] ([Id], [Kategori], [Text], [Sira], [Renk], [FontIcon], [Value]) VALUES (13, N'EtiketSatisGorusmeTypeId', N'Mail Gönderme', 4, N'label-danger', N'fa fa-envelope', 4)
+GO
+SET IDENTITY_INSERT [dbo].[Etiket] OFF
+GO
+SET ANSI_PADDING ON
+
+GO
+/****** Object:  Index [kategori_value_uniq]    Script Date: 24.03.2017 10:46:01 ******/
+ALTER TABLE [dbo].[Etiket] ADD  CONSTRAINT [kategori_value_uniq] UNIQUE NONCLUSTERED 
+(
+	[Kategori] ASC,
+	[Value] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+
+---------------------------------------------
+
+  
+/****** Object:  Table [dbo].[SatisFirsatiFiyatRevizyon]    Script Date: 24.03.2017 09:59:14 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SatisFirsatiFiyatRevizyon](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RefSatisFirsatiId] [int] NOT NULL,
+	[Fiyat] [decimal](18, 2) NOT NULL,
+	[Tarih] [datetime] NOT NULL,
+	[Note] [nvarchar](max) NULL,
+ CONSTRAINT [PK_SatisFirsatiFiyatRevizyon] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[SatisFirsatiFiyatRevizyon]  WITH CHECK ADD  CONSTRAINT [FK_SatisFirsatiFiyatRevizyon_SatisFirsati] FOREIGN KEY([RefSatisFirsatiId])
+REFERENCES [dbo].[SatisFirsati] ([Id])
+GO
+
+ALTER TABLE [dbo].[SatisFirsatiFiyatRevizyon] CHECK CONSTRAINT [FK_SatisFirsatiFiyatRevizyon_SatisFirsati]
+GO
+
+/****** Object:  Table [dbo].[SatisGorusme]    Script Date: 24.03.2017 10:00:01 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SatisGorusme](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[EtiketSatisGorusmeTypeId] [int] NULL,
+	[RefDomainKategoriId] [int] NULL,
+	[RefFirmaId] [int] NULL,
+	[RefYetkiliId] [int] NULL,
+	[RefEkleyenKisiId] [nvarchar](128) NULL,
+	[Tarih] [datetime] NULL CONSTRAINT [DF_SatisGorusme_Tarih]  DEFAULT (getdate()),
+	[Note] [nvarchar](max) NULL,
+ CONSTRAINT [PK_SatisGorusme] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[SatisGorusme]  WITH CHECK ADD  CONSTRAINT [FK_SatisGorusme_DomainKategori] FOREIGN KEY([RefDomainKategoriId])
+REFERENCES [dbo].[DomainKategori] ([DomainKategoriID])
+GO
+
+ALTER TABLE [dbo].[SatisGorusme] CHECK CONSTRAINT [FK_SatisGorusme_DomainKategori]
+GO
+
+ALTER TABLE [dbo].[SatisGorusme]  WITH CHECK ADD  CONSTRAINT [FK_SatisGorusme_Firma] FOREIGN KEY([RefFirmaId])
+REFERENCES [dbo].[Firma] ([FirmaID])
+GO
+
+ALTER TABLE [dbo].[SatisGorusme] CHECK CONSTRAINT [FK_SatisGorusme_Firma]
+GO
+
+ALTER TABLE [dbo].[SatisGorusme]  WITH CHECK ADD  CONSTRAINT [FK_SatisGorusme_FirmaKisi] FOREIGN KEY([RefYetkiliId])
+REFERENCES [dbo].[FirmaKisi] ([Id])
+GO
+
+ALTER TABLE [dbo].[SatisGorusme] CHECK CONSTRAINT [FK_SatisGorusme_FirmaKisi]
+GO
 
 
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisAsamaId','Randevu',1
-           ,null,null,1)
 
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisAsamaId','Görüşme',2
-           ,null,null,2)
-
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisAsamaId','Teklif',3
-           ,null,null,3)
-
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisAsamaId','Değerlendirme',4
-           ,null,null,4)
-
-
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisAsamaId','Sözleşme',5
-           ,null,null,5)
-
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisAsamaId','Satışa Dönüştü',6
-           ,null,null,6)
-
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisFirsatDurumuId','Kabul Edilmedi',1
-           ,'label-danger',null,1)
-
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisFirsatDurumuId','Açık',2
-           ,'label-warning',null,2)
-
-INSERT INTO [dbo].[Etiket]
-           ([Kategori],[Text],[Sira]
-           ,[Renk],[FontIcon],[Value])
-     VALUES
-           ('EtiketSatisFirsatDurumuId','Satışa Dönüştü',3
-           ,'label-success',null,3)
  
  
 

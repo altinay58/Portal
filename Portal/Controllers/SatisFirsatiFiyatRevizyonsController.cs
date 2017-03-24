@@ -13,7 +13,10 @@ namespace Portal.Controllers
     public class SatisFirsatiFiyatRevizyonsController : BaseController
     {
       
-
+        public SatisFirsatiFiyatRevizyonsController()
+        {
+            GuncelMenu = "Satis Bolumu";
+        }
         // GET: SatisFirsatiFiyatRevizyons
         public ActionResult Index()
         {
@@ -39,7 +42,7 @@ namespace Portal.Controllers
         // GET: SatisFirsatiFiyatRevizyons/Create
         public ActionResult Kaydet(int? id,int satisFirsatId)
         {
-            ViewBag.listRevizyonlar = Db.SatisFirsatiFiyatRevizyons.Include(s => s.SatisFirsati).Where(x=>x.RefSatisFirsatiId==satisFirsatId).ToList();
+            ViewBag.listRevizyonlar = Db.SatisFirsatiFiyatRevizyons.Include(s => s.SatisFirsati).Where(x=>x.RefSatisFirsatiId==satisFirsatId).OrderByDescending(x=>x.Id).ToList();
             SatisFirsatiFiyatRevizyon model = new SatisFirsatiFiyatRevizyon();
             if(id.HasValue)
             {
@@ -55,7 +58,7 @@ namespace Portal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Kaydet([Bind(Include = "Id,Fiyat")] SatisFirsatiFiyatRevizyon satisFirsatiFiyatRevizyon,
+        public ActionResult Kaydet([Bind(Include = "Id,Fiyat,Note")] SatisFirsatiFiyatRevizyon satisFirsatiFiyatRevizyon,
             int?id,int satisFirsatId)
         {
             if (ModelState.IsValid)
@@ -71,13 +74,8 @@ namespace Portal.Controllers
                 satisFirsatiFiyatRevizyon.RefSatisFirsatiId = satisFirsatId;
                 satisFirsatiFiyatRevizyon.Tarih = DateTime.Now;
                 Db.SaveChanges();
-                if (!string.IsNullOrEmpty(Request.UrlReferrer.AbsolutePath))
-                {
-                    return Redirect(Request.UrlReferrer.AbsolutePath);
-                }else
-                {
-                    return RedirectToAction("Index");
-                }
+            
+                return RedirectToAction("List", "SatisFirsatis");
               
             }
             ViewBag.listRevizyonlar = Db.SatisFirsatiFiyatRevizyons.Include(s => s.SatisFirsati).Where(x => x.RefSatisFirsatiId == satisFirsatId);
