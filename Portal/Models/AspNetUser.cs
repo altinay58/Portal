@@ -33,6 +33,7 @@ namespace Portal.Models
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.DomainNots = new HashSet<DomainNot>();
             this.TeknikRapors = new HashSet<TeknikRapor>();
+            this.IsPlanis = new HashSet<IsPlani>();
         }
     
         public string Id { get; set; }
@@ -85,5 +86,7 @@ namespace Portal.Models
         public virtual ICollection<DomainNot> DomainNots { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeknikRapor> TeknikRapors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IsPlani> IsPlanis { get; set; }
     }
 }

@@ -32,6 +32,7 @@ namespace Portal.Models
             this.FirmaKisis = new HashSet<FirmaKisi>();
             this.SatisFirsatis = new HashSet<SatisFirsati>();
             this.SatisGorusmes = new HashSet<SatisGorusme>();
+            this.IsPlanis = new HashSet<IsPlani>();
         }
     
         public int FirmaID { get; set; }
@@ -97,5 +98,7 @@ namespace Portal.Models
         public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IsPlani> IsPlanis { get; set; }
     }
 }

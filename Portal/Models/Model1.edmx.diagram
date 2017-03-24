@@ -151,6 +151,10 @@
         <AssociationConnector Association="PortalModel.FK_SatisGorusme_DomainKategori" />
         <AssociationConnector Association="PortalModel.FK_SatisGorusme_Firma" />
         <AssociationConnector Association="PortalModel.FK_SatisGorusme_FirmaKisi" />
+        <EntityTypeShape EntityType="PortalModel.IsPlani" Width="1.5" PointX="21.5" PointY="17.375" />
+        <AssociationConnector Association="PortalModel.FK_IsPlani_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_IsPlani_Firma" />
+        <AssociationConnector Association="PortalModel.FK_IsPlani_SatisFirsati" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

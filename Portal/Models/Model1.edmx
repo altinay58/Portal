@@ -299,6 +299,20 @@
           <Property Name="RefIsiYapacakKisiUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RefIsID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="IsPlani">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Aciklama" Type="nvarchar(max)" />
+          <Property Name="RefSorumluKisiId" Type="nvarchar" MaxLength="128" />
+          <Property Name="EtiketIsPlaniTipi" Type="int" />
+          <Property Name="RefIsId" Type="int" />
+          <Property Name="RefFirmaId" Type="int" />
+          <Property Name="RefSatisFirsatiId" Type="int" />
+          <Property Name="EtiketIsPlaniDurum" Type="int" />
+          <Property Name="Tarih" Type="datetime" />
+        </EntityType>
         <EntityType Name="Istekler">
           <Key>
             <PropertyRef Name="istekID" />
@@ -1229,6 +1243,42 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_IsPlani_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="IsPlani" Type="Self.IsPlani" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IsPlani">
+              <PropertyRef Name="RefSorumluKisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IsPlani_Firma">
+          <End Role="Firma" Type="Self.Firma" Multiplicity="0..1" />
+          <End Role="IsPlani" Type="Self.IsPlani" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firma">
+              <PropertyRef Name="FirmaID" />
+            </Principal>
+            <Dependent Role="IsPlani">
+              <PropertyRef Name="RefFirmaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IsPlani_SatisFirsati">
+          <End Role="SatisFirsati" Type="Self.SatisFirsati" Multiplicity="0..1" />
+          <End Role="IsPlani" Type="Self.IsPlani" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SatisFirsati">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IsPlani">
+              <PropertyRef Name="RefSatisFirsatiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Istekler_Domain">
           <End Role="Domain" Type="Self.Domain" Multiplicity="0..1" />
           <End Role="Istekler" Type="Self.Istekler" Multiplicity="*" />
@@ -1828,6 +1878,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="GidilenMusteri" EntityType="Self.GidilenMusteri" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hosting" EntityType="Self.Hosting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IsiYapacakKisi" EntityType="Self.IsiYapacakKisi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IsPlani" EntityType="Self.IsPlani" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Istekler" EntityType="Self.Istekler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IstekTipi" EntityType="Self.IstekTipi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="isKategori" EntityType="Self.isKategori" Schema="dbo" store:Type="Tables" />
@@ -2044,6 +2095,18 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <AssociationSet Name="FK_IsiYapacakKisi_isler" Association="Self.FK_IsiYapacakKisi_isler">
             <End Role="isler" EntitySet="isler" />
             <End Role="IsiYapacakKisi" EntitySet="IsiYapacakKisi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IsPlani_AspNetUsers" Association="Self.FK_IsPlani_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="IsPlani" EntitySet="IsPlani" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IsPlani_Firma" Association="Self.FK_IsPlani_Firma">
+            <End Role="Firma" EntitySet="Firma" />
+            <End Role="IsPlani" EntitySet="IsPlani" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IsPlani_SatisFirsati" Association="Self.FK_IsPlani_SatisFirsati">
+            <End Role="SatisFirsati" EntitySet="SatisFirsati" />
+            <End Role="IsPlani" EntitySet="IsPlani" />
           </AssociationSet>
           <AssociationSet Name="FK_Istekler_Domain" Association="Self.FK_Istekler_Domain">
             <End Role="Domain" EntitySet="Domain" />
@@ -2652,6 +2715,19 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="FirmaKisi" EntitySet="FirmaKisis" />
             <End Role="SatisGorusme" EntitySet="SatisGorusmes" />
           </AssociationSet>
+          <EntitySet Name="IsPlanis" EntityType="PortalModel.IsPlani" />
+          <AssociationSet Name="FK_IsPlani_AspNetUsers" Association="PortalModel.FK_IsPlani_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="IsPlani" EntitySet="IsPlanis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IsPlani_Firma" Association="PortalModel.FK_IsPlani_Firma">
+            <End Role="Firma" EntitySet="Firmas" />
+            <End Role="IsPlani" EntitySet="IsPlanis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IsPlani_SatisFirsati" Association="PortalModel.FK_IsPlani_SatisFirsati">
+            <End Role="SatisFirsati" EntitySet="SatisFirsatis" />
+            <End Role="IsPlani" EntitySet="IsPlanis" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2863,6 +2939,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="AspNetRoles" Relationship="PortalModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="DomainNots" Relationship="PortalModel.FK_Domain_RefKayitYapanKullanici" FromRole="AspNetUser" ToRole="DomainNot" />
           <NavigationProperty Name="TeknikRapors" Relationship="PortalModel.FK_TeknikRapor_AspNetUsers" FromRole="AspNetUser" ToRole="TeknikRapor" />
+          <NavigationProperty Name="IsPlanis" Relationship="PortalModel.FK_IsPlani_AspNetUsers" FromRole="AspNetUser" ToRole="IsPlani" />
         </EntityType>
         <EntityType Name="CariHareket">
           <Key>
@@ -2993,6 +3070,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="FirmaKisis" Relationship="PortalModel.FK_FirmaKisi_Firma" FromRole="Firma" ToRole="FirmaKisi" />
           <NavigationProperty Name="SatisFirsatis" Relationship="PortalModel.FK_SatisFirsati_Firma" FromRole="Firma" ToRole="SatisFirsati" />
           <NavigationProperty Name="SatisGorusmes" Relationship="PortalModel.FK_SatisGorusme_Firma" FromRole="Firma" ToRole="SatisGorusme" />
+          <NavigationProperty Name="IsPlanis" Relationship="PortalModel.FK_IsPlani_Firma" FromRole="Firma" ToRole="IsPlani" />
         </EntityType>
         <EntityType Name="GelinmeyenGun">
           <Key>
@@ -4433,6 +4511,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="SatisFirsatiFiyatRevizyons" Relationship="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" FromRole="SatisFirsati" ToRole="SatisFirsatiFiyatRevizyon" />
           <Property Name="EtiketSatisAsamaId" Type="Int32" />
           <Property Name="EtiketSatisFirsatDurumuId" Type="Int32" />
+          <NavigationProperty Name="IsPlanis" Relationship="PortalModel.FK_IsPlani_SatisFirsati" FromRole="SatisFirsati" ToRole="IsPlani" />
         </EntityType>
         <EntityType Name="SatisFirsatiFiyatRevizyon">
           <Key>
@@ -4554,6 +4633,59 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Principal>
             <Dependent Role="SatisGorusme">
               <PropertyRef Name="RefYetkiliId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IsPlani">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Aciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RefSorumluKisiId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EtiketIsPlaniTipi" Type="Int32" />
+          <Property Name="RefIsId" Type="Int32" />
+          <Property Name="RefFirmaId" Type="Int32" />
+          <Property Name="RefSatisFirsatiId" Type="Int32" />
+          <Property Name="EtiketIsPlaniDurum" Type="Int32" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_IsPlani_AspNetUsers" FromRole="IsPlani" ToRole="AspNetUser" />
+          <NavigationProperty Name="Firma" Relationship="PortalModel.FK_IsPlani_Firma" FromRole="IsPlani" ToRole="Firma" />
+          <NavigationProperty Name="SatisFirsati" Relationship="PortalModel.FK_IsPlani_SatisFirsati" FromRole="IsPlani" ToRole="SatisFirsati" />
+        </EntityType>
+        <Association Name="FK_IsPlani_AspNetUsers">
+          <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="PortalModel.IsPlani" Role="IsPlani" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IsPlani">
+              <PropertyRef Name="RefSorumluKisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IsPlani_Firma">
+          <End Type="PortalModel.Firma" Role="Firma" Multiplicity="0..1" />
+          <End Type="PortalModel.IsPlani" Role="IsPlani" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firma">
+              <PropertyRef Name="FirmaID" />
+            </Principal>
+            <Dependent Role="IsPlani">
+              <PropertyRef Name="RefFirmaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IsPlani_SatisFirsati">
+          <End Type="PortalModel.SatisFirsati" Role="SatisFirsati" Multiplicity="0..1" />
+          <End Type="PortalModel.IsPlani" Role="IsPlani" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SatisFirsati">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IsPlani">
+              <PropertyRef Name="RefSatisFirsatiId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5424,6 +5556,21 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="RefYetkiliId" ColumnName="RefYetkiliId" />
                 <ScalarProperty Name="RefFirmaId" ColumnName="RefFirmaId" />
                 <ScalarProperty Name="RefDomainKategoriId" ColumnName="RefDomainKategoriId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IsPlanis">
+            <EntityTypeMapping TypeName="PortalModel.IsPlani">
+              <MappingFragment StoreEntitySet="IsPlani">
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="EtiketIsPlaniDurum" ColumnName="EtiketIsPlaniDurum" />
+                <ScalarProperty Name="RefSatisFirsatiId" ColumnName="RefSatisFirsatiId" />
+                <ScalarProperty Name="RefFirmaId" ColumnName="RefFirmaId" />
+                <ScalarProperty Name="RefIsId" ColumnName="RefIsId" />
+                <ScalarProperty Name="EtiketIsPlaniTipi" ColumnName="EtiketIsPlaniTipi" />
+                <ScalarProperty Name="RefSorumluKisiId" ColumnName="RefSorumluKisiId" />
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

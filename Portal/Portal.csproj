@@ -254,6 +254,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HtmlTasarimlarController.cs" />
     <Compile Include="Controllers\IslerController.cs" />
+    <Compile Include="Controllers\IsPlaniController.cs" />
     <Compile Include="Controllers\MailSablonlariController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SanalPostController.cs" />
@@ -363,6 +364,9 @@
     <Compile Include="Models\IslerModels\DomainBilgi.cs" />
     <Compile Include="Models\IslerModels\DomainIs.cs" />
     <Compile Include="Models\isOncelikSira.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IsPlani.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Istekler.cs">
@@ -720,6 +724,7 @@
     <Content Include="Views\SatisFirsatiFiyatRevizyons\Details.cshtml" />
     <Content Include="Views\SatisFirsatiFiyatRevizyons\Edit.cshtml" />
     <Content Include="Views\SatisFirsatiFiyatRevizyons\Index.cshtml" />
+    <Content Include="Views\IsPlani\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
