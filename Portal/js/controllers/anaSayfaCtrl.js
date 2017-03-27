@@ -11,16 +11,19 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         "Yapiliyor": { color: "#26c281" }, "KontrolBekleyen": { color: "#c49f47" },
         "Biten": { color: "darkgrey" }
     };
-    let models = ["page", "basTarih", "bitisTarih", "isAdi", "domain", "firma", "seciliKontrolEden", "seciliYapacakKisi", "seciliIsDurum","isId"];
+    let models = ["page", "basTarih", "bitisTarih", "isAdi", "domain", "firma", "seciliKontrolEden", "seciliYapacakKisi", "seciliIsDurum", "isId", "seciliBolge"];
     let loaded = false;
     angular.element(document).ready(function () {
         self.getirData();
         ss = self;
     });
-    self.init = function (kullanicilar, guncelKullaniciId) {
+    self.init = function (kullanicilar, guncelKullaniciId,bolgelerJsn) {
         //aryanListService.getListData(self.basTarih, self.bitisTarih);
         self.kullanicilar = JSON.parse(kullanicilar);
-        self.guncelKullanici = self.kullanicilar.find(x=> { return x.Id === guncelKullaniciId }).AdSoyad;
+        self.bolgeler = JSON.parse(bolgelerJsn);
+        if (guncelKullaniciId) {
+            self.guncelKullanici = self.kullanicilar.find(x=> { return x.Id === guncelKullaniciId }).AdSoyad;
+        }      
         self.basTarih = qs("basTarih");
         self.bitisTarih = qs("bitisTarih");
         self.page = qs("page"); //=== null ? 1 : parseInt(qs("page"));
@@ -28,15 +31,16 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         self.firma = qs("firma");
         self.domain = qs("domain");
         self.seciliKontrolEden = qs("seciliKontrolEden");
-        self.seciliYapacakKisi = qs("seciliYapacakKisi") == null ? self.guncelKullanici : qs("seciliYapacakKisi");
+        self.seciliYapacakKisi = qs("seciliYapacakKisi") === null ? self.guncelKullanici : qs("seciliYapacakKisi");
         self.seciliIsDurum = qs("seciliIsDurum");
         self.isId = qs("isId");
+        self.seciliBolge = qs("seciliBolge");
     };
     self.getirData = function (model) {
         self.yukleniyor = true;
         if ((model === undefined || model === "") || model.length >= 3) {
             anaSayfaService.getListData(qs("basTarih"), qs("bitisTarih"), qs("isAdi"), qs("page"), qs("firma"), qs("domain"),
-                qs("seciliKontrolEden"), qs("seciliYapacakKisi"), qs("seciliIsDurum"),qs("isId"))
+                qs("seciliKontrolEden"), qs("seciliYapacakKisi"), qs("seciliIsDurum"), qs("isId"), qs("seciliBolge"))
              .then(function (res) {
               self.isler = res.Data;
               self.yukleniyor = false;
@@ -70,12 +74,12 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     function qs(name) {
         return portalApp.getParameterByName(name);
     }
-    self.$watchCollection('[page,basTarih,bitisTarih,isAdi,domain,firma,seciliKontrolEden,seciliYapacakKisi,seciliIsDurum,isId]', function (nw, ov) {
+    self.$watchCollection('[page,basTarih,bitisTarih,isAdi,domain,firma,seciliKontrolEden,seciliYapacakKisi,seciliIsDurum,isId,seciliBolge]', function (nw, ov) {
         console.log(nw[0] + "-" + ov[0]);
         let q = "";//`#?page=${nw[0]}`;
         let first = true;
         for (let i = 0; i < models.length; i++) {
-            if (nw[i] !== null && nw[i] !== "") {
+            if (nw[i] && nw[i] !== null && nw[i] !== "") {
                 if (first) {
                     q = `#?${models[i]}=${setIfEmpty(nw[i])}`;
                     first = false;
@@ -106,7 +110,8 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
        
         let yeniSayfa = nw[0];
         let eskiSayfa = ov[0];
-        if (yeniSayfa !== eskiSayfa || nw[6] !== ov[6] || nw[7] !== ov[7] || nw[8] !== ov[8]) {
+        const BOLGE = 10;
+        if (yeniSayfa !== eskiSayfa || nw[6] !== ov[6] || nw[7] !== ov[7] || nw[8] !== ov[8] || nw[BOLGE] !== ov[BOLGE]) {
             self.getirData();
         }
       

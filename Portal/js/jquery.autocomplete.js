@@ -515,7 +515,9 @@
 
         isExactMatch: function (query) {
             var suggestions = this.suggestions;
-
+            if (suggestions.length==0 || suggestions[0].value == null) {
+                return false;
+            }
             return (suggestions.length === 1 && suggestions[0].value.toLowerCase() === query.toLowerCase());
         },
 
@@ -768,11 +770,14 @@
 
             $.each(that.suggestions, function (i, suggestion) {
                 if (value != null) {
-                    var foundMatch = suggestion.value.toLowerCase().indexOf(value) === 0;
-                    if (foundMatch) {
-                        bestMatch = suggestion;
+                    if (suggestion.value) {
+                        var foundMatch = suggestion.value.toLowerCase().indexOf(value) === 0;
+                        if (foundMatch) {
+                            bestMatch = suggestion;
+                        }
+                        return !foundMatch;
                     }
-                    return !foundMatch;
+                    
                 }
                
             });

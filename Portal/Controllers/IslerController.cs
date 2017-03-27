@@ -481,9 +481,9 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             var firmalar = new List<object>();
             if (sadeceFirma)
             {
-                foreach (Firma firma in Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi)
-                        || a.YetkiliTelefon.Contains(firmaAdi) || a.Email.Contains(firmaAdi)
-                        ))
+                var list = Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi)
+                          || a.YetkiliTelefon.Contains(firmaAdi) || a.Email.Contains(firmaAdi));
+                foreach (Firma firma in list)
                 {
                     firmalar.Add(new
                     {
@@ -511,7 +511,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             if (sadeceArayanlar)
             {
                 var diziArayanlar = Db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi)
-            || a.arayanTelefonNo.Contains(firmaAdi) || a.arayanMailAdresi.Contains(firmaAdi)).ToList();
+            || a.arayanTelefonNo.Contains(firmaAdi) || a.arayanMailAdresi.Contains(firmaAdi));
 
                 List<int> listTemp = new List<int>();
 
@@ -554,6 +554,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
 
             return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
+     
         public JsonResult DomainGetir(string domainAdi,int? firmaId)
         {
         

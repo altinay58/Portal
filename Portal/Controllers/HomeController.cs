@@ -19,7 +19,7 @@ namespace Portal.Controllers
             return View();
         }
         public JsonResult ListIsAra(int? page, string basTarih, string bitisTarih, string isAdi,
-            string firma,string domain,string isiKontrolEden,string isiYapacakKisi,string isinDurumu,int? isId)
+            string firma,string domain,string isiKontrolEden,string isiYapacakKisi,string isinDurumu,int? isId,int? bolgeId)
         {
             int baslangic = ((page??1) - 1) * PagerCount;
             JsonCevap jsn = new JsonCevap();
@@ -44,7 +44,9 @@ namespace Portal.Controllers
             //     && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true));
             //}
             query = query.Where(x => (!string.IsNullOrEmpty(isiKontrolEden) ? x.IsiVerenKisi.Contains(isiKontrolEden) : true)
-               && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true));
+               && (!string.IsNullOrEmpty(isiYapacakKisi) ? x.IsiYapacakKisi.Contains(isiYapacakKisi) : true)
+               && (bolgeId.HasValue ? x.KonumId==bolgeId : true)
+               );
             if (!string.IsNullOrEmpty(basTarih) && !string.IsNullOrEmpty(bitisTarih))
             {
                 DateTime tBas = DateTime.Parse(basTarih);

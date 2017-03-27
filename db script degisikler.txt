@@ -703,9 +703,46 @@ GO
 ALTER TABLE [dbo].[SatisGorusme]  WITH CHECK ADD  CONSTRAINT [FK_SatisGorusme_FirmaKisi] FOREIGN KEY([RefYetkiliId])
 REFERENCES [dbo].[FirmaKisi] ([Id])
 GO
-
 ALTER TABLE [dbo].[SatisGorusme] CHECK CONSTRAINT [FK_SatisGorusme_FirmaKisi]
 GO
+--25.03.2017 bölge adı geldi
+
+/****** Object:  View [dbo].[IslerListesi]    Script Date: 25.03.2017 10:46:10 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+ALTER VIEW [dbo].[IslerListesi]
+AS
+
+select i.islerID as Id,i.islerAdi as IsAdi,f.FirmaAdi as Firma,d.DomainAdi as Domain,
+(SELECT   TOP 1 a.Isim+' '+a.SoyIsim FROM      dbo.AspNetUsers AS a WHERE i.islerisiVerenKisi=a.Id ) AS IsiVerenKisi
+,dbo.IsiYapanKullaniciAdSoyad(i.islerID) as IsiYapacakKisi,
+(case i.islerIsinDurumu  when 1 then 'Yapilacak'
+                         when 2 then 'YapilacakDeadline'
+						 when 3 then 'Yapiliyor'
+						 when 4 then 'KontrolBekleyen'
+						 when 5 then 'Biten'
+						 end
+) as IsinDurumu,i.islerTarih Tarih,i.islerRefDomainID as DomainId,k.Konum as Bolge,k.KonumID as KonumId
+from isler i inner join firma f on (i.islerRefFirmaID=f.FirmaID)
+     inner join Domain d on (i.islerRefDomainID=d.DomainID)
+	 left outer join Konum k on(k.KonumID=f.RefKonumID)
+
+
+
+
+GO
+
+
+
+
+
+
 
 
 

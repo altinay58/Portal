@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Portal.Filters;
+using Portal.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +20,70 @@ namespace Portal.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public JsonResult SatisFirsatiAra(int? konumId)
+        {
+            Db.Configuration.ProxyCreationEnabled = false;
+            var data = (from s in Db.SatisFirsatis.Include(s => s.Firma).Include(s=>s.Firma.Konum)
+                        where 
+                        (konumId.HasValue ? s.Firma.Konum.KonumID==konumId : true)
+                        let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
+                        let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
+                        orderby s.Id descending
+                        select new
+                        {
+                            Id = s.Id,
+                            Bolge=s.Firma.Konum.Konum1,
+                            Musteri = s.Firma.YetkiliAdi + " " + s.Firma.YetkiliSoyAdi,
+                            DomainKategori = s.DomainKategori.DomainKategoriAdi,
+                            EtiketSatisAsamaId = s.EtiketSatisAsamaId,
+                            EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
+                            SonTeklif = (sonKayit != null ? sonKayit.Fiyat : s.Fiyat),
+                            KalanSure = DbFunctions.DiffDays(s.Tarih, tarih),
+                            SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
+                            FirmaKisiler = s.Firma.FirmaKisis,
+                            DosyaYolu = s.DosyaYolu,
+                            FirmaAdi = s.Firma.FirmaAdi,
+                            Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi,Cep=s.Firma.YetkiliCepTelefon,Tel=s.Firma.YetkiliTelefon},
+                            Teklif = s.Fiyat,
+                            EtiketSatisAsama =(
+                                               from e in Db.Etikets
+                                               where e.Kategori== "EtiketSatisAsamaId" && s.EtiketSatisAsamaId==e.Value
+                                               select e
+                                               ).FirstOrDefault()
+                        }
+                     ).ToList();
+            Db.Configuration.ProxyCreationEnabled = true;
+            return Json(data.ToList(), JsonRequestBehavior.AllowGet);
+        }
+        [JsonNetFilter]
+        public JsonResult BorcluFirmalarAra(int? konumId,int? page,string firmaAdi)
+        {
+            Db.Configuration.ProxyCreationEnabled = false;
+            int baslangic = ((page ?? 1) - 1) * PagerCount;
+            var list2 = Db.Firmas.TumFirmalar().Include(x=>x.Konum).Include(x=>x.Firma2).Where(x => x.Musteri == true)
+                     .Where(a => (a.CariHarekets.Sum(c => c.ChSatisFiyati) - a.CariHarekets.Sum(c => c.ChAlinanOdeme)) > 0)
+                     .Where(x => !string.IsNullOrEmpty(firmaAdi) ? x.FirmaAdi.Contains(firmaAdi) : true
+                     && konumId.HasValue ? x.Konum.KonumID==konumId : true);
+
+            if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
+            {
+                list2 = list2.Where(x => (x.Personel != true && x.Kasa != true));
+            }
+            var qTotal2 = list2;
+            var result = list2.Include(x => x.Konum).Include(x => x.Firma2).Select(x=>new { konum=x.Konum.Konum1,araci=x.Firma2.FirmaAdi,firma=x,
+                domainSayisi=x.Domains.Count(),
+                borcu = x.CariHarekets.Sum(q=>q.ChSatisFiyati) - x.CariHarekets.Sum(q => q.ChAlinanOdeme)})
+                .OrderByDescending(x => x.firma.CariHarekets.Sum(c => c.ChSatisFiyati) - x.firma.CariHarekets.Sum(c => c.ChAlinanOdeme))
+                .Skip(baslangic).Take(PagerCount).ToList();
+          
+            int totalCount = qTotal2.Count();
+            Db.Configuration.ProxyCreationEnabled = true;
+            var jsn = new JsonCevap();
+            jsn.Basarilimi = true;
+            jsn.Data = result;
+            jsn.ToplamSayi = totalCount;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
         }
     }
 }

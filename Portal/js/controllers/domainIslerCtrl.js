@@ -56,7 +56,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
     self.domainAksiyon = {
         BeklemeyeAl:1,YayinaAl:2,YayiniDurdur:3
     }
-   
+    self.yukleniyor = true;
     angular.element(document).ready(function () {
         console.log(self.guncelDomainId);
         self.getirDomainIsler();
@@ -138,6 +138,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
             //$timeout(function () {
             //    console.log("post Digest with $timeout");
             //}, 0, false);
+            self.yukleniyor = false;
         })
     }
     function getirDomainSonNote() {

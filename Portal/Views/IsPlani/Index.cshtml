@@ -10,6 +10,7 @@
     var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
 .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
 
+    var konumlarJsn =JsonConvert.SerializeObject(Database.DbHelper.GetDb.Konums.Select(x=>new { KonumID=x.KonumID,Konum=x.Konum1}).ToList());
 }
 
 <div class="row">
@@ -21,18 +22,20 @@
                         <a href="#tab_is_listesi" data-toggle="tab" aria-expanded="true"> İş Listesi </a>
                     </li>
                     <li class="">
-                        <a href="#tab_1_2" data-toggle="tab" aria-expanded="false"> Satış Fırsatları </a>
+                        <a href="#tab_satis_firsatlari" data-toggle="tab" aria-expanded="false"> Satış Fırsatları </a>
                     </li>
                     <li class="">
-                        <a href="#tab_1_3" data-toggle="tab" aria-expanded="false"> Borçlu Cariler </a>
+                        <a href="#tab_borclu_firmalar" data-toggle="tab" aria-expanded="false"> Borçlu Cariler </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div ng-controller="anaSayfaCtrl" class="tab-pane fade active in" id="tab_is_listesi" ng-init="init('@JsonConvert.SerializeObject(kullanicilar)','')">
-                        <table class="table table-bordered table-striped table-condensed flip-content">
+                    <div ng-controller="anaSayfaCtrl" class="tab-pane fade active in table-scrollable" id="tab_is_listesi" ng-init="init('@JsonConvert.SerializeObject(kullanicilar)',
+                         guncelKullaniciId='',bolgelerJsn='@konumlarJsn')">
+                        <table class="table table-bordered table-striped table-condensed flip-content isler">
                             <thead class="flip-content">
                                 <tr>
-                                    <th> İş Adı </th>
+                                    <th>Bölge</th>
+                                    <th> İş Adı </th>                                    
                                     <th> Domain </th>
                                     <th> İş Yapacak </th>
                                     <th> İşin Durumu </th>
@@ -42,7 +45,14 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                 
+                                    <td>
+
+                                        <select ng-model="seciliBolge" class="form-control">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
+                                        </select>
+
+                                    </td>
                                     <td> <input type="text" name="isAdi" ng-model="isAdi" ng-keyup="getirData(isAdi)" placeholder="İş Adı" autocomplete="off" class="form-control" /></td>
                                   
                                     <td> <input type="text" ng-model="domain" ng-keyup="getirData(domain)" placeholder="domain" autocomplete="off" class="form-control" /></td>
@@ -65,7 +75,7 @@
                                     <td></td>
                                 </tr>
                                 <tr ng-repeat="x in isler" style="background-color:{{isRenkler[x.IsinDurumu].color}}">
-                                 
+                                   <td>{{x.Bolge}}</td>
                                     <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.IsAdi}}</a></td>
                                   
                                     <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Domain}}</a>   </td>
@@ -87,365 +97,116 @@
 
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="tab_1_2">
-                        <table class="table table-bordered table-striped table-condensed flip-content">
+                    <div ng-controller="satisFirsatiCtrl" ng-init="init(bolgelerJsn='@konumlarJsn')" class="tab-pane fade table-scrollable" id="tab_satis_firsatlari">
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
                             <thead class="flip-content">
                                 <tr>
-                                    <th> Ad Soyad </th>
-                                    <th> Firma Adı </th>
-                                    <th> Telefon </th>
-                                    <th> Durum </th>
                                     <th> Bölge </th>
+                                    <th> Ad Soyad </th>
+                                    <th> Firma Adı </th> 
+                                    <th> Telefon </th>                                 
+                                    <th> Durum </th>
+                                  
                                     <th>  </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData(adSoyad)" placeholder="Ad / Soyad" class="form-control ng-pristine ng-untouched ng-valid ng-empty"></td>
-                                    <td> <input type="text" name="firma" ng-model="firma" ng-keyup="getirData(firma)" placeholder="Firma" class="form-control ng-pristine ng-untouched ng-valid ng-empty"></td>
-                                    <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control ng-pristine ng-untouched ng-valid ng-empty"> </td>
+                                    <td>
+
+                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge)">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
+                                        </select>
+
+                                    </td>
+                                    <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData(adSoyad)" placeholder="Ad / Soyad" class="form-control"></td>
+                                    <td> <input type="text" name="firma" ng-model="firma" ng-keyup="getirData(firma)" placeholder="Firma" class="form-control"></td>
+                                    <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"> </td>
                                     <td> </td>
-                                    <td>  </td>
-                                    <td>  </td>
+                                    <td> </td>
+                                 
                                 </tr>
 
                                 <!-- ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> DİLEK HANIM </td>
-                                    <td class="ng-binding"> DÖŞEMEALTI SANAYİCİ ve İŞADAMLARI DERNEĞİ </td>
-                                    <td><a href="tel:02424433250" class="ng-binding">02424433250 </a> </td>
-                                    <td><button type="button" class="btn btn-warning green" ng-click="getirData()">Görüşme</button></td>
-                                    <td class="ng-binding"> Döşemealtı </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
+                                <tr ng-repeat="x in firsatlar">
+                                    <td> {{x.Bolge}} </td>
+                                    <td>{{x.Musteri}}</td>
+                                    <td>{{x.Firma.Ad}}</td>    
+                                    <td><a href="tel:{{x.Firma.Cep}}">{{x.Firma.Cep}}</a>&nbsp;
+                                        <a href="tel:{{x.Firma.Tel}}">{{x.Firma.Tel}}</a>
+                                    </td>                              
+                                    <td><button type="button" class="btn btn-warning green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}}</button>
+                                        @*<span class="label green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}} </span>*@
                                     </td>
+                                
+                                    <td>  </td>
                                 </tr><!-- end ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> Emre  </td>
-                                    <td class="ng-binding"> Emre Eticaret Güzeloba </td>
-                                    <td><a href="tel:05395607390" class="ng-binding">05395607390 </a> </td>
-                                    <td><button type="button" class="btn purple" ng-click="getirData()">Teklif</button></td>
-                                    <td class="ng-binding"> Lara </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> Emre  </td>
-                                    <td class="ng-binding"> Emre Eticaret Güzeloba </td>
-                                    <td><a href="tel:05395607390" class="ng-binding">05395607390 </a> </td>
-                                    <td><button type="button" class="btn blue" ng-click="getirData()">Sunum</button></td>
-                                    <td class="ng-binding"> Yeni Sanayi </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> DİLEK HANIM </td>
-                                    <td class="ng-binding"> DÖŞEMEALTI SANAYİCİ ve İŞADAMLARI DERNEĞİ </td>
-                                    <td><a href="tel:02424433250" class="ng-binding">02424433250 </a> </td>
-                                    <td><button type="button" class="btn btn-warning green" ng-click="getirData()">Görüşme</button></td>
-                                    <td class="ng-binding"> Döşemealtı </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> Emre  </td>
-                                    <td class="ng-binding"> Emre Eticaret Güzeloba </td>
-                                    <td><a href="tel:05395607390" class="ng-binding">05395607390 </a> </td>
-                                    <td><button type="button" class="btn purple" ng-click="getirData()">Teklif</button></td>
-                                    <td class="ng-binding"> Lara </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> Emre  </td>
-                                    <td class="ng-binding"> Emre Eticaret Güzeloba </td>
-                                    <td><a href="tel:05395607390" class="ng-binding">05395607390 </a> </td>
-                                    <td><button type="button" class="btn blue" ng-click="getirData()">Sunum</button></td>
-                                    <td class="ng-binding"> Yeni Sanayi </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> DİLEK HANIM </td>
-                                    <td class="ng-binding"> DÖŞEMEALTI SANAYİCİ ve İŞADAMLARI DERNEĞİ </td>
-                                    <td><a href="tel:02424433250" class="ng-binding">02424433250 </a> </td>
-                                    <td><button type="button" class="btn btn-warning green" ng-click="getirData()">Görüşme</button></td>
-                                    <td class="ng-binding"> Döşemealtı </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> Emre  </td>
-                                    <td class="ng-binding"> Emre Eticaret Güzeloba </td>
-                                    <td><a href="tel:05395607390" class="ng-binding">05395607390 </a> </td>
-                                    <td><button type="button" class="btn purple" ng-click="getirData()">Teklif</button></td>
-                                    <td class="ng-binding"> Lara </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-                                <tr ng-repeat="x in arayanlar" class="ng-scope">
-                                    <td class="ng-binding"> Emre  </td>
-                                    <td class="ng-binding"> Emre Eticaret Güzeloba </td>
-                                    <td><a href="tel:05395607390" class="ng-binding">05395607390 </a> </td>
-                                    <td><button type="button" class="btn blue" ng-click="getirData()">Sunum</button></td>
-                                    <td class="ng-binding"> Yeni Sanayi </td>
-                                    <td>
-                                        <form class="form-inline ng-valid ng-dirty ng-valid-parse" role="form">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <select class="form-control " name="islerisiYapacakKisi" tabindex="-1" aria-hidden="true">
-                                                        <option value="04c4a88b-1e62-4061-be47-11ece13e5fc1">Fatih&nbsp;Gökçe</option>
-                                                        <option value="2f8e03fe-8234-431f-8c71-f1a16a301af8">İlhami&nbsp;Yılmaz</option>
-                                                        <option value="4a3cf4f8-908c-436d-ab76-429d3192d8b4">Burak&nbsp;Aydın</option>
-                                                        <option value="d8c319cd-1e3b-40a7-b6fb-fb2861dcf720">Leyla&nbsp;Kesik</option>
-                                                        <option value="ddeda717-7f7d-418a-8bf7-629b9f03b37d">Özcan&nbsp;BAYĞUŞ</option>
-                                                        <option value="f5f53da2-c311-44c9-af6a-b15ca29aee57">Ali&nbsp;KARAYEL</option>
-                                                    </select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default green" ng-click="getirData()">Ekle</button>
-
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr><!-- end ngRepeat: x in arayanlar -->
+                       
 
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="tab_1_3">
+                    <div ng-controller="borcluFirmalarCtrl" ng-init="init(bolgelerJsn='@konumlarJsn')" class="tab-pane fade table-scrollable" id="tab_borclu_firmalar">
                         <table class="table table-striped table-bordered table-hover">
                             <thead class="flip-content">
                                 <tr>
-                                    <th>
-                                        No
-                                    </th>
+                                    <th>Bölge </th>
                                     <th>Kalan Ödeme</th>
-                                    <th>
-                                        Firma
-                                    </th>
-                                    <th class="left">
-                                        Yetkili
-                                    </th>
-                                    <th class="left">
-                                        Telefon
-                                    </th>
-                                    <th class="left">
-                                        Cep Telefon
-                                    </th>
-                                    <th class="left">
-                                        Domainler
-                                    </th>
-                                    <th class="left">
-                                        Aracı
-                                    </th>
-
-                                    <th class="left">
-                                        E-Mail
-                                    </th>
-                                    <th class="right">
-                                        Düzelt
-                                    </th>
-                                    <th class="right">
-                                        Sil
-                                    </th>
-
-                                </tr>
+                                    <th> Firma</th>
+                                    <th class="left">Yetkili </th>
+                                    <th class="left">Telefon</th>
+                                    <th class="left">Cep Telefon</th>
+                                    <th class="left"> Domainler </th>
+                                    <th class="left">Aracı </th>
+                                    @*<th class="left">E-Mail</th>*@
+                                    <th class="right">Düzelt</th>
+                               </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>6228</td>
-                                    <td class="text-right"> 53.000 TL</td>
                                     <td>
-                                        <a href="/CariHareket/Detay/6228">
-                                            JİNEKOLOG DR. MUSTAFA TORGAÇ
-                                        </a>
-                                    </td>
-                                    <td>
-                                        Mustafa
-                                    </td>
-                                    <td>
-                                        0242 248 08 20
-                                    </td>
-                                    <td>
-                                        0532 687 09 39
-                                    </td>
-                                    <td>
-                                        30
-                                    </td>
-
-                                    <td>
-                                        Yok
-                                    </td>
-
-
-                                    <td>
-                                        mustafatorgac@yahoo.com
-                                    </td>
-
-
-
-                                    <td>
-                                        <a href="/Firmalar/FirmaKaydet/6228">
-                                            Düzenle
-                                        </a>
-
-                                    </td>
-                                    <td align="right">
-                                        <a href="#" onclick="firmaSil(6228)">
-                                            Sil
-                                        </a>
-                                    </td>
+                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge)">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
+                                        </select>
+                                    </td>                                 
+                                    <td>ödeme</td>
+                                    <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td> </td>
+                                    <td> </td>
+                                    @*<td></td>*@
+                                    <td><a href="/Firmalar/FirmaKaydet/6228">Düzenle</a></td>
+                                   
                                 </tr>
-                              
+                                <tr ng-repeat="x in firmalar">
+                                    <td> {{x.konum}} </td>
+                                    <td>{{x.borcu}}</td>
+                                    <td>{{x.firma.FirmaAdi}}</td>
+                                    <td>{{x.firma.YetkiliAdi}}</td>
+                                    <td>
+                                        <a href="tel:{{x.firma.YetkiliTelefon}}">{{x.firma.YetkiliTelefon}}</a>                                     
+                                    </td>
+                                    <td>
+                                        <a href="tel:{{x.firma.YetkiliCepTelefon}}">{{x.firma.YetkiliCepTelefon}}</a>
+                                    </td>
+                                    <td>{{x.domainSayisi}}</td>
+                                    <td>{{x.araci}}</td>
+                                    @*<td> {{x.firma.Email}} </td>*@
+                                    <td></td>
+                                  
+                                </tr>
                             </tbody>
 
                         </table>
+                        <div style="text-align:center">
+                            <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+                                boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="page" ng-change="pageChanged()"></ul>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -575,9 +336,10 @@
 
 
 
-    <script src="/js/services/anaSayfaService.js?v=5"></script>
-    <script src="/js/controllers/anaSayfaCtrl.js?v=16"></script>
-
+    <script src="/js/services/anaSayfaService.js?v=6"></script>
+    <script src="/js/controllers/anaSayfaCtrl.js?v=20"></script>
+<script src="/js/controllers/satisFirsatiCtrl.js?v=3"></script>
+<script src="/js/controllers/borcluFirmalarCtrl.js?v=1"></script>
     <script>
     function printPage() {
         window.print();

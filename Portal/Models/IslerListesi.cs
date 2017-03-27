@@ -23,5 +23,7 @@ namespace Portal.Models
         public Nullable<System.DateTime> Tarih { get; set; }
         public string IsinDurumu { get; set; }
         public Nullable<int> DomainId { get; set; }
+        public string Bolge { get; set; }
+        public Nullable<int> KonumId { get; set; }
     }
 }

@@ -64,7 +64,8 @@ namespace Portal.Filters
 
                 if (this.Data != null)
                 {
-                    response.Write(JsonConvert.SerializeObject(this.Data));
+                    response.Write(JsonConvert.SerializeObject(this.Data, Formatting.Indented,
+        new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }
         }
