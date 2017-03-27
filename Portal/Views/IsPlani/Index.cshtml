@@ -103,10 +103,9 @@
                                 <tr>
                                     <th> Bölge </th>
                                     <th> Ad Soyad </th>
-                                    <th> Firma Adı </th> 
+                                    <th> Firma Adı </th>                                  
                                     <th> Telefon </th>                                 
-                                    <th> Durum </th>
-                                  
+                                    <th> Durum </th>                                  
                                     <th>  </th>
                                 </tr>
                             </thead>
@@ -114,18 +113,17 @@
                                 <tr>
                                     <td>
 
-                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge)">
+                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge,true)">
                                             <option value="">Hepsi</option>
                                             <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
                                         </select>
 
                                     </td>
                                     <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData(adSoyad)" placeholder="Ad / Soyad" class="form-control"></td>
-                                    <td> <input type="text" name="firma" ng-model="firma" ng-keyup="getirData(firma)" placeholder="Firma" class="form-control"></td>
+                                    <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
                                     <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"> </td>
                                     <td> </td>
-                                    <td> </td>
-                                 
+                                    <td> </td>                                  
                                 </tr>
 
                                 <!-- ngRepeat: x in arayanlar -->
@@ -141,6 +139,7 @@
                                     </td>
                                 
                                     <td>  </td>
+                                 
                                 </tr><!-- end ngRepeat: x in arayanlar -->
                        
 
@@ -160,22 +159,22 @@
                                     <th class="left"> Domainler </th>
                                     <th class="left">Aracı </th>
                                     @*<th class="left">E-Mail</th>*@
-                                    <th class="right">Düzelt</th>
+                                    <th class="right"></th>
                                </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge)">
+                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge,true)">
                                             <option value="">Hepsi</option>
                                             <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
                                         </select>
                                     </td>                                 
                                     <td>ödeme</td>
                                     <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><input type="text" name="firma" ng-model="yetkiliAdi" ng-keyup="getirData(yetkiliAdi)" placeholder="Telefon No" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="cepTelNo" ng-keyup="getirData(cepTelNo)" placeholder="Cep Tel No" class="form-control"></td>                                   
                                     <td> </td>
                                     <td> </td>
                                     @*<td></td>*@
@@ -196,7 +195,7 @@
                                     <td>{{x.domainSayisi}}</td>
                                     <td>{{x.araci}}</td>
                                     @*<td> {{x.firma.Email}} </td>*@
-                                    <td></td>
+                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
                                   
                                 </tr>
                             </tbody>
@@ -212,7 +211,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div ng-controller="isPlaniCtrl" ng-init="init(guncelKullaniciId='@guncelKullanici.Id')" class="col-md-4">
         <!-- BEGIN TAB PORTLET-->
         <div class="portlet light bordered">
             <div class="portlet-title">
@@ -220,14 +219,14 @@
                     <i class="icon-anchor font-green-sharp"></i>
                     <span class="caption-subject font-green-sharp bold">Plan Listesi</span>
                 </div>
-      
+
 
             </div>
-            <div class="scroller" style="height:100px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+            <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
 
-                <ul class="feeds">                
-                  
-                    <li>
+                <ul class="feeds">
+
+                    <li ng-repeat="item in isPlanlari">
                         <div class="col1">
                             <div class="cont">
                                 <div class="cont-col1">
@@ -237,9 +236,9 @@
                                 </div>
                                 <div class="cont-col2">
                                     <div class="desc">
-                                        Order #24DOP4 has been rejected.
+                                        {{item.Aciklama}}
                                         <span class="label label-sm label-danger ">
-                                            Take action
+                                            {{item.EtiketIsPlaniTipi}}
                                             <i class="fa fa-share"></i>
                                         </span>
                                     </div>
@@ -247,10 +246,10 @@
                             </div>
                         </div>
                         <div class="col2">
-                            <div class="date"> 24 mins </div>
+                            <div class="date"> {{tarihFormat(item)}} </div>
                         </div>
                     </li>
-                    <li>
+                    @*<li>
                         <a href="javascript:;">
                             <div class="col1">
                                 <div class="cont">
@@ -268,107 +267,158 @@
                                 <div class="date"> Just now </div>
                             </div>
                         </a>
-                    </li>
-                    
+                    </li>*@
+
+
+
                   
-                   
-                    <li>
-                        <a href="javascript:;">
-                            <div class="col1">
-                                <div class="cont">
-                                    <div class="cont-col1">
-                                        <div class="label label-sm label-success">
-                                            <i class="fa fa-bell-o"></i>
-                                        </div>
-                                    </div>
-                                    <div class="cont-col2">
-                                        <div class="desc"> New user registered </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col2">
-                                <div class="date"> Just now </div>
-                            </div>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
-        <!-- END TAB PORTLET-->   
-      
-       
-    </div>
+        <!-- END TAB PORTLET-->
+        <div class="modal fade bs-modal-lg" id="modalIsPlani" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">İş Planı</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                         <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Tarih</label>
+                                <div class="col-md-4">
+
+
+                                    <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
+                                        <input type="text" ng-model="tarih" is-date="1" class="form-control" name="arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-calendar"></i>
+                                            </button>
+
+                                        </span>
+                                        <div class="input-group">
+                                            <input type="text" ng-model="saatDakika" name="SaatDakika" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Açıklama</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" ng-model="aciklama" />
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                 <label class="col-md-offset-2 col-md-2">
+                                     <button type="submit" class="btn green" ng-click="kaydet()">Kaydet</button>
+                                 </label>
+                             </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+               
+
+
+      </div>
 </div>
-@section css{
 
-    <link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
- 
-    <link href="/Content/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+        @section css{
 
-    <style>
-                .clearfix:after {
-                    content: ".";
-                    visibility: hidden;
-                    display: block;
-                    height: 0;
-                    clear: both;
+            <link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+
+       <link href="/Content/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="/Content/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+
+            <style>
+                        .clearfix:after {
+                            content: ".";
+                            visibility: hidden;
+                            display: block;
+                            height: 0;
+                            clear: both;
+                        }
+
+                        .datepicker.dropdown-menu {
+                            z-index: 99999 !important;
+                        }
+
+                        /*.flip-content a {
+                            color: #32c5d2 !important;
+                            font-weight: 600 !important;
+                        }
+                   .flip-content a {
+                    color: #3b4748 !important;
+
+                }*/
+                        .isler td, .isler a {
+                            color: white !important;
+                        }
+            </style>
+        }
+        @section scripts{
+          <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="/Content/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="/Content/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+
+            <script src="/js/services/anaSayfaService.js?v=6"></script>
+            <script src="/js/controllers/anaSayfaCtrl.js?v=20"></script>
+            <script src="/js/controllers/satisFirsatiCtrl.js?v=5"></script>
+            <script src="/js/controllers/borcluFirmalarCtrl.js?v=6"></script>
+            <script src="/js/controllers/isPlaniCtrl.js?v=5"></script>
+            <script>
+                function printPage() {
+                    window.print();
                 }
+                $(function () {
+                    $.fn.datepicker.dates['tr'] = {
+                        days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                        daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+                        daysMin: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+                        months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                        monthsShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+                        today: "Bugün"
+                    };
 
-                .datepicker.dropdown-menu {
-                    z-index: 9999 !important;
-                }
+                    $("input[is-date='1']").datepicker({
+                        autoclose: true,
+                        language: 'tr'
+                    });
+                    $(".timepicker-24").timepicker({
+                        autoclose: true,
+                        minuteStep: 5,
+                        showSeconds: false,
+                        showMeridian: false
+                    })
 
-                /*.flip-content a {
-                    color: #32c5d2 !important;
-                    font-weight: 600 !important;
-                }
-           .flip-content a {
-            color: #3b4748 !important;
+                    $(".timepicker").parent(".input-group").on("click", ".input-group-btn", function (t) {
+                        t.preventDefault(), $(this).parent(".input-group").find(".timepicker").timepicker("showWidget")
+                    })
+                    $("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
+                    $("input[is-date='1']").datepicker('update');
+                    $("input[is-date='1']").parent('.input-group').on('click', '.input-group-btn', function (e) {
+                        e.preventDefault();
+                        $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
+                    });
+                  
+                })
 
-        }*/
-                .isler td, .isler a {
-                    color: white !important;
-                }
-    </style>
-}
-@section scripts{
-    <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-
-
-
-    <script src="/js/services/anaSayfaService.js?v=6"></script>
-    <script src="/js/controllers/anaSayfaCtrl.js?v=20"></script>
-<script src="/js/controllers/satisFirsatiCtrl.js?v=3"></script>
-<script src="/js/controllers/borcluFirmalarCtrl.js?v=1"></script>
-    <script>
-    function printPage() {
-        window.print();
-    }
-    $(function () {
-        $.fn.datepicker.dates['tr'] = {
-            days: ["Pazar", "Pazartesi", "Salı", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            daysShort: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
-            daysMin: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
-            months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
-            monthsShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-            today: "Bugün"
-        };
-
-
-        $("input[is-date='1']").datepicker({
-            autoclose: true,
-            language: 'tr'
-        });
-        @*$("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");*@
-        $("input[is-date='1']").datepicker('update');
-        $("input[is-date='1']").parent('.input-group').on('click', '.input-group-btn', function (e) {
-            e.preventDefault();
-            $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
-        });
-    })
-
-    </script>
-}
+            </script>
+        }
 
 
 

@@ -526,6 +526,7 @@
     <Content Include="js\controllers\domainIslerCtrl.js" />
     <Content Include="js\controllers\domainNotlariCtrl.js" />
     <Content Include="js\controllers\firmaKisiListCtrl.js" />
+    <Content Include="js\controllers\isPlaniCtrl.js" />
     <Content Include="js\controllers\listIslerCtrl.js" />
     <Content Include="js\controllers\mesaiCizelgesiCtrl.js" />
     <Content Include="js\controllers\randevularCtrl.js" />

@@ -21,19 +21,20 @@ namespace Portal.Controllers
         {
             return View();
         }
-        public JsonResult SatisFirsatiAra(int? konumId)
+        public JsonResult SatisFirsatiAra(int? konumId,string adSoyad,string firmaAdi,string telNo)
         {
             Db.Configuration.ProxyCreationEnabled = false;
-            var data = (from s in Db.SatisFirsatis.Include(s => s.Firma).Include(s=>s.Firma.Konum)
-                        where 
-                        (konumId.HasValue ? s.Firma.Konum.KonumID==konumId : true)
+            var query = (from s in Db.SatisFirsatis.Include(s => s.Firma).Include(s => s.Firma.Konum)
+                     
+              
                         let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
                         let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
                         orderby s.Id descending
                         select new
                         {
                             Id = s.Id,
-                            Bolge=s.Firma.Konum.Konum1,
+                            Bolge = s.Firma.Konum.Konum1,
+                            KonumId=s.Firma.RefKonumID,
                             Musteri = s.Firma.YetkiliAdi + " " + s.Firma.YetkiliSoyAdi,
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
@@ -44,20 +45,29 @@ namespace Portal.Controllers
                             FirmaKisiler = s.Firma.FirmaKisis,
                             DosyaYolu = s.DosyaYolu,
                             FirmaAdi = s.Firma.FirmaAdi,
-                            Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi,Cep=s.Firma.YetkiliCepTelefon,Tel=s.Firma.YetkiliTelefon},
+                            Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi, Cep = s.Firma.YetkiliCepTelefon, Tel = s.Firma.YetkiliTelefon },
                             Teklif = s.Fiyat,
-                            EtiketSatisAsama =(
+                            EtiketSatisAsama = (
                                                from e in Db.Etikets
-                                               where e.Kategori== "EtiketSatisAsamaId" && s.EtiketSatisAsamaId==e.Value
+                                               where e.Kategori == "EtiketSatisAsamaId" && s.EtiketSatisAsamaId == e.Value
                                                select e
                                                ).FirstOrDefault()
                         }
-                     ).ToList();
+                     );
+            var data = (from s in query
+                        where
+                        (konumId.HasValue ? s.KonumId == konumId : true) &&
+                        (string.IsNullOrEmpty(adSoyad) ? true : s.Musteri.Contains(adSoyad)) &&
+                        (string.IsNullOrEmpty(firmaAdi) ? true : s.FirmaAdi.Contains(firmaAdi)) &&
+                        ((string.IsNullOrEmpty(telNo) ? true : s.Firma.Cep.Contains(telNo)) ||
+                        (string.IsNullOrEmpty(telNo) ? true : s.Firma.Tel.Contains(telNo)))
+                        select s
+                       ).ToList();
             Db.Configuration.ProxyCreationEnabled = true;
             return Json(data.ToList(), JsonRequestBehavior.AllowGet);
         }
         [JsonNetFilter]
-        public JsonResult BorcluFirmalarAra(int? konumId,int? page,string firmaAdi)
+        public JsonResult BorcluFirmalarAra(int? konumId,int? page,string firmaAdi,string telNo,string cepTelNo,string yetkili)
         {
             Db.Configuration.ProxyCreationEnabled = false;
             int baslangic = ((page ?? 1) - 1) * PagerCount;
@@ -70,19 +80,34 @@ namespace Portal.Controllers
             {
                 list2 = list2.Where(x => (x.Personel != true && x.Kasa != true));
             }
-            var qTotal2 = list2;
-            var result = list2.Include(x => x.Konum).Include(x => x.Firma2).Select(x=>new { konum=x.Konum.Konum1,araci=x.Firma2.FirmaAdi,firma=x,
-                domainSayisi=x.Domains.Count(),
-                borcu = x.CariHarekets.Sum(q=>q.ChSatisFiyati) - x.CariHarekets.Sum(q => q.ChAlinanOdeme)})
-                .OrderByDescending(x => x.firma.CariHarekets.Sum(c => c.ChSatisFiyati) - x.firma.CariHarekets.Sum(c => c.ChAlinanOdeme))
-                .Skip(baslangic).Take(PagerCount).ToList();
-          
+        
+            var query = list2.Include(x => x.Konum).Include(x => x.Firma2)
+                         .Select(x => new
+                         {
+                             konum = x.Konum.Konum1,
+                             araci = x.Firma2.FirmaAdi,
+                             firma = x,
+                             domainSayisi = x.Domains.Count(),
+                             borcu = x.CariHarekets.Sum(q => q.ChSatisFiyati) - x.CariHarekets.Sum(q => q.ChAlinanOdeme)
+                         });
+
+            var data = (from s in query
+                        where
+                        (string.IsNullOrEmpty(telNo) ? true : s.firma.YetkiliCepTelefon.Contains(telNo)) &&
+                        (string.IsNullOrEmpty(cepTelNo) ? true : s.firma.YetkiliTelefon.Contains(cepTelNo)) &&
+                        (string.IsNullOrEmpty(yetkili) ? true : s.firma.YetkiliAdi.Contains(yetkili))
+                        select s)
+                .OrderByDescending(x => x.firma.CariHarekets.Sum(c => c.ChSatisFiyati) - x.firma.CariHarekets.Sum(c => c.ChAlinanOdeme));
+             
+            var qTotal2 = data;
             int totalCount = qTotal2.Count();
-            Db.Configuration.ProxyCreationEnabled = true;
+           
+         
             var jsn = new JsonCevap();
             jsn.Basarilimi = true;
-            jsn.Data = result;
+            jsn.Data = data.Skip(baslangic).Take(PagerCount).ToList();
             jsn.ToplamSayi = totalCount;
+            Db.Configuration.ProxyCreationEnabled = true;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
     }

@@ -9,11 +9,17 @@ angModule.controller("satisFirsatiCtrl", function ($scope, $timeout) {
     self.init = function (bolgelerJsn) {
         self.bolgeler = JSON.parse(bolgelerJsn);
     };
-    self.getirData = function () {
-        commonAjaxService.getDataFromRemote(url = "/IsPlani/SatisFirsatiAra", data = { konumId: self.seciliBolge })
-        .done(res=> {
-            self.firsatlar = res;
-            self.$apply();
-        });
+    self.getirData = function (model,bolgemi) {
+        self.yukleniyor = true;
+        if ((model === undefined || model === "") || (model.length >= 3 || bolgemi)) {
+            commonAjaxService.getDataFromRemote(url = "/IsPlani/SatisFirsatiAra", data = {
+                konumId: self.seciliBolge, adSoyad: self.adSoyad,firmaAdi:self.firmaAdi,telNo:self.telNo,cepTelNo:self.cepTelNo
+            })
+            .done(res=> {
+                self.firsatlar = res;
+                self.$apply();
+                self.yukleniyor = false;
+            });
+        }
     };
 })
