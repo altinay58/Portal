@@ -35,6 +35,6 @@ angModule.controller("borcluFirmalarCtrl", function ($scope, $timeout) {
         console.log(firma);
         $("#modalIsPlani").modal("show");
         let isPlaniScope = angular.element($("[ng-controller='isPlaniCtrl']")).scope();
-        isPlaniScope.initData(isPlaniScope.etiketIsPlaniTipleri.Borclu);
+        isPlaniScope.initData(etiketIsPlaniTipi=isPlaniScope.etiketIsPlaniTipleri.Borclu,refId=firma.FirmaID);
     };
 })

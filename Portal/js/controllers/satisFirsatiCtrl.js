@@ -22,4 +22,11 @@ angModule.controller("satisFirsatiCtrl", function ($scope, $timeout) {
             });
         }
     };
+    self.gosterIsPlaniModal = function (satisFirsati) {
+        console.log(satisFirsati);
+        $("#modalIsPlani").modal("show");
+        let isPlaniScope = angular.element($("[ng-controller='isPlaniCtrl']")).scope();
+        isPlaniScope.initData(isPlaniScope.etiketIsPlaniTipleri.SatisFirsati);
+        isPlaniScope.initData(etiketIsPlaniTipi = isPlaniScope.etiketIsPlaniTipleri.SatisFirsati, refId = satisFirsati.Id);
+    };
 })

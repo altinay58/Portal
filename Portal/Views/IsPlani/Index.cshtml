@@ -11,6 +11,8 @@
 .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
 
     var konumlarJsn =JsonConvert.SerializeObject(Database.DbHelper.GetDb.Konums.Select(x=>new { KonumID=x.KonumID,Konum=x.Konum1}).ToList());
+    //var etiketIsPlaniDurum =JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x=>x.Kategori== "EtiketIsPlaniDurum"));
+    var etiketIsPlaniTipDetaylari= JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x => x.Kategori == "EtiketIsPlaniTipi"));
 }
 
 <div class="row">
@@ -83,7 +85,7 @@
                                     <td> {{x.IsiYapacakKisi}} </td>
                                     <td> {{x.IsinDurumu}} </td>
                                     <td> {{tarihFormat(x.Tarih)}} </td>
-                                    <td><a href="/Isler/IsEkleDuzenle/{{x.Id}}">Düzenle</a></td>
+                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
                                 </tr>
        
                                 
@@ -138,7 +140,7 @@
                                         @*<span class="label green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}} </span>*@
                                     </td>
                                 
-                                    <td>  </td>
+                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
                                  
                                 </tr><!-- end ngRepeat: x in arayanlar -->
                        
@@ -211,7 +213,7 @@
             </div>
         </div>
     </div>
-    <div ng-controller="isPlaniCtrl" ng-init="init(guncelKullaniciId='@guncelKullanici.Id')" class="col-md-4">
+    <div ng-controller="isPlaniCtrl" ng-init="init(guncelKullaniciId='@guncelKullanici.Id',jsnEtiketIsPlaniTipDetaylari='@etiketIsPlaniTipDetaylari')" class="col-md-4">
         <!-- BEGIN TAB PORTLET-->
         <div class="portlet light bordered">
             <div class="portlet-title">
@@ -223,52 +225,36 @@
 
             </div>
             <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
-
+             
                 <ul class="feeds">
 
                     <li ng-repeat="item in isPlanlari">
                         <div class="col1">
                             <div class="cont">
                                 <div class="cont-col1">
-                                    <div class="label label-sm label-danger">
-                                        <i class="fa fa-bolt"></i>
+                                    <div class="label label-sm">
+                                        @*<i class="fa fa-bolt"></i>*@
+                                        <label class="mt-checkbox mt-checkbox-outline">
+                                            <input type="checkbox" ng-disabled="item.EtiketIsPlaniDurum==etiketIsPlaniDurumlari.Tamamlandi" ng-model="item.EtiketIsPlaniDurum" ng-click="durumDegistir(item,$index)" ng-true-value="3" ng-false-value="1">
+                                            <span></span>
+                                        </label>
                                     </div>
                                 </div>
+                       
                                 <div class="cont-col2">
                                     <div class="desc">
                                         {{item.Aciklama}}
-                                        <span class="label label-sm label-danger ">
-                                            {{item.EtiketIsPlaniTipi}}
-                                            <i class="fa fa-share"></i>
+                                        <span class="label label-sm {{item.etiketIsPlaniTipDetay.FontIcon}} ">
+                                          {{item.etiketIsPlaniTipDetay.Text}}                                         
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col2">
-                            <div class="date"> {{tarihFormat(item)}} </div>
+                            <div class="date"> {{tarihFormat(item.Tarih)}} </div>
                         </div>
-                    </li>
-                    @*<li>
-                        <a href="javascript:;">
-                            <div class="col1">
-                                <div class="cont">
-                                    <div class="cont-col1">
-                                        <div class="label label-sm label-success">
-                                            <i class="fa fa-bell-o"></i>
-                                        </div>
-                                    </div>
-                                    <div class="cont-col2">
-                                        <div class="desc"> New user registered </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col2">
-                                <div class="date"> Just now </div>
-                            </div>
-                        </a>
-                    </li>*@
-
+                    </li>  
 
 
                   
@@ -376,10 +362,10 @@
 <script src="/Content/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 
             <script src="/js/services/anaSayfaService.js?v=6"></script>
-            <script src="/js/controllers/anaSayfaCtrl.js?v=20"></script>
-            <script src="/js/controllers/satisFirsatiCtrl.js?v=5"></script>
-            <script src="/js/controllers/borcluFirmalarCtrl.js?v=6"></script>
-            <script src="/js/controllers/isPlaniCtrl.js?v=5"></script>
+            <script src="/js/controllers/anaSayfaCtrl.js?v=21"></script>
+            <script src="/js/controllers/satisFirsatiCtrl.js?v=6"></script>
+            <script src="/js/controllers/borcluFirmalarCtrl.js?v=7"></script>
+            <script src="/js/controllers/isPlaniCtrl.js?v=17"></script>
             <script>
                 function printPage() {
                     window.print();

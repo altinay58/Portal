@@ -1,4 +1,5 @@
-﻿using Portal.Filters;
+﻿using Newtonsoft.Json;
+using Portal.Filters;
 using Portal.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
 namespace Portal.Controllers
 {
     public class IsPlaniController : BaseController
@@ -108,6 +108,40 @@ namespace Portal.Controllers
             jsn.Data = data.Skip(baslangic).Take(PagerCount).ToList();
             jsn.ToplamSayi = totalCount;
             Db.Configuration.ProxyCreationEnabled = true;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult IsPlaniKaydet(string jsnIsPlani)
+        {
+            IsPlani isPlani= JsonConvert.DeserializeObject<IsPlani>(jsnIsPlani);
+            JsonCevap jsn = new JsonCevap();
+            if (isPlani.Id == 0)
+            {
+                Db.IsPlanis.Add(isPlani);
+            }
+            else
+            {
+                Db.Entry(isPlani).State = EntityState.Modified;
+            }
+            Db.SaveChanges();
+            jsn.Basarilimi = true;
+            jsn.Data = isPlani.Id;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult BuguneAitIsPlanlari()
+        {
+            Db.Configuration.ProxyCreationEnabled = false;
+            var data = Db.IsPlanis.AsNoTracking().Where(x => DbFunctions.TruncateTime(x.Tarih) == DateTime.Today)
+                .OrderBy(x=>x.Tarih).ToList();
+            Db.Configuration.ProxyCreationEnabled = true;
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult IsPlaniDurumDegistirme(int planId,int yeniDurum)
+        {
+            JsonCevap jsn = new JsonCevap();
+            var entity = Db.IsPlanis.SingleOrDefault(x => x.Id == planId);
+            entity.EtiketIsPlaniDurum = yeniDurum;
+            Db.SaveChanges();
+            jsn.Basarilimi = true;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
     }

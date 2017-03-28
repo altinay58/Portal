@@ -64,6 +64,13 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     self.tarihFormat = function (tarih) {
         return moment(tarih).format('DD.MM.YYYY HH:mm');
     };
+    //İş planı sayfasında çalışır sadece
+    self.gosterIsPlaniModal = function (job) {
+        
+        $("#modalIsPlani").modal("show");
+        let isPlaniScope = angular.element($("[ng-controller='isPlaniCtrl']")).scope();
+        isPlaniScope.initData(etiketIsPlaniTipi = isPlaniScope.etiketIsPlaniTipleri.Is, refId = job.Id);
+    };
     function setIfEmpty(obj) {
         if (obj === undefined) {
             return "";
