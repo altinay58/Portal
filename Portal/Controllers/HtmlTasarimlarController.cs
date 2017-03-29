@@ -19,6 +19,7 @@ namespace Portal.Controllers
         // GET: HtmlTasarimlar
         public ActionResult List()
         {
+            ViewBag.temaDomainKategoriID = Db.DomainKategoris.ToList();
             var temas=Db.Temas.ToList();
             return View(temas);
         }

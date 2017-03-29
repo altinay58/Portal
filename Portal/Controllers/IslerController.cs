@@ -598,74 +598,74 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
         [ValidateInput(false)]
         [HttpPost]
         public ActionResult IsEkleDuzenle(isler model)
-        {            
-            isler entity = new isler();
-            List<IsiYapacakKisi> isiDbYapanKullanicilar = new List<IsiYapacakKisi>();
-            if (model.islerID>0)
+        {
+            try
             {
-                entity = Db.islers.SingleOrDefault(x => x.islerID == model.islerID);
-                isiDbYapanKullanicilar = Db.IsiYapacakKisis.Where(x=>x.RefIsID==model.islerID).ToList();
-            }
-            else
-            {
-                entity.islerTarih = DateTime.Now;
-                entity.islerinisinOnayDurumu = false;
-                entity.islerIsinDurumu = (int)IsinDurumu.Yapilacak;
-                int siraNo= Db.islers.Where(x => x.islerRefDomainID == model.islerRefDomainID).Max(x => x.islerSiraNo) ?? 0 ;
-                entity.islerSiraNo = siraNo + 1;
-                Db.islers.Add(entity);
-               
-            }
-            if(model.islerRefFirmaID == null)
-            {
-                entity.islerRefFirmaID = Db.Domains.FirstOrDefault(a=>a.DomainID == model.islerRefDomainID).RefDomainFirmaID;
-            }
-            else
-            {
-                entity.islerRefFirmaID = model.islerRefFirmaID;
-            }
-            entity.islerRefDomainID = model.islerRefDomainID;
-            entity.islerAdi =Fonksiyonlar.KarakterDuzenle(model.islerAdi);
-            entity.islerAciklama =Fonksiyonlar.KarakterDuzenle(model.islerAciklama);
-            entity.islerOncelikSiraID = model.islerOncelikSiraID;
-            entity.islerBitisTarihiVarmi = model.islerBitisTarihiVarmi;
-            entity.islerOncelikSiraID = model.islerOncelikSiraID;
-          
-            if (model.islerBitisTarihiVarmi)
-            {
-                entity.islerBitisTarihi = model.islerBitisTarihi;
-            }
-            List<string> yeniisiYapacakKisiler= Request["islerisiYapacakKisi"].Split(',').ToList();
-            foreach(string userId in yeniisiYapacakKisiler)
-            { 
-                if (isiDbYapanKullanicilar.FindIndex(x => x.AspNetUser.Id == userId) == -1)
+                isler entity = new isler();
+                List<IsiYapacakKisi> isiDbYapanKullanicilar = new List<IsiYapacakKisi>();
+                if (model.islerID > 0)
                 {
-                    IsiYapacakKisi kisi = new IsiYapacakKisi();
-                    kisi.RefIsiYapacakKisiUserID = userId;
-                    kisi.isler = entity;
-                    Db.IsiYapacakKisis.Add(kisi);
-                }              
-            }
-            foreach(var kullanici in isiDbYapanKullanicilar)
-            {
-                if (yeniisiYapacakKisiler.FindIndex(x => x == kullanici.AspNetUser.Id) == -1)
-                {
-                    Db.IsiYapacakKisis.Remove(kullanici);
+                    entity = Db.islers.SingleOrDefault(x => x.islerID == model.islerID);
+                    isiDbYapanKullanicilar = Db.IsiYapacakKisis.Where(x => x.RefIsID == model.islerID).ToList();
                 }
-            }
-            entity.islerisiVerenKisi = model.islerisiVerenKisi ?? User.Identity.GetUserId();
+                else
+                {
+                    entity.islerTarih = DateTime.Now;
+                    entity.islerinisinOnayDurumu = false;
+                    entity.islerIsinDurumu = (int)IsinDurumu.Yapilacak;
+                    int siraNo = Db.islers.Where(x => x.islerRefDomainID == model.islerRefDomainID).Max(x => x.islerSiraNo) ?? 0;
+                    entity.islerSiraNo = siraNo + 1;
+                    Db.islers.Add(entity);
 
-            Db.SaveChanges();
-            TempData[SUCESS] = "Kaydedildi";
-            if (Request["oncekiSayfa"]!=null && Request["oncekiSayfa"] != "")
-            {
-                string rd = Request["oncekiSayfa"].Trim();
-                return Redirect(rd);
+                }
+                if (model.islerRefFirmaID == null)
+                {
+                    entity.islerRefFirmaID = Db.Domains.FirstOrDefault(a => a.DomainID == model.islerRefDomainID).RefDomainFirmaID;
+                }
+                else
+                {
+                    entity.islerRefFirmaID = model.islerRefFirmaID;
+                }
+                entity.islerRefDomainID = model.islerRefDomainID;
+                entity.islerAdi = Fonksiyonlar.KarakterDuzenle(model.islerAdi);
+                entity.islerAciklama = Fonksiyonlar.KarakterDuzenle(model.islerAciklama);
+                entity.islerOncelikSiraID = model.islerOncelikSiraID;
+                entity.islerBitisTarihiVarmi = model.islerBitisTarihiVarmi;
+                entity.islerOncelikSiraID = model.islerOncelikSiraID;
+
+                if (model.islerBitisTarihiVarmi)
+                {
+                    entity.islerBitisTarihi = model.islerBitisTarihi;
+                }
+                List<string> yeniisiYapacakKisiler = Request["islerisiYapacakKisi"].Split(',').ToList();
+                foreach (string userId in yeniisiYapacakKisiler)
+                {
+                    if (isiDbYapanKullanicilar.FindIndex(x => x.AspNetUser.Id == userId) == -1)
+                    {
+                        IsiYapacakKisi kisi = new IsiYapacakKisi();
+                        kisi.RefIsiYapacakKisiUserID = userId;
+                        kisi.isler = entity;
+                        Db.IsiYapacakKisis.Add(kisi);
+                    }
+                }
+                foreach (var kullanici in isiDbYapanKullanicilar)
+                {
+                    if (yeniisiYapacakKisiler.FindIndex(x => x == kullanici.AspNetUser.Id) == -1)
+                    {
+                        Db.IsiYapacakKisis.Remove(kullanici);
+                    }
+                }
+                entity.islerisiVerenKisi = model.islerisiVerenKisi ?? User.Identity.GetUserId();
+
+                Db.SaveChanges();
+                TempData[SUCESS] = "Kaydedildi";
+                return RedirectToAction("DomainIsler", new { id = model.islerRefDomainID});
             }
-            else
+            catch
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
+            
            
         }
         #endregion iş ekle

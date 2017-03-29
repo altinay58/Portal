@@ -730,6 +730,7 @@
     <Content Include="Views\SatisFirsatiFiyatRevizyons\Edit.cshtml" />
     <Content Include="Views\SatisFirsatiFiyatRevizyons\Index.cshtml" />
     <Content Include="Views\IsPlani\Index.cshtml" />
+    <Content Include="Views\Account\SifremiUnuttum.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,7 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Portal.Models
 {
-
+    public class KullaniciBilgisi
+    {
+        public string KullaniciAdi { get; set; } //KullanıcıAdı
+        public string Parola { get; set; } //Sifre
+        public string TekrarParola { get; set; } //SifreOnay
+        public string ParolaDegistir { get; set; }  //SifreDegistir
+        public string Email { get; set; } //Eposta
+        public string GizliSoru { get; set; } //GizliSoru
+        public string GizliCevap { get; set; } //Cevap
+        public string GeriDonusURL { get; set; } //GeriDonusURL
+        public string Id { get; set; } //Id
+        public string[] Roles { get; set; } //Roller
+    }
     public class BildirimlerView
     {
 
