@@ -17,6 +17,15 @@ namespace Portal
                 "mail/oku/{id}",
                 new { Controller = "MailSablonlari", action = "MailOkundu", id = (int?)null }
                 );
+
+            routes.MapRoute(
+                "KullaniciParolaSifirlama",
+                "kullanici/parola/sifirla/{sifirlamaSifresi}/{userID}",
+                new { Controller = "Account", action = "KullaniciParolaSifirla", dil = (string)null, sifirlamaSifresi = (string)null, userID = (string)null }
+                );
+
+
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

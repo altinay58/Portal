@@ -16,6 +16,37 @@ namespace Portal.Models
     public partial class Fonksiyonlar
     {
 
+
+        public static void SifreGonder(string mail, string sifirlamaKodu)
+        {
+            string Yazi = "";
+            Yazi = Yazi + "Musteri Giris Bilgileriniz asagidadir...<br />";
+            Yazi = Yazi + "Kullanici Adi : " + mail + "<br />";
+            Yazi = Yazi + "Şifre : " + sifirlamaKodu + " (Giris yaptiktan sonra acilan menuden <strong>Şifre Değiştir</strong> secenegini kullanarak degistirebilirsiniz.)<br />";
+            Yazi = Yazi + "Saygilarimizla...<br />";
+            Yazi = Yazi + "<br />";
+
+            MailGonder(mail, "Yeni Yönetici Şifreniz", Yazi);
+
+        }
+
+        public static string SifreSifirlamaMailiGonder(string mail, string sifirlamaKodu, string userID)
+        {
+
+            string siteadresi = "http://portal.karayeltasarim.com/";
+            string baslik = "Şifre Sıfırlama Maili";
+            string Yazi = "Site : " + siteadresi + "<br /><br />";
+            Yazi = Yazi + "Parola sıfırlama maili göndermediyseniz bu maili dikkate almayın.<br /><br /><br />";
+            Yazi = Yazi + "Maili siz gönderdiyseniz!!!<br />";
+            Yazi = Yazi + "Parolanızı sıfırlamak için aşağıdaki linke tıklayın.<br /><br />";
+            Yazi = Yazi + "Yeni Parolanız Mail Adresinize Gönderilecektir!!!<br />";
+            Yazi = Yazi + "<a href=\"" + siteadresi + "kullanici/parola/sifirla/" + sifirlamaKodu + "/" + userID + "\" target=\"_blank\">Parola Sıfırlama</a><br />";
+            Yazi = Yazi + "Saygilarimizla...<br />";
+            Yazi = Yazi + "<br />";
+
+            return Fonksiyonlar.MailGonder(mail, baslik, Yazi);
+        }
+
         public static string SuresiDolanDomainleriMailGonder()
         {
             string mesaj = "<table>";

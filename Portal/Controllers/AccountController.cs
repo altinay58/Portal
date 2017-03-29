@@ -52,6 +52,93 @@ namespace Portal.Controllers
             }
         }
 
+        [AllowAnonymous]
+        public ActionResult SifremiUnuttum(string dil) //ForgotPassword()
+        {
+            ViewBag.SayfaBaslik = "Şifremi Unuttum"; //ViewData["PageTitle"] 
+            return View(new KullaniciBilgisi());
+        }
+
+        [AllowAnonymous]
+        [AcceptVerbs("POST")]
+        public ActionResult SifremiUnuttum(string Email, string dil)  //ForgotPassword(string userName, string secretAnswer)
+        {
+
+            ApplicationUser kullanici = UserManager.FindByEmail(Email);
+            if (kullanici != null)
+            {
+                string kod = Guid.NewGuid().ToString().Substring(0, 8);
+
+                UserManager.SetPhoneNumberAsync(kullanici.Id, kod);
+
+                TempData["HataMesaj"] = "Şifre sıfırlama maili adresinize gönderildi. Lütfen mailinizi kontrol ediniz.";
+                ViewBag.Durum = "post";
+                TempData["HataMesaj"] = TempData["HataMesaj"] + "<br /><br />" + Fonksiyonlar.SifreSifirlamaMailiGonder(kullanici.Email, kod, kullanici.Id);
+            }
+            else
+            {
+                TempData["HataMesaj"] = "Girdiğiniz e-mail adresi sitemizde kayıtlı değil.";
+            }
+            return View();
+        }
+        public static string SifreOlustur()
+        {
+            var buyukHarf = "ABCDEFGHJKLMNPRSTUVYZ";
+            var sayi = "123456789";
+            var kucukHarf = "abcdefghiklmnprstuvyz";
+            var karakter = "+!@-";
+            var random = new Random();
+            var resultbuyukHarf = new string(Enumerable.Repeat(buyukHarf, 2).Select(s => s[random.Next(s.Length)]).ToArray());
+            var resultsayi = new string(Enumerable.Repeat(sayi, 2).Select(s => s[random.Next(s.Length)]).ToArray());
+            var resultkucukHarf = new string(Enumerable.Repeat(kucukHarf, 3).Select(s => s[random.Next(s.Length)]).ToArray());
+            var resultkarakter = new string(Enumerable.Repeat(karakter, 1).Select(s => s[random.Next(s.Length)]).ToArray());
+            return resultbuyukHarf + resultsayi + resultkarakter + resultkucukHarf;
+        }
+
+        [AllowAnonymous]
+        public ActionResult KullaniciParolaSifirla(string dil, string sifirlamaSifresi, string userID) //ForgotPassword()
+        {
+            ApplicationUser kullanici = UserManager.FindById(userID);
+            if (kullanici.PhoneNumber == sifirlamaSifresi)
+            {
+                if (kullanici != null)
+                {
+                    string gizliParola = SifreOlustur();
+                    UserManager.RemovePassword(userID);
+                    var result = UserManager.AddPassword(userID, gizliParola);
+                    if (result.Succeeded)
+                    {
+                        if (kullanici != null)
+                        {
+                            SignInManager.SignIn(kullanici, false, false);
+                        }
+                        string webSitesi = Request.Url.Host;
+                        UserManager.SetPhoneNumberAsync(kullanici.Id, null);
+                        //using (var KarayelDB = new KarayelEntities())
+                        //{
+                        //    Sifre kullaniciSifresi = KarayelDB.Sifres.FirstOrDefault(a => a.SifreUserID == kullanici.Id && a.SifreWebSitesi == webSitesi && a.SifreKullaniciAdi == kullanici.Email);
+
+                        //    if (kullaniciSifresi != null)
+                        //    {
+                        //        kullaniciSifresi.SifreSifre = gizliParola;
+                        //        KarayelDB.SaveChanges();
+                        //    }
+
+                        //}
+                        Fonksiyonlar.SifreGonder(kullanici.Email, gizliParola);
+                        TempData["HataMesaj"] = result.Succeeded;
+                        return RedirectToAction("Index", "Home");
+
+                    }
+                    TempData["HataMesaj"] = result.Errors;
+                }
+
+                TempData["HataMesaj"] = "Bu bilgiler ile şifreyi sıfırlayamazsınız lütfen yeni bir şifre sıfırlama maili gönderin.";
+
+            }
+            return View();
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]

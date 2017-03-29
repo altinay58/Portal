@@ -56,6 +56,11 @@ namespace Portal.Controllers
         }
         public ActionResult Domainler(int? page,string ara,string aramaType)
         {
+            if(!String.IsNullOrEmpty(ara))
+            {
+                ara = ara.Trim();
+            }
+
             Dictionary<string, string> aramatypes = new Dictionary<string, string>
     { {"UzatmaTarihi","Uzatma Tarihine Göre" } , {"Alfabetik","Alfabetik" } , {"Hosting","Hosting" } , {  "Ip", "Ip"} };
             ViewBag.aramatypes = aramatypes;

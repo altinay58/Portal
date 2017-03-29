@@ -68,7 +68,9 @@ namespace Portal.Controllers
         public ActionResult ArayanEkle()
         {
             ArayanModel arayanlar = new ArayanModel();
-          
+
+
+            ViewBag.Departmanlar = new SelectList(Db.Etikets.Where(a=>a.Kategori == "EtiketArayanDepartmanId").OrderBy(x=>x.Sira), "Value", "Text");
             ViewBag.arayanGrupID = new SelectList(Db.ArayanGrups, "arayanGrupID", "arayanGrupAdi");
             ViewBag.arayanRefKonumID = new SelectList(Db.Konums.OrderBy(x=>x.Konum1), "KonumID", "Konum1");
             ViewBag.arayanDomainKategoriID = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi");

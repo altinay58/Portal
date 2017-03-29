@@ -98,7 +98,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     @Html.LabelFor(m => m.RememberMe)
                     <span></span>
                 </label>
-                <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
+                <a href="@Url.Action("SifremiUnuttum", "Account")" id="forget-password" class="forget-password">Şifremi Unuttum?</a>
             </div>
         
 }
