@@ -780,7 +780,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'step1',
 
 select [Aciklama],[RefSorumluKisiId],[EtiketIsPlaniTipi]
       ,[RefIsId],[RefFirmaId],[RefSatisFirsatiId]
-      ,[EtiketIsPlaniDurum],  dateadd(day,1,[Tarih])
+      ,1, dateadd(day,1,[Tarih])
 from IsPlani where cast(Tarih as date)=cast(getdate() as date) and EtiketIsPlaniDurum!=3', 
 		@database_name=N'Karayel', 
 		@flags=0
