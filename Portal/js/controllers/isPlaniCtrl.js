@@ -24,7 +24,7 @@ angModule.controller("isPlaniCtrl", function ($scope, $timeout) {
     self.guncelIsPlani;
     self.isPlanlari = [];
     self.etiketIsPlaniTipleri = {
-        Is: 1, SatisFirsati: 2, Borclu: 3
+        Is: 1, SatisFirsati: 2, Borclu: 3,Firma:4
     };
     self.etiketIsPlaniDurumlari = {
         Atlandi: 1, Eklendi: 2, Tamamlandi: 3
@@ -68,6 +68,9 @@ angModule.controller("isPlaniCtrl", function ($scope, $timeout) {
             case self.etiketIsPlaniTipleri.Borclu:
                 self.guncelIsPlani.RefFirmaId = refId;
                 break;
+            case self.etiketIsPlaniTipleri.Firma:
+                self.guncelIsPlani.RefFirmaId = refId;
+                break;
         }
     };
     self.kaydet = function () {
@@ -82,12 +85,17 @@ angModule.controller("isPlaniCtrl", function ($scope, $timeout) {
         commonAjaxService.getDataFromRemote(url = "/IsPlani/IsPlaniKaydet", data = {
             jsnIsPlani: JSON.stringify(self.guncelIsPlani)
         }).done(res=> {
-            self.guncelIsPlani.Id = res.Data;
-            self.guncelIsPlani.etiketIsPlaniTipDetay = self.etiketIsPlaniTipDetaylari.find(x=> { return x.Value == self.guncelIsPlani.EtiketIsPlaniTipi });
-            self.isPlanlari.push(self.guncelIsPlani);
-            self.$apply();
-            $("#modalIsPlani").modal("hide");
-            portalApp.mesajGoster("Kaydedildi");
+            if (res.Basarilimi) {
+                self.guncelIsPlani.Id = res.Data;
+                self.guncelIsPlani.etiketIsPlaniTipDetay = self.etiketIsPlaniTipDetaylari.find(x=> { return x.Value == self.guncelIsPlani.EtiketIsPlaniTipi });
+                self.isPlanlari.push(self.guncelIsPlani);
+                self.$apply();
+                $("#modalIsPlani").modal("hide");
+                portalApp.mesajGoster("Kaydedildi");
+            } else {
+                portalApp.mesajGoster("Seçili tarihde bu iş daha önceden kayıt edilmiş",'danger');
+                $("#modalIsPlani").modal("hide");
+            }
         });
 
     

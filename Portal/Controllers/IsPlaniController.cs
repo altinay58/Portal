@@ -110,6 +110,46 @@ namespace Portal.Controllers
             Db.Configuration.ProxyCreationEnabled = true;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
+        [JsonNetFilter]
+        public JsonResult FirmaAra(int? konumId, int? page, string firmaAdi, string telNo, string cepTelNo, string yetkili)
+        {
+            Db.Configuration.ProxyCreationEnabled = false;
+            int baslangic = ((page ?? 1) - 1) * PagerCount;
+            var list = Db.Firmas.GetirFirmalar("").Include(x => x.Konum).Include(x => x.Firma2).Where(x => x.Musteri == true);       
+
+            if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
+            {
+                list = list.Where(x => (x.Personel != true && x.Kasa != true));
+            }
+            var query = list.Include(x => x.Konum).Include(x => x.Firma2)
+                  .Select(x => new
+                  {
+                      konum = x.Konum.Konum1,
+                      araci = x.Firma2.FirmaAdi,
+                      firma = x,
+                      domainSayisi = x.Domains.Count(),
+                      borcu = x.CariHarekets.Sum(q => q.ChSatisFiyati) - x.CariHarekets.Sum(q => q.ChAlinanOdeme)
+                  });
+            var data = (from s in query
+                        where
+                        (string.IsNullOrEmpty(firmaAdi) ? true : s.firma.FirmaAdi.Contains(firmaAdi)) &&
+                        (string.IsNullOrEmpty(telNo) ? true : s.firma.YetkiliCepTelefon.Contains(telNo)) &&
+                        (string.IsNullOrEmpty(cepTelNo) ? true : s.firma.YetkiliTelefon.Contains(cepTelNo)) &&
+                        (string.IsNullOrEmpty(yetkili) ? true : s.firma.YetkiliAdi.Contains(yetkili))
+                        select s)
+             .OrderByDescending(x => x.firma.FirmaID);
+            var qTotal2 = data;
+            int totalCount = qTotal2.Count();
+
+
+            var jsn = new JsonCevap();
+            jsn.Basarilimi = true;
+            jsn.Data = data.Skip(baslangic).Take(PagerCount).ToList();
+            jsn.ToplamSayi = totalCount;
+            Db.Configuration.ProxyCreationEnabled = true;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+
+        }
         public JsonResult IsPlaniKaydet(string jsnIsPlani)
         {
             IsPlani isPlani= JsonConvert.DeserializeObject<IsPlani>(jsnIsPlani);
@@ -119,11 +159,24 @@ namespace Portal.Controllers
                 Db.IsPlanis.Add(isPlani);
             }
             else
-            {
+            {          
+
                 Db.Entry(isPlani).State = EntityState.Modified;
             }
-            Db.SaveChanges();
-            jsn.Basarilimi = true;
+         
+            var dahaOnceVarmi = Db.IsPlanis.Where(x => DbFunctions.TruncateTime(x.Tarih) == DbFunctions.TruncateTime(isPlani.Tarih)
+               && x.RefFirmaId == isPlani.RefFirmaId && x.RefIsId == isPlani.RefIsId && x.RefSatisFirsatiId == isPlani.RefSatisFirsatiId &&
+               x.RefSorumluKisiId == isPlani.RefSorumluKisiId).ToList().Count > 0;
+            if (dahaOnceVarmi)
+            {
+                jsn.Basarilimi = false;
+            }
+            else
+            {
+                Db.SaveChanges();
+                jsn.Basarilimi = true;
+            }
+         
             jsn.Data = isPlani.Id;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
