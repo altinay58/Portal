@@ -36,7 +36,7 @@ namespace Portal.Controllers
             List<Firma> result = new List<Firma>();      
             if(durum== "BorcluFirmalar")
             {
-                var list2 = Db.Firmas.TumFirmalar().Where(x => x.Musteri == true)
+                IEnumerable<Firma> list2 = Db.Firmas.TumFirmalar().Where(x => x.Musteri == true)
                      .Where(a => (a.CariHarekets.Sum(c => c.ChSatisFiyati) - a.CariHarekets.Sum(c => c.ChAlinanOdeme)) > 0)
                      .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
                 
@@ -79,22 +79,17 @@ namespace Portal.Controllers
             }
             else
             {
-                var list = Db.Firmas.GetirFirmalar(durum.ToLower())
-               .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
+             IEnumerable<Firma> list =   Db.Firmas.GetirFirmalar(durum.ToLower()).Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true ).OrderByDescending(w => w.FirmaID);
+
+                int totalCount = list.Count();
 
                 if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
                 {
                     list = list.Where(x => (x.Personel != true && x.Kasa != true));
                 }
                 list = list.Skip(domainBaslangic).Take(PagerCount);
-                var qTotal = Db.Firmas.GetirFirmalar(durum.ToLower())
-                   .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
+                
 
-                if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
-                {
-                    qTotal = qTotal.Where(x => (x.Personel != true && x.Kasa != true));
-                }
-                int totalCount = qTotal.Count();
                 PaginatedList pager = new PaginatedList((p ?? 1), PagerCount, totalCount);
 
                 ViewData["queryData"] = q;
