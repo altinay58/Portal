@@ -9,7 +9,7 @@
                             Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
     var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
 .Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
-
+    var etiketIsPlaniTipDetaylari = JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x => x.Kategori == "EtiketIsPlaniTipi"));
 }
 
 <div ng-controller="anaSayfaCtrl" ng-init="init('@JsonConvert.SerializeObject(kullanicilar)','@guncelKullanici.Id')">
@@ -56,6 +56,7 @@
                     <th> İşin Durumu </th>
                     <th> Tarih </th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -89,6 +90,7 @@
                     </td>
                 <td></td>
                   <td></td>
+                 <td></td>
                 </tr>
 
                 <tr ng-repeat="x in isler" style="background-color:{{isRenkler[x.IsinDurumu].color}}">
@@ -101,6 +103,10 @@
                     <td> {{x.IsinDurumu}} </td>
                     <td> {{tarihFormat(x.Tarih)}} </td>
                     <td><a href="/Isler/IsEkleDuzenle/{{x.Id}}">Düzenle</a></td>
+                    <td style="background-color:#fff">
+                        <button type="button" class="btn  btn-primary " ng-show="guncelKullaniciBuIsiYapiyormu(x.IsiYapacakKisi)" ng-click="gosterIsPlaniModal(x)">
+                            <i class="fa fa-plus"></i> İş planına Ekle</button>
+                    </td>
                 </tr>
 
 
@@ -116,12 +122,14 @@
     </div>
    
 </div>
+
+
 @section css{
 
     <link href="/Content/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
 
     <link href="/Content/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-
+<link href="/Content/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
     <style>
         .clearfix:after {
             content: ".";
@@ -132,7 +140,7 @@
         }
 
         .datepicker.dropdown-menu {
-            z-index: 9999 !important;
+            z-index: 99999 !important;
         }
 
         /*.flip-content a {
@@ -150,12 +158,10 @@
 }
 @section scripts{
     <script src="/Content/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-    
-
-
+   <script src="/Content/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
     <script src="/js/services/anaSayfaService.js?v=5"></script>
-    <script src="/js/controllers/anaSayfaCtrl.js?v=16"></script>
-    
+    <script src="/js/controllers/anaSayfaCtrl.js?v=20"></script>
+
     <script>
     function printPage() {
         window.print();
@@ -170,12 +176,21 @@
             today: "Bugün"
         };
 
-
         $("input[is-date='1']").datepicker({
             autoclose: true,
             language: 'tr'
         });
-        @*$("input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");*@
+        $(".timepicker-24").timepicker({
+            autoclose: true,
+            minuteStep: 5,
+            showSeconds: false,
+            showMeridian: false
+        });
+
+        $(".timepicker").parent(".input-group").on("click", ".input-group-btn", function (t) {
+            t.preventDefault(), $(this).parent(".input-group").find(".timepicker").timepicker("showWidget")
+        });
+        $("#modalIsPlani input[is-date='1']").val("@System.DateTime.Today.ToString("dd.MM.yyyy")");
         $("input[is-date='1']").datepicker('update');
         $("input[is-date='1']").parent('.input-group').on('click', '.input-group-btn', function (e) {
             e.preventDefault();

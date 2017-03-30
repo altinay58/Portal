@@ -351,6 +351,13 @@ namespace Portal.Models
             int count = Database.DbHelper.GetDb.ToDoes.Where(x => x.KulId == userId && x.Durum==(int)TodoDurum.Beklemede).Count();
             return count;
          }
+        public static int BuguneAitIsPlanSayisi()
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            var count = Database.DbHelper.GetDb.IsPlanis.Where(x => System.Data.Entity.DbFunctions.TruncateTime(x.Tarih) == DateTime.Today 
+            && x.EtiketIsPlaniDurum!=(int)EtiketIsPlaniDurum.Tamamlandi).Count();
+            return count;
+        }
         public static string KulllaniciIsmi()
         {
             string name = "";

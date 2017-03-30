@@ -20,7 +20,9 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     self.init = function (kullanicilar, guncelKullaniciId,bolgelerJsn) {
         //aryanListService.getListData(self.basTarih, self.bitisTarih);
         self.kullanicilar = JSON.parse(kullanicilar);
-        self.bolgeler = JSON.parse(bolgelerJsn);
+        if (bolgelerJsn) {
+            self.bolgeler = JSON.parse(bolgelerJsn);
+        }    
         if (guncelKullaniciId) {
             self.guncelKullanici = self.kullanicilar.find(x=> { return x.Id === guncelKullaniciId }).AdSoyad;
         }      
@@ -69,7 +71,10 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         
         $("#modalIsPlani").modal("show");
         let isPlaniScope = angular.element($("[ng-controller='isPlaniCtrl']")).scope();
-        isPlaniScope.initData(etiketIsPlaniTipi = isPlaniScope.etiketIsPlaniTipleri.Is, refId = job.Id);
+        isPlaniScope.initData(etiketIsPlaniTipi = isPlaniScope.etiketIsPlaniTipleri.Is, refId = job.Id, aciklama = job.IsAdi, domainId = job.DomainId);
+    };
+    self.guncelKullaniciBuIsiYapiyormu = function (isiYapacakKisiler) {
+        return isiYapacakKisiler.indexOf(self.guncelKullanici) > -1;
     };
     function setIfEmpty(obj) {
         if (obj === undefined) {
