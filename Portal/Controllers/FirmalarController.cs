@@ -83,13 +83,8 @@ namespace Portal.Controllers
 
                 int totalCount = list.Count();
 
-                if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
-                {
-                    list = list.Where(x => (x.Personel != true && x.Kasa != true));
-                }
                 list = list.Skip(domainBaslangic).Take(PagerCount);
                 
-
                 PaginatedList pager = new PaginatedList((p ?? 1), PagerCount, totalCount);
 
                 ViewData["queryData"] = q;
