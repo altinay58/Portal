@@ -115,7 +115,8 @@ namespace Portal.Controllers
         {
             Db.Configuration.ProxyCreationEnabled = false;
             int baslangic = ((page ?? 1) - 1) * PagerCount;
-            var list = Db.Firmas.GetirFirmalar("").Include(x => x.Konum).Include(x => x.Firma2).Where(x => x.Musteri == true);       
+            var list = Db.Firmas.GetirFirmalar("").Include(x => x.Konum).Include(x => x.Firma2).Where(x => x.Musteri == true).
+                Where(x=> konumId.HasValue ? x.Konum.KonumID == konumId : true);       
 
             if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
             {
@@ -131,7 +132,7 @@ namespace Portal.Controllers
                       borcu = x.CariHarekets.Sum(q => q.ChSatisFiyati) - x.CariHarekets.Sum(q => q.ChAlinanOdeme)
                   });
             var data = (from s in query
-                        where
+                        where                       
                         (string.IsNullOrEmpty(firmaAdi) ? true : s.firma.FirmaAdi.Contains(firmaAdi)) &&
                         (string.IsNullOrEmpty(telNo) ? true : s.firma.YetkiliCepTelefon.Contains(telNo)) &&
                         (string.IsNullOrEmpty(cepTelNo) ? true : s.firma.YetkiliTelefon.Contains(cepTelNo)) &&
@@ -150,6 +151,7 @@ namespace Portal.Controllers
             return Json(jsn, JsonRequestBehavior.AllowGet);
 
         }
+        [ValidateInput(false)]
         public JsonResult IsPlaniKaydet(string jsnIsPlani)
         {
             IsPlani isPlani= JsonConvert.DeserializeObject<IsPlani>(jsnIsPlani);

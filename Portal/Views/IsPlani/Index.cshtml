@@ -277,7 +277,7 @@
             </div>
         </div>
     </div>
-    <div ng-controller="isPlaniCtrl" ng-init="init(guncelKullaniciId='@guncelKullanici.Id',jsnEtiketIsPlaniTipDetaylari='@etiketIsPlaniTipDetaylari')" class="col-md-4">
+    <div ng-controller="isPlaniCtrl" ng-init="init(guncelKullaniciId='@userId',jsnEtiketIsPlaniTipDetaylari='@etiketIsPlaniTipDetaylari')" class="col-md-4">
         <!-- BEGIN TAB PORTLET-->
         <div class="portlet light bordered">
             <div class="portlet-title">
@@ -307,7 +307,7 @@
                        
                                 <div class="cont-col2">
                                     <div class="desc">
-                                        {{item.Aciklama}}
+                                        <span ng-bind-html="item.Aciklama |  to_trusted"></span> 
                                         <span class="label label-sm {{item.etiketIsPlaniTipDetay.FontIcon}} ">
                                           {{item.etiketIsPlaniTipDetay.Text}}                                         
                                         </span>
@@ -430,7 +430,7 @@
             <script src="/js/controllers/satisFirsatiCtrl.js?v=6"></script>
             <script src="/js/controllers/borcluFirmalarCtrl.js?v=8"></script>
             <script src="/js/controllers/firmalarCtrl.js?v=2"></script>
-            <script src="/js/controllers/isPlaniCtrl.js?v=20"></script>
+            @*<script src="/js/controllers/isPlaniCtrl.js?v=21"></script>*@
             <script>
                 function printPage() {
                     window.print();

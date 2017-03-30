@@ -1,15 +1,22 @@
 ﻿@using Portal.Models
-@using Microsoft.AspNet.Identity  @{
-    string id = ViewBag.userid;
+@using Microsoft.AspNet.Identity  
+@using Newtonsoft.Json;
+@using Portal.Models.IslerModels;
+@{
+    string userId = ViewBag.userid;
 
-    if (String.IsNullOrEmpty(id))
+    if (String.IsNullOrEmpty(userId))
     {
-        id = User.Identity.GetUserId();
+        userId = User.Identity.GetUserId();
     }
-    IEnumerable<isler> yeniIslerim = Partial.KullaniciBildirim(id).yeniIsler;
-    IEnumerable<isler> okunmayanIsler = Partial.CevaplananIslerOkunmayanlar(id);
-    IEnumerable<isler> kontrolBekleyenIsler = Partial.KullaniciBildirim(id).kontrolBekleyenIsler;
-}<!DOCTYPE html>
+    IEnumerable<isler> yeniIslerim = Partial.KullaniciBildirim(userId).yeniIsler;
+    IEnumerable<isler> okunmayanIsler = Partial.CevaplananIslerOkunmayanlar(userId);
+    IEnumerable<isler> kontrolBekleyenIsler = Partial.KullaniciBildirim(userId).kontrolBekleyenIsler;
+    var etiketIsPlaniTipDetaylari = JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x => x.Kategori == "EtiketIsPlaniTipi"));
+    var guncelKullanici = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.Id == userId).
+                          Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
+}
+<!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
@@ -256,8 +263,8 @@
                             </li>
                             <li>
                                 <a data-toggle="modal" href="#todo-task-modal">
-                                    <i class="icon-rocket"></i> Yapılacaklar
-                                    <span class="badge badge-success" id="todo-count"> @Portal.Models.Partial.YapilacaklarSayisi() </span>
+                                    <i class="icon-rocket"></i> İş Planı
+                                    <span class="badge badge-success" id="todo-count"> @Portal.Models.Partial.BuguneAitIsPlanSayisi() </span>
                                 </a>
 
                             </li>
@@ -1409,9 +1416,130 @@
     </div>
     <!-- END CONTAINER -->
     <!--begin todo list-->
+    <div ng-controller="isPlaniCtrl" ng-init="init(guncelKullaniciId='@userId',jsnEtiketIsPlaniTipDetaylari='@etiketIsPlaniTipDetaylari')">
+        <div id="todo-task-modal" class="modal fade" role="dialog" aria-labelledby="myModalLabel10" aria-hidden="true">
+            <div class="modal-dialog">
+
+                <div class="modal-content " style="height: 100%; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                     
+                    </div>
+                    <div class="modal-body todo-task-modal-body">                      
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-anchor font-green-sharp"></i>
+                                    <span class="caption-subject font-green-sharp bold">Plan Listesi</span>
+                                </div>
+
+
+                            </div>
+                            <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+
+                                <ul class="feeds">
+
+                                    <li ng-repeat="item in isPlanlari">
+                                        <div class="col1">
+                                            <div class="cont">
+                                                <div class="cont-col1">
+                                                    <div class="label label-sm">
+                                                        @*<i class="fa fa-bolt"></i>*@
+                                                        <label class="mt-checkbox mt-checkbox-outline">
+                                                            <input type="checkbox" ng-disabled="item.EtiketIsPlaniDurum==etiketIsPlaniDurumlari.Tamamlandi" ng-model="item.EtiketIsPlaniDurum" ng-click="durumDegistir(item,$index)" ng-true-value="3" ng-false-value="1">
+                                                            <span></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="cont-col2">
+                                                    <div class="desc">                                                       
+                                                        <span ng-bind-html="item.Aciklama |  to_trusted"></span> 
+                                                        <span class="label label-sm {{item.etiketIsPlaniTipDetay.FontIcon}} ">
+                                                            {{item.etiketIsPlaniTipDetay.Text}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col2">
+                                            <div class="date"> {{tarihFormat(item.Tarih)}} </div>
+                                        </div>
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="modal fade bs-modal-lg" id="modalIsPlani" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">İş Planı</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Tarih</label>
+                                    <div class="col-md-4">
+
+
+                                        <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
+                                            <input type="text" ng-model="tarih" is-date="1" class="form-control" name="arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+
+                                            </span>
+                                            <div class="input-group">
+                                                <input type="text" ng-model="saatDakika" name="SaatDakika" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">
+                                                <span class="input-group-btn">
+                                                    <button class="btn default" type="button">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                    <label class="control-label col-md-2">Açıklama</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" ng-model="aciklama" />
+                                    </div>
+                                </div>*@
+                                <div class="form-group">
+                                    <label class="col-md-offset-2 col-md-2">
+                                        <button type="submit" class="btn green" ng-click="kaydet()">Kaydet</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+    <!-- BEGIN todo 
     <div ng-controller="toDoCtrl" id="todo-task-modal" class="modal fade" role="dialog" aria-labelledby="myModalLabel10" aria-hidden="true">
         <div class="modal-dialog">
-            @*<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">*@
+   
             <div class="modal-content " style="height: 100%; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -1419,9 +1547,7 @@
                         <div class="form-group">
                             <input type="text" class="form-control" style="width:450px" ng-model="aciklama" placeholder="">
                         </div>
-                        @*<div class="form-group">
-                                <input type="text" class="form-control" ng-model="q" ng-keyup="getirData(q)" placeholder="En az Üç harf ">
-                            </div>*@
+                 
                         <button type="button" class="btn btn-default green" ng-click="ekle()">Ekle</button>
                     </form>
                 </div>
@@ -1451,9 +1577,7 @@
                                             </a>
                                         </div>
                                         <div class="item-status" style="top:2px">
-                                            @*<p class="todo-inline">
-                                                    Shane,
-                                                </p>*@
+                                     
                                             <span class="todo-red">{{tarihFormatStr(x.Tarih)}}</span>
                                         </div>
                                     </div>
@@ -1468,9 +1592,10 @@
                 </div>
             </div>
 
-            @*</div>*@
+        
         </div>
     </div>
+    todo -->
     @Html.Partial("_Modal")
     <!--end todo list-->
     <!-- BEGIN FOOTER -->
@@ -1517,6 +1642,7 @@
     <script src="/js/angModule.js?v=1.0.3"></script>
     <script src="/js/services/toDoService.js?v=7"></script>
     <script src="/js/controllers/toDoCtrl.js?v=16"></script>
+    <script src="/js/controllers/isPlaniCtrl.js?v=26"></script>
     @RenderSection("scripts", required: false)
     <script src="/Scripts/ajaxService.js?v=0.1"></script>
     <script src="/js/portalApp.js?v=2.2"></script>

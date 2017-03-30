@@ -29,4 +29,8 @@ namespace Portal.Models
     {
         Beklemede=0,Tamamlanmis=1
     }
+    public enum EtiketIsPlaniDurum : byte
+    {
+        Atlandi=1, Eklendi=2, Tamamlandi=3
+    }
 }
