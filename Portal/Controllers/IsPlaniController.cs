@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using Portal.Filters;
 using Portal.Models;
 using System;
@@ -185,8 +186,9 @@ namespace Portal.Controllers
         public JsonResult BuguneAitIsPlanlari()
         {
             Db.Configuration.ProxyCreationEnabled = false;
-            var data = Db.IsPlanis.AsNoTracking().Where(x => DbFunctions.TruncateTime(x.Tarih) == DateTime.Today)
-                .OrderBy(x=>x.Tarih).ToList();
+            string userId = User.Identity.GetUserId();
+            var data = Db.IsPlanis.AsNoTracking().Where(x => DbFunctions.TruncateTime(x.Tarih) == DateTime.Today && x.RefSorumluKisiId == userId
+            ).OrderBy(x=>x.Tarih).ToList();
             Db.Configuration.ProxyCreationEnabled = true;
             return Json(data, JsonRequestBehavior.AllowGet);
         }

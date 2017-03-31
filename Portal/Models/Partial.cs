@@ -355,7 +355,7 @@ namespace Portal.Models
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();
             var count = Database.DbHelper.GetDb.IsPlanis.Where(x => System.Data.Entity.DbFunctions.TruncateTime(x.Tarih) == DateTime.Today 
-            && x.EtiketIsPlaniDurum!=(int)EtiketIsPlaniDurum.Tamamlandi).Count();
+            && x.EtiketIsPlaniDurum!=(int)EtiketIsPlaniDurum.Tamamlandi && x.RefSorumluKisiId==userId).Count();
             return count;
         }
         public static string KulllaniciIsmi()
