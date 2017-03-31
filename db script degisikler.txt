@@ -811,6 +811,9 @@ EndSave:
 
 GO
 
+------
+ALTER TABLE [dbo].[SatisFirsati] drop column Fiyat
+
 
 
 

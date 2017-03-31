@@ -23,7 +23,6 @@ namespace Portal.Models
     
         public int Id { get; set; }
         public Nullable<int> RefFirmaId { get; set; }
-        public decimal Fiyat { get; set; }
         public Nullable<int> RefDomainKategoriId { get; set; }
         public Nullable<int> RefYetkiliId { get; set; }
         public System.DateTime Tarih { get; set; }

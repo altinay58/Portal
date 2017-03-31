@@ -560,7 +560,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RefFirmaId" Type="int" />
           <Property Name="EtiketSatisAsamaId" Type="int" />
-          <Property Name="Fiyat" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RefDomainKategoriId" Type="int" />
           <Property Name="RefYetkiliId" Type="int" />
           <Property Name="Tarih" Type="datetime" Nullable="false" />
@@ -4500,7 +4499,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RefFirmaId" Type="Int32" />
-          <Property Name="Fiyat" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="RefDomainKategoriId" Type="Int32" />
           <Property Name="RefYetkiliId" Type="Int32" />
           <Property Name="Tarih" Type="DateTime" Nullable="false" Precision="3" />
@@ -5524,7 +5522,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="Tarih" ColumnName="Tarih" />
                 <ScalarProperty Name="RefYetkiliId" ColumnName="RefYetkiliId" />
                 <ScalarProperty Name="RefDomainKategoriId" ColumnName="RefDomainKategoriId" />
-                <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
                 <ScalarProperty Name="RefFirmaId" ColumnName="RefFirmaId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
