@@ -39,23 +39,17 @@ namespace Portal.Controllers
             }
             Db.Configuration.ProxyCreationEnabled = false;
             SatisFirsati satisFirsati = Db.SatisFirsatis.AsNoTracking().SingleOrDefault(x=>x.Id==id);
-            decimal? sonFiyat = null;
-            var sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x=>x.RefSatisFirsatiId==id).OrderByDescending(x => x.Id).FirstOrDefault();
+          
+        
             var tarih = satisFirsati.Tarih;
             tarih = tarih.AddDays(satisFirsati.GecerlilikSuresi);
             int kalanGun = (int)(tarih - satisFirsati.Tarih).TotalDays;
-            if (sonKayit != null)
-            {
-                sonFiyat = sonKayit.Fiyat;
-            }
-            else
-            {
-                sonFiyat = satisFirsati.Fiyat;
-            }
-          
+       
             var data = (from s in Db.SatisFirsatis.Include(s=>s.Firma) 
                         where s.Id==id.Value
-                        let fiyat=sonFiyat
+                        let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderByDescending(x => x.Id).FirstOrDefault()
+                        let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderBy(x => x.Id).FirstOrDefault()
+                        //let fiyat=sonFiyat
                         select new
                         {
                             Id=s.Id,
@@ -63,14 +57,14 @@ namespace Portal.Controllers
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId=s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId=s.EtiketSatisFirsatDurumuId,
-                            SonTeklif=fiyat,
+                            SonTeklif=sonKayit!=null ? sonKayit.Fiyat  : 0,
                             KalanSure=kalanGun,
                             SatisFirsatiFiyatRevizyons=s.SatisFirsatiFiyatRevizyons.OrderByDescending(x=>x.Id),
                             FirmaKisiler=s.Firma.FirmaKisis,
                             DosyaYolu=s.DosyaYolu,
                             FirmaAdi=s.Firma.FirmaAdi,
                             Firma=new {Id=s.Firma.FirmaID,Ad=s.Firma.FirmaAdi},
-                            Teklif = s.Fiyat,
+                            Teklif = ilkKayit != null ? ilkKayit.Fiyat  : 0,
                             Gorusmeler=(from g in Db.SatisGorusmes
                                         from e in Db.Etikets
                                         where g.EtiketSatisGorusmeTypeId==e.Value && e.Kategori == "EtiketSatisGorusmeTypeId"
@@ -101,6 +95,7 @@ namespace Portal.Controllers
                       
                         let tarih= SqlFunctions.DateAdd("day",(double)s.GecerlilikSuresi,s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
                         let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
+                        let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderBy(x => x.Id).FirstOrDefault()
                         select new
                         {
                             Id = s.Id,
@@ -108,14 +103,14 @@ namespace Portal.Controllers
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
-                            SonTeklif = (sonKayit!=null ? sonKayit.Fiyat :s.Fiyat),
+                            SonTeklif = (sonKayit!=null ? sonKayit.Fiyat :0),
                             KalanSure = DbFunctions.DiffDays(s.Tarih,tarih),
                             SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
                             FirmaKisiler = s.Firma.FirmaKisis,
                             DosyaYolu = s.DosyaYolu,
                             FirmaAdi = s.Firma.FirmaAdi,
                             Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi },
-                            Teklif=s.Fiyat
+                            Teklif = (ilkKayit != null ? ilkKayit.Fiyat  : 0),
                         }
                      ).ToList();
             Db.Configuration.ProxyCreationEnabled = true;
@@ -163,7 +158,7 @@ namespace Portal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Kaydet([Bind(Include = "Id,RefFirmaId,EtiketSatisAsamaId,EtiketSatisFirsatDurumuId,Fiyat,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DosyaYolu,RefSorumluKisiId")]
+        public ActionResult Kaydet([Bind(Include = "Id,RefFirmaId,EtiketSatisAsamaId,EtiketSatisFirsatDurumuId,RefDomainKategoriId,RefYetkiliId,Tarih,Note,GecerlilikSuresi,DosyaYolu,RefSorumluKisiId")]
         SatisFirsati satisFirsati,int? id)
         {
           

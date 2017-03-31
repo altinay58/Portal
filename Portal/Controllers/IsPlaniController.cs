@@ -18,6 +18,11 @@ namespace Portal.Controllers
         {
             GuncelMenu = "Satis Bolumu";
         }
+        public ActionResult List()
+        {
+            var isPlanis = Db.IsPlanis.Include(i => i.AspNetUser).Include(i => i.Firma).Include(i => i.SatisFirsati);
+            return View(isPlanis.ToList());
+        }
         public ActionResult Index()
         {
             return View();
@@ -30,6 +35,7 @@ namespace Portal.Controllers
               
                         let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
                         let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
+                        let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderBy(x => x.Id).FirstOrDefault()
                         orderby s.Id descending
                         select new
                         {
@@ -40,14 +46,14 @@ namespace Portal.Controllers
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
-                            SonTeklif = (sonKayit != null ? sonKayit.Fiyat : s.Fiyat),
+                            SonTeklif = (sonKayit != null ? sonKayit.Fiyat : (ilkKayit!=null ? ilkKayit.Fiyat as Nullable<decimal> : null)),
                             KalanSure = DbFunctions.DiffDays(s.Tarih, tarih),
                             SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
                             FirmaKisiler = s.Firma.FirmaKisis,
                             DosyaYolu = s.DosyaYolu,
                             FirmaAdi = s.Firma.FirmaAdi,
                             Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi, Cep = s.Firma.YetkiliCepTelefon, Tel = s.Firma.YetkiliTelefon },
-                            Teklif = s.Fiyat,
+                            Teklif = (ilkKayit != null ? ilkKayit.Fiyat as Nullable<decimal> : null),
                             EtiketSatisAsama = (
                                                from e in Db.Etikets
                                                where e.Kategori == "EtiketSatisAsamaId" && s.EtiketSatisAsamaId == e.Value
