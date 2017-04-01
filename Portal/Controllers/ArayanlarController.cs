@@ -346,5 +346,23 @@ namespace Portal.Controllers
 
         //    return View();
         //}
+        public ActionResult ArayanGecmisAramaGetir(string firmaAdi, int? SayfaNo)
+        {
+
+
+            string firmaAdim = firmaAdi.Replace(" ", "");
+            firmaAdim = firmaAdim.ToUpper();
+            IEnumerable<Arayanlar> arayanlarim = null;
+            arayanlarim = Db.Arayanlars.GetirArayanGecmisAramalar(firmaAdim);
+            var qTotal2 = arayanlarim;
+            int domainBaslangic = ((SayfaNo?? 1) - 1) * PagerCount;
+
+
+            int totalCount = qTotal2.Count();
+            PaginatedList pager = new PaginatedList((SayfaNo ?? 1), PagerCount, totalCount);
+            ViewData["queryData"] = firmaAdi;
+            ViewBag.Sayfalama = pager;
+            return View(arayanlarim.Skip(domainBaslangic).Take(PagerCount).ToList());
+        }
     }
 }

@@ -189,13 +189,13 @@ namespace Portal.Models
                    orderby a.Konum1 ascending
                    select a;
         }
-        public static IEnumerable<Arayanlar> GetirArayanGecmisAramalar(this IEnumerable<Arayanlar> kaynakTablo, string FirmaAdi)
+        public static IQueryable<Arayanlar> GetirArayanGecmisAramalar(this IQueryable<Arayanlar> kaynakTablo, string FirmaAdi)
         {
 
             return (from d in kaynakTablo
                     where d.arayanFirmaAdi.Replace(" ", "").ToUpper() == FirmaAdi.ToString()
                     orderby d.arayanKayitTarih descending
-                    select d).ToList();
+                    select d);
         }
         public static IEnumerable<CariHareket> GetirCariHareketler(this IQueryable<CariHareket> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic,string searchVal)
         {

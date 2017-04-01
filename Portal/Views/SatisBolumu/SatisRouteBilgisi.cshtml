@@ -1,0 +1,287 @@
+﻿@model SatisRouteView
+@using Portal.Models;
+
+
+@{
+    ViewBag.Title = "SatisRouteBilgisi";
+}
+
+@section scripts{    
+    
+<script>
+    $(function () {
+        $("#RandevuKonumID").change(function () {
+
+            var konumID = $(this).val();
+            var urlInsert = '/SatisBolumu/SatisRouteBilgisi?konumID='+konumID;
+            window.location.href = urlInsert;
+        });
+        function goback() {
+            history.go(-1);
+        }
+    });
+</script>
+}
+<p>
+    <h3>@ViewBag.BolgeAdi Bölgesi Listeleniyor</h3> @Html.DropDownList("RandevuKonumID", String.Empty)  ||
+    <a class=" btn btn-group-vertical" href="javascript:history.go(-1)"> Geri </a>
+</p>
+<div class="table-scrollable" style="margin-top:15px">
+<table class="table table-striped table-bordered table-hover">
+
+    <tr>
+        <td>
+            <h3>Arayanlar</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Adı/
+                            Soyadı
+                        </th>
+                        <th>
+                            Firma Adı
+                        </th>
+                        <th>
+                            Telefon No
+                        </th>
+                        <th>
+                            Cep Tel
+                        </th>
+                        <th>
+                            İş Adı
+                        </th>
+
+                        <th>
+                            Tarih
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model.arayanlar)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.arayanAdi)
+
+                            @Html.DisplayFor(modelItem => item.arayanSoyadi)
+                        </td>
+                        <td>
+                            <a href="/Arayanlar/ArayanGecmisAramaGetir?firmaAdi=@item.arayanFirmaAdi">@item.arayanFirmaAdi</a>
+                        </td>
+                        <td>
+                            <a href="tel:@Fonksiyonlar.telefonDuzelt(item.arayanTelefonNo)">@Fonksiyonlar.telefonDuzelt(item.arayanTelefonNo)</a>
+
+                        </td>
+                        <td>
+                            <a href="tel:@Fonksiyonlar.telefonDuzelt(item.arayanCepTelNo)">@Fonksiyonlar.telefonDuzelt(item.arayanCepTelNo)</a>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.arayanKonu)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.arayanKayitTarih)
+                        </td>
+
+                        <td></td>
+                        <td>
+                            @Html.ActionLink("Düzenle", "ArayanDuzenle", "Arayanlar", new { id = item.arayanID }, null) 
+                       
+
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h3>Randevular</h3>
+            <table class="table table-striped table-bordered table-hover" id="formTable">
+                <thead>
+                    <tr>
+                        <th>Müşteri Tipi</th>
+                        <th>Sirasi</th>
+                        <th>
+                            Tarih
+                        </th>
+                        <th>
+                            Bölge
+                        </th>
+                        <th>
+                            Göruşülecek Firma/Kişi
+                        </th>
+
+                        <th>
+                            Randevu YetkiliKişi
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody id="sortThis">
+                    @foreach (var item in Model.randevular)
+                    {
+                        <tr>
+                            <td>
+                                @if (string.IsNullOrEmpty(item.RandevuRefFirmaID.ToString()))
+                                {<text>Yeni Müşteri</text> }
+                                else
+                                {
+                                    <text>Eski Müşteri</text> }
+                            </td>
+                            <td>@item.RandevuSiraNo</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RandevuTarihi)
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.RandevuRefFirmaID.ToString()))
+                                {
+                                    int id = Fonksiyonlar.FirmaBolgeIDGetir(item.RandevuRefFirmaID ?? 0);
+                                    <text>@Fonksiyonlar.BolgeAdiGetir(id)</text>
+                                }
+                                else
+                                {
+                                    int id = Fonksiyonlar.KonumIDGetir(item.RandevuRefArayanID ?? 0);
+                                    <text>@Fonksiyonlar.BolgeAdiGetir(id)</text>
+                                }
+
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.RandevuRefFirmaID.ToString()))
+                                {
+                                    @Fonksiyonlar.FirmaAdiGetir(item.RandevuRefFirmaID ?? 0)
+                                    <text>/</text>
+                                    @Fonksiyonlar.FirmaSahipAdiGetir(item.RandevuRefFirmaID)
+
+                                }
+                                else
+                                { @Fonksiyonlar.ArayanFirmaAdiGetir(item.RandevuRefArayanID ?? 0)
+                                    <text>/</text>
+                                    @Fonksiyonlar.ArayanKisiAdiGetir(item.RandevuRefArayanID)
+
+                                }
+                            </td>
+
+                            <td>
+                                @Fonksiyonlar.KisiAdiGetir(item.RandevuYetkiliKisiID)
+                            </td>
+
+
+                            <td>
+                                @Html.ActionLink("Düzenle", "RandevuKaydet", new { id = item.RandevuID }, new { }) 
+                             
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+            <h3>Firmalar</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Firma
+                        </th>
+                        <th class="left">
+                            Yetkili
+                        </th>
+                        <th class="left">
+                            Telefon
+                        </th>
+                        <th class="left">
+                            Cep Telefon
+                        </th>
+                        <th class="left">
+                            Domainler
+                        </th>
+                        <th class="left">
+                            Aracı
+                        </th>
+
+                        <th class="left">
+                            E-Mail
+                        </th>
+
+
+
+                        <th class="right">
+                            Düzelt
+                        </th>
+                        <th class="right">
+                            Sil
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ foreach (var firmaVerisi in Model.firmalar)
+                        {
+                            <tr>
+                                <td>@firmaVerisi.FirmaID</td>
+                                <td>
+                                    <a href="@Url.Action("Detay", "CariHareket", new { id = firmaVerisi.FirmaID })">
+                                        @firmaVerisi.FirmaAdi
+                                    </a>
+                                </td>
+                                <td>
+                                    @firmaVerisi.YetkiliAdi
+                                </td>
+                                <td>
+                                    @firmaVerisi.YetkiliTelefon
+                                </td>
+                                <td>
+                                    @firmaVerisi.YetkiliCepTelefon
+                                </td>
+                                <td>
+                                    @firmaVerisi.Domains.Count
+                                </td>
+
+                                <td>
+                                    @firmaVerisi.Firma2.FirmaAdi
+                                </td>
+
+
+                                <td>
+                                    @firmaVerisi.Email
+                                </td>
+
+
+
+                                <td>
+                                    <a href="@Url.Action("FirmaKaydet", new { controller = "Firmalar", id = firmaVerisi.FirmaID })">
+                                        <img src="/Content/images/cark.png" hspace="2" border="0" alt="Kaydı Düzenle" />
+                                    </a>
+
+                                </td>
+                                <td align="right">
+                                    <a href="javascript:if(confirm('Emin misiniz?'))location.href='@Url.Action("FirmaSil", "Firmalar", new { controller = "Firmalar", id = firmaVerisi.FirmaID })'">
+                                        <img src="/Content/images/sil.png" hspace="2" border="0" title="Sil" />
+                                    </a>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+</div>
+

@@ -459,6 +459,7 @@
     <Compile Include="Models\SatisNotu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SatisRouteView.cs" />
     <Compile Include="Models\Sektorler.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -733,6 +734,8 @@
     <Content Include="Views\IsPlani\Index.cshtml" />
     <Content Include="Views\Account\SifremiUnuttum.cshtml" />
     <Content Include="Views\IsPlani\List.cshtml" />
+    <Content Include="Views\SatisBolumu\SatisRouteBilgisi.cshtml" />
+    <Content Include="Views\Arayanlar\ArayanGecmisAramaGetir.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

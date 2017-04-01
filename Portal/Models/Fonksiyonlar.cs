@@ -483,6 +483,94 @@ namespace Portal.Models
                 return "Kullanıcı Adı Bulunamadı";
             }
         }
+        public static string BolgeAdiGetir(int? KonumID)
+        {
+            string bolgeAdi = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                bolgeAdi = dbc.Konums.Find(KonumID).Konum1.ToString();
+
+            }
+
+            return bolgeAdi;
+        }
+        public static string telefonDuzelt(string TelefonNo)
+        {
+            if (!string.IsNullOrEmpty(TelefonNo))
+            {
+                Regex rgx = new Regex("[^0-9]");
+                TelefonNo = rgx.Replace(TelefonNo, "");
+
+                if (TelefonNo.Substring(0, 1) != "0")
+                {
+                    TelefonNo = "0" + TelefonNo;
+                }
+                TelefonNo = TelefonNo.Substring(TelefonNo.Length - 11);
+                TelefonNo = TelefonNo.Substring(0, 4) + " " + TelefonNo.Substring(4, 3) + " " + TelefonNo.Substring(7, 2) + " " + TelefonNo.Substring(9, 2);
+            }
+
+            return TelefonNo;
+        }
+        public static string FirmaAdiGetir(int FirmaID)
+        {
+            string firmaAdi = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                firmaAdi = dbc.Firmas.Find(FirmaID).FirmaAdi.ToString();
+
+            }
+
+            return firmaAdi;
+        }
+        public static string FirmaSahipAdiGetir(int? FirmaID)
+        {
+            string firmaSahibiAdi = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                firmaSahibiAdi = dbc.Firmas.Find(FirmaID).YetkiliAdi.ToString();
+                firmaSahibiAdi = firmaSahibiAdi + "/" + dbc.Firmas.Find(FirmaID).YetkiliAdi;
+            }
+
+            return firmaSahibiAdi;
+        }
+        public static string ArayanFirmaAdiGetir(int? arayanID)
+        {
+            string Isim = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                Isim = dbc.Arayanlars.Find(arayanID).arayanFirmaAdi.ToString();
+
+            }
+
+            return Isim;
+        }
+        public static string ArayanKisiAdiGetir(int? arayanID)
+        {
+            string Isim = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                Isim = dbc.Arayanlars.Find(arayanID).arayanAdi.ToString();
+                Isim = Isim + "/" + dbc.Arayanlars.Find(arayanID).arayanSoyadi;
+
+            }
+
+            return Isim;
+        }
+        public static string KisiAdiGetir(string KisiID)
+        {
+            string Isim = string.Empty;
+            using (var dbc = new PortalEntities())
+            {
+                if (dbc.AspNetUsers.Find(KisiID) == null)
+                {
+                    return "Kullanıcı Yok.";
+                }
+                Isim = dbc.AspNetUsers.Find(KisiID).Isim.ToString();
+
+            }
+
+            return Isim;
+        }
     }
 
 }

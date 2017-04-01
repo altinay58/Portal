@@ -1,0 +1,75 @@
+﻿@model  IEnumerable<Portal.Models.Arayanlar>
+@using Microsoft.AspNet.Identity;
+@using Portal.Models;
+@using Portal.Extensions;
+@using Portal.Controllers;
+
+  
+ <div class="table-scrollable" style="margin-top:15px" >
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <th>ID</th>
+            <th>
+                Adı/
+                Soyadı
+            </th>
+            <th>
+                Firma Adı
+            </th>
+            <th>
+                Telefon No
+            </th>
+            <th>
+                Cep Tel
+            </th>
+            <th>
+                İş Adı
+            </th>
+
+            <th>
+                Tarih
+            </th>
+         
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.arayanID</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arayanAdi)
+
+                    @Html.DisplayFor(modelItem => item.arayanSoyadi)
+                </td>
+                <td>             
+                    @item.arayanFirmaAdi
+                </td>
+                <td>
+                    <a href="tel:@Fonksiyonlar.telefonDuzelt(item.arayanTelefonNo)">@Fonksiyonlar.telefonDuzelt(item.arayanTelefonNo)</a>
+
+                </td>
+                <td>
+                    <a href="tel:@Fonksiyonlar.telefonDuzelt(item.arayanCepTelNo)">@Fonksiyonlar.telefonDuzelt(item.arayanCepTelNo)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arayanKonu)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.arayanKayitTarih)
+                </td>
+                
+            </tr>
+                        }
+    </table>
+</div>
+
+
+
+<div style="text-align:center">
+    @if (ViewBag.Sayfalama.TotalCount > 0)
+    {
+        @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<ArayanlarController>(c => c.ArayanGecmisAramaGetir(queryData,page))))
+    }
+</div>
