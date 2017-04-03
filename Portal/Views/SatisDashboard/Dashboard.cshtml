@@ -1,0 +1,392 @@
+﻿@using Newtonsoft.Json;
+@using Portal.Models.IslerModels;
+@using Microsoft.AspNet.Identity;
+@using Portal.Models;
+@{
+    ViewBag.Title = "Dashboard";
+    string userId = User.Identity.GetUserId() ?? "f5f53da2-c311-44c9-af6a-b15ca29aee57";
+    var guncelKullanici = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.Id == userId).
+                            Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
+    var kullanicilar = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.LockoutEnabled == false)
+.Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).ToList();
+
+    var konumlarJsn = JsonConvert.SerializeObject(Database.DbHelper.GetDb.Konums.Select(x => new { KonumID = x.KonumID, Konum = x.Konum1 }).ToList());
+    //var etiketIsPlaniDurum =JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x=>x.Kategori== "EtiketIsPlaniDurum"));
+    var etiketIsPlaniTipDetaylari = JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x => x.Kategori == "EtiketIsPlaniTipi"));
+}
+@section css{
+<style>
+
+    .baslik2 {
+  
+        text-align: center;
+        background-color: #e7ecf1;
+        padding: 10px;
+        margin: 0;
+        color: #796767;
+    }
+    .ic-kutu {
+        height: 80px;
+        text-align:center;
+    }
+    .ic-kutu  a {
+        display:block;
+        text-decoration: none;
+        color:#fff;
+        font-size:18px;
+    }
+
+    .ic-kutu  a:hover {
+        text-decoration: underline;
+    }
+
+        .ic-kutu  a.yazi {
+            color: #eae8e8;
+            padding: 0;
+            margin: 0;
+            line-height: 1.2;
+            font-weight: 400;
+        }
+
+        .ic-kutu  a.sayi {
+            color: #fff;
+            padding: 0;
+            margin: 0;
+            line-height: 1.2;
+            font-weight: 600;
+        }
+</style>    
+}
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <h3 class="baslik2">
+            İş Planı
+        </h3>
+        <div class="dashboard-stat dashboard-stat-v2 blue" href="#">
+         
+            <div class="ic-kutu">
+                <div style="padding-top:15px;">
+                    <a class="sayi">3</a>
+                    <a class="yazi">Yapılacak</a>
+                </div>          
+            
+            </div>
+     
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <h3 class="baslik2">
+            Yapılan İşler
+        </h3>
+        <div class="dashboard-stat dashboard-stat-v2 green" href="#">
+
+            <div class="ic-kutu">
+                <div style="padding-top:15px;">
+                    <a class="sayi">3</a>
+                    <a class="yazi">Yapılıyor</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <h3 class="baslik2">
+           Alacak Listesi
+        </h3>
+        <div class="dashboard-stat dashboard-stat-v2 red" href="#">
+
+            <div class="ic-kutu">
+                <div style="padding-top:15px;">
+                    <a class="sayi">3</a>
+                    <a class="yazi">Yapılıyor</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <h3 class="baslik2">
+           Tahsilat
+        </h3>
+        <div class="dashboard-stat dashboard-stat-v2 purple" href="#">
+
+            <div class="ic-kutu">
+                <div style="padding-top:15px;">
+                    <a class="sayi">3</a>
+                    <a class="yazi">Yapılıyor</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <ul class="nav nav-tabs satisdashboard">
+                    <li class="active">
+                        <a href="#tab_is_listesi" data-toggle="tab" aria-expanded="true"> İş Listesi </a>
+                    </li>
+                    <li class="">
+                        <a href="#tab_satis_firsatlari" data-toggle="tab" aria-expanded="false"> Satış Fırsatları </a>
+                    </li>
+                    <li class="">
+                        <a href="#tab_borclu_firmalar" data-toggle="tab" aria-expanded="false"> Borçlu Cariler </a>
+                    </li>
+                    <li class="">
+                        <a href="#tab_firmalar" data-toggle="tab" aria-expanded="false">Firmalar </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div ng-controller="anaSayfaCtrl" class="tab-pane fade active in table-scrollable" id="tab_is_listesi" ng-init="init('@JsonConvert.SerializeObject(kullanicilar)',
+                         guncelKullaniciId='',bolgelerJsn='@konumlarJsn')">
+                        <table class="table table-bordered table-striped table-condensed flip-content isler">
+                            <thead class="flip-content">
+                                <tr>
+                                    <th>Bölge</th>
+                                    <th> İş Adı </th>
+                                    <th> Domain </th>
+                                    <th> İş Yapacak </th>
+                                    <th> İşin Durumu </th>
+                                    <th> Tarih </th>
+                                    <th>  </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+
+                                        <select ng-model="seciliBolge" class="form-control">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
+                                        </select>
+
+                                    </td>
+                                    <td> <input type="text" name="isAdi" ng-model="isAdi" ng-keyup="getirData(isAdi)" placeholder="İş Adı" autocomplete="off" class="form-control" /></td>
+
+                                    <td> <input type="text" ng-model="domain" ng-keyup="getirData(domain)" placeholder="domain" autocomplete="off" class="form-control" /></td>
+
+                                    <td>
+
+                                        <select ng-model="seciliYapacakKisi" class="form-control">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in kullanicilar" value="{{k.AdSoyad}}">{{k.AdSoyad}}</option>
+                                        </select>
+
+                                    </td>
+                                    <td>
+                                        <select class="form-control" ng-model="seciliIsDurum">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in isinDurumlari" value="{{k}}">{{k}}</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr ng-repeat="x in isler" style="background-color:{{isRenkler[x.IsinDurumu].color}}">
+                                    <td>{{x.Bolge}}</td>
+                                    <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.IsAdi}}</a></td>
+
+                                    <td><a ng-href="/Isler/DomainIsler/{{x.DomainId}}">{{x.Domain}}</a>   </td>
+
+                                    <td> {{x.IsiYapacakKisi}} </td>
+                                    <td> {{x.IsinDurumu}} </td>
+                                    <td> {{tarihFormat(x.Tarih)}} </td>
+                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
+                                </tr>
+
+
+
+
+                            </tbody>
+                        </table>
+                        <div style="text-align:center">
+                            <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+                                boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="page" ng-change="pageChanged()"></ul>
+
+                        </div>
+                    </div>
+                    <div ng-controller="satisFirsatiCtrl" ng-init="init(bolgelerJsn='@konumlarJsn')" class="tab-pane fade table-scrollable" id="tab_satis_firsatlari">
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                            <thead class="flip-content">
+                                <tr>
+                                    <th> Bölge </th>
+                                    <th> Ad Soyad </th>
+                                    <th> Firma Adı </th>
+                                    <th> Telefon </th>
+                                    <th> Durum </th>
+                                    <th>  </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+
+                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge,true)">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
+                                        </select>
+
+                                    </td>
+                                    <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData(adSoyad)" placeholder="Ad / Soyad" class="form-control"></td>
+                                    <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
+                                    <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                </tr>
+
+                                <!-- ngRepeat: x in arayanlar -->
+                                <tr ng-repeat="x in firsatlar">
+                                    <td> {{x.Bolge}} </td>
+                                    <td>{{x.Musteri}}</td>
+                                    <td>{{x.Firma.Ad}}</td>
+                                    <td>
+                                        <a href="tel:{{x.Firma.Cep}}">{{x.Firma.Cep}}</a>&nbsp;
+                                        <a href="tel:{{x.Firma.Tel}}">{{x.Firma.Tel}}</a>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}}</button>
+                                        @*<span class="label green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}} </span>*@
+                                    </td>
+
+                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
+
+                                </tr><!-- end ngRepeat: x in arayanlar -->
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-controller="borcluFirmalarCtrl" ng-init="init(bolgelerJsn='@konumlarJsn')" class="tab-pane fade table-scrollable" id="tab_borclu_firmalar">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="flip-content">
+                                <tr>
+                                    <th>Bölge </th>
+                                    <th>Kalan Ödeme</th>
+                                    <th> Firma</th>
+                                    <th class="left">Yetkili </th>
+                                    <th class="left">Telefon</th>
+                                    <th class="left">Cep Telefon</th>
+                                    <th class="left"> Domainler </th>
+                                    <th class="left">Aracı </th>
+                                    @*<th class="left">E-Mail</th>*@
+                                    <th class="right"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge,true)">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
+                                        </select>
+                                    </td>
+                                    <td>ödeme</td>
+                                    <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="yetkiliAdi" ng-keyup="getirData(yetkiliAdi)" placeholder="Telefon No" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="cepTelNo" ng-keyup="getirData(cepTelNo)" placeholder="Cep Tel No" class="form-control"></td>
+                                    <td> </td>
+                                    <td> </td>
+                                    @*<td></td>*@
+                                    <td><a href="/Firmalar/FirmaKaydet/6228">Düzenle</a></td>
+
+                                </tr>
+                                <tr ng-repeat="x in firmalar">
+                                    <td> {{x.konum}} </td>
+                                    <td>{{x.borcu}}</td>
+                                    <td>{{x.firma.FirmaAdi}}</td>
+                                    <td>{{x.firma.YetkiliAdi}}</td>
+                                    <td>
+                                        <a href="tel:{{x.firma.YetkiliTelefon}}">{{x.firma.YetkiliTelefon}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="tel:{{x.firma.YetkiliCepTelefon}}">{{x.firma.YetkiliCepTelefon}}</a>
+                                    </td>
+                                    <td>{{x.domainSayisi}}</td>
+                                    <td>{{x.araci}}</td>
+                                    @*<td> {{x.firma.Email}} </td>*@
+                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div style="text-align:center">
+                            <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+                                boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="page" ng-change="pageChanged()"></ul>
+
+                        </div>
+                    </div>
+                    <div ng-controller="firmalarCtrl" ng-init="init(bolgelerJsn='@konumlarJsn')" class="tab-pane fade table-scrollable" id="tab_firmalar">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="flip-content">
+                                <tr>
+                                    <th>Bölge </th>
+                                    <th>Kalan Ödeme</th>
+                                    <th> Firma</th>
+                                    <th class="left">Yetkili </th>
+                                    <th class="left">Telefon</th>
+                                    <th class="left">Cep Telefon</th>
+                                    <th class="left"> Domainler </th>
+                                    <th class="left">Aracı </th>
+                                    @*<th class="left">E-Mail</th>*@
+                                    <th class="right"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge,true)">
+                                            <option value="">Hepsi</option>
+                                            <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
+                                        </select>
+                                    </td>
+                                    <td>ödeme</td>
+                                    <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="yetkiliAdi" ng-keyup="getirData(yetkiliAdi)" placeholder="Telefon No" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"></td>
+                                    <td><input type="text" name="firma" ng-model="cepTelNo" ng-keyup="getirData(cepTelNo)" placeholder="Cep Tel No" class="form-control"></td>
+                                    <td> </td>
+                                    <td> </td>
+                                    @*<td></td>*@
+                                    <td><a href="/Firmalar/FirmaKaydet/6228">Düzenle</a></td>
+
+                                </tr>
+                                <tr ng-repeat="x in firmalar">
+                                    <td> {{x.konum}} </td>
+                                    <td>{{x.borcu}}</td>
+                                    <td>{{x.firma.FirmaAdi}}</td>
+                                    <td>{{x.firma.YetkiliAdi}}</td>
+                                    <td>
+                                        <a href="tel:{{x.firma.YetkiliTelefon}}">{{x.firma.YetkiliTelefon}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="tel:{{x.firma.YetkiliCepTelefon}}">{{x.firma.YetkiliCepTelefon}}</a>
+                                    </td>
+                                    <td>{{x.domainSayisi}}</td>
+                                    <td>{{x.araci}}</td>
+                                    @*<td> {{x.firma.Email}} </td>*@
+                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div style="text-align:center">
+                            <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+                                boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="page" ng-change="pageChanged()"></ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

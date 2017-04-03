@@ -261,6 +261,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SanalPostController.cs" />
     <Compile Include="Controllers\SatisBolumuController.cs" />
+    <Compile Include="Controllers\SatisDashboardController.cs" />
     <Compile Include="Controllers\SatisFirsatiFiyatRevizyonsController.cs" />
     <Compile Include="Controllers\SatisFirsatisController.cs" />
     <Compile Include="Controllers\SatisGorusmesController.cs" />
@@ -736,6 +737,7 @@
     <Content Include="Views\IsPlani\List.cshtml" />
     <Content Include="Views\SatisBolumu\SatisRouteBilgisi.cshtml" />
     <Content Include="Views\Arayanlar\ArayanGecmisAramaGetir.cshtml" />
+    <Content Include="Views\SatisDashboard\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
