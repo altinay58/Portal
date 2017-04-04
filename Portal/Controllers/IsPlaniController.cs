@@ -46,14 +46,14 @@ namespace Portal.Controllers
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
-                            SonTeklif = (sonKayit != null ? sonKayit.Fiyat : (ilkKayit!=null ? ilkKayit.Fiyat as Nullable<decimal> : null)),
+                            SonTeklif = (sonKayit != null ? sonKayit.Fiyat : 0),
                             KalanSure = DbFunctions.DiffDays(s.Tarih, tarih),
                             SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
                             FirmaKisiler = s.Firma.FirmaKisis,
                             DosyaYolu = s.DosyaYolu,
                             FirmaAdi = s.Firma.FirmaAdi,
                             Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi, Cep = s.Firma.YetkiliCepTelefon, Tel = s.Firma.YetkiliTelefon },
-                            Teklif = (ilkKayit != null ? ilkKayit.Fiyat as Nullable<decimal> : null),
+                            Teklif = (ilkKayit != null ? ilkKayit.Fiyat :0),
                             EtiketSatisAsama = (
                                                from e in Db.Etikets
                                                where e.Kategori == "EtiketSatisAsamaId" && s.EtiketSatisAsamaId == e.Value

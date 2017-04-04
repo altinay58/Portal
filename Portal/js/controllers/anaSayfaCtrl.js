@@ -2,6 +2,7 @@
 var ss;
 angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     let self = $scope;
+    self.linkDeGoster = true;
     self.isler = [], self.yukleniyor = false;
     $scope.maxSize = 5;
     self.seciliKontrolEden, self.seciliYapacakKisi;
@@ -17,7 +18,7 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         self.getirData();
         ss = self;
     });
-    self.init = function (kullanicilar, guncelKullaniciId,bolgelerJsn) {
+    self.init = function (kullanicilar, guncelKullaniciId, bolgelerJsn, isDurum) {
         //aryanListService.getListData(self.basTarih, self.bitisTarih);
         self.kullanicilar = JSON.parse(kullanicilar);
         if (bolgelerJsn) {
@@ -25,7 +26,11 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         }    
         if (guncelKullaniciId) {
             self.guncelKullanici = self.kullanicilar.find(x=> { return x.Id === guncelKullaniciId }).AdSoyad;
-        }      
+        }
+        if (isDurum) {
+            self.seciliIsDurum = isDurum;
+        }
+    
         self.basTarih = qs("basTarih");
         self.bitisTarih = qs("bitisTarih");
         self.page = qs("page"); //=== null ? 1 : parseInt(qs("page"));
@@ -34,7 +39,7 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         self.domain = qs("domain");
         self.seciliKontrolEden = qs("seciliKontrolEden");
         self.seciliYapacakKisi = qs("seciliYapacakKisi") === null ? self.guncelKullanici : qs("seciliYapacakKisi");
-        self.seciliIsDurum = qs("seciliIsDurum");
+        self.seciliIsDurum = qs("seciliIsDurum") == null ? self.seciliIsDurum : qs("seciliIsDurum");
         self.isId = qs("isId");
         self.seciliBolge = qs("seciliBolge");
     };
@@ -47,6 +52,9 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
               self.isler = res.Data;
               self.yukleniyor = false;
               $scope.totalItems = res.ToplamSayi;
+              if (location.href.indexOf('SatisDashboard') > -1 && self.seciliIsDurum === "Yapiliyor") {
+                  $("a[href='#tab_yapilan_isler'] p.sayi").text(res.ToplamSayi);
+              }
              
           });
             //self.$apply();
@@ -87,6 +95,7 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
         return portalApp.getParameterByName(name);
     }
     self.$watchCollection('[page,basTarih,bitisTarih,isAdi,domain,firma,seciliKontrolEden,seciliYapacakKisi,seciliIsDurum,isId,seciliBolge]', function (nw, ov) {
+   
         console.log(nw[0] + "-" + ov[0]);
         let q = "";//`#?page=${nw[0]}`;
         let first = true;
@@ -98,34 +107,24 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
                 } else {
                     q = q + `&${models[i]}=${setIfEmpty(nw[i])}`;
                 }
-              
+
             }
         }
-       
-        //if (nw[3] !== null && nw[3] !== "") {
-        //    q = q + `&isAdi:${setIfEmpty(nw[3])}`;
-        //}
-        //if (nw[1] !== "" && nw[2] !== "") {
-        //    q = q + `&basTarih:${setIfEmpty(nw[1])}&bitisTarih:${setIfEmpty(nw[2])}`;
-        //}
-        //if (nw[4] !== null && nw[4] !== "") {
-        //    q = q + `&firma:${setIfEmpty(nw[4])}`;
-        //}
-        //if (nw[5] !== null && nw[5] !== "") {
-        //    q = q + `&domain:${setIfEmpty(nw[5])}`;
-        //}
+
+
         if (q) {
             document.location.href = q;
         } else {
             document.location.href = "#";
         }
-       
+
         let yeniSayfa = nw[0];
         let eskiSayfa = ov[0];
         const BOLGE = 10;
         if (yeniSayfa !== eskiSayfa || nw[6] !== ov[6] || nw[7] !== ov[7] || nw[8] !== ov[8] || nw[BOLGE] !== ov[BOLGE]) {
             self.getirData();
-        }
+        }    
+      
       
     });
 });
