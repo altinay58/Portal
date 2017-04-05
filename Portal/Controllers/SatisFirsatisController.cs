@@ -39,17 +39,18 @@ namespace Portal.Controllers
             }
             Db.Configuration.ProxyCreationEnabled = false;
             SatisFirsati satisFirsati = Db.SatisFirsatis.AsNoTracking().SingleOrDefault(x=>x.Id==id);
-          
-        
-            var tarih = satisFirsati.Tarih;
-            tarih = tarih.AddDays(satisFirsati.GecerlilikSuresi);
-            int kalanGun = (int)(tarih - satisFirsati.Tarih).TotalDays;
+
+
+            //var tarih = DateTime.Today;//satisFirsati.Tarih;
+            //tarih = tarih.AddDays(satisFirsati.GecerlilikSuresi);
+            //int kalanGun = (int)(tarih - satisFirsati.Tarih).TotalDays;
        
             var data = (from s in Db.SatisFirsatis.Include(s=>s.Firma) 
                         where s.Id==id.Value
                         let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderByDescending(x => x.Id).FirstOrDefault()
                         let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderBy(x => x.Id).FirstOrDefault()
                         //let fiyat=sonFiyat
+                        let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
                         select new
                         {
                             Id=s.Id,
@@ -58,7 +59,7 @@ namespace Portal.Controllers
                             EtiketSatisAsamaId=s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId=s.EtiketSatisFirsatDurumuId,
                             SonTeklif=sonKayit!=null ? sonKayit.Fiyat  : 0,
-                            KalanSure=kalanGun,
+                            KalanSure= DbFunctions.DiffDays(DateTime.Today, tarih),
                             SatisFirsatiFiyatRevizyons=s.SatisFirsatiFiyatRevizyons.OrderByDescending(x=>x.Id),
                             FirmaKisiler=s.Firma.FirmaKisis,
                             DosyaYolu=s.DosyaYolu,

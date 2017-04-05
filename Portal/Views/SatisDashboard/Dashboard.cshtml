@@ -330,54 +330,49 @@
                         </div>
                     </div>
 
-                    <div id="tab_satis_firsatlari" ng-controller="satisFirsatiCtrl" ng-init="init(bolgelerJsn='@konumlarJsn')" class="tab-pane fade table-scrollable" >
+                    <div id="tab_satis_firsatlari" ng-controller="dashboardSatisFirsatiCtrl" ng-init="init(bolgelerJsn='@konumlarJsn')" class="tab-pane fade table-scrollable" >
                         <table class="table table-bordered table-striped table-condensed flip-content ">
                             <thead class="flip-content">
                                 <tr>
                                     <th> Bölge </th>
-                                    <th> Ad Soyad </th>
+                                    <th> Müşteri </th>
                                     <th> Firma Adı </th>
-                                    <th> Telefon </th>
-                                    <th> Durum </th>
-                                    <th>  </th>
+                                    <th>Proje Tipi</th>
+                                    <th> Aşama </th>
+                                    <th> Fırsat Durum </th>
+                                    <th> Tarih </th>
+                                    <th> Süre </th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-
                                         <select ng-model="seciliBolge" class="form-control" ng-change="getirData(seciliBolge,true)">
                                             <option value="">Hepsi</option>
                                             <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
                                         </select>
-
                                     </td>
                                     <td> <input type="text" name="adSoyad" ng-model="adSoyad" ng-keyup="getirData(adSoyad)" placeholder="Ad / Soyad" class="form-control"></td>
                                     <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
-                                    <td> <input type="text" name="telNo" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"> </td>
                                     <td> </td>
                                     <td> </td>
-                                </tr>
-
-                                <!-- ngRepeat: x in arayanlar -->
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>                           
                                 <tr ng-repeat="x in firsatlar">
                                     <td> {{x.Bolge}} </td>
                                     <td>{{x.Musteri}}</td>
                                     <td>{{x.Firma.Ad}}</td>
-                                    <td>
-                                        <a href="tel:{{x.Firma.Cep}}">{{x.Firma.Cep}}</a>&nbsp;
-                                        <a href="tel:{{x.Firma.Tel}}">{{x.Firma.Tel}}</a>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}}</button>
-                                        @*<span class="label green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}} </span>*@
-                                    </td>
-
-                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
-
-                                </tr><!-- end ngRepeat: x in arayanlar -->
-
-
+                                    <td>{{x.DomainKategori}} </td>
+                                    <td><button type="button" class="btn btn-warning green {{x.EtiketSatisAsama.Renk}}">{{x.EtiketSatisAsama.Text}}</button></td>
+                                    <td><button type="button" class="btn btn-warning green {{x.EtiketSatisFirsatDurumu.Renk}}">{{x.EtiketSatisFirsatDurumu.Text}}</button></td>
+                                    <td>{{tarihFormat(x.Tarih)}}</td>
+                                    <td>{{x.KalanSure}}</td>
+                                    <td><a href="/SatisFirsatis/Details/{{x.Id}}">Detay</a></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -436,7 +431,7 @@
 @section scripts{
 <script src="/js/services/anaSayfaService.js?v=6"></script>
 <script src="/js/controllers/anaSayfaCtrl.js?v=27"></script>
-<script src="/js/controllers/satisFirsatiCtrl.js?v=6"></script>
+<script src="/js/controllers/dashboardSatisFirsatiCtrl.js?v=2"></script>
 <script src="/js/controllers/borcluFirmalarCtrl.js?v=8"></script>
 <script src="/js/controllers/firmalarCtrl.js?v=2"></script>
     <script>

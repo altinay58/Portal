@@ -306,7 +306,7 @@
                                 <tr ng-repeat="item in satisFirsati.FirmaKisiler">
                                     <td class="hidden-xs">{{item.Ad}}&nbsp;{{item.Soyad}} </td>
                                     <td>{{item.Departman}}</td>
-                                    <td>{{item.Tel}}</td>
+                                    <td><a href="tel:{{item.Tel}}">{{item.Tel}}</a> </td>
                                     <td>{{item.Email}}</td>
                                 </tr>
                        

@@ -47,7 +47,7 @@ namespace Portal.Controllers
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
                             SonTeklif = (sonKayit != null ? sonKayit.Fiyat : 0),
-                            KalanSure = DbFunctions.DiffDays(s.Tarih, tarih),
+                            KalanSure = DbFunctions.DiffDays(DateTime.Today, tarih),
                             SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
                             FirmaKisiler = s.Firma.FirmaKisis,
                             DosyaYolu = s.DosyaYolu,
