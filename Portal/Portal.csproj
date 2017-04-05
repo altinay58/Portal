@@ -269,6 +269,7 @@
     <Compile Include="Controllers\SifresController.cs" />
     <Compile Include="Controllers\SiteKontrolsController.cs" />
     <Compile Include="Controllers\StandartProjeIslerisController.cs" />
+    <Compile Include="Controllers\ToplantisController.cs" />
     <Compile Include="Controllers\WhoisController.cs" />
     <Compile Include="Controllers\YonetimselController.cs" />
     <Compile Include="Database.cs" />
@@ -499,6 +500,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ToDo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Toplanti.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ToplantiyaKatilanlar.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebLog.cs">
@@ -739,6 +746,7 @@
     <Content Include="Views\SatisBolumu\SatisRouteBilgisi.cshtml" />
     <Content Include="Views\Arayanlar\ArayanGecmisAramaGetir.cshtml" />
     <Content Include="Views\SatisDashboard\Dashboard.cshtml" />
+    <Content Include="Views\Toplantis\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

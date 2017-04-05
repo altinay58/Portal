@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Portal.Models.Toplanti>
+    @using Portal.Models;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Toplantılarınız</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Başlık
+        </th>
+        <th>
+            Detay        
+        </th>
+        <th>
+            Tarih
+        </th>
+        <th>
+            Katılanlar
+        </th>
+        <th>Görüşleriniz</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ToplandiAdi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ToplantiDetayi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ToplantiTarihi)
+        </td>
+        <td>
+            @foreach(string userid in item.ToplantiyaKatilanlars.Select(a=>a.RefAspNetUsers).ToList())
+            {
+                @Partial.KisiAdiGetir(userid)<br />
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Görüş Belirt", "Details" , new { id = item.ToplantiId })
+        </td>
+        <td>
+
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.ToplantiId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ToplantiId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ToplantiId })*@
+        </td>
+    </tr>
+}
+
+</table>
