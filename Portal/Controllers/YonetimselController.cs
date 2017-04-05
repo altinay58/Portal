@@ -36,7 +36,10 @@ namespace Portal.Controllers
             ViewBag.Sayfalama = pager;
             return View(data);
         }
+        
         #region mesai
+
+        [Authorize(Roles = "Herkes")]
         public ActionResult MesaiCizelgesi()
         {
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
@@ -45,6 +48,9 @@ namespace Portal.Controllers
                                       Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
             return View();
         }
+
+
+        [Authorize(Roles = "Herkes")]
         [JsonNetFilter]
         public JsonResult GetMesaiCizelgesi(string kullaniciId, int ay, int  yil)
         {          
@@ -55,6 +61,8 @@ namespace Portal.Controllers
             jsn.Data = list;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize(Roles = "Herkes")]
         [JsonNetFilter]
         public JsonResult MesaiCizelgeDegistir(int? pk, string value,string ccolumn,string jsnObj)
         {
@@ -113,6 +121,9 @@ namespace Portal.Controllers
             jsn.Data = entity;
             return Json(jsn, JsonRequestBehavior.AllowGet);
         }
+
+
+        [Authorize(Roles = "Herkes")]
         public JsonResult HesaplaMesai(string kullanici,int yil,int ay)
         {
             var dataAylik = (from m in Db.MesaiCizelgesis
@@ -129,6 +140,7 @@ namespace Portal.Controllers
             
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
         #endregion mesai
         public ActionResult Takvim()
         {

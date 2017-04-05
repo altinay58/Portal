@@ -1,0 +1,55 @@
+﻿@model Portal.Models.Toplanti
+@using Portal.Models;
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.ToplandiAdi</h2>
+
+<div>
+    <p>@Model.ToplantiDetayi</p>
+    <hr />
+    Tarih : @Html.DisplayFor(model => model.ToplantiTarihi)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Görüşlerim</h4>
+        @if (User.IsInRole("Yonetim"))
+        {
+            IEnumerable<ToplantiyaKatilanlar> katilim = ViewBag.Tutanaklar as IEnumerable<ToplantiyaKatilanlar>;
+
+            foreach (ToplantiyaKatilanlar katil in katilim)
+            {
+                <div class="form-group">
+                    <div class="col-md-2">@Partial.KisiAdiGetir(katil.RefAspNetUsers)</div>
+                    <div class="col-md-10">@MvcHtmlString.Create(katil.ToplantiYorumu)</div>
+                    <hr />
+                </div>
+            }
+        }
+        @if (ViewBag.Gorusler != "YonetimKatilmadi")
+        {
+            <div class="form-group">
+                <div class="col-md-12">
+                    <textarea class="ckeditor form-control" cols="20" id="ToplantiYorumu" name="ToplantiYorumu" rows="2" value="">
+                        @ViewBag.Gorusler
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Kaydet" class="btn btn-default" />
+                </div>
+            </div>
+        }
+
+    </div>
+}
+
+@section scripts{
+    <script src="/Content/assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+    <script src="/Content/assets/global/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
+}
