@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -25,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +46,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis, Version=1.21.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.21.0\lib\net45\Google.Apis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.21.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.21.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.21.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.21.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Calendar.v3, Version=1.21.0.782, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Calendar.v3.1.21.0.782\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.21.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.21.0\lib\net45\Google.Apis.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.21.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.21.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1011, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -72,11 +102,27 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.1.2.3\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Mvc, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.Futures.5.0.0\lib\net40\Microsoft.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -140,11 +186,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Zlib.Portable, Version=1.11.0.0, Culture=neutral, PublicKeyToken=431cba815f6a8b5b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zlib.Portable.Signed.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -198,15 +245,41 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArayanlarController.cs" />
+    <Compile Include="Controllers\ArgeBolumuController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CariHareketController.cs" />
+    <Compile Include="Controllers\DomainController.cs" />
+    <Compile Include="Controllers\EtiketsController.cs" />
+    <Compile Include="Controllers\FirmalarController.cs" />
+    <Compile Include="Controllers\GidilenMusteriController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HtmlTasarimlarController.cs" />
     <Compile Include="Controllers\IslerController.cs" />
+    <Compile Include="Controllers\IsPlaniController.cs" />
+    <Compile Include="Controllers\MailSablonlariController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SanalPostController.cs" />
+    <Compile Include="Controllers\SatisBolumuController.cs" />
+    <Compile Include="Controllers\SatisDashboardController.cs" />
+    <Compile Include="Controllers\SatisFirsatiFiyatRevizyonsController.cs" />
+    <Compile Include="Controllers\SatisFirsatisController.cs" />
+    <Compile Include="Controllers\SatisGorusmesController.cs" />
+    <Compile Include="Controllers\SeoController.cs" />
+    <Compile Include="Controllers\SifresController.cs" />
+    <Compile Include="Controllers\SiteKontrolsController.cs" />
     <Compile Include="Controllers\StandartProjeIslerisController.cs" />
+    <Compile Include="Controllers\ToplantisController.cs" />
+    <Compile Include="Controllers\WhoisController.cs" />
+    <Compile Include="Controllers\YonetimselController.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="Extensions\HtmlHelperExtension.cs" />
+    <Compile Include="Filters\JsonNetFilterAttribute .cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\DbContextHelper.cs" />
+    <Compile Include="Hubs\DomainIsHub.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Arama.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -215,6 +288,11 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Arayanlar.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ArayanlarModels\ArayanModel.cs" />
+    <Compile Include="Models\ArayanlarModels\GidilenMusteriView.cs" />
+    <Compile Include="Models\ArayanListesi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetRole.cs">
@@ -232,6 +310,7 @@
     <Compile Include="Models\Ayar.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CacheManagement.cs" />
     <Compile Include="Models\CariHareket.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -244,10 +323,25 @@
     <Compile Include="Models\DomainKategori.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DomainKayitliFirma.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DomainNot.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\Etiket.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Extension.cs" />
     <Compile Include="Models\Firma.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FirmaKisi.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fonksiyonlar.cs" />
+    <Compile Include="Models\FrmViewData.cs" />
     <Compile Include="Models\GelinmeyenGun.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -268,7 +362,15 @@
     <Compile Include="Models\isler.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IslerListesi.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IslerModels\DomainBilgi.cs" />
+    <Compile Include="Models\IslerModels\DomainIs.cs" />
     <Compile Include="Models\isOncelikSira.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IsPlani.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Istekler.cs">
@@ -280,6 +382,7 @@
     <Compile Include="Models\isYorum.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\JsonCevap.cs" />
     <Compile Include="Models\KayitliFirma.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -302,6 +405,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MesaiCizelgesi.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -323,6 +429,8 @@
     <Compile Include="Models\OdemeBildirimi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PaginatedList.cs" />
+    <Compile Include="Models\Partial.cs" />
     <Compile Include="Models\Proje.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -332,15 +440,28 @@
     <Compile Include="Models\Randevu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RandevularView.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SanalPos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Sati.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SatisFirsati.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SatisFirsatiFiyatRevizyon.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SatisGorusme.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SatisNotu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SatisRouteView.cs" />
     <Compile Include="Models\Sektorler.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -372,7 +493,19 @@
     <Compile Include="Models\TeklifTuru.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TeknikRapor.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tema.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ToDo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Toplanti.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ToplantiyaKatilanlar.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebLog.cs">
@@ -381,16 +514,49 @@
     <Compile Include="Models\YorumDurum.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ZamanI.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\sayfalama.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\angModule.js" />
+    <Content Include="js\controllers\anaSayfaCtrl.js" />
+    <Content Include="js\controllers\arayanListeCtrl.js" />
+    <Content Include="js\controllers\borcluFirmalarCtrl.js" />
+    <Content Include="js\controllers\dashboardSatisFirsatiCtrl.js" />
+    <Content Include="js\controllers\domainIslerCtrl.js" />
+    <Content Include="js\controllers\domainNotlariCtrl.js" />
+    <Content Include="js\controllers\firmaKisiListCtrl.js" />
+    <Content Include="js\controllers\firmalarCtrl.js" />
+    <Content Include="js\controllers\isPlaniCtrl.js" />
+    <Content Include="js\controllers\listIslerCtrl.js" />
+    <Content Include="js\controllers\mesaiCizelgesiCtrl.js" />
+    <Content Include="js\controllers\randevularCtrl.js" />
+    <Content Include="js\controllers\satisFirsatiCtrl.js" />
+    <Content Include="js\controllers\satisFirsatlarDetailCtrl.js" />
+    <Content Include="js\controllers\sifreListCtrl.js" />
+    <Content Include="js\controllers\toDoCtrl.js" />
+    <Content Include="js\extensions.js" />
+    <Content Include="js\portalApp.js" />
+    <Content Include="js\services\anaSayfaService.js" />
+    <Content Include="js\services\arayanListService.js" />
+    <Content Include="js\services\domainIslerService.js" />
+    <Content Include="js\services\domainNotlariService.js" />
+    <Content Include="js\services\firmaKisiListService.js" />
+    <Content Include="js\services\listIslerService.js" />
+    <Content Include="js\services\mesaiCizelgesiService.js" />
+    <Content Include="js\services\randevularService.js" />
+    <Content Include="js\services\sifreListService.js" />
+    <Content Include="js\services\toDoService.js" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -403,6 +569,8 @@
     </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="Scripts\ajaxService.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -415,10 +583,14 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="js\jquery.autocomplete.js" />
+    <None Include="Properties\PublishProfiles\portal.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.1.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -426,6 +598,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ui-bootstrap-tpls-2.5.0.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -469,15 +642,124 @@
     <Content Include="Views\StandartProjeIsleris\Index.cshtml" />
     <Content Include="Views\Isler\IcerikFormu.cshtml" />
     <Content Include="Views\Shared\CKEditor.cshtml" />
+    <Content Include="Views\Domain\Ekle.cshtml" />
+    <Content Include="Views\Domain\Domainler.cshtml" />
+    <Content Include="Views\Shared\_DomainSatiri.cshtml" />
+    <Content Include="Views\Domain\Duzenle.cshtml" />
+    <Content Include="Views\Domain\DomainSorgula.cshtml" />
+    <Content Include="Views\Domain\UzatilacakDomainler.cshtml" />
+    <Content Include="Views\Shared\_DomainUstSatiri.cshtml" />
+    <Content Include="Views\Domain\SilinenDomainler.cshtml" />
+    <Content Include="Views\Shared\_Modal.cshtml" />
+    <Content Include="Views\Domain\DomainKategorileri.cshtml" />
+    <Content Include="Views\Arayanlar\ArayanEkle.cshtml" />
+    <Content Include="Views\Arayanlar\ArayanListesi.cshtml" />
+    <Content Include="Views\Isler\DomainIsler.cshtml" />
+    <Content Include="Views\Domain\DomainNotlari.cshtml" />
+    <Content Include="Views\Domain\DomainNoteEkle.cshtml" />
+    <Content Include="Views\Firmalar\FirmaKisiList.cshtml" />
+    <Content Include="Views\Firmalar\FirmaKisiEkle.cshtml" />
+    <Content Include="Views\SatisBolumu\Notlar.cshtml" />
+    <Content Include="Views\SatisBolumu\NotKaydet.cshtml" />
+    <Content Include="Views\SatisBolumu\RootBilgisi.cshtml" />
+    <Content Include="Views\SatisBolumu\Randevular.cshtml" />
+    <Content Include="Views\SatisBolumu\RandevuKaydet.cshtml" />
+    <Content Include="Views\Firmalar\List.cshtml" />
+    <Content Include="Views\Firmalar\FirmaKaydet.cshtml" />
+    <Content Include="Views\Arayanlar\ArayanDuzenle.cshtml" />
+    <Content Include="Views\Isler\IsEkleDuzenle.cshtml" />
+    <Content Include="Views\Isler\ListIsler.cshtml" />
+    <Content Include="Views\SanalPost\List.cshtml" />
+    <Content Include="Views\SanalPost\Create.cshtml" />
+    <Content Include="Views\SanalPost\Edit.cshtml" />
+    <Content Include="Views\SanalPost\Details.cshtml" />
+    <Content Include="Views\SanalPost\Delete.cshtml" />
+    <Content Include="Views\Seo\List.cshtml" />
+    <Content Include="Views\Seo\Details.cshtml" />
+    <Content Include="Views\Seo\Create.cshtml" />
+    <Content Include="Views\Seo\Edit.cshtml" />
+    <Content Include="Views\Seo\Delete.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\List.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Details.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Create.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Edit.cshtml" />
+    <Content Include="Views\HtmlTasarimlar\Delete.cshtml" />
+    <Content Include="Views\MailSablonlari\List.cshtml" />
+    <Content Include="Views\MailSablonlari\Details.cshtml" />
+    <Content Include="Views\MailSablonlari\Create.cshtml" />
+    <Content Include="Views\MailSablonlari\Edit.cshtml" />
+    <Content Include="Views\MailSablonlari\Delete.cshtml" />
+    <Content Include="Views\Sifres\List.cshtml" />
+    <Content Include="Views\Sifres\Details.cshtml" />
+    <Content Include="Views\Sifres\Create.cshtml" />
+    <Content Include="Views\Sifres\Edit.cshtml" />
+    <Content Include="Views\Sifres\Delete.cshtml" />
+    <Content Include="Views\MailSablonlari\TanitimMaili.cshtml" />
+    <Content Include="Views\Arayanlar\GonderilenMailler.cshtml" />
+    <Content Include="Views\GidilenMusteri\List.cshtml" />
+    <Content Include="Views\GidilenMusteri\Details.cshtml" />
+    <Content Include="Views\GidilenMusteri\Create.cshtml" />
+    <Content Include="Views\GidilenMusteri\Edit.cshtml" />
+    <Content Include="Views\GidilenMusteri\Delete.cshtml" />
+    <Content Include="Views\CariHareket\List.cshtml" />
+    <Content Include="Views\CariHareket\Detay.cshtml" />
+    <Content Include="Views\CariHareket\Satislar.cshtml" />
+    <Content Include="Views\CariHareket\SatisOdemeEkle.cshtml" />
+    <Content Include="Views\CariHareket\CariHareketSatisEkle.cshtml" />
+    <Content Include="Views\CariHareket\CariHareketEkle.cshtml" />
+    <Content Include="Views\CariHareket\PersonelMaasOdeme.cshtml" />
+    <Content Include="Views\CariHareket\SatisDuzenle.cshtml" />
+    <Content Include="Views\CariHareket\CariHareketDuzenle.cshtml" />
+    <Content Include="Views\SiteKontrols\List.cshtml" />
+    <Content Include="Views\SiteKontrols\Details.cshtml" />
+    <Content Include="Views\SiteKontrols\Create.cshtml" />
+    <Content Include="Views\SiteKontrols\Edit.cshtml" />
+    <Content Include="Views\SiteKontrols\Delete.cshtml" />
+    <Content Include="Views\Yonetimsel\WebLog.cshtml" />
+    <Content Include="Views\Yonetimsel\MesaiCizelgesi.cshtml" />
+    <Content Include="Views\SatisBolumu\Konum.cshtml" />
+    <Content Include="Views\Yonetimsel\Takvim.cshtml" />
+    <Content Include="Views\Isler\TeknikRapor.cshtml" />
+    <Content Include="Views\MailSablonlari\MailOkundu.cshtml" />
+    <Content Include="Views\SatisFirsatis\Kaydet.cshtml" />
+    <Content Include="Views\SatisFirsatis\Delete.cshtml" />
+    <Content Include="Views\SatisFirsatis\Details.cshtml" />
+    <Content Include="Views\SatisFirsatis\List.cshtml" />
+    <Content Include="Views\Etikets\Create.cshtml" />
+    <Content Include="Views\Etikets\Delete.cshtml" />
+    <Content Include="Views\Etikets\Details.cshtml" />
+    <Content Include="Views\Etikets\Edit.cshtml" />
+    <Content Include="Views\Etikets\Index.cshtml" />
+    <Content Include="Views\SatisGorusmes\Kaydet.cshtml" />
+    <Content Include="Views\SatisGorusmes\Delete.cshtml" />
+    <Content Include="Views\SatisGorusmes\Details.cshtml" />
+    <Content Include="Views\SatisGorusmes\Edit.cshtml" />
+    <Content Include="Views\SatisGorusmes\List.cshtml" />
+    <Content Include="Views\SatisFirsatiFiyatRevizyons\Kaydet.cshtml" />
+    <Content Include="Views\SatisFirsatiFiyatRevizyons\Delete.cshtml" />
+    <Content Include="Views\SatisFirsatiFiyatRevizyons\Details.cshtml" />
+    <Content Include="Views\SatisFirsatiFiyatRevizyons\Edit.cshtml" />
+    <Content Include="Views\SatisFirsatiFiyatRevizyons\Index.cshtml" />
+    <Content Include="Views\IsPlani\Index.cshtml" />
+    <Content Include="Views\Account\SifremiUnuttum.cshtml" />
+<<<<<<< HEAD
+    <Content Include="Views\IsPlani\List.cshtml" />
+    <Content Include="Views\SatisBolumu\SatisRouteBilgisi.cshtml" />
+    <Content Include="Views\Arayanlar\ArayanGecmisAramaGetir.cshtml" />
+    <Content Include="Views\SatisDashboard\Dashboard.cshtml" />
+=======
+    <Content Include="Views\Toplantis\Create.cshtml" />
+    <Content Include="Views\Toplantis\Delete.cshtml" />
+    <Content Include="Views\Toplantis\Details.cshtml" />
+    <Content Include="Views\Toplantis\Edit.cshtml" />
+    <Content Include="Views\Toplantis\Index.cshtml" />
+>>>>>>> d63131ecbb16613c305a3c6d3bbfd421b9ae66b4
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-<<<<<<< HEAD
-    <Folder Include="Filters\" />
+    <Folder Include="Views\ArgeBolumu\" />
     <Folder Include="Views\Base\" />
-=======
-    <Folder Include="HTML Templates\" />
->>>>>>> 48e9c89bc3d0ca1b204fdfeb1332e9af4c790025
+    <Folder Include="Views\Whois\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -488,6 +770,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
@@ -495,6 +778,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

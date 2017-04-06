@@ -749,6 +749,24 @@
           <Property Name="Durum" Type="int" Nullable="false" />
           <Property Name="Tarih" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Toplanti">
+          <Key>
+            <PropertyRef Name="ToplantiId" />
+          </Key>
+          <Property Name="ToplantiId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ToplandiAdi" Type="text" />
+          <Property Name="ToplantiDetayi" Type="text" />
+          <Property Name="ToplantiTarihi" Type="date" />
+        </EntityType>
+        <EntityType Name="ToplantiyaKatilanlar">
+          <Key>
+            <PropertyRef Name="ToplantiyaKatilanlarId" />
+          </Key>
+          <Property Name="ToplantiyaKatilanlarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefToplantiId" Type="int" Nullable="false" />
+          <Property Name="RefAspNetUsers" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ToplantiYorumu" Type="text" />
+        </EntityType>
         <EntityType Name="WebLog">
           <Key>
             <PropertyRef Name="WebLogID" />
@@ -1832,6 +1850,30 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ToplantiyaKatilanlar_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="ToplantiyaKatilanlar" Type="Self.ToplantiyaKatilanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ToplantiyaKatilanlar">
+              <PropertyRef Name="RefAspNetUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ToplantiyaKatilanlar_Toplanti">
+          <End Role="Toplanti" Type="Self.Toplanti" Multiplicity="1" />
+          <End Role="ToplantiyaKatilanlar" Type="Self.ToplantiyaKatilanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Toplanti">
+              <PropertyRef Name="ToplantiId" />
+            </Principal>
+            <Dependent Role="ToplantiyaKatilanlar">
+              <PropertyRef Name="RefToplantiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_YorumDurum_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="YorumDurum" Type="Self.YorumDurum" Multiplicity="*" />
@@ -1918,6 +1960,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="TeknikRapor" EntityType="Self.TeknikRapor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tema" EntityType="Self.Tema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ToDo" EntityType="Self.ToDo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Toplanti" EntityType="Self.Toplanti" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ToplantiyaKatilanlar" EntityType="Self.ToplantiyaKatilanlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WebLog" EntityType="Self.WebLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YorumDurum" EntityType="Self.YorumDurum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ZamanIs" EntityType="Self.ZamanIs" Schema="dbo" store:Type="Tables" />
@@ -2294,6 +2338,14 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <AssociationSet Name="FK_Tema_DomainKategori" Association="Self.FK_Tema_DomainKategori">
             <End Role="DomainKategori" EntitySet="DomainKategori" />
             <End Role="Tema" EntitySet="Tema" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ToplantiyaKatilanlar_AspNetUsers" Association="Self.FK_ToplantiyaKatilanlar_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ToplantiyaKatilanlar" EntitySet="ToplantiyaKatilanlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ToplantiyaKatilanlar_Toplanti" Association="Self.FK_ToplantiyaKatilanlar_Toplanti">
+            <End Role="Toplanti" EntitySet="Toplanti" />
+            <End Role="ToplantiyaKatilanlar" EntitySet="ToplantiyaKatilanlar" />
           </AssociationSet>
           <AssociationSet Name="FK_YorumDurum_AspNetUsers" Association="Self.FK_YorumDurum_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -2731,6 +2783,16 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="SatisFirsati" EntitySet="SatisFirsatis" />
             <End Role="IsPlani" EntitySet="IsPlanis" />
           </AssociationSet>
+          <EntitySet Name="Toplantis" EntityType="PortalModel.Toplanti" />
+          <EntitySet Name="ToplantiyaKatilanlars" EntityType="PortalModel.ToplantiyaKatilanlar" />
+          <AssociationSet Name="FK_ToplantiyaKatilanlar_AspNetUsers" Association="PortalModel.FK_ToplantiyaKatilanlar_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="ToplantiyaKatilanlar" EntitySet="ToplantiyaKatilanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ToplantiyaKatilanlar_Toplanti" Association="PortalModel.FK_ToplantiyaKatilanlar_Toplanti">
+            <End Role="Toplanti" EntitySet="Toplantis" />
+            <End Role="ToplantiyaKatilanlar" EntitySet="ToplantiyaKatilanlars" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
           <Key>
@@ -2943,6 +3005,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="DomainNots" Relationship="PortalModel.FK_Domain_RefKayitYapanKullanici" FromRole="AspNetUser" ToRole="DomainNot" />
           <NavigationProperty Name="TeknikRapors" Relationship="PortalModel.FK_TeknikRapor_AspNetUsers" FromRole="AspNetUser" ToRole="TeknikRapor" />
           <NavigationProperty Name="IsPlanis" Relationship="PortalModel.FK_IsPlani_AspNetUsers" FromRole="AspNetUser" ToRole="IsPlani" />
+          <NavigationProperty Name="ToplantiyaKatilanlars" Relationship="PortalModel.FK_ToplantiyaKatilanlar_AspNetUsers" FromRole="AspNetUser" ToRole="ToplantiyaKatilanlar" />
         </EntityType>
         <EntityType Name="CariHareket">
           <Key>
@@ -4693,6 +4756,51 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Toplanti">
+          <Key>
+            <PropertyRef Name="ToplantiId" />
+          </Key>
+          <Property Name="ToplantiId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ToplandiAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ToplantiDetayi" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ToplantiTarihi" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ToplantiyaKatilanlars" Relationship="PortalModel.FK_ToplantiyaKatilanlar_Toplanti" FromRole="Toplanti" ToRole="ToplantiyaKatilanlar" />
+        </EntityType>
+        <EntityType Name="ToplantiyaKatilanlar">
+          <Key>
+            <PropertyRef Name="ToplantiyaKatilanlarId" />
+          </Key>
+          <Property Name="ToplantiyaKatilanlarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefToplantiId" Type="Int32" Nullable="false" />
+          <Property Name="RefAspNetUsers" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ToplantiYorumu" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_ToplantiyaKatilanlar_AspNetUsers" FromRole="ToplantiyaKatilanlar" ToRole="AspNetUser" />
+          <NavigationProperty Name="Toplanti" Relationship="PortalModel.FK_ToplantiyaKatilanlar_Toplanti" FromRole="ToplantiyaKatilanlar" ToRole="Toplanti" />
+        </EntityType>
+        <Association Name="FK_ToplantiyaKatilanlar_AspNetUsers">
+          <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="PortalModel.ToplantiyaKatilanlar" Role="ToplantiyaKatilanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ToplantiyaKatilanlar">
+              <PropertyRef Name="RefAspNetUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ToplantiyaKatilanlar_Toplanti">
+          <End Type="PortalModel.Toplanti" Role="Toplanti" Multiplicity="1" />
+          <End Type="PortalModel.ToplantiyaKatilanlar" Role="ToplantiyaKatilanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Toplanti">
+              <PropertyRef Name="ToplantiId" />
+            </Principal>
+            <Dependent Role="ToplantiyaKatilanlar">
+              <PropertyRef Name="RefToplantiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5577,6 +5685,26 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="RefSorumluKisiId" ColumnName="RefSorumluKisiId" />
                 <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Toplantis">
+            <EntityTypeMapping TypeName="PortalModel.Toplanti">
+              <MappingFragment StoreEntitySet="Toplanti">
+                <ScalarProperty Name="ToplantiTarihi" ColumnName="ToplantiTarihi" />
+                <ScalarProperty Name="ToplantiDetayi" ColumnName="ToplantiDetayi" />
+                <ScalarProperty Name="ToplandiAdi" ColumnName="ToplandiAdi" />
+                <ScalarProperty Name="ToplantiId" ColumnName="ToplantiId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ToplantiyaKatilanlars">
+            <EntityTypeMapping TypeName="PortalModel.ToplantiyaKatilanlar">
+              <MappingFragment StoreEntitySet="ToplantiyaKatilanlar">
+                <ScalarProperty Name="ToplantiYorumu" ColumnName="ToplantiYorumu" />
+                <ScalarProperty Name="RefAspNetUsers" ColumnName="RefAspNetUsers" />
+                <ScalarProperty Name="RefToplantiId" ColumnName="RefToplantiId" />
+                <ScalarProperty Name="ToplantiyaKatilanlarId" ColumnName="ToplantiyaKatilanlarId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

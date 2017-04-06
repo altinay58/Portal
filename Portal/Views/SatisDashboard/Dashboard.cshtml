@@ -94,7 +94,7 @@
             <div class="ic-kutu">
                 <div style="padding-top:15px;">
                     <a href="#tab_yapilan_isler">
-                    <p class="sayi">2</p>
+                    <p class="sayi"></p>
                     <p class="yazi">Yapılıyor</p>
                     </a>                  
                 </div>
@@ -130,7 +130,7 @@
             <div class="ic-kutu">
                 <div style="padding-top:15px;">
                     <a href="#tab_satis_firsatlari">
-                        <p class="sayi">2</p><p class="yazi">Yapılıyor</p>
+                        <p class="sayi"></p><p class="yazi">Fırsat</p>
                     </a>
                 </div>
 
@@ -279,9 +279,8 @@
                                     <th class="left">Telefon</th>
                                     <th class="left">Cep Telefon</th>
                                     <th class="left"> Domainler </th>
-                                    <th class="left">Aracı </th>
-                                    @*<th class="left">E-Mail</th>*@
-                                    <th class="right"></th>
+                                    <th class="left">Aracı </th>                                  
+                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -292,15 +291,13 @@
                                             <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
                                         </select>
                                     </td>
-                                    <td>ödeme</td>
+                                    <td></td>
                                     <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
                                     <td><input type="text" name="firma" ng-model="yetkiliAdi" ng-keyup="getirData(yetkiliAdi)" placeholder="Telefon No" class="form-control"></td>
                                     <td><input type="text" name="firma" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"></td>
                                     <td><input type="text" name="firma" ng-model="cepTelNo" ng-keyup="getirData(cepTelNo)" placeholder="Cep Tel No" class="form-control"></td>
                                     <td> </td>
-                                    <td> </td>
-                                    @*<td></td>*@
-                                    <td><a href="/Firmalar/FirmaKaydet/6228">Düzenle</a></td>
+                                    <td> </td>                           
 
                                 </tr>
                                 <tr ng-repeat="x in firmalar">
@@ -316,8 +313,7 @@
                                     </td>
                                     <td>{{x.domainSayisi}}</td>
                                     <td>{{x.araci}}</td>
-                                    @*<td> {{x.firma.Email}} </td>*@
-                                    <td><button type="button" class="btn btn-default green" ng-click="gosterIsPlaniModal(x)">Ekle</button></td>
+                                
 
                                 </tr>
                             </tbody>
