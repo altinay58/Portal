@@ -288,8 +288,52 @@ namespace Portal.Controllers
             yorum.isYorumRefYorumuYapanID = kullaniciId;
             yorum.isYorumRefislerID = isId;
             Db.isYorums.Add(yorum);
+
+            isler hangiIS = Db.islers.FirstOrDefault(a => a.islerID == isId);
+
+            if (hangiIS.islerisiVerenKisi == kullaniciId)
+            {
+                List<string> idler;
+
+
+                idler = Db.IsiYapacakKisis.Where(a => a.RefIsID == hangiIS.islerID).Select(x => x.RefIsiYapacakKisiUserID).ToList();
+
+                int idNo = idler.IndexOf(kullaniciId);
+
+                if (Db.YorumDurums.FirstOrDefault(a => a.RefIsID == hangiIS.islerID && idNo != -1) == null)
+                {
+                    YorumDurum durum = new YorumDurum();
+                    durum.RefIsID = hangiIS.islerID;
+                    durum.RefUserID = kullaniciId;
+                    Db.YorumDurums.Add(durum);
+                 
+                }
+
+            }
+            else
+            {
+                if (Db.YorumDurums.FirstOrDefault(a => a.RefIsID == hangiIS.islerID && a.RefUserID == hangiIS.islerisiVerenKisi) == null)
+                {
+                    YorumDurum durum = new YorumDurum();
+                    durum.RefIsID = hangiIS.islerID;
+                    durum.RefUserID = hangiIS.islerisiVerenKisi;
+                    Db.YorumDurums.Add(durum);
+                 
+                }
+            }
             Db.SaveChanges();
             return Json(jsn,JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult YorumDurumDegistir(int isId,string kullaniciId)
+        {
+            JsonCevap jsn = new JsonCevap();
+            if (Db.YorumDurums.FirstOrDefault(a => a.RefIsID == isId && a.RefUserID == kullaniciId) != null)
+            {
+                YorumDurum yorumDur = Db.YorumDurums.FirstOrDefault(a => a.RefIsID == isId && a.RefUserID == kullaniciId);
+                Db.YorumDurums.Remove(yorumDur);
+                Db.SaveChanges();
+            }
+            return Json(jsn, JsonRequestBehavior.AllowGet);
         }
         public JsonResult DegistirSatisOncelik(int domainId, bool value)
         {

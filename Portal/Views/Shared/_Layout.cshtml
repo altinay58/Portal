@@ -9,12 +9,15 @@
     {
         userId = User.Identity.GetUserId();
     }
-    IEnumerable<isler> yeniIslerim = Partial.KullaniciBildirim(userId).yeniIsler;
+
     IEnumerable<isler> okunmayanIsler = Partial.CevaplananIslerOkunmayanlar(userId);
-    IEnumerable<isler> kontrolBekleyenIsler = Partial.KullaniciBildirim(userId).kontrolBekleyenIsler;
+
     var etiketIsPlaniTipDetaylari = JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x => x.Kategori == "EtiketIsPlaniTipi"));
     var guncelKullanici = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.Id == userId).
                           Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
+    //IEnumerable<IslerListesi> kontrolBekleyenIsler = Partial.KontrolBekleyenIsler(guncelKullanici.AdSoyad);
+    IEnumerable<IslerListesi> yeniIslerim = Partial.YeniIsler(guncelKullanici.AdSoyad);
+    IEnumerable<IslerListesi> kontrolEdilecekIsler = Partial.KontrolEdilecekIsler(guncelKullanici.AdSoyad);
 }
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -109,12 +112,12 @@
                 <ul class="nav navbar-nav pull-right">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="" id="header_notification_bar">
-                        <a href="@Url.Action("UzatilacakDomainler","Domain")">
-                            <div class="notifications label label-info">
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="@Url.Action("UzatilacakDomainler","Domain")" class="dropdown-toggle"  data-hover="dropdown">
+                            @*<div class="notifications label label-info">*@
                                 <i class="icon-bell"></i>
-                                <span class="badge badge-default">@Partial.GetirUzatmasiGelenler().Count()</span>
-                            </div>
+                                <span class="badge badge-danger">@Partial.GetirUzatmasiGelenler().Count()</span>
+                            @*</div>*@
                         </a>
 
                     </li>
@@ -130,9 +133,9 @@
                         <ul class="dropdown-menu">
                             <li class="external">
                                 <h3>
-                                    <span class="bold">@okunmayanIsler.Count()</span> Kontrol Edilecek İşler
+                                    <span class="bold">@okunmayanIsler.Count()</span> Okunmayan Yorumlar
                                 </h3>
-                                <a href="page_user_profile_1.html">view all</a>
+                                @*<a href="page_user_profile_1.html">view all</a>*@
                             </li>
                             <li>
                                 <ul class="dropdown-menu-list scroller" style="height: 500px;" data-handle-color="#637283">
@@ -176,23 +179,20 @@
                                 <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 
                                     @{
-                                        foreach (isler yeniIs in yeniIslerim)
+                                        foreach (var yeniIs in yeniIslerim)
                                         {
                                             <li>
-                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.islerRefDomainID})#is@(yeniIs.islerID)">
+                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.DomainId})#is@(yeniIs.Id)">
                                                     <span class="photo">
                                                         <img src="/Content/assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt="">
                                                     </span>
                                                     <span class="subject">
-                                                        <span class="from"> @Partial.KisiAdiGetir(yeniIs.islerisiVerenKisi) </span>
+                                                        <span class="from"><text>Veren:</text> @yeniIs.IsiVerenKisi </span>
                                                         <span class="time">
-                                                            @if (yeniIs.islerRefDomainID != null)
-                                                            {
-                                                                @Fonksiyonlar.DomainAdiGetir(yeniIs.islerRefDomainID ?? 0)
-                                                            }
+                                                          @yeniIs.Domain
                                                         </span>
                                                     </span>
-                                                    <span class="message"> @yeniIs.islerAdi... </span>
+                                                    <span class="message"> @yeniIs.IsAdi </span>
                                                 </a>
                                             </li>
                                         }
@@ -207,37 +207,38 @@
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <i class="icon-envelope-open"></i>
-                            <span class="badge badge-default"> @kontrolBekleyenIsler.Count() </span>
+                            <i class="fa fa-bullhorn"></i>
+                            <span class="badge badge-default"> @kontrolEdilecekIsler.Count() </span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="external">
                                 <h3>
-                                    <span class="bold">@kontrolBekleyenIsler.Count() Yeni</span> Kontrol Edilecek İşler
+                                    <span class="bold">@kontrolEdilecekIsler.Count() Yeni</span> Kontrol Edilecek İşler
                                 </h3>
-                                <a href="app_inbox.html">view all</a>
+                               
                             </li>
                             <li>
                                 <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 
                                     @{
-                                        foreach (isler yeniIs in kontrolBekleyenIsler)
+                                        foreach (var yeniIs in kontrolEdilecekIsler)
                                         {
                                             <li>
-                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.islerRefDomainID})#is@(yeniIs.islerID)">
+                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.DomainId})">
                                                     <span class="photo">
                                                         <img src="/Content/assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt="">
                                                     </span>
                                                     <span class="subject">
-                                                        <span class="from"> @Partial.KisiAdiGetir(yeniIs.islerisiYapacakKisi)</span>
+                                                        <span class="from"> @guncelKullanici.AdSoyad</span>
                                                         <span class="time">
-                                                            @if (yeniIs.islerRefDomainID != null)
+                                                            @yeniIs.Domain
+                                                            @*@if (yeniIs.islerRefDomainID != null)
                                                             {
                                                                 @Fonksiyonlar.DomainAdiGetir(yeniIs.islerRefDomainID ?? 0)
-                                                            }
+                                                            }*@
                                                         </span>
                                                     </span>
-                                                    <span class="message"> @yeniIs.islerAdi... </span>
+                                                    <span class="message"> @yeniIs.IsAdi </span>
                                                 </a>
                                             </li>
                                         }

@@ -384,11 +384,19 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         self.tempDomainAksiyon = aksiyon;
         self.gosterDomainNotlari();
         domainIslerService.domainAksiyonDegistir(self.guncelDomainId, aksiyon)
-        .then((res) => {
-            signalDomain.server.gonderSayfayiYenidenYukle();
+            .then((res) => {
+                signalDomain.server.gonderSayfayiYenidenYukle();
 
+            });
+    };
+    self.yorumDurumDegistir = function (domainIs) {
+        console.log("Yorum Durum değiştirme çalıştı");
+        commonAjaxService.getDataFromRemote(url = "/Isler/YorumDurumDegistir", data = {
+            isId: domainIs.IsId, kullaniciId: self.guncelKullanici.Id
+        }).done(function () {
+            console.log("Yorum Durum değiştirme çalıştı");
         });
-    }
+    };
 
     function durumDegistir(domainIs, yeniDurum, iBtnClass) {
         let strObj = JSON.stringify(domainIs);
@@ -459,6 +467,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
             e.GosterTamamlaBtn = false;
             e.GosterOnaylaBtn = false;
             e.GosterIseBaslaBtn = false;
+            e.YorumDurum = 1;
             if (e.IsDurum === IsinDurumuEnum.Yapilacak || e.IsDurum === IsinDurumuEnum.YapilacakDeadline
                 || e.IsDurum===IsinDurumuEnum.Yapiliyor)
             {
