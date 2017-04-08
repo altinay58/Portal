@@ -97,14 +97,19 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
 
             if (self.guncelKullanici.Id !== fromId) {
                 let di = JSON.parse(jsnDomainIs);
-                let index = self.domainIsler.findIndex(f=> { return f.IsId === di.IsId });
-
-                self.domainIsler[index].IsDurum = di.IsDurum;
-                self.domainIsler[index].iBtnClass = di.iBtnClass;
-                self.domainIsler[index].IsGecenZaman = di.IsGecenZaman;
-                portalApp.mesajGoster("#"+di.IsId+ " ticket durumu değişti");
-                zamanAyarla(self.domainIsler[index]);
-                self.$apply();
+                let index = self.domainIsler.findIndex(f => { return f.IsId === di.IsId });
+                if (index > -1) {
+                    //self.domainIsler[index].IsDurum = di.IsDurum;
+                    //self.domainIsler[index].iBtnClass = di.iBtnClass;
+                    //self.domainIsler[index].IsGecenZaman = di.IsGecenZaman;
+                    let temp_yorumlar = self.domainIsler[index].Yorumlar;
+                    self.domainIsler[index] = di;
+                    self.domainIsler[index].Yorumlar = temp_yorumlar;
+                    portalApp.mesajGoster("#" + di.IsId + " ticket durumu değişti");
+                    zamanAyarla(self.domainIsler[index]);
+                    self.$apply();
+                }
+           
             }
 
         }
@@ -112,7 +117,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
             portalApp.mesajGoster("Domain durumu değişti", "success");
             $timeout(function () {
                 $window.location.reload();
-            }, 2000);
+            }, 100);
 
         }
     });
@@ -355,6 +360,7 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
                 });
                 signalDomain.server.gonderYorumEklendi(domainIs.IsId,JSON.stringify(yeniYorum), self.guncelKullanici.Id,
                     toIds);
+                domainIs.yorumAciklamaModel = "";
             });
 
     }

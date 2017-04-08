@@ -333,9 +333,16 @@ namespace Portal.Controllers
             
         }
         #endregion arayan duzenle
-        public ActionResult GonderilenMailler()
+        public ActionResult GonderilenMailler(int?page)
         {
-            return View(Db.MailKontrols.OrderByDescending(x=>x.MailKontrolID));
+            int baslangic = ((page ?? 1) - 1) * PagerCount;
+            var data = Db.MailKontrols.OrderByDescending(x => x.MailKontrolID);
+            var qTotal = data;
+
+            int totalCount = qTotal.Count();
+            PaginatedList pager = new PaginatedList((page ?? 1), PagerCount, totalCount);
+            ViewBag.Sayfalama = pager;
+            return View(data.Skip(baslangic).Take(PagerCount).ToList());
         }
         //public ActionResult MailOkundu(int id)
         //{
