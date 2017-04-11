@@ -35,6 +35,7 @@ namespace Portal.Models
         public string ReferansNo { get; set; }
         public Nullable<int> EtiketSatisAsamaId { get; set; }
         public Nullable<int> EtiketSatisFirsatDurumuId { get; set; }
+        public decimal Fiyat { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
         public virtual Firma Firma { get; set; }

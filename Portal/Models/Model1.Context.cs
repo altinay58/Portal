@@ -91,5 +91,7 @@ namespace Portal.Models
         public virtual DbSet<Etiket> Etikets { get; set; }
         public virtual DbSet<SatisGorusme> SatisGorusmes { get; set; }
         public virtual DbSet<IsPlani> IsPlanis { get; set; }
+        public virtual DbSet<Toplanti> Toplantis { get; set; }
+        public virtual DbSet<ToplantiyaKatilanlar> ToplantiyaKatilanlars { get; set; }
     }
 }
