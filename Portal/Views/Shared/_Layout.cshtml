@@ -539,7 +539,11 @@
                                         <span class="title">İş Ekle</span>
                                     </a>
                                 </li>
-
+                                <li class="nav-item  ">
+                                    <a href="@Url.Action("MesaiCizelgesi", "Yonetimsel")" class="nav-link ">
+                                        <span class="title">Mesai Çizelgesi</span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     }
@@ -584,11 +588,7 @@
                                         <span class="title">Toplantılar</span>
                                     </a>
                                 </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("MesaiCizelgesi", "Yonetimsel")" class="nav-link ">
-                                        <span class="title">Mesai Çizelgesi</span>
-                                    </a>
-                                </li>
+                          
                             </ul>
                         </li>
                     @if (User.IsInRole("Muhasebe") || User.IsInRole("Satis"))

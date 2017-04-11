@@ -46,7 +46,7 @@ namespace Portal.Controllers
             int baslangic = (sayfaNo - 1) * PagerCount;
             JsonCevap jsn = new JsonCevap();
             var query = Db.ArayanListesis.Where(x => (!string.IsNullOrEmpty(firma) ? x.Firma.Contains(firma) : true) && (!string.IsNullOrEmpty(telNo) ? x.Tel.Contains(telNo) : true)
-             && (!string.IsNullOrEmpty(note) ? x.Note.Contains(note) : true) && (!string.IsNullOrEmpty(adSoyad) ? x.AdSoyad.Contains(adSoyad) : true)
+             && (!string.IsNullOrEmpty(note) ? x.Konu.Contains(note) : true) && (!string.IsNullOrEmpty(adSoyad) ? x.AdSoyad.Contains(adSoyad) : true)
             );
             if(!string.IsNullOrEmpty(basTarih) && !string.IsNullOrEmpty(bitisTarih))
             {

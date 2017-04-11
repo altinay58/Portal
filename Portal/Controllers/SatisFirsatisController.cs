@@ -150,7 +150,7 @@ namespace Portal.Controllers
             //ViewBag.RefFirmaId = new SelectList(Db.Firmas, "FirmaID", "FirmaAdi");
             //ViewBag.RefYetkiliId = new SelectList(Db.FirmaKisis, "Id", "Ad",model.RefYetkiliId);
             ViewBag.EtiketSatisAsamaId = new SelectList(butunEtiketler.Where(x=>x.Kategori== "EtiketSatisAsamaId").OrderBy(x=>x.Sira), "Value", "Text",model.EtiketSatisAsamaId);
-            ViewBag.EtiketSatisFirsatDurumuId = new SelectList(butunEtiketler.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").OrderBy(x=>x.Sira), "Value", "Text", model.EtiketSatisAsamaId);
+            ViewBag.EtiketSatisFirsatDurumuId = new SelectList(butunEtiketler.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId").OrderBy(x=>x.Sira), "Value", "Text", model.EtiketSatisFirsatDurumuId);
             return View(model);
         }
 

@@ -843,6 +843,10 @@ GO
 ALTER TABLE [dbo].[ToplantiyaKatilanlar] CHECK CONSTRAINT [FK_ToplantiyaKatilanlar_Toplanti]
 GO
 
+---
+ALTER TABLE [dbo].[Arayanlar] ADD EtiketArayanDepartmanId int NULL
+
+
 
 
 

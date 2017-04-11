@@ -26,5 +26,6 @@ namespace Portal.Models
         public Nullable<bool> KayitDurum { get; set; }
         public string Bolge { get; set; }
         public string StrTarih { get; set; }
+        public string Konu { get; set; }
     }
 }

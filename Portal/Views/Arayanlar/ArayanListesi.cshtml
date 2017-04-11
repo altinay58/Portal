@@ -43,7 +43,7 @@
                     <th> Firma Adı </th>
                     <th> Telefon </th>
                     <th> Cep Telefon</th>
-                    <th> Görüşme Notu </th>
+                    <th> Konu </th>
                     <th> Mail Durumu </th>
                     <th> Ticket </th>
                     <th> Tarih </th>
@@ -72,7 +72,7 @@
                         <td> {{x.Firma}} </td>
                         <td><a href="tel:{{x.Tel}}">{{x.Tel}} </a> </td>
                         <td><a ng-href="tel:{{x.CepTel}}">{{x.CepTel}} </a> </td>
-                        <td><div ng-bind-html="x.Note | to_trusted "></div></td>
+                        <td><div ng-bind-html="x.Konu | to_trusted "></div></td>
                         <td> {{x.MailDurum}} </td>
                         <td><div ng-bind-html="kontrolTicket(x.Ticket) | to_trusted"></div></td>
                         <td> {{x.StrTarih}} </td>
@@ -86,8 +86,11 @@
             </tbody>
         </table>
         </div>
-    <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
-      boundary-link-numbers="true"  items-per-page="20" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>    
+    <div style="text-align:center">
+        <ul uib-pagination ng-show="totalItems>20" previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize"
+            boundary-link-numbers="true" items-per-page="20" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>  
+    </div>
+  
     </div>
 @section css{
     

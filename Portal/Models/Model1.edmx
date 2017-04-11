@@ -54,8 +54,8 @@
           <Property Name="arayanFirmaKayitDurum" Type="bit" />
           <Property Name="arayanKayitliMusterimi" Type="bit" />
           <Property Name="arayanKayitliRefFirmaID" Type="int" />
-          <Property Name="arayanMailSablonuId" Type="int" />
           <Property Name="ArayanAraciAdi" Type="nvarchar" MaxLength="100" />
+          <Property Name="arayanMailSablonuId" Type="int" />
           <Property Name="EtiketArayanDepartmanId" Type="int" />
         </EntityType>
         <EntityType Name="AspNetRoles">
@@ -367,11 +367,11 @@
           <Property Name="islerCalisanTipi" Type="varchar" MaxLength="50" />
           <Property Name="islerDosyaAdi" Type="nvarchar" MaxLength="250" />
           <Property Name="islerSira" Type="int" />
+          <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
           <Property Name="islerGelisYontemi" Type="nvarchar" MaxLength="100" />
           <Property Name="islerBitisTarihiVarmi" Type="bit" Nullable="false" />
           <Property Name="islerBitisTarihi" Type="date" />
           <Property Name="islerSiraNo" Type="int" />
-          <Property Name="islerIsinDurumu" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="isOncelikSira">
           <Key>
@@ -797,7 +797,7 @@
           <Property Name="GecenZamanSaniye" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Portal.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ArayanListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -814,9 +814,10 @@ warning 6002: The table/view 'Portal.dbo.ArayanListesi' does not have a primary 
           <Property Name="StrTarih" Type="nvarchar" MaxLength="4000" />
           <Property Name="KayitDurum" Type="bit" />
           <Property Name="Bolge" Type="nvarchar" MaxLength="250" />
+          <Property Name="Konu" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Portal.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="IslerListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -834,7 +835,7 @@ warning 6002: The table/view 'Portal.dbo.IslerListesi' does not have a primary k
           <Property Name="KonumId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RandevularView">
           <Key>
             <PropertyRef Name="RandevuID" />
@@ -1979,7 +1980,8 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
     [ArayanListesi].[Tarih] AS [Tarih], 
     [ArayanListesi].[StrTarih] AS [StrTarih], 
     [ArayanListesi].[KayitDurum] AS [KayitDurum], 
-    [ArayanListesi].[Bolge] AS [Bolge]
+    [ArayanListesi].[Bolge] AS [Bolge], 
+    [ArayanListesi].[Konu] AS [Konu]
     FROM [dbo].[ArayanListesi] AS [ArayanListesi]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="IslerListesi" EntityType="Self.IslerListesi" store:Type="Views" store:Schema="dbo">
@@ -4373,6 +4375,7 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
           <Property Name="KayitDurum" Type="Boolean" />
           <Property Name="Bolge" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="StrTarih" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Konu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DomainNot">
           <Key>
@@ -5503,6 +5506,7 @@ warning 6002: The table/view 'Portal.dbo.RandevularView' does not have a primary
           <EntitySetMapping Name="ArayanListesis">
             <EntityTypeMapping TypeName="PortalModel.ArayanListesi">
               <MappingFragment StoreEntitySet="ArayanListesi">
+                <ScalarProperty Name="Konu" ColumnName="Konu" />
                 <ScalarProperty Name="StrTarih" ColumnName="StrTarih" />
                 <ScalarProperty Name="Bolge" ColumnName="Bolge" />
                 <ScalarProperty Name="KayitDurum" ColumnName="KayitDurum" />
