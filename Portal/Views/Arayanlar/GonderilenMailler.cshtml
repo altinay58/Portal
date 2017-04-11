@@ -46,3 +46,10 @@
 
 </table>
 </div>
+<div style="text-align:center">
+    @if (ViewBag.Sayfalama.TotalCount > 0)
+    {
+        @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<ArayanlarController>(c => c.GonderilenMailler(page))))
+    }
+</div>

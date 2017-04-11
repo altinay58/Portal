@@ -32,7 +32,7 @@ namespace Portal.Controllers
 
 
             int SayfaNo = p ?? 1;
-            int domainBaslangic = domainBaslangic = (SayfaNo - 1) * PagerCount;
+            int domainBaslangic = (SayfaNo - 1) * PagerCount;
             List<Firma> result = new List<Firma>();      
             if(durum== "BorcluFirmalar")
             {

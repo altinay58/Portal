@@ -146,7 +146,24 @@ namespace Portal.Models
 
             return bildirimler;
         }
-
+        //public static List<IslerListesi>KontrolBekleyenIsler(string kullaniciAdSoyad)
+        //{
+        //    var list = Database.DbHelper.GetDb.IslerListesis.
+        //        Where(x => x.IsiVerenKisi.Contains(kullaniciAdSoyad) && x.IsinDurumu!="Biten").ToList();
+        //    return list;
+        //}
+        public static List<IslerListesi> YeniIsler(string kullaniciAdSoyad)
+        {
+            var list = Database.DbHelper.GetDb.IslerListesis.
+                Where(x => x.IsiYapacakKisi.Contains(kullaniciAdSoyad) && (x.IsinDurumu == "Yapilacak" || x.IsinDurumu == "YapilacakDeadline")).ToList();
+            return list;
+        }
+        public static List<IslerListesi> KontrolEdilecekIsler(string kullaniciAdSoyad)
+        {
+            var list = Database.DbHelper.GetDb.IslerListesis.
+                Where(x => x.IsiVerenKisi.Contains(kullaniciAdSoyad) && x.IsinDurumu == "KontrolBekleyen").ToList();
+            return list;
+        }
         public static IEnumerable<isler> CevaplananIslerOkunmayanlar(string KullaniciID)
         {
 

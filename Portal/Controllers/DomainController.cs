@@ -114,15 +114,17 @@ namespace Portal.Controllers
             ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
             if (Request.UrlReferrer != null)
             {
-                var ary = Request.UrlReferrer.ToString().Split('/');
-                if (ary.Length >= 4)
-                {
-                    ViewBag.oncekiSayfa = Request.UrlReferrer.ToString().Split('/')[4];
-                }
+                //var ary = Request.UrlReferrer.ToString().Split('/');
+                ViewBag.oncekiSayfa = Request.UrlReferrer.ToString();
+                //if (ary.Length >= 4)
+                //{
+                //    ViewBag.oncekiSayfa = Request.UrlReferrer.ToString().Split('/')[4];
+                //}
             }
             
             return View(viewData);
         }
+
         [ValidateInput(false)]
         [HttpPost]
         public ActionResult Duzenle(Domain domain,int id)
@@ -147,7 +149,8 @@ namespace Portal.Controllers
                 if (Request["oncekiSayfa"] != "")
                 {
                     string rd = Request["oncekiSayfa"].Trim();
-                    return RedirectToAction(rd);
+                    rd = Server.HtmlDecode(rd);
+                    return Redirect(rd);
                 }
                 else
                 {

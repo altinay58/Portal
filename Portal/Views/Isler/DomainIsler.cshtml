@@ -171,7 +171,7 @@
                         <div class="timeline-body-head">
                             <div class="timeline-body-head-caption">
                                 <a href="/Isler/IsEkleDuzenle/{{x.IsId}}" class="timeline-body-title font-white" id="is{{x.IsId}}">#{{x.IsId}} - Yapan: {{isiYapanKullanicilar(x.IsiYapacakKullanicilar)}} / Kontrol: {{x.IsiVerenKullanici.AdSoyad}}</a>
-                                <span class="timeline-body-time font-black">{{x.IsAd}}</span>
+                                <span class="timeline-body-time font-white">-{{x.IsAd}}-</span>
                                 <span class="timeline-body-time font-black">{{tarihFormatStr(x.Tarih)}}</span>
                                 <span class="timeline-body-time font-black" ng-show="x.BitisTarihiVarmi">
                                 <i class="fa fa-calendar" aria-hidden="true"></i> <strong>{{tarihFormatStr(x.BitisTarihi)}}</strong></span>
@@ -191,7 +191,7 @@
                             </p>
                             <div class="btn-group pull-left">
                                 <label class="mt-checkbox font-white" style="margin-top: 5px;">
-                                    <input data-toggle="collapse" data-target="#yorum{{$index}}" id="edit1" type="checkbox" value="1" name="service"> Yorumlar ({{x.Yorumlar.length}})
+                                    <input data-toggle="collapse" ng-model="x.YorumDurum" ng-click="yorumDurumDegistir(x)" data-target="#yorum{{$index}}" id="edit1" type="checkbox" value="1" name="service"> Yorumlar ({{x.Yorumlar.length}})
                                     <span></span>
                                 </label>
                             </div>
@@ -453,8 +453,8 @@ animation-name: fadeIn;
 @*<script src="/signalr/hubs"></script>*@
 <script src="@Url.Content("/signalr/hubs")"></script>
 <script src="/js/services/domainIslerService.js?v=1.0.72"></script>
-<script src="/js/controllers/domainIslerCtrl.js?v=1.0.78"></script>
-<script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="/js/controllers/domainIslerCtrl.js?v=1.0.85"></script>
+@*<script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>*@
 
     <script>   
         $(function () {

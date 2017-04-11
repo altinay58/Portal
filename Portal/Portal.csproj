@@ -600,7 +600,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-2.5.0.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -746,6 +748,10 @@
     <Content Include="Views\SatisBolumu\SatisRouteBilgisi.cshtml" />
     <Content Include="Views\Arayanlar\ArayanGecmisAramaGetir.cshtml" />
     <Content Include="Views\SatisDashboard\Dashboard.cshtml" />
+    <Content Include="Views\Toplantis\Create.cshtml" />
+    <Content Include="Views\Toplantis\Delete.cshtml" />
+    <Content Include="Views\Toplantis\Details.cshtml" />
+    <Content Include="Views\Toplantis\Edit.cshtml" />
     <Content Include="Views\Toplantis\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
