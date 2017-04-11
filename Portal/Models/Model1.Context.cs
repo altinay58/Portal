@@ -86,12 +86,12 @@ namespace Portal.Models
         public virtual DbSet<MesaiCizelgesi> MesaiCizelgesis { get; set; }
         public virtual DbSet<ToDo> ToDoes { get; set; }
         public virtual DbSet<TeknikRapor> TeknikRapors { get; set; }
-        public virtual DbSet<SatisFirsati> SatisFirsatis { get; set; }
-        public virtual DbSet<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
         public virtual DbSet<Etiket> Etikets { get; set; }
         public virtual DbSet<SatisGorusme> SatisGorusmes { get; set; }
         public virtual DbSet<IsPlani> IsPlanis { get; set; }
         public virtual DbSet<Toplanti> Toplantis { get; set; }
         public virtual DbSet<ToplantiyaKatilanlar> ToplantiyaKatilanlars { get; set; }
+        public virtual DbSet<SatisFirsati> SatisFirsatis { get; set; }
+        public virtual DbSet<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
     }
 }

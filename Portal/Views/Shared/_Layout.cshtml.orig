@@ -1,15 +1,25 @@
 ﻿@using Portal.Models
-@using Microsoft.AspNet.Identity  @{
-    string id = ViewBag.userid;
+@using Microsoft.AspNet.Identity  
+@using Newtonsoft.Json;
+@using Portal.Models.IslerModels;
+@{
+    string userId = ViewBag.userid;
 
-    if (String.IsNullOrEmpty(id))
+    if (String.IsNullOrEmpty(userId))
     {
-        id = User.Identity.GetUserId();
+        userId = User.Identity.GetUserId();
     }
-    IEnumerable<isler> yeniIslerim = Partial.KullaniciBildirim(id).yeniIsler;
-    IEnumerable<isler> okunmayanIsler = Partial.CevaplananIslerOkunmayanlar(id);
-    IEnumerable<isler> kontrolBekleyenIsler = Partial.KullaniciBildirim(id).kontrolBekleyenIsler;
-}<!DOCTYPE html>
+
+    IEnumerable<isler> okunmayanIsler = Partial.CevaplananIslerOkunmayanlar(userId);
+
+    var etiketIsPlaniTipDetaylari = JsonConvert.SerializeObject(CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x => x.Kategori == "EtiketIsPlaniTipi"));
+    var guncelKullanici = Database.DbHelper.GetDb.AspNetUsers.Where(x => x.Id == userId).
+                          Select(x => new Kullanici { Id = x.Id, AdSoyad = x.Isim + " " + x.SoyIsim }).FirstOrDefault();
+    //IEnumerable<IslerListesi> kontrolBekleyenIsler = Partial.KontrolBekleyenIsler(guncelKullanici.AdSoyad);
+    IEnumerable<IslerListesi> yeniIslerim = Partial.YeniIsler(guncelKullanici.AdSoyad);
+    IEnumerable<IslerListesi> kontrolEdilecekIsler = Partial.KontrolEdilecekIsler(guncelKullanici.AdSoyad);
+}
+<!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
@@ -44,27 +54,35 @@
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="/Content/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="/Content/assets/layouts/layout/css/themes/light.min.css" rel="stylesheet" type="text/css" id="style_color" />
     <link href="/Content/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/pages/css/portfolio.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/global/plugins/cubeportfolio/css/cubeportfolio.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
     <style>
-                   .current-page {
+        .current-page {
             z-index: 2;
             color: #23527c !important;
             background-color: #eee !important;
             border-color: #ddd !important;
         }
-                   .anasayfa{
-                    padding-left: 10px;
-                    font-weight: 500;
-                   }
-                   .anasayfa.active{
-                      color: #36c6d3;
-                   }
-                           .gizle{
-            display:none;
-        }s
+
+        .anasayfa {
+            padding-left: 10px;
+            font-weight: 500;
+        }
+
+            .anasayfa.active {
+                color: #36c6d3;
+            }
+
+        .gizle {
+            display: none;
+        }
+
+        s
     </style>
     @RenderSection("css", required: false)
 </head>
@@ -92,20 +110,34 @@
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
+<<<<<<< HEAD
+                    @if (User.IsInRole("Yonetim"))
+                    {
+                        <li class="" id="header_notification_bar">
+                            <a href="@Url.Action("UzatilacakDomainler", "Domain")">
+                                <div class="notifications label label-info">
+                                    <i class="icon-bell"></i>
+                                    <span class="badge badge-default">@Partial.GetirUzatmasiGelenler().Count()</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
+=======
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="" id="header_notification_bar">
-                        <a href="@Url.Action("UzatilacakDomainler","Domain")">
-                            <div class="notifications label label-info">
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="@Url.Action("UzatilacakDomainler","Domain")" class="dropdown-toggle"  data-hover="dropdown">
+                            @*<div class="notifications label label-info">*@
                                 <i class="icon-bell"></i>
-                                <span class="badge badge-default">@Partial.GetirUzatmasiGelenler().Count()</span>
-                            </div>
+                                <span class="badge badge-danger">@Partial.GetirUzatmasiGelenler().Count()</span>
+                            @*</div>*@
                         </a>
 
                     </li>
                     <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+>>>>>>> 7dc490c6c9ba9d3e1c5b9816401b87ed7773daee
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -115,9 +147,9 @@
                         <ul class="dropdown-menu">
                             <li class="external">
                                 <h3>
-                                    <span class="bold">@okunmayanIsler.Count()</span> Kontrol Edilecek İşler
+                                    <span class="bold">@okunmayanIsler.Count()</span> Okunmayan Yorumlar
                                 </h3>
-                                <a href="page_user_profile_1.html">view all</a>
+                                @*<a href="page_user_profile_1.html">view all</a>*@
                             </li>
                             <li>
                                 <ul class="dropdown-menu-list scroller" style="height: 500px;" data-handle-color="#637283">
@@ -141,7 +173,6 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN INBOX DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
@@ -161,25 +192,22 @@
                                 <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 
                                     @{
-                                        foreach (isler yeniIs in yeniIslerim)
+                                        foreach (var yeniIs in yeniIslerim)
                                         {
                                             <li>
-                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.islerRefDomainID})#is@(yeniIs.islerID)">
+                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.DomainId})#is@(yeniIs.Id)">
                                                     <span class="photo">
                                                         <img src="/Content/assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt="">
                                                     </span>
                                                     <span class="subject">
-                                                        <span class="from"> @Partial.KisiAdiGetir(yeniIs.islerisiVerenKisi) </span>
+                                                        <span class="from"><text>Veren:</text> @yeniIs.IsiVerenKisi </span>
                                                         <span class="time">
-                                                            @if (yeniIs.islerRefDomainID != null)
-                                                        {
-                                                            @Fonksiyonlar.DomainAdiGetir(yeniIs.islerRefDomainID ?? 0)
-                                                        }
+                                                          @yeniIs.Domain
+                                                        </span>
                                                     </span>
-                                                </span>
-                                                <span class="message"> @yeniIs.islerAdi... </span>
-                                            </a>
-                                        </li>
+                                                    <span class="message"> @yeniIs.IsAdi </span>
+                                                </a>
+                                            </li>
                                         }
                                     }
                                 </ul>
@@ -192,37 +220,38 @@
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <i class="icon-envelope-open"></i>
-                            <span class="badge badge-default"> @kontrolBekleyenIsler.Count() </span>
+                            <i class="fa fa-bullhorn"></i>
+                            <span class="badge badge-default"> @kontrolEdilecekIsler.Count() </span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="external">
                                 <h3>
-                                    <span class="bold">@kontrolBekleyenIsler.Count() Yeni</span> Kontrol Edilecek İşler
+                                    <span class="bold">@kontrolEdilecekIsler.Count() Yeni</span> Kontrol Edilecek İşler
                                 </h3>
-                                <a href="app_inbox.html">view all</a>
+                               
                             </li>
                             <li>
                                 <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 
                                     @{
-                                        foreach (isler yeniIs in kontrolBekleyenIsler)
+                                        foreach (var yeniIs in kontrolEdilecekIsler)
                                         {
                                             <li>
-                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.islerRefDomainID})#is@(yeniIs.islerID)">
+                                                <a href="@Url.Action("DomainIsler", "Isler",new { id= yeniIs.DomainId})">
                                                     <span class="photo">
                                                         <img src="/Content/assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt="">
                                                     </span>
                                                     <span class="subject">
-                                                        <span class="from"> @Partial.KisiAdiGetir(yeniIs.islerisiYapacakKisi)</span>
+                                                        <span class="from"> @guncelKullanici.AdSoyad</span>
                                                         <span class="time">
-                                                            @if (yeniIs.islerRefDomainID != null)
+                                                            @yeniIs.Domain
+                                                            @*@if (yeniIs.islerRefDomainID != null)
                                                             {
                                                                 @Fonksiyonlar.DomainAdiGetir(yeniIs.islerRefDomainID ?? 0)
-                                                            }
+                                                            }*@
                                                         </span>
                                                     </span>
-                                                    <span class="message"> @yeniIs.islerAdi... </span>
+                                                    <span class="message"> @yeniIs.IsAdi </span>
                                                 </a>
                                             </li>
                                         }
@@ -248,8 +277,8 @@
                             </li>
                             <li>
                                 <a data-toggle="modal" href="#todo-task-modal">
-                                    <i class="icon-rocket"></i> Yapılacaklar
-                                    <span class="badge badge-success" id="todo-count"> @Portal.Models.Partial.YapilacaklarSayisi() </span>
+                                    <i class="icon-rocket"></i> İş Planı
+                                    <span class="badge badge-success" id="todo-count"> @Portal.Models.Partial.BuguneAitIsPlanSayisi() </span>
                                 </a>
 
                             </li>
@@ -307,86 +336,44 @@
                     <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
                     <li class="sidebar-search-wrapper">
 
-                        <form class="sidebar-search  " action="@Url.Action("List","Firmalar",new { durum="Tumu"})" method="POST">
+                        <div class="sidebar-search">
                             <a href="javascript:;" class="remove">
                                 <i class="icon-close"></i>
                             </a>
                             <div class="input-group">
-                                <input type="text" name="q" class="form-control" placeholder="Firma Ara...">
+                                <input type="text" name="q" id="firmaAra" autocomplete="off" class="form-control" placeholder="Firma Ara...">
                                 <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn submit">
+                                    <button type="submit" class="btn submit">
                                         <i class="icon-magnifier"></i>
-                                    </a>
+                                    </button>
+                                    @*<a href="javascript:;" class="btn submit">
+                                            <i class="icon-magnifier"></i>
+                                        </a>*@
                                 </span>
                             </div>
-<<<<<<< HEAD
-                            <!-- END SIDEBAR TOGGLER BUTTON -->
-                        </li>
-                        <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
-                        <li class="sidebar-search-wrapper">
 
-                            <div class="sidebar-search">
-                                <a href="javascript:;" class="remove">
-                                    <i class="icon-close"></i>
-                                </a>
-                                <div class="input-group">
-                                    <input type="text" name="q" id="firmaAra" autocomplete="off" class="form-control" placeholder="Firma Ara...">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn submit">
-                                            <i class="icon-magnifier"></i>
-                                        </button>
-                                        @*<a href="javascript:;" class="btn submit">
-                            <i class="icon-magnifier"></i>
-                        </a>*@
-                                    </span>
-                                </div>
-                               
-                            </div>
-
-                        </li>
-                        <li class="sidebar-search-wrapper">
-                            <div class="sidebar-search">
-                                <a href="javascript:;" class="remove">
-                                    <i class="icon-close"></i>
-                                </a>
-                                <div class="input-group">
-                                    <input type="text" id="domainAra" name="ara" autocomplete="off" class="form-control" placeholder="Domain Ara...">
-                                    <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn submit">
-                                            <i class="icon-magnifier"></i>
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-
-                        </li>                  
-                       
-                        <li class="heading">
-                            <h3 class="">
-=======
-                        </form>
+                        </div>
 
                     </li>
                     <li class="sidebar-search-wrapper">
-
-                        <form class="sidebar-search  " action="@Url.Action("Domainler","Domain")" method="POST">
+                        <div class="sidebar-search">
                             <a href="javascript:;" class="remove">
                                 <i class="icon-close"></i>
                             </a>
                             <div class="input-group">
-                                <input type="text" name="ara" class="form-control" placeholder="Domain Ara...">
+                                <input type="text" id="domainAra" name="ara" autocomplete="off" class="form-control" placeholder="Domain Ara...">
                                 <span class="input-group-btn">
                                     <a href="javascript:;" class="btn submit">
                                         <i class="icon-magnifier"></i>
                                     </a>
                                 </span>
                             </div>
-                        </form>
+                        </div>
 
                     </li>
+
                     <li class="heading">
                         <h3 class="">
->>>>>>> c24843517748e46e721cc561c0f327fbfbbb8a14
                             <a href="/" class="anasayfa">Anasayfa</a>
                             @System.DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")
                         </h3>
@@ -479,15 +466,27 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item  ">
+                                    <a href="@Url.Action("Dashboard","SatisDashboard")" class="nav-link ">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="title">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item  ">
                                     <a href="@Url.Action("Notlar","SatisBolumu")" class="nav-link ">
                                         <i class="icon-bulb"></i>
                                         <span class="title">Notlar</span>
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
-                                    <a href="table_static_basic.html" class="nav-link ">
+                                    <a href="@Url.Action("SatisRouteBilgisi","SatisBolumu")" class="nav-link ">
                                         <i class="icon-bulb"></i>
-                                        <span class="title">Root Bilgisi</span>
+                                        <span class="title">Satış Route Bilgisi</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item  ">
+                                    <a href="@Url.Action("Index","IsPlani")" class="nav-link ">
+                                        <i class="icon-anchor font-green-sharp"></i>
+                                        <span class="title">İş Planı</span>
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
@@ -497,9 +496,15 @@
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
-                                    <a href="table_static_basic.html" class="nav-link ">
+                                    <a href="@Url.Action("List","SatisFirsatis")" class="nav-link ">
                                         <i class="icon-bulb"></i>
-                                        <span class="title">Teklifler</span>
+                                        <span class="title">Satış Fırsatları</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item  ">
+                                    <a href="@Url.Action("List","SatisGorusmes")" class="nav-link ">
+                                        <i class="icon-bulb"></i>
+                                        <span class="title">Satış Görüşmeler</span>
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
@@ -527,6 +532,11 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item  ">
+                                    <a href="@Url.Action("TeknikRapor", "Isler")" class="nav-link ">
+                                        <span class="title">Teknik Rapor</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item  ">
                                     <a href="@Url.Action("Index", "StandartProjeIsleris")" class="nav-link ">
                                         <span class="title">Standard Is Tanımlama</span>
                                     </a>
@@ -546,12 +556,10 @@
                                         <span class="title">İş Ekle</span>
                                     </a>
                                 </li>
+
                             </ul>
                         </li>
                     }
-
-                    @if (User.IsInRole("Yonetim"))
-                    {
                         <li class="nav-item  ">
                             <a href="?p=" class="nav-link nav-toggle">
                                 <i class="icon-wallet"></i>
@@ -559,9 +567,38 @@
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
+                                @if (User.IsInRole("Yonetim"))
+                                {
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("List", "SiteKontrols")" class="nav-link ">
+                                            <span class="title">Site Kontrol</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("Create", "Toplantis")" class="nav-link ">
+                                            <span class="title">Toplantı Ekle</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("Takvim", "Yonetimsel")" class="nav-link ">
+                                            <span class="title">Takvim</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("WebLog", "Yonetimsel")" class="nav-link ">
+                                            <span class="title">Loglar</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("Index", "Etikets")" class="nav-link ">
+                                            <span class="title">Etiketler</span>
+                                        </a>
+                                    </li>
+                                }
                                 <li class="nav-item  ">
-                                    <a href="@Url.Action("List", "SiteKontrols")" class="nav-link ">
-                                        <span class="title">Site Kontrol</span>
+                                    <a href="@Url.Action("Index", "Toplantis")" class="nav-link ">
+                                        <span class="title">Toplantılar</span>
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
@@ -569,20 +606,8 @@
                                         <span class="title">Mesai Çizelgesi</span>
                                     </a>
                                 </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("Takvim", "Yonetimsel")" class="nav-link ">
-                                        <span class="title">Takvim</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("WebLog", "Yonetimsel")" class="nav-link ">
-                                        <span class="title">Loglar</span>
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
-                    }
                     @if (User.IsInRole("Muhasebe") || User.IsInRole("Satis"))
                     {
                         <li class="nav-item  ">
@@ -613,14 +638,14 @@
                                     </a>
                                 </li>
                                 @if (User.IsInRole("Yonetim"))
-{
+                                {
 
-                                <li class="nav-item  ">
-                                    <a href="/CariHareket/PersonelMaasOdeme" class="nav-link ">
-                                        <span class="title">Personel Maaş Ödeme</span>
-                                    </a>
-                                </li>
-}
+                                    <li class="nav-item  ">
+                                        <a href="/CariHareket/PersonelMaasOdeme" class="nav-link ">
+                                            <span class="title">Personel Maaş Ödeme</span>
+                                        </a>
+                                    </li>
+                                }
 
                             </ul>
                         </li>
@@ -641,27 +666,27 @@
                                     </a>
                                 </li>
                                 @if (User.IsInRole("Yonetim"))
-{
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("List", "Firmalar", new { durum = "Kasa" })" class="nav-link ">
-                                        <i class="icon-bar-chart"></i>
-                                        <span class="title">Kasa</span>
-                                    </a>
-                                </li>
+                                {
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("List", "Firmalar", new { durum = "Kasa" })" class="nav-link ">
+                                            <i class="icon-bar-chart"></i>
+                                            <span class="title">Kasa</span>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("List", "Firmalar", new { durum = "Personel" })" class="nav-link ">
-                                        <i class="icon-bar-chart"></i>
-                                        <span class="title">Personel</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("List", "Firmalar", new { durum = "Araci" })" class="nav-link ">
-                                        <i class="icon-bar-chart"></i>
-                                        <span class="title">Aracı</span>
-                                    </a>
-                                </li>
-}
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("List", "Firmalar", new { durum = "Personel" })" class="nav-link ">
+                                            <i class="icon-bar-chart"></i>
+                                            <span class="title">Personel</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("List", "Firmalar", new { durum = "Araci" })" class="nav-link ">
+                                            <i class="icon-bar-chart"></i>
+                                            <span class="title">Aracı</span>
+                                        </a>
+                                    </li>
+                                }
                                 <li class="nav-item  ">
                                     <a href="/Firmalar/FirmaKaydet" class="nav-link ">
                                         <i class="icon-bar-chart"></i>
@@ -695,7 +720,7 @@
                             </ul>
                         </li>
                     }
-                    @if (User.IsInRole("Herkes"))
+                    @if (User.IsInRole("Yonetim"))
                     {
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
@@ -1428,9 +1453,130 @@
     </div>
     <!-- END CONTAINER -->
     <!--begin todo list-->
+    <div ng-controller="isPlaniCtrl" ng-init="init(guncelKullaniciId='@userId',jsnEtiketIsPlaniTipDetaylari='@etiketIsPlaniTipDetaylari')">
+        <div id="todo-task-modal" class="modal fade" role="dialog" aria-labelledby="myModalLabel10" aria-hidden="true">
+            <div class="modal-dialog">
+
+                <div class="modal-content " style="height: 100%; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                     
+                    </div>
+                    <div class="modal-body todo-task-modal-body">                      
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-anchor font-green-sharp"></i>
+                                    <span class="caption-subject font-green-sharp bold">Plan Listesi</span>
+                                </div>
+
+
+                            </div>
+                            <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+
+                                <ul class="feeds">
+
+                                    <li ng-repeat="item in isPlanlari">
+                                        <div class="col1">
+                                            <div class="cont">
+                                                <div class="cont-col1">
+                                                    <div class="label label-sm">
+                                                        @*<i class="fa fa-bolt"></i>*@
+                                                        <label class="mt-checkbox mt-checkbox-outline">
+                                                            <input type="checkbox" ng-disabled="item.EtiketIsPlaniDurum==etiketIsPlaniDurumlari.Tamamlandi" ng-model="item.EtiketIsPlaniDurum" ng-click="durumDegistir(item,$index)" ng-true-value="3" ng-false-value="1">
+                                                            <span></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="cont-col2">
+                                                    <div class="desc">                                                       
+                                                        <span ng-bind-html="item.Aciklama |  to_trusted"></span> 
+                                                        <span class="label label-sm {{item.etiketIsPlaniTipDetay.FontIcon}} ">
+                                                            {{item.etiketIsPlaniTipDetay.Text}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col2">
+                                            <div class="date"> {{tarihFormat(item.Tarih)}} </div>
+                                        </div>
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="modal fade bs-modal-lg" id="modalIsPlani" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">İş Planı</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Tarih</label>
+                                    <div class="col-md-4">
+
+
+                                        <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
+                                            <input type="text" ng-model="tarih" is-date="1" class="form-control" name="arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+
+                                            </span>
+                                            <div class="input-group">
+                                                <input type="text" ng-model="saatDakika" name="SaatDakika" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">
+                                                <span class="input-group-btn">
+                                                    <button class="btn default" type="button">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                    <label class="control-label col-md-2">Açıklama</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" ng-model="aciklama" />
+                                    </div>
+                                </div>*@
+                                <div class="form-group">
+                                    <label class="col-md-offset-2 col-md-2">
+                                        <button type="submit" class="btn green" ng-click="kaydet()">Kaydet</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+    <!-- BEGIN todo 
     <div ng-controller="toDoCtrl" id="todo-task-modal" class="modal fade" role="dialog" aria-labelledby="myModalLabel10" aria-hidden="true">
         <div class="modal-dialog">
-            @*<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">*@
+   
             <div class="modal-content " style="height: 100%; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -1438,9 +1584,7 @@
                         <div class="form-group">
                             <input type="text" class="form-control" style="width:450px" ng-model="aciklama" placeholder="">
                         </div>
-                        @*<div class="form-group">
-                                <input type="text" class="form-control" ng-model="q" ng-keyup="getirData(q)" placeholder="En az Üç harf ">
-                            </div>*@
+                 
                         <button type="button" class="btn btn-default green" ng-click="ekle()">Ekle</button>
                     </form>
                 </div>
@@ -1448,10 +1592,10 @@
                     <div class="tabbable-line">
                         <ul class="nav nav-tabs ">
                             <li class="active">
-                                <a href="#" ng-click="degistirGuncelDurum(0)" data-toggle="tab" aria-expanded="true"> Beklemede </a>
+                                <a href="#" ng-click="getirData(0)" data-toggle="tab" aria-expanded="true"> Beklemede </a>
                             </li>
                             <li class="">
-                                <a href="#" ng-click="degistirGuncelDurum(1)" data-toggle="tab" aria-expanded="false"> Tamamlanmış </a>
+                                <a href="#" ng-click="getirData(1)" data-toggle="tab" aria-expanded="false"> Tamamlanmış </a>
                             </li>
                         </ul>
                     </div>
@@ -1470,9 +1614,7 @@
                                             </a>
                                         </div>
                                         <div class="item-status" style="top:2px">
-                                            @*<p class="todo-inline">
-                                                    Shane,
-                                                </p>*@
+                                     
                                             <span class="todo-red">{{tarihFormatStr(x.Tarih)}}</span>
                                         </div>
                                     </div>
@@ -1486,13 +1628,12 @@
                     </div>
                 </div>
             </div>
-            <div class="slimScrollBar" style="background: rgb(187, 187, 187); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 612.84px;">
-            </div>
-            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;">
-            </div>
-            @*</div>*@
+
+        
         </div>
     </div>
+    todo -->
+    @Html.Partial("_Modal")
     <!--end todo list-->
     <!-- BEGIN FOOTER -->
     @*<div class="page-footer">
@@ -1504,79 +1645,6 @@
                 <i class="icon-arrow-up"></i>
             </div>
         </div>*@
-<<<<<<< HEAD
-        <!-- END FOOTER -->
-        <!--[if lt IE 9]>
-        <script src="/Content/assets/global/plugins/respond.min.js"></script>
-        <script src="/Content/assets/global/plugins/excanvas.min.js"></script>
-        <![endif]-->
-        <!-- BEGIN CORE PLUGINS -->
-        <script src="/Content/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-        <!-- END CORE PLUGINS -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-    
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <script src="/Content/assets/global/scripts/app.min.js" type="text/javascript"></script>
-        <!-- END THEME GLOBAL SCRIPTS -->
-       
-        <!-- BEGIN THEME LAYOUT SCRIPTS -->
-        <script src="/Content/assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
-        <script src="/Content/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-        <!-- BEGIN PAGE LEVEL SCRIPTS -->  
-        <script src="http://ifightcrime.github.io/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
-        <script src="/js/extensions.js"></script>    
-        <script src="/scripts/angular.min.js"></script>
-       @*<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>*@
-        <script src="/Scripts/ui-bootstrap-tpls-2.5.0.min.js"></script>
-    
-        @*<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>*@
-        <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
-        <script src="/js/angModule.js?v=1.0.3"></script>
-        <script src="/js/services/toDoService.js?v=6"></script>
-        <script src="/js/controllers/toDoCtrl.js?v=14"></script>
-        @RenderSection("scripts", required: false)
-        <script src="/Scripts/ajaxService.js?v=0.1"></script>
-        <script src="/js/portalApp.js?v=2.1"></script>
-        <!-- END PAGE LEVEL SCRIPTS -->
-       
-            <script>
-                $(function () {
-                    $("#firmaAra").keypress(function (event) {
-                        if (event.which == 13) {
-                            event.preventDefault();
-                            location.href = "/Firmalar/List?durum=Tumu&q=" + $(this).val();
-                           
-                        }
-                    });
-                    $("#domainAra").keypress(function (event) {
-                        if (event.which == 13) {
-                            event.preventDefault();
-                            let v=$(this).val();
-                            location.href = `/Domain/Domainler?ara=${v}&aramaType=UzatmaTarihi`;
-                          
-                        }
-                    });
-                    ayarlaMenu();
-                });
-                function ayarlaMenu() {
-                    let guncelMenu = '@ViewBag.guncelMenu';
-                    let guncelLink = "@ViewContext.RouteData.Values["action"]";
-                    let guncelCnt = '@ViewContext.RouteData.Values["controller"]';
-                    let linkHref = '/' + guncelCnt + '/' + guncelLink;
-                    if (guncelCnt == 'Home' && guncelLink == 'Index') {
-                        $(".anasayfa").addClass("active");
-                        return;
-                    }
-                    $(".page-sidebar-menu >  li.nav-item").removeClass("open active");
-=======
     <!-- END FOOTER -->
     <!--[if lt IE 9]>
     <script src="/Content/assets/global/plugins/respond.min.js"></script>
@@ -1609,24 +1677,40 @@
     @*<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>*@
     <script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>
     <script src="/js/angModule.js?v=1.0.3"></script>
-    <script src="/js/services/toDoService.js?v=6"></script>
-    <script src="/js/controllers/toDoCtrl.js?v=14"></script>
+    <script src="/js/services/toDoService.js?v=7"></script>
+    <script src="/js/controllers/toDoCtrl.js?v=16"></script>
+    <script src="/js/controllers/isPlaniCtrl.js?v=26"></script>
     @RenderSection("scripts", required: false)
     <script src="/Scripts/ajaxService.js?v=0.1"></script>
     <script src="/js/portalApp.js?v=2.2"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
         $(function () {
-            $("td.duzenle")
-  .mouseover(function () {
-      $(this).find(".gizle").show();
-     
-     
-  })
-  .mouseout(function () {
-   
-      $(this).find(".gizle").hide();
-  });
+                $("#firmaAra").keypress(function (event) {
+                    if (event.which == 13) {
+                        event.preventDefault();
+                        location.href = "/Firmalar/List?durum=Tumu&q=" + $(this).val();
+
+                    }
+                });
+                $("#domainAra").keypress(function (event) {
+                    if (event.which == 13) {
+                        event.preventDefault();
+                        let v=$(this).val();
+                        location.href = `/Domain/Domainler?ara=${v}&aramaType=UzatmaTarihi`;
+
+                    }
+                });
+                $("td.duzenle")
+                .mouseover(function () {
+                $(this).find(".gizle").show();
+
+
+                })
+                .mouseout(function () {
+
+                $(this).find(".gizle").hide();
+                });
             ayarlaMenu();
         });
         function ayarlaMenu() {
@@ -1639,7 +1723,6 @@
                 return;
             }
             $(".page-sidebar-menu >  li.nav-item").removeClass("open active");
->>>>>>> c24843517748e46e721cc561c0f327fbfbbb8a14
 
             $(".page-sidebar-menu >  li.nav-item > a > span.title").each((index, elm) => {
                 if (guncelMenu == $(elm).attr("tr-menu-ismi")) {
@@ -1653,7 +1736,73 @@
                     });
                 }
             });
+
+            //Burası Otamatik Google sıralaması için yazıldı GetirGoogleSıralamasi actionresult ile bağlı
+            $(function () {
+                $(document).on('click', '.ipGetir', function () {
+                    var idDeger = $(this).attr('id');
+                    $.ajax({
+                        url: "/Whois/IPAdresi",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            domainID: idDeger
+                        },
+                        error: function (response) {
+                            // alert(idDeger + response);
+                        },
+                        success: function (response) {
+                            $("#" + idDeger).text(response);
+                        }
+                    });
+                });
+            });
+
         }
+    </script>
+    <link href="/Content/assets/global/plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css" />
+    <script src="/Content/assets/global/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.js" type="text/javascript"></script>
+    <script>
+    function gosterDomain(domain) {
+        commonAjaxService.getDomainInfo(domain).done(function (data) {
+            $("#domainInfo .modal-title").html("Domain Sorgula")
+            $("#domainInfo .modal-body").html(data);
+            $("#domainInfo").modal("show");
+        });
+    }
+    function domainUzatmaMailiGonder(btn, domainAdi, domainId) {
+        if (confirm( domainAdi +' Domain Uzatılacak  Maili Gönderilecek Emin misiniz?'))
+        {
+            $(btn).addClass("disabled");
+            $(btn).html("Gönderiliyor..");
+            commonAjaxService.domainUzatmaMailiGonder(domainId).done(function (data) {
+                $("#domainInfo").modal("show");
+                $("#domainInfo .modal-title").html("Mail Cevap");
+                $(btn).removeClass("disabled");
+                $(btn).html("Mail Gönder");
+                if (data.Basarilimi) {
+                    $("#domainInfo .modal-body").html('Gönderildi');
+
+                } else {
+                    $("#domainInfo .modal-body").html('Hata oldu,gönderilemedi');
+                }
+            });
+        }
+    }
+    </script>
+    <script>
+    $(function () {
+         $.fn.editable.defaults.mode = 'popup';
+         $('.table-striped .domain-note').editable({
+            url: '/Domain/ColumnNoteEkle',
+            type: 'text',
+            name: 'Note',
+            title: 'Not Giriniz',
+            success: function (response, newValue) {
+                console.log(newValue);
+            }
+        });
+    })
     </script>
 </body>
 </html>

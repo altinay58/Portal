@@ -12,27 +12,20 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FirmaKisi
+    public partial class Toplanti
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FirmaKisi()
+        public Toplanti()
         {
-            this.SatisGorusmes = new HashSet<SatisGorusme>();
-            this.SatisFirsatis = new HashSet<SatisFirsati>();
+            this.ToplantiyaKatilanlars = new HashSet<ToplantiyaKatilanlar>();
         }
     
-        public int Id { get; set; }
-        public string Ad { get; set; }
-        public string Soyad { get; set; }
-        public string Departman { get; set; }
-        public string Tel { get; set; }
-        public string Email { get; set; }
-        public int FirmaId { get; set; }
+        public int ToplantiId { get; set; }
+        public string ToplandiAdi { get; set; }
+        public string ToplantiDetayi { get; set; }
+        public Nullable<System.DateTime> ToplantiTarihi { get; set; }
     
-        public virtual Firma Firma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
+        public virtual ICollection<ToplantiyaKatilanlar> ToplantiyaKatilanlars { get; set; }
     }
 }

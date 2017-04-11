@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5807e76d4da146d0b033f6692acfa5bd" Name="Diagram1" ZoomLevel="46">
+      <Diagram DiagramId="5807e76d4da146d0b033f6692acfa5bd" Name="Diagram1" ZoomLevel="88">
         <EntityTypeShape EntityType="PortalModel.Ayar" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PortalModel.Konum" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PortalModel.isler" Width="1.5" PointX="0.75" PointY="3.75" />
@@ -140,12 +140,6 @@
         <EntityTypeShape EntityType="PortalModel.TeknikRapor" Width="1.5" PointX="3" PointY="24.5" />
         <AssociationConnector Association="PortalModel.FK_TeknikRapor_isler" />
         <AssociationConnector Association="PortalModel.FK_TeknikRapor_AspNetUsers" />
-        <EntityTypeShape EntityType="PortalModel.SatisFirsati" Width="1.5" PointX="15.25" PointY="26.25" />
-        <EntityTypeShape EntityType="PortalModel.SatisFirsatiFiyatRevizyon" Width="1.5" PointX="17.5" PointY="27.625" />
-        <AssociationConnector Association="PortalModel.FK_SatisFirsati_DomainKategori" />
-        <AssociationConnector Association="PortalModel.FK_SatisFirsati_Firma" />
-        <AssociationConnector Association="PortalModel.FK_SatisFirsati_FirmaKisi" />
-        <AssociationConnector Association="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" />
         <EntityTypeShape EntityType="PortalModel.Etiket" Width="1.5" PointX="18.375" PointY="0.75" />
         <EntityTypeShape EntityType="PortalModel.SatisGorusme" Width="1.5" PointX="19.25" PointY="19.125" />
         <AssociationConnector Association="PortalModel.FK_SatisGorusme_DomainKategori" />
@@ -154,11 +148,17 @@
         <EntityTypeShape EntityType="PortalModel.IsPlani" Width="1.5" PointX="21.5" PointY="17.375" />
         <AssociationConnector Association="PortalModel.FK_IsPlani_AspNetUsers" />
         <AssociationConnector Association="PortalModel.FK_IsPlani_Firma" />
-        <AssociationConnector Association="PortalModel.FK_IsPlani_SatisFirsati" />
         <EntityTypeShape EntityType="PortalModel.Toplanti" Width="1.5" PointX="6" PointY="26.25" />
         <EntityTypeShape EntityType="PortalModel.ToplantiyaKatilanlar" Width="1.5" PointX="8.25" PointY="0.75" />
         <AssociationConnector Association="PortalModel.FK_ToplantiyaKatilanlar_AspNetUsers" />
         <AssociationConnector Association="PortalModel.FK_ToplantiyaKatilanlar_Toplanti" />
+        <EntityTypeShape EntityType="PortalModel.SatisFirsati" Width="1.5" PointX="15.25" PointY="25.375" />
+        <EntityTypeShape EntityType="PortalModel.SatisFirsatiFiyatRevizyon" Width="1.5" PointX="17.5" PointY="26.625" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsati_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsati_Firma" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsati_FirmaKisi" />
+        <AssociationConnector Association="PortalModel.FK_IsPlani_SatisFirsati" />
+        <AssociationConnector Association="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
