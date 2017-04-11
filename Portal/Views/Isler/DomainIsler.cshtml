@@ -160,7 +160,7 @@
 
                 </div>
 
-                <div  ng-repeat="x in domainIsler  | filter:filterByIsinDurumu" class="timeline-item ">
+                <div  ng-repeat="x in domainIsler   | filter:filterByIsinDurumu track by $index" class="timeline-item ">
                     <div class="timeline-badge">
                         <div class="timeline-icon">
                             <i class="fa fa-code {{timelineIconClassBelirleDurumaGore(x.IsDurum)}}"></i>
