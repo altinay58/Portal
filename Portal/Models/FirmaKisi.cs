@@ -17,8 +17,8 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FirmaKisi()
         {
-            this.SatisFirsatis = new HashSet<SatisFirsati>();
             this.SatisGorusmes = new HashSet<SatisGorusme>();
+            this.SatisFirsatis = new HashSet<SatisFirsati>();
         }
     
         public int Id { get; set; }
@@ -31,8 +31,8 @@ namespace Portal.Models
     
         public virtual Firma Firma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
     }
 }

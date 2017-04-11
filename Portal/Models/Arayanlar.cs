@@ -51,6 +51,7 @@ namespace Portal.Models
         public Nullable<int> arayanKayitliRefFirmaID { get; set; }
         public string ArayanAraciAdi { get; set; }
         public Nullable<int> arayanMailSablonuId { get; set; }
+        public Nullable<int> EtiketArayanDepartmanId { get; set; }
     
         public virtual ArayanGrup ArayanGrup { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }

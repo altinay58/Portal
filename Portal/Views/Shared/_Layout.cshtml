@@ -110,20 +110,17 @@
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
-                    <!-- BEGIN NOTIFICATION DROPDOWN -->
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
-                        <a href="@Url.Action("UzatilacakDomainler","Domain")" class="dropdown-toggle"  data-hover="dropdown">
-                            @*<div class="notifications label label-info">*@
-                                <i class="icon-bell"></i>
-                                <span class="badge badge-danger">@Partial.GetirUzatmasiGelenler().Count()</span>
-                            @*</div>*@
-                        </a>
-
-                    </li>
-                    <!-- END NOTIFICATION DROPDOWN -->
-                    <!-- BEGIN NOTIFICATION DROPDOWN -->
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                    @if (User.IsInRole("Yonetim"))
+                    {
+                        <li class="" id="header_notification_bar">
+                            <a href="@Url.Action("UzatilacakDomainler", "Domain")">
+                                <div class="notifications label label-info">
+                                    <i class="icon-bell"></i>
+                                    <span class="badge badge-default">@Partial.GetirUzatmasiGelenler().Count()</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -159,7 +156,6 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN INBOX DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
@@ -543,17 +539,10 @@
                                         <span class="title">İş Ekle</span>
                                     </a>
                                 </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("MesaiCizelgesi", "Yonetimsel")" class="nav-link ">
-                                        <span class="title">Mesai Çizelgesi</span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </li>
                     }
-
-                    @if (User.IsInRole("Yonetim"))
-                    {
                         <li class="nav-item  ">
                             <a href="?p=" class="nav-link nav-toggle">
                                 <i class="icon-wallet"></i>
@@ -561,39 +550,47 @@
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("List", "SiteKontrols")" class="nav-link ">
-                                        <span class="title">Site Kontrol</span>
-                                    </a>
-                                </li>
+                                @if (User.IsInRole("Yonetim"))
+                                {
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("List", "SiteKontrols")" class="nav-link ">
+                                            <span class="title">Site Kontrol</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("Create", "Toplantis")" class="nav-link ">
+                                            <span class="title">Toplantı Ekle</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("Takvim", "Yonetimsel")" class="nav-link ">
+                                            <span class="title">Takvim</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("WebLog", "Yonetimsel")" class="nav-link ">
+                                            <span class="title">Loglar</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="@Url.Action("Index", "Etikets")" class="nav-link ">
+                                            <span class="title">Etiketler</span>
+                                        </a>
+                                    </li>
+                                }
                                 <li class="nav-item  ">
                                     <a href="@Url.Action("Index", "Toplantis")" class="nav-link ">
                                         <span class="title">Toplantılar</span>
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
-                                    <a href="@Url.Action("Create", "Toplantis")" class="nav-link ">
-                                        <span class="title">Toplantı Ekle</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("Takvim", "Yonetimsel")" class="nav-link ">
-                                        <span class="title">Takvim</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("WebLog", "Yonetimsel")" class="nav-link ">
-                                        <span class="title">Loglar</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="@Url.Action("Index", "Etikets")" class="nav-link ">
-                                        <span class="title">Etiketler</span>
+                                    <a href="@Url.Action("MesaiCizelgesi", "Yonetimsel")" class="nav-link ">
+                                        <span class="title">Mesai Çizelgesi</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                    }
                     @if (User.IsInRole("Muhasebe") || User.IsInRole("Satis"))
                     {
                         <li class="nav-item  ">
@@ -706,7 +703,7 @@
                             </ul>
                         </li>
                     }
-                    @if (User.IsInRole("Herkes"))
+                    @if (User.IsInRole("Yonetim"))
                     {
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">

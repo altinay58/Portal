@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Portal.Controllers
 {
+    [Authorize(Roles = "Yonetim")]
     public class DomainController : BaseController
     {
         const int  sayfada_gosterilecek_domain_sayisi = 10;
