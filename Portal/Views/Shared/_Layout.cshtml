@@ -827,7 +827,7 @@
                     <button class="close" data-close="alert"></button>@Html.Raw(HttpUtility.HtmlDecode((String)@TempData["Success"]))
                 </div>
                 <div class="alert alert-danger @(TempData["Error"]==null ? "display-hide" :"")">
-                    <button class="close" data-close="alert"></button>Html.Raw(HttpUtility.HtmlDecode((String)@TempData["Error"]))
+                    <button class="close" data-close="alert"></button>@Html.Raw(HttpUtility.HtmlDecode((String)@TempData["Error"]))
                 </div>
                 @RenderBody()
             </div>

@@ -70,7 +70,7 @@
                                 <option value="@user.Id" selected="selected"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
                             }
                             else
-                            {
+                            {                            
                                 <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
                             }
 
@@ -91,7 +91,15 @@
                             }
                             else
                             {
-                                <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                                if (User.Identity.Name == user.UserName && Model.islerID==0)
+                                {
+                                    <option value="@user.Id" selected="selected"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                                }
+                                else
+                                {
+                                    <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                                }
+
                             }
 
                         }

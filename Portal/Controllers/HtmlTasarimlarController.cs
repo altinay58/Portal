@@ -20,7 +20,7 @@ namespace Portal.Controllers
         public ActionResult List()
         {
             ViewBag.temaDomainKategoriID = Db.DomainKategoris.ToList();
-            var temas=Db.Temas.ToList();
+            var temas=Db.Temas.OrderByDescending(x=>x.temaID).ToList();
             return View(temas);
         }
         public ActionResult Details(int? id)
@@ -80,13 +80,13 @@ namespace Portal.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.temaDomainKategoriID = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi");
+            ViewBag.temaDomainKategoriID = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi",tema.temaDomainKategoriID);
             return View(tema);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "temaID,temaAdresi,temaDemoAdi,temaProjeTipi,temaFirmaAdi")] Tema tema)
+        public ActionResult Edit([Bind(Include = "temaID,temaAdresi,temaDemoAdi,temaDomainKategoriID,temaFirmaAdi")] Tema tema)
         {
             var entity = Db.Temas.AsNoTracking().SingleOrDefault(x => x.temaID == tema.temaID);
             if (ModelState.IsValid)

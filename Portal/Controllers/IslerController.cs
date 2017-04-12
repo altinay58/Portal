@@ -630,7 +630,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             ViewBag.domainler = null;
             if (Request.UrlReferrer != null)
             {
-                ViewBag.oncekiSayfa = Request.UrlReferrer.AbsolutePath;
+                ViewBag.oncekiSayfa = Request.UrlReferrer.ToString();
             }
             if (id.HasValue)
             {
@@ -662,6 +662,23 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                     Db.islers.Add(entity);
 
                 }
+                entity.islerAdi = Fonksiyonlar.KarakterDuzenle(model.islerAdi);
+                entity.islerAciklama = Fonksiyonlar.KarakterDuzenle(model.islerAciklama);
+                var varmi = Db.islers.Where(x => x.islerAdi == entity.islerAdi && x.islerAciklama == entity.islerAciklama
+                && (entity.islerID>0 ? x.islerID==x.islerID : true)).Count() > 0;
+                if (varmi)
+                {
+                    TempData[ERROR] = "Bu iş daha önceden kayıt edilmiş";
+                    ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
+                    ViewBag.isOncelikler = Db.isOncelikSiras;
+                    ViewBag.domainler = null;
+                    if (entity.islerID > 0)
+                    {
+                        ViewBag.domainler = Db.Domains.Where(x => x.RefDomainFirmaID == entity.islerRefFirmaID);
+                    }
+                    return View(entity);
+                }
+
                 if (model.islerRefFirmaID == null)
                 {
                     entity.islerRefFirmaID = Db.Domains.FirstOrDefault(a => a.DomainID == model.islerRefDomainID).RefDomainFirmaID;
@@ -671,12 +688,11 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                     entity.islerRefFirmaID = model.islerRefFirmaID;
                 }
                 entity.islerRefDomainID = model.islerRefDomainID;
-                entity.islerAdi = Fonksiyonlar.KarakterDuzenle(model.islerAdi);
-                entity.islerAciklama = Fonksiyonlar.KarakterDuzenle(model.islerAciklama);
+              
                 entity.islerOncelikSiraID = model.islerOncelikSiraID;
                 entity.islerBitisTarihiVarmi = model.islerBitisTarihiVarmi;
                 entity.islerOncelikSiraID = model.islerOncelikSiraID;
-
+             
                 if (model.islerBitisTarihiVarmi)
                 {
                     entity.islerBitisTarihi = model.islerBitisTarihi;
@@ -703,7 +719,16 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
 
                 Db.SaveChanges();
                 TempData[SUCESS] = "Kaydedildi";
-                return RedirectToAction("DomainIsler", new { id = model.islerRefDomainID});
+                if (Request["oncekiSayfa"] != "")
+                {
+                    string rd = Request["oncekiSayfa"].Trim();
+                    rd = Server.HtmlDecode(rd);
+                    return Redirect(rd);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             catch
             {

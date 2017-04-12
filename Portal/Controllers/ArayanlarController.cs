@@ -251,11 +251,8 @@ namespace Portal.Controllers
             ViewBag.mailSablonlari = Db.MailSablonus;
             if (Request.UrlReferrer != null)
             {
-                var ary = Request.UrlReferrer.ToString().Split('/');
-                if (ary.Length >= 4)
-                {
-                    ViewBag.oncekiSayfa = Request.UrlReferrer.ToString().Split('/')[4];
-                }
+              
+                ViewBag.oncekiSayfa = Request.UrlReferrer.ToString();
             }
             var arayan = Db.Arayanlars.SingleOrDefault(x => x.arayanID == id);
             return View(arayan);
@@ -324,7 +321,8 @@ namespace Portal.Controllers
             if (Request["oncekiSayfa"] != "")
             {
                 string rd = Request["oncekiSayfa"].Trim();
-                return RedirectToAction(rd);
+                rd = Server.HtmlDecode(rd);
+                return Redirect(rd);
             }
             else
             {

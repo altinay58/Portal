@@ -169,7 +169,7 @@ namespace Portal.Models
 
             using (var dbc = new PortalEntities())
             {
-                List<int> yorumlananIsIdleri = dbc.YorumDurums.Where(a => a.RefUserID == KullaniciID).Select(a => a.RefIsID).ToList();
+                List<int> yorumlananIsIdleri = dbc.YorumDurums.Where(a => a.isler.Domain.DomainDurum==true && a.RefUserID == KullaniciID).Select(a => a.RefIsID).ToList();
 
                 return dbc.islers.Where(a => yorumlananIsIdleri.Contains(a.islerID)).ToList();
 
