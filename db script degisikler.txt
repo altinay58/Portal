@@ -844,7 +844,46 @@ ALTER TABLE [dbo].[ToplantiyaKatilanlar] CHECK CONSTRAINT [FK_ToplantiyaKatilanl
 GO
 
 ---
+--11.04.2017
+GO
 ALTER TABLE [dbo].[Arayanlar] ADD EtiketArayanDepartmanId int NULL
+GO
+--
+/****** Object:  View [dbo].[ArayanListesi]    Script Date: 12.04.2017 15:33:06 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+
+
+
+ALTER VIEW [dbo].[ArayanListesi]
+AS
+
+
+SELECT    Extent1.arayanID AS Id, CASE WHEN ([Extent1].[arayanAdi] IS NULL) THEN N'' ELSE [Extent1].[arayanAdi] END + N' ' + CASE WHEN ([Extent1].[arayanSoyadi] IS NULL) THEN N'' ELSE [Extent1].[arayanSoyadi] END AS AdSoyad, 
+                Extent1.arayanFirmaAdi AS Firma, Extent1.arayanTelefonNo AS Tel, Extent1.arayanCepTelNo AS CepTel, Extent1.arayanNot AS Note, Extent3.MailSablonuAdi AS MailDurum, Extent2.islerID AS Ticket,
+				Extent1.arayanKayitTarih as Tarih,FORMAT(Extent1.arayanKayitTarih, 'dd.MM.yyyy HH:mm') as StrTarih,Extent1.arayanFirmaKayitDurum as KayitDurum,k.Konum as Bolge,
+				Extent1.arayanKonu as Konu
+FROM      dbo.Arayanlar AS Extent1 LEFT OUTER JOIN
+                dbo.isler AS Extent2 ON Extent1.arayanID = Extent2.islerRefArayanID LEFT OUTER JOIN
+                dbo.MailSablonu AS Extent3 ON Extent1.arayanMailSablonuId = Extent3.MailSablonuID LEFT OUTER JOIN
+                dbo.Firma AS Extent4 ON Extent1.arayanKayitliRefFirmaID = Extent4.FirmaID LEFT OUTER JOIN
+				dbo.Konum as k on Extent1.arayanRefKonumID=k.KonumID
+
+
+
+
+
+
+GO
+
 
 
 
