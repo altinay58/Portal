@@ -525,28 +525,36 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             var firmalar = new List<object>();
             if (sadeceFirma)
             {
-                var list = Db.Firmas.Where(a => a.FirmaAdi.Contains(firmaAdi) || a.YetkiliCepTelefon.Contains(firmaAdi)
-                          || a.YetkiliTelefon.Contains(firmaAdi) || a.Email.Contains(firmaAdi));
-                foreach (Firma firma in list)
+
+                IEnumerable<int> integerDizi = Db.FirmaKisis.Where(a => a.Tel.Contains(firmaAdi) || a.Tel2.Contains(firmaAdi) || a.Email.Contains(firmaAdi) || a.Ad.Contains(firmaAdi)).Select(a => a.FirmaId);
+
+                var list = from sonuclar in Db.Firmas
+                           join  k in Db.FirmaKisis on sonuclar.FirmaID equals k.FirmaId
+                       where integerDizi.Contains(sonuclar.FirmaID) || sonuclar.FirmaAdi.Contains(firmaAdi)
+                       select new { Firma=sonuclar,Kisi=k };
+
+                foreach (var firma in list)
                 {
+                    
+
                     firmalar.Add(new
                     {
-                        value = firma.FirmaID,
-                        label = firma.FirmaAdi,
-                        Telefon1 = firma.YetkiliTelefon,
-                        Telefon2 = firma.YetkiliCepTelefon,
-                        Email = firma.Email,
-                        Adres = firma.FirmaAdres,
+                        value = firma.Firma.FirmaID,
+                        label = firma.Kisi.Ad + " " + firma.Kisi.Soyad + " " + firma.Firma.FirmaAdi,
+                        Adres = firma.Firma.FirmaAdres,
                         Kayitlimi = true,
-                        Adi = firma.YetkiliAdi,
-                        Soyadi = firma.YetkiliSoyAdi,
-                        FirmaSahibiOzellik = "",
-                        Sehir = firma.firmaSehir,
-                        ilce = firma.firmailce,
-                        WebAdresi = "",
-                        KonumId = firma.RefKonumID,
-                        SektorId = firma.firmaSektorID,
-                        DomainKategoriId = firma.firmaDomainKategoriID
+                        Sehir = firma.Firma.firmaSehir,
+                        ilce = firma.Firma.firmailce,
+                        KonumId = firma.Firma.RefKonumID,
+                        SektorId = firma.Firma.firmaSektorID,
+                        DomainKategoriId = firma.Firma.firmaDomainKategoriID,
+                        Telefon1 = firma.Kisi.Tel,
+                        Telefon2 = firma.Kisi.Tel2,
+                        Email = firma.Kisi.Email,
+                        WebAdresi = firma.Firma.FirmaAdres,
+                        Adi = firma.Kisi.Ad,
+                        Soyadi = firma.Kisi.Soyad,
+                        FirmaSahibiOzellik = firma.Kisi.Departman
                     });
                 }
             }
@@ -554,8 +562,8 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
 
             if (sadeceArayanlar)
             {
-                var diziArayanlar = Db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi)
-            || a.arayanTelefonNo.Contains(firmaAdi) || a.arayanMailAdresi.Contains(firmaAdi));
+                var diziArayanlar = Db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanKayitliRefFirmaID == null && (a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi)
+            || a.arayanTelefonNo.Contains(firmaAdi) || a.arayanMailAdresi.Contains(firmaAdi)));
 
                 List<int> listTemp = new List<int>();
 
@@ -573,7 +581,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                         firmalar.Add(new
                         {
                             value = arayan.arayanID,
-                            label = arayan.arayanFirmaAdi,
+                            label = arayan.arayanFirmaAdi +" Kayıtlı Değil",
                             Telefon1 = arayan.arayanTelefonNo,
                             Telefon2 = arayan.arayanCepTelNo,
                             Email = arayan.arayanMailAdresi,
@@ -604,14 +612,15 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
         
 
             var listDomain = (from d in Db.Domains
+                              let kisi = d.Firma.FirmaKisis.FirstOrDefault()
                               where (firmaId.HasValue ? d.RefDomainFirmaID == firmaId.Value : true) 
                               && (string.IsNullOrEmpty(domainAdi) ? true: d.DomainAdi.Contains(domainAdi))
                               select new
                               {
                                   value = d.DomainID,label=d.DomainAdi,firmaId=d.Firma.FirmaID,firmaAdi=d.Firma.FirmaAdi,
-                                  Telefon1 = d.Firma.YetkiliTelefon,
-                                  Telefon2 = d.Firma.YetkiliCepTelefon,
-                                  Email = d.Firma.Email,
+                                  Telefon1 = kisi != null ? kisi.Tel : "",
+                                  Telefon2 = kisi != null ? kisi.Tel2 : "",
+                                  Email = kisi != null ? kisi.Email : "",
                                   Adres = d.Firma.FirmaAdres
                               }).ToList();
 

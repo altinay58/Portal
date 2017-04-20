@@ -37,11 +37,11 @@ namespace Portal.Models
         public Nullable<int> EtiketSatisFirsatDurumuId { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
-        public virtual Firma Firma { get; set; }
         public virtual FirmaKisi FirmaKisi { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IsPlani> IsPlanis { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

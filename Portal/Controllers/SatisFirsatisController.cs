@@ -51,10 +51,11 @@ namespace Portal.Controllers
                         let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderBy(x => x.Id).FirstOrDefault()
                         //let fiyat=sonFiyat
                         let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
+                        let kisi = s.Firma.FirmaKisis.FirstOrDefault()
                         select new
                         {
                             Id=s.Id,
-                            Musteri=s.Firma.YetkiliAdi +" "+s.Firma.YetkiliSoyAdi,
+                            Musteri= kisi.Ad + " "+ kisi.Soyad,
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId=s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId=s.EtiketSatisFirsatDurumuId,
@@ -97,10 +98,11 @@ namespace Portal.Controllers
                         let tarih= SqlFunctions.DateAdd("day",(double)s.GecerlilikSuresi,s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
                         let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
                         let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderBy(x => x.Id).FirstOrDefault()
+                        let kisi = s.Firma.FirmaKisis.FirstOrDefault()
                         select new
                         {
                             Id = s.Id,
-                            Musteri = s.Firma.YetkiliAdi + " " + s.Firma.YetkiliSoyAdi,
+                            Musteri = kisi.Ad + " " + kisi.Soyad,
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,

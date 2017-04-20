@@ -51,7 +51,6 @@ namespace Portal.Models
         public string Note { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
-        public virtual Firma Firma { get; set; }
         public virtual Hosting Hosting { get; set; }
         public virtual KayitliFirma KayitliFirma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -67,5 +66,6 @@ namespace Portal.Models
         public virtual DomainKayitliFirma DomainKayitliFirma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DomainNot> DomainNots { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

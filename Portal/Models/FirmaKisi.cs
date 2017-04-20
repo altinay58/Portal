@@ -28,11 +28,12 @@ namespace Portal.Models
         public string Tel { get; set; }
         public string Email { get; set; }
         public int FirmaId { get; set; }
+        public string Tel2 { get; set; }
     
-        public virtual Firma Firma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

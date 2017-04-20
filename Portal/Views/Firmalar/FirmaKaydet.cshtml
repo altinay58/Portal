@@ -1,4 +1,5 @@
 ﻿@model Portal.Models.Firma
+@using Portal.Models;
 @{
     ViewBag.Title = "FirmaKaydet";
 }
@@ -47,46 +48,6 @@
             </label>
             <div class="col-md-4">
                 @Html.TextBoxFor(model => model.FirmaAdres, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">
-                Yetkili Adı
-            </label>
-            <div class="col-md-4">
-                @Html.TextBoxFor(model => model.YetkiliAdi, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">
-                Yetkili Soyadı
-            </label>
-            <div class="col-md-4">
-                @Html.TextBoxFor(model => model.YetkiliSoyAdi, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">
-                Yetkili Telefon
-            </label>
-            <div class="col-md-4">
-                @Html.TextBoxFor(model => model.YetkiliTelefon, new { @class = "form-control phone" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">
-                Yetkili Cep Telefon
-            </label>
-            <div class="col-md-4">
-                @Html.TextBoxFor(model => model.YetkiliCepTelefon, new { @class = "form-control phone" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">
-                Email
-            </label>
-            <div class="col-md-4">
-                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">

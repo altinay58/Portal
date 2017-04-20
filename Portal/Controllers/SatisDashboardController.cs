@@ -28,13 +28,14 @@ namespace Portal.Controllers
                          let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
                          let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
                          let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderBy(x => x.Id).FirstOrDefault()
+                         let kisi = s.Firma.FirmaKisis.FirstOrDefault()
                          orderby s.Id descending
                          select new
                          {
                              Id = s.Id,
                              Bolge = s.Firma.Konum.Konum1,
                              KonumId = s.Firma.RefKonumID,
-                             Musteri = s.Firma.YetkiliAdi + " " + s.Firma.YetkiliSoyAdi,
+                             Musteri = kisi.Ad + " " + kisi.Soyad,
                              DomainKategori = s.DomainKategori.DomainKategoriAdi,
                              EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                              EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
@@ -44,7 +45,7 @@ namespace Portal.Controllers
                              SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,                          
                              DosyaYolu = s.DosyaYolu,
                              FirmaAdi = s.Firma.FirmaAdi,
-                             Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi, Cep = s.Firma.YetkiliCepTelefon, Tel = s.Firma.YetkiliTelefon },
+                             Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi, Cep = kisi.Tel, Tel = kisi.Tel2},
                              IlkTeklif = (ilkKayit != null ? ilkKayit.Fiyat : 0),
                              EtiketSatisAsama = (
                                                 from e in Db.Etikets

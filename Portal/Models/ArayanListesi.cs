@@ -27,5 +27,7 @@ namespace Portal.Models
         public string Bolge { get; set; }
         public string StrTarih { get; set; }
         public string Konu { get; set; }
+        public Nullable<int> KayitliFirmaId { get; set; }
+        public Nullable<bool> KayitliMi { get; set; }
     }
 }

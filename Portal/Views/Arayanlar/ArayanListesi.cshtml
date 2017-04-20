@@ -65,11 +65,10 @@
                     <td>  </td>
                     <td>  </td>
                 </tr>
-                    
                     <tr ng-repeat="x in arayanlar">
                         <td>{{x.Id}} </td>
-                        <td> {{x.AdSoyad}} </td>
-                        <td> {{x.Firma}} </td>
+                        <td>{{x.AdSoyad}} </td>
+                        <td> <div ng-bind-html="FirmaKayitliMi(x) | to_trusted"></div> </td>
                         <td><a href="tel:{{x.Tel}}">{{x.Tel}} </a> </td>
                         <td><a ng-href="tel:{{x.CepTel}}">{{x.CepTel}} </a> </td>
                         <td><div ng-bind-html="x.Konu | to_trusted "></div></td>
@@ -80,7 +79,11 @@
                         <td> <span><a href="/Arayanlar/ArayanDuzenle/{{x.Id}}">Düzenle</a></span> </td>
                     </tr>
                 
-               
+                                @*ng-bind-html text yazıları html koduna dönüştürmek için kullanılır. MvcHtmlString.Create kodu gibi çalışır.
+                            html yazdıracağımız if fonksiyonu bu şekilde çalışır <div ng-bind-html="kontrolKayitDurumu(x) | to_trusted"></div>
+                                    normal düz yazı olarak if kontrolü yapmak istersek {{kontrolTicket(x.Ticket)}} şeklinde kullanırız
+
+                                *@
                
 
             </tbody>

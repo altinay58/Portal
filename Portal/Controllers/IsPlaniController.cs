@@ -31,28 +31,29 @@ namespace Portal.Controllers
         {
             Db.Configuration.ProxyCreationEnabled = false;
             var query = (from s in Db.SatisFirsatis.Include(s => s.Firma).Include(s => s.Firma.Konum)
-                     
-              
-                        let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
+
+                         
+                         let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi) LET LINQ DA DEĞİŞKEN TANIMLAMAK İÇİN KULLANILIR
                         let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderByDescending(x => x.Id).FirstOrDefault()
                         let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == s.Id).OrderBy(x => x.Id).FirstOrDefault()
-                        orderby s.Id descending
+                         let kisi = s.Firma.FirmaKisis.FirstOrDefault()
+                         orderby s.Id descending
                         select new
                         {
                             Id = s.Id,
                             Bolge = s.Firma.Konum.Konum1,
                             KonumId=s.Firma.RefKonumID,
-                            Musteri = s.Firma.YetkiliAdi + " " + s.Firma.YetkiliSoyAdi,
+                            Musteri = kisi.Ad + " " + kisi.Soyad,
                             DomainKategori = s.DomainKategori.DomainKategoriAdi,
                             EtiketSatisAsamaId = s.EtiketSatisAsamaId,
                             EtiketSatisFirsatDurumuId = s.EtiketSatisFirsatDurumuId,
                             SonTeklif = (sonKayit != null ? sonKayit.Fiyat : 0),
-                            KalanSure = DbFunctions.DiffDays(DateTime.Today, tarih),
+                            KalanSure = DbFunctions.DiffDays(DateTime.Today, tarih), // İKİ TARİH ARASINDAKİ FARKI BULUR
                             SatisFirsatiFiyatRevizyons = s.SatisFirsatiFiyatRevizyons,
                             FirmaKisiler = s.Firma.FirmaKisis,
                             DosyaYolu = s.DosyaYolu,
                             FirmaAdi = s.Firma.FirmaAdi,
-                            Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi, Cep = s.Firma.YetkiliCepTelefon, Tel = s.Firma.YetkiliTelefon },
+                            Firma = new { Id = s.Firma.FirmaID, Ad = s.Firma.FirmaAdi, Cep = kisi.Tel, Tel = kisi.Tel2 },
                             Teklif = (ilkKayit != null ? ilkKayit.Fiyat :0),
                             EtiketSatisAsama = (
                                                from e in Db.Etikets
@@ -73,6 +74,7 @@ namespace Portal.Controllers
             Db.Configuration.ProxyCreationEnabled = true;
             return Json(data.ToList(), JsonRequestBehavior.AllowGet);
         }
+
         [JsonNetFilter]
         public JsonResult BorcluFirmalarAra(int? konumId,int? page,string firmaAdi,string telNo,string cepTelNo,string yetkili)
         {
@@ -99,10 +101,11 @@ namespace Portal.Controllers
                          });
 
             var data = (from s in query
+                        let kisi = s.firma.FirmaKisis.FirstOrDefault()
                         where
-                        (string.IsNullOrEmpty(telNo) ? true : s.firma.YetkiliCepTelefon.Contains(telNo)) &&
-                        (string.IsNullOrEmpty(cepTelNo) ? true : s.firma.YetkiliTelefon.Contains(cepTelNo)) &&
-                        (string.IsNullOrEmpty(yetkili) ? true : s.firma.YetkiliAdi.Contains(yetkili))
+                        (string.IsNullOrEmpty(telNo) ? true : kisi.Tel.Contains(telNo)) &&
+                        (string.IsNullOrEmpty(cepTelNo) ? true : kisi.Tel2.Contains(cepTelNo)) &&
+                        (string.IsNullOrEmpty(yetkili) ? true : kisi.Ad.Contains(yetkili))
                         select s)
                 .OrderByDescending(x => x.firma.CariHarekets.Sum(c => c.ChSatisFiyati) - x.firma.CariHarekets.Sum(c => c.ChAlinanOdeme));
              
@@ -139,11 +142,12 @@ namespace Portal.Controllers
                       borcu = x.CariHarekets.Sum(q => q.ChSatisFiyati) - x.CariHarekets.Sum(q => q.ChAlinanOdeme)
                   });
             var data = (from s in query
+                        let kisi = s.firma.FirmaKisis.FirstOrDefault()
                         where                       
-                        (string.IsNullOrEmpty(firmaAdi) ? true : s.firma.FirmaAdi.Contains(firmaAdi)) &&
-                        (string.IsNullOrEmpty(telNo) ? true : s.firma.YetkiliCepTelefon.Contains(telNo)) &&
-                        (string.IsNullOrEmpty(cepTelNo) ? true : s.firma.YetkiliTelefon.Contains(cepTelNo)) &&
-                        (string.IsNullOrEmpty(yetkili) ? true : s.firma.YetkiliAdi.Contains(yetkili))
+                        (string.IsNullOrEmpty(firmaAdi) ? true : kisi.Firma.FirmaAdi.Contains(firmaAdi)) &&
+                        (string.IsNullOrEmpty(telNo) ? true : kisi.Tel.Contains(telNo)) &&
+                        (string.IsNullOrEmpty(cepTelNo) ? true : kisi.Tel2.Contains(cepTelNo)) &&
+                        (string.IsNullOrEmpty(yetkili) ? true : kisi.Ad.Contains(yetkili))
                         select s)
              .OrderByDescending(x => x.firma.FirmaID);
             var qTotal2 = data;

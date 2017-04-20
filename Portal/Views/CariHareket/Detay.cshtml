@@ -5,12 +5,196 @@
 @using Portal.Controllers;
 
 @{
-   
+
     int donemGiris = 0; int donemCikis = 0;
     var Db = Portal.Database.DbHelper.GetDb;
     DateTime buYil = new DateTime(DateTime.Now.Year, 1, 1);
 
 }
+<style>
+    .feeds li .col2 {
+        width: 100px !important;
+        margin-left: -100px !important;
+    }
+</style>
+<div class="row">
+    <div class="col-md-6">
+        <div>
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-social-dribbble font-red"></i>
+                        <span class="caption-subject font-red bold uppercase">Görüşmeler ve Aramalar</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <ul class="feeds">
+                        @foreach (Arayanlar aram in Partial.AramaveGorusmeler(Model.FirmaID))
+                            {
+                            <li>
+                                <div class="col1">
+                                    <div class="cont">
+                                        <div class="cont-col1">
+                                            <div class="label label-sm label-success">
+                                                <i class="fa fa-phone"></i>
+                                            </div>
+                                        </div>
+                                        <div class="cont-col2">
+                                            <div class="desc">
+                                                @aram.arayanKonu
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col2">
+                                    <div class="date"> @aram.arayanKayitTarih.Value.ToShortDateString() </div>
+                                </div>
+                            </li>
+                            }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div>
+            <div class="portlet red-sunglo box">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-cogs"></i>Firma Bilgileri
+                    </div>
+                    <div class="actions">
+                        <a href="javascript:;" class="btn btn-default btn-sm">
+                            <i class="fa fa-pencil"></i> Düzenle
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Firma #: </div>
+                        <div class="col-md-7 value">
+                            @Model.FirmaAdi
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Adres : </div>
+                        <div class="col-md-7 value"> @Model.FirmaAdres </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Vergi Dairesi: </div>
+                        <div class="col-md-7 value">
+                            @Model.FirmaVergiDairesi
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name"> Vergi Numarası: </div>
+                        <div class="col-md-7 value"> @Model.FirmaVergiNumarasi </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="portlet blue-hoki box">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-cogs"></i>Firma Yetkili Kişiler
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th> # </th>
+                                <th> İsim </th>
+                                <th> Soyisim </th>
+                                <th> Telefon </th>
+                                <th> Cep Telefonu </th>
+                                <th> Email </th>
+                                <th> Email </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (FirmaKisi kisi in Partial.FirmaKisileri(Model.FirmaID))
+                            {
+                                <tr>
+                                    <td> @kisi.Id </td>
+                                    <td> @kisi.Ad </td>
+                                    <td> @kisi.Soyad </td>
+                                    <td> @kisi.Tel </td>
+                                    <td> @kisi.Tel2 </td>
+                                    <td> @kisi.Email </td> 
+                                    <td> <a href="@Url.Action("FirmaKisiSil","Firmalar" , new { id = kisi.Id })" class="btn btn-danger">Sil</a> </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                  
+
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-comments"></i>Kişi Ekle
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="expand" data-original-title="" title=""> </a>
+                    </div>
+                </div>
+                <div class="portlet-body" style="display: none;">
+                    <div class="">
+                        @using (@Html.BeginForm("FirmaKisiEkle", "Firmalar", FormMethod.Post, new { id = "KisiEklemeFormu" }))
+                        {
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="Ad" class="form-control" placeholder="Ad" />
+                                        <input type="hidden" name="FirmaId" value="@Model.FirmaID"  />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="Soyad" class="form-control" placeholder="Soyad" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="Departman" class="form-control" placeholder="Departman" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="Tel" class="form-control" placeholder="Telefon" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="Tel2" class="form-control" placeholder="Telefon" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="Email" class="form-control" placeholder="Email" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-4">
+                                        <button type="submit" class="btn green">Kaydet</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <style type="text/css">
     table td {
         vertical-align: top;
@@ -22,7 +206,7 @@
             @if (Model.Araci == true)
             {
                 <h3>@Model.FirmaAdi Aracı Tablosu</h3>
-                <div  class="table-scrollable">
+                <div class="table-scrollable">
                     <table class="table table-striped table-bordered table-hover">
                         <thead class="flip-content">
                             <tr>
@@ -75,62 +259,62 @@
                                                           select a;
                                 foreach (Sati cariVerisi in satis)
                                 {
-                                    <tr>
-                                        <td>
-                                            @cariVerisi.SatisID
-                                        </td>
-                                        <td>
-                                            @String.Format("{0:dd/MM/yyyy}", cariVerisi.satisTarihi)
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
-                                                @cariVerisi.Firma.FirmaAdi
-                                            </a>
-                                        </td>
-                                        <td>
-                                            @cariVerisi.musteriSatis
-                                        </td>
-                                        <td>
-                                            @{
+                            <tr>
+                                <td>
+                                    @cariVerisi.SatisID
+                                </td>
+                                <td>
+                                    @String.Format("{0:dd/MM/yyyy}", cariVerisi.satisTarihi)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
+                                        @cariVerisi.Firma.FirmaAdi
+                                    </a>
+                                </td>
+                                <td>
+                                    @cariVerisi.musteriSatis
+                                </td>
+                                <td>
+                                    @{
                                                 int odemetoplami = (from m in Db.Satis
                                                                     where m.refSatisID == cariVerisi.SatisID
                                                                     select m.musteridenAlinanOdeme).Sum() ?? 0;
 
-                                                @((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami)
-                                            }
-                                        </td>
-                                        <td>@(cariVerisi.musteriSatis - ((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami))</td>
-                                        <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
-                                                @cariVerisi.Firma1.FirmaAdi
-                                            </a>
-                                        </td>
-                                        <td>
-                                            @cariVerisi.araciHakedis
-                                        </td>
-                                        <td>@(((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami) / 5)</td>
-                                        <td>
-                                            @{
+                                            @((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami)
+                                    }
+                                </td>
+                                <td>@(cariVerisi.musteriSatis - ((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami))</td>
+                                <td>
+                                    <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
+                                        @cariVerisi.Firma1.FirmaAdi
+                                    </a>
+                                </td>
+                                <td>
+                                    @cariVerisi.araciHakedis
+                                </td>
+                                <td>@(((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami) / 5)</td>
+                                <td>
+                                    @{
                                                 int hakedistoplami = (from m in Db.Satis
                                                                       where m.refSatisID == cariVerisi.SatisID
                                                                       select m.araciyaOdenen).Sum() ?? 0;
 
-                                                @((cariVerisi.araciyaOdenen ?? 0) + hakedistoplami)
-                                            }
-                                        </td>
-                                        <td>
-                                            @((((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami) / 5) - ((cariVerisi.araciyaOdenen ?? 0) + hakedistoplami))
-                                        </td>
-                                        <td align="right">
-                                            @cariVerisi.satisNot
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
-                                                <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
-                                            </a>
+                                            @((cariVerisi.araciyaOdenen ?? 0) + hakedistoplami)
+                                    }
+                                </td>
+                                <td>
+                                    @((((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami) / 5) - ((cariVerisi.araciyaOdenen ?? 0) + hakedistoplami))
+                                </td>
+                                <td align="right">
+                                    @cariVerisi.satisNot
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
+                                        <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
+                                    </a>
 
-                                        </td>
-                                    </tr>
+                                </td>
+                            </tr>
 
                                                 }
                             }
@@ -156,7 +340,7 @@
                                                                 where m.araciFirmaID == Model.FirmaID
                                                                 select m.musteridenAlinanOdeme).Sum() ?? 0;
 
-                                            @(alinanTOPLAM)
+                                        @(alinanTOPLAM)
                                         }
                                     </th>
                                     <th>@(@satis.Sum(a => a.musteriSatis) - alinanTOPLAM)</th>
@@ -175,7 +359,7 @@
                                                                  where m.araciFirmaID == Model.FirmaID
                                                                  select m.araciyaOdenen).Sum() ?? 0;
 
-                                            @(hakedisTOPLAM)
+                                        @(hakedisTOPLAM)
                                         }
                                     </th>
                                     <th align="right">
@@ -189,31 +373,11 @@
                         </tfoot>
                     </table>
                 </div>
-              
-                                        }
+
+                                            }
             @if (Model.Musteri == true)
             {
                 <h3>@Model.FirmaAdi Müşteri Tablosu </h3>
-                <div class="table-scrollable">
-                    <table class="table table-striped table-bordered table-hover">
-                        <thead class="flip-content">
-                            <tr>
-                                <th>Ad-SoyAd</th>
-                                <th>Email</th>
-                                <th>Cep-Tel</th>
-                                <th>Tel</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>@Model.YetkiliAdi @Model.YetkiliSoyAdi</td>
-                                <td>@Model.Email</td>
-                                <td>@Model.YetkiliCepTelefon</td>
-                                <td>@Model.YetkiliTelefon</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
                 <div class="table-scrollable">
                     <table class="table table-striped table-bordered table-hover">
                         <thead class="flip-content">
@@ -258,57 +422,57 @@
                                                           select a;
                                 foreach (Sati cariVerisi in satis)
                                 {
-                                    <tr>
-                                        <td>
-                                            @cariVerisi.SatisID
-                                        </td>
-                                        <td>
-                                            @String.Format("{0:dd/MM/yyyy}", cariVerisi.satisTarihi)
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
-                                                @cariVerisi.Firma.FirmaAdi
-                                            </a>
-                                        </td>
-                                        <td>
-                                            @cariVerisi.musteriSatis
-                                        </td>
-                                        <td>
-                                            @{
+                            <tr>
+                                <td>
+                                    @cariVerisi.SatisID
+                                </td>
+                                <td>
+                                    @String.Format("{0:dd/MM/yyyy}", cariVerisi.satisTarihi)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
+                                        @cariVerisi.Firma.FirmaAdi
+                                    </a>
+                                </td>
+                                <td>
+                                    @cariVerisi.musteriSatis
+                                </td>
+                                <td>
+                                    @{
                                                 int odemetoplami = (from m in Db.Satis
                                                                     where m.refSatisID == cariVerisi.SatisID
                                                                     select m.musteridenAlinanOdeme).Sum() ?? 0;
 
-                                                @((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami)
-                                            }
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
-                                                @cariVerisi.Firma1.FirmaAdi
-                                            </a>
-                                        </td>
-                                        <td>
-                                            @cariVerisi.araciHakedis
-                                        </td>
-                                        <td>
-                                            @{
+                                            @((cariVerisi.musteridenAlinanOdeme ?? 0) + odemetoplami)
+                                    }
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
+                                        @cariVerisi.Firma1.FirmaAdi
+                                    </a>
+                                </td>
+                                <td>
+                                    @cariVerisi.araciHakedis
+                                </td>
+                                <td>
+                                    @{
                                                 int hakedistoplami = (from m in Db.Satis
                                                                       where m.refSatisID == cariVerisi.SatisID
                                                                       select m.araciyaOdenen).Sum() ?? 0;
 
-                                                @((cariVerisi.araciyaOdenen ?? 0) + hakedistoplami)
-                                            }
-                                        </td>
-                                        <td align="right">
-                                            @cariVerisi.satisNot
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
-                                                <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
-                                            </a>
+                                            @((cariVerisi.araciyaOdenen ?? 0) + hakedistoplami)
+                                    }
+                                </td>
+                                <td align="right">
+                                    @cariVerisi.satisNot
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("SatisOdemeEkle", "CariHareket", new { satisID = cariVerisi.SatisID })">
+                                        <img src="/Content/images/add.png" hspace="2" border="0" alt="İşlem Ekle">
+                                    </a>
 
-                                        </td>
-                                    </tr>
+                                </td>
+                            </tr>
 
                                                 }
                             }
@@ -316,246 +480,246 @@
 
                     </table>
                 </div>
-                    }
+                                        }
 
-                    @if (Model.Kasa == true && User.IsInRole("Yonetim"))
-                    {
-                           <div class="table-scrollable">
-                               <table class="table table-striped table-bordered table-hover">
-                                   <tr>
-                                       <td width="400" valign="top">
-                                           <h2>@DateTime.Now.Year</h2>
-                                           <table class="table  table-striped table-bordered">
-                                               <tr>
-                                                   <th>
-                                                       Dönem
-                                                   </th>
-                                                   <th>
-                                                       Giriş
-                                                   </th>
-                                                   <th>
-                                                       Çıkış
-                                                   </th>
-                                                   <th>
-                                                       Kar / Zarar
-                                                   </th>
-                                               </tr>
+            @if (Model.Kasa == true && User.IsInRole("Yonetim"))
+            {
+                <div class="table-scrollable">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tr>
+                            <td width="400" valign="top">
+                                <h2>@DateTime.Now.Year</h2>
+                                <table class="table  table-striped table-bordered">
+                                    <tr>
+                                        <th>
+                                            Dönem
+                                        </th>
+                                        <th>
+                                            Giriş
+                                        </th>
+                                        <th>
+                                            Çıkış
+                                        </th>
+                                        <th>
+                                            Kar / Zarar
+                                        </th>
+                                    </tr>
 
-                                               @for (int i = 0; i <= 11; i++)
-                                               {
-                                                   Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
-                                                   Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-                                                   int x = i + 1;
-                                                   int buayalinan = (from q in Db.CariHarekets
-                                                                     where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year
-                                                                     orderby q.ChTarihi descending
-                                                                     select q.ChAlinanOdeme).Sum() ?? 0;
-
-
-
-                                                   int buaysatis = (from q in Db.CariHarekets
-                                                                    where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year
-                                                                    orderby q.ChTarihi descending
-                                                                    select q.ChSatisFiyati).Sum() ?? 0;
-
-                                                   donemCikis = buayalinan + donemCikis;
-                                                   donemGiris = buaysatis + donemGiris;
-
-                                                   string karzarar = "kar";
-
-                                                   if (buayalinan > buaysatis)
-                                                   {
-                                                       karzarar = "zarar";
-                                                   }
-
-                                                   <tr>
-                                                       <td>
-                                                           @CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i]
-                                                       </td>
-                                                       <td align="right">
-                                                           @(buaysatis)
-                                                       </td>
-                                                       <td align="right">
-                                                           @(buayalinan)
-                                                       </td>
-                                                       <td align="right" class="@(karzarar)">
-                                                           @(buaysatis - buayalinan)
-                                                       </td>
-                                                   </tr>
-                                               }
-                                               <tfoot>
-                                                   <tr>
-
-                                                       <td>
-                                                           Toplam
-                                                       </td>
-                                                       <td align="right">
-                                                           @donemGiris
-                                                       </td>
-                                                       <td align="right">
-                                                           @donemCikis
-                                                       </td>@{
-                                                           string karzarar2 = "kar";
-
-                                                           if (donemCikis > donemGiris)
-                                                           {
-                                                               karzarar2 = "zarar";
-                                                           }
-                                                       }
-                                                       <td align="right" class="@(karzarar2)">
-                                                           @(donemGiris - donemCikis)
-                                                       </td>
-                                                   </tr>
-                                               </tfoot>
-                                           </table>
-                                           <h2>@(DateTime.Now.Year - 1)</h2>
-                                           <table class="table  table-striped table-bordered">
-                                               <tr>
-                                                   <th>
-                                                       Dönem
-                                                   </th>
-                                                   <th>
-                                                       Giriş
-                                                   </th>
-                                                   <th>
-                                                       Çıkış
-                                                   </th>
-                                                   <th>
-                                                       Kar / Zarar
-                                                   </th>
-                                               </tr>
-                                               @{
-                                                   donemCikis = 0; donemGiris = 0;
-                                               }
-                                               @for (int i = 0; i <= 11; i++)
-                                               {
-                                                   Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
-                                                   Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-                                                   int x = i + 1;
-                                                   int buayalinan = (from q in Db.CariHarekets
-                                                                     where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year - 1
-                                                                     orderby q.ChTarihi descending
-                                                                     select q.ChAlinanOdeme).Sum() ?? 0;
+                                    @for (int i = 0; i <= 11; i++)
+                                    {
+                                        Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
+                                        Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+                                        int x = i + 1;
+                                        int buayalinan = (from q in Db.CariHarekets
+                                                          where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year
+                                                          orderby q.ChTarihi descending
+                                                          select q.ChAlinanOdeme).Sum() ?? 0;
 
 
 
-                                                   int buaysatis = (from q in Db.CariHarekets
-                                                                    where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year - 1
-                                                                    orderby q.ChTarihi descending
-                                                                    select q.ChSatisFiyati).Sum() ?? 0;
+                                        int buaysatis = (from q in Db.CariHarekets
+                                                         where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year
+                                                         orderby q.ChTarihi descending
+                                                         select q.ChSatisFiyati).Sum() ?? 0;
 
-                                                   donemCikis = buayalinan + donemCikis;
-                                                   donemGiris = buaysatis + donemGiris;
+                                        donemCikis = buayalinan + donemCikis;
+                                        donemGiris = buaysatis + donemGiris;
 
-                                                   string karzarar = "kar";
+                                        string karzarar = "kar";
 
-                                                   if (buayalinan > buaysatis)
-                                                   {
-                                                       karzarar = "zarar";
-                                                   }
+                                        if (buayalinan > buaysatis)
+                                        {
+                                            karzarar = "zarar";
+                                        }
 
-                                                   <tr>
-                                                       <td>
-                                                           @CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i]
-                                                       </td>
-                                                       <td align="right">
-                                                           @(buaysatis)
-                                                       </td>
-                                                       <td align="right">
-                                                           @(buayalinan)
-                                                       </td>
-                                                       <td align="right" class="@(karzarar)">
-                                                           @(buaysatis - buayalinan)
-                                                       </td>
-                                                   </tr>
-                                               }
-                                               <tfoot>
-                                                   <tr>
+                                        <tr>
+                                            <td>
+                                                @CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i]
+                                            </td>
+                                            <td align="right">
+                                                @(buaysatis)
+                                            </td>
+                                            <td align="right">
+                                                @(buayalinan)
+                                            </td>
+                                            <td align="right" class="@(karzarar)">
+                                                @(buaysatis - buayalinan)
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tfoot>
+                                        <tr>
 
-                                                       <td>
-                                                           Toplam
-                                                       </td>
-                                                       <td align="right">
-                                                           @donemGiris
-                                                       </td>
-                                                       <td align="right">
-                                                           @donemCikis
-                                                       </td>@{
-                                                           karzarar2 = "kar";
+                                            <td>
+                                                Toplam
+                                            </td>
+                                            <td align="right">
+                                                @donemGiris
+                                            </td>
+                                            <td align="right">
+                                                @donemCikis
+                                            </td>@{
+                                                string karzarar2 = "kar";
 
-                                                           if (donemCikis > donemGiris)
-                                                           {
-                                                               karzarar2 = "zarar";
-                                                           }
-                                                       }
-                                                       <td align="right" class="@(karzarar2)">
-                                                           @(donemGiris - donemCikis)
-                                                       </td>
-                                                   </tr>
-                                               </tfoot>
-                                           </table>
-                                       </td>
-                                       <td width="400">
+                                                if (donemCikis > donemGiris)
+                                                {
+                                                    karzarar2 = "zarar";
+                                                }
+                                            }
+                                            <td align="right" class="@(karzarar2)">
+                                                @(donemGiris - donemCikis)
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <h2>@(DateTime.Now.Year - 1)</h2>
+                                <table class="table  table-striped table-bordered">
+                                    <tr>
+                                        <th>
+                                            Dönem
+                                        </th>
+                                        <th>
+                                            Giriş
+                                        </th>
+                                        <th>
+                                            Çıkış
+                                        </th>
+                                        <th>
+                                            Kar / Zarar
+                                        </th>
+                                    </tr>
+                                    @{
+                                        donemCikis = 0; donemGiris = 0;
+                                    }
+                                    @for (int i = 0; i <= 11; i++)
+                                    {
+                                        Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
+                                        Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+                                        int x = i + 1;
+                                        int buayalinan = (from q in Db.CariHarekets
+                                                          where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year - 1
+                                                          orderby q.ChTarihi descending
+                                                          select q.ChAlinanOdeme).Sum() ?? 0;
 
-                                           <table class="table  table-striped table-bordered">
-                                               <thead>
-                                                   <tr>
-                                                       <th>
-                                                           No
-                                                       </th>
-                                                       <th>
-                                                           Tarih
-                                                       </th>
-                                                       <th class="left">
-                                                           Giriş
-                                                       </th>
-                                                       <th class="right">
-                                                           Çıkış
-                                                       </th>
-                                                       <th class="left">
-                                                           Not
-                                                       </th>
-                                                   </tr>
-                                               </thead>
-                                               <tbody>
-                                                   @{
-                                                       IEnumerable<CariHareket> carihareketler = from q in Db.CariHarekets
-                                                                                                 where q.RefFirmaID == Model.FirmaID
-                                                                                                 orderby q.ChTarihi descending
-                                                                                                 select q;
 
-                                                       foreach (CariHareket cariVerisi in carihareketler)
-                                                       {
-                                                           <tr>
-                                                               <td>@cariVerisi.ChID</td>
-                                                               <td>
-                                                                   @String.Format("{0:dd/MM/yyyy}", cariVerisi.ChTarihi)
-                                                               </td>
-                                                               <td>
-                                                                   @cariVerisi.ChSatisFiyati
-                                                               </td>
-                                                               <td>
-                                                                   @cariVerisi.ChAlinanOdeme
-                                                               </td>
-                                                               <td align="left">
-                                                                   @cariVerisi.ChNot
-                                                               </td>
-                                                           </tr>
-                                                       }
-                                                   }
-                                               </tbody>
 
-                                           </table>
-                                       </td>
-                                   </tr>
-                               </table>
-                           </div>       
-                           
-                    }
+                                        int buaysatis = (from q in Db.CariHarekets
+                                                         where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTarihi.Value.Year == DateTime.Now.Year - 1
+                                                         orderby q.ChTarihi descending
+                                                         select q.ChSatisFiyati).Sum() ?? 0;
 
-                @if (Model.Personel == true && User.IsInRole("Yonetim"))
-                {
-                    <h2>@Model.FirmaAdi Personel Tablosu </h2>
+                                        donemCikis = buayalinan + donemCikis;
+                                        donemGiris = buaysatis + donemGiris;
+
+                                        string karzarar = "kar";
+
+                                        if (buayalinan > buaysatis)
+                                        {
+                                            karzarar = "zarar";
+                                        }
+
+                                        <tr>
+                                            <td>
+                                                @CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i]
+                                            </td>
+                                            <td align="right">
+                                                @(buaysatis)
+                                            </td>
+                                            <td align="right">
+                                                @(buayalinan)
+                                            </td>
+                                            <td align="right" class="@(karzarar)">
+                                                @(buaysatis - buayalinan)
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tfoot>
+                                        <tr>
+
+                                            <td>
+                                                Toplam
+                                            </td>
+                                            <td align="right">
+                                                @donemGiris
+                                            </td>
+                                            <td align="right">
+                                                @donemCikis
+                                            </td>@{
+                                                karzarar2 = "kar";
+
+                                                if (donemCikis > donemGiris)
+                                                {
+                                                    karzarar2 = "zarar";
+                                                }
+                                            }
+                                            <td align="right" class="@(karzarar2)">
+                                                @(donemGiris - donemCikis)
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </td>
+                            <td width="400">
+
+                                <table class="table  table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                No
+                                            </th>
+                                            <th>
+                                                Tarih
+                                            </th>
+                                            <th class="left">
+                                                Giriş
+                                            </th>
+                                            <th class="right">
+                                                Çıkış
+                                            </th>
+                                            <th class="left">
+                                                Not
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            IEnumerable<CariHareket> carihareketler = from q in Db.CariHarekets
+                                                                                      where q.RefFirmaID == Model.FirmaID
+                                                                                      orderby q.ChTarihi descending
+                                                                                      select q;
+
+                                            foreach (CariHareket cariVerisi in carihareketler)
+                                            {
+                                                <tr>
+                                                    <td>@cariVerisi.ChID</td>
+                                                    <td>
+                                                        @String.Format("{0:dd/MM/yyyy}", cariVerisi.ChTarihi)
+                                                    </td>
+                                                    <td>
+                                                        @cariVerisi.ChSatisFiyati
+                                                    </td>
+                                                    <td>
+                                                        @cariVerisi.ChAlinanOdeme
+                                                    </td>
+                                                    <td align="left">
+                                                        @cariVerisi.ChNot
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                                            }
+
+            @if (Model.Personel == true && User.IsInRole("Yonetim"))
+            {
+                <h2>@Model.FirmaAdi Personel Tablosu </h2>
                     <table class="table  table-striped table-bordered">
                         <tr>
                             <td width="400" valign="top">
@@ -575,8 +739,8 @@
                                         Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
                                         int x = i + 1;
                                         int buayalinan = (from q in Db.CariHarekets
-                                                            where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTuru == "maas" && q.ChTarihi.Value.Year == DateTime.Now.Year
-                                                            select q.ChSatisFiyati).Sum() ?? 0;
+                                                          where q.ChTarihi.Value.Month == x && q.RefFirmaID == Model.FirmaID && q.ChTuru == "maas" && q.ChTarihi.Value.Year == DateTime.Now.Year
+                                                          select q.ChSatisFiyati).Sum() ?? 0;
                                         donemCikis = buayalinan + donemCikis;
                                         <tr>
                                             <td>
@@ -622,9 +786,9 @@
                                     <tbody>
                                         @{
                                             IEnumerable<CariHareket> carihareketler = from q in Db.CariHarekets
-                                                                                        where q.RefFirmaID == Model.FirmaID && q.ChTuru == "maas"
-                                                                                        orderby q.ChTarihi descending
-                                                                                        select q;
+                                                                                      where q.RefFirmaID == Model.FirmaID && q.ChTuru == "maas"
+                                                                                      orderby q.ChTarihi descending
+                                                                                      select q;
 
                                             foreach (CariHareket cariVerisi in carihareketler)
                                             {
@@ -654,9 +818,9 @@
 
 
 
-                @if (Fonksiyonlar.GetirFirmaDomainleri(Model.FirmaID).Count() > 0)
-                {
-                    <h3>@Model.FirmaAdi Domain Listesi</h3>
+            @if (Fonksiyonlar.GetirFirmaDomainleri(Model.FirmaID).Count() > 0)
+            {
+                <h3>@Model.FirmaAdi Domain Listesi</h3>
                     <table class="table table-bordered table-striped">
                         <thead>
                             @Html.Partial("/Views/Shared/_DomainUstSatiri.cshtml")
@@ -678,9 +842,9 @@
                                 }
 
 
-                @if (Fonksiyonlar.GetirCariHareketler(Model.FirmaID).Count() >= 1 && (Model.Kasa == null || Model.Kasa == false) && User.IsInRole("Yonetim"))
-                {
-                    <h3>@Model.FirmaAdi Cari Hareket Detayları</h3>
+            @if (Fonksiyonlar.GetirCariHareketler(Model.FirmaID).Count() >= 1 && (Model.Kasa == null || Model.Kasa == false) && User.IsInRole("Yonetim"))
+            {
+                <h3>@Model.FirmaAdi Cari Hareket Detayları</h3>
                     <table class="table  table-striped table-bordered">
                         <thead>
                             <tr>
@@ -760,6 +924,6 @@
                         </tfoot>
                     </table>
                                 }
-</td>
+        </td>
     </tr>
 </table>

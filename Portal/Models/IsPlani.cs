@@ -25,7 +25,7 @@ namespace Portal.Models
         public Nullable<System.DateTime> Tarih { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual Firma Firma { get; set; }
         public virtual SatisFirsati SatisFirsati { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

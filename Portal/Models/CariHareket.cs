@@ -23,7 +23,7 @@ namespace Portal.Models
         public string ChTuru { get; set; }
         public Nullable<int> RefSatisId { get; set; }
     
-        public virtual Firma Firma { get; set; }
         public virtual Sati Sati { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

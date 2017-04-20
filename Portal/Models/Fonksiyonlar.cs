@@ -527,8 +527,8 @@ namespace Portal.Models
             string firmaSahibiAdi = string.Empty;
             using (var dbc = new PortalEntities())
             {
-                firmaSahibiAdi = dbc.Firmas.Find(FirmaID).YetkiliAdi.ToString();
-                firmaSahibiAdi = firmaSahibiAdi + "/" + dbc.Firmas.Find(FirmaID).YetkiliAdi;
+                firmaSahibiAdi = dbc.Firmas.Find(FirmaID).FirmaKisis.FirstOrDefault().Ad.ToString();
+                firmaSahibiAdi = firmaSahibiAdi + "/" + dbc.Firmas.Find(FirmaID).FirmaKisis.FirstOrDefault().Ad;
             }
 
             return firmaSahibiAdi;

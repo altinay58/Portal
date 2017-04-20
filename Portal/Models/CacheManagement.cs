@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public static class CacheKeys
+    public static class CacheKeys // Etiketleri cache e alıyor. Normalde her şeyi burdan keşleyebiliyoruz.
     {
         public const string ETIKETS = "ETIKETS";
     }
