@@ -1466,7 +1466,7 @@
                                                     <div class="label label-sm">
                                                         @*<i class="fa fa-bolt"></i>*@
                                                         <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" ng-disabled="item.EtiketIsPlaniDurum==etiketIsPlaniDurumlari.Tamamlandi" ng-model="item.EtiketIsPlaniDurum" ng-click="durumDegistir(item,$index)" ng-true-value="3" ng-false-value="1">
+                                                            <input type="checkbox" ng-disabled="item.plan.EtiketIsPlaniDurum==etiketIsPlaniDurumlari.Tamamlandi" ng-model="item.EtiketIsPlaniDurum" ng-click="durumDegistir(item,$index)" ng-true-value="3" ng-false-value="1">
                                                             <span></span>
                                                         </label>
                                                     </div>
@@ -1477,6 +1477,9 @@
                                                         <span ng-bind-html="item.Aciklama |  to_trusted"></span> 
                                                         <span class="label label-sm {{item.etiketIsPlaniTipDetay.FontIcon}} ">
                                                             {{item.etiketIsPlaniTipDetay.Text}}
+                                                        </span>
+                                                        <span class="">
+                                                            &nbsp;{{item.firmaAdi}}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -1662,7 +1665,7 @@
     <script src="/js/angModule.js?v=1.0.3"></script>
     <script src="/js/services/toDoService.js?v=7"></script>
     <script src="/js/controllers/toDoCtrl.js?v=16"></script>
-    <script src="/js/controllers/isPlaniCtrl.js?v=26"></script>
+    <script src="/js/controllers/isPlaniCtrl.js?v=28"></script>
     @RenderSection("scripts", required: false)
     <script src="/Scripts/ajaxService.js?v=0.1"></script>
     <script src="/js/portalApp.js?v=2.2"></script>

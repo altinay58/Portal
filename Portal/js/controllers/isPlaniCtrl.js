@@ -12,6 +12,7 @@ class IsPlani {
         this.EtiketIsPlaniDurum;
         this.Tarih;
         this.TempEtiketIsPlaniDurum;
+        this.firmaAdi;
         for (var prop in obj)
         {
             this[prop] = obj[prop];
@@ -36,8 +37,9 @@ angModule.controller("isPlaniCtrl", function ($scope, $timeout) {
     self.getirBuguneAitIsplanlari = function () {
         commonAjaxService.getDataFromRemote(url = "/IsPlani/BuguneAitIsPlanlari", data = {})
             .done(res=> {
-            res.forEach(e=> {
-                let isPlani = new IsPlani(e);
+                res.forEach(e => {
+                let isPlani = new IsPlani(e.plan);
+                isPlani.firmaAdi = e.firmaAdi;
                 isPlani.etiketIsPlaniTipDetay = self.etiketIsPlaniTipDetaylari.find(x=> { return x.Value == isPlani.EtiketIsPlaniTipi });
                 isPlani.TempEtiketIsPlaniDurum = isPlani.EtiketIsPlaniDurum;
                 self.isPlanlari.push(isPlani);

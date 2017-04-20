@@ -193,8 +193,19 @@ namespace Portal.Controllers
         {
             Db.Configuration.ProxyCreationEnabled = false;
             string userId = User.Identity.GetUserId();
-            var data = Db.IsPlanis.AsNoTracking().Where(x => DbFunctions.TruncateTime(x.Tarih) == DateTime.Today && x.RefSorumluKisiId == userId
-            ).OrderBy(x=>x.Tarih).ToList();
+            var data = (from p in Db.IsPlanis.Include(x => x.Firma)
+                        where DbFunctions.TruncateTime(p.Tarih) == DateTime.Today && p.RefSorumluKisiId == userId
+                        let firmaAdi=p.RefIsId!=null ? Db.islers.Where(x=>x.islerID==p.RefIsId).FirstOrDefault().Firma.FirmaAdi: ""
+                        select new
+                        {
+                          plan=p,
+                          firmaAdi=firmaAdi
+                        }
+                        ).OrderBy(x => x.plan.Tarih).ToList(); 
+                
+            //    Db.IsPlanis.Include(x=>x.Firma).
+            //    Where(x => DbFunctions.TruncateTime(x.Tarih) == DateTime.Today && x.RefSorumluKisiId == userId
+            //).OrderBy(x=>x.Tarih).ToList();
             Db.Configuration.ProxyCreationEnabled = true;
             return Json(data, JsonRequestBehavior.AllowGet);
         }
