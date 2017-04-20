@@ -38,15 +38,16 @@
                     Cep Telefon
                 </th>
                 <th class="left">
+                    E-Mail
+                </th>
+                <th class="left">
                     Domainler
                 </th>
                 <th class="left">
                     Aracı
                 </th>
 
-                <th class="left">
-                    E-Mail
-                </th>
+         
                 <th class="right">
                     Düzelt
                 </th>
@@ -79,35 +80,38 @@
                                 @firmaVerisi.FirmaAdi
                             </a>
                         </td>
-                        <td>
-                            @firmaVerisi.YetkiliAdi
-                        </td>
-                        <td>
-                            @firmaVerisi.YetkiliTelefon
-                        </td>
-                        <td>
-                            @firmaVerisi.YetkiliCepTelefon
-                        </td>
+                        @if (firmaVerisi.FirmaKisis.FirstOrDefault() != null)
+                        {
+                            <td>
+                                @firmaVerisi.FirmaKisis.FirstOrDefault().Ad
+                            </td>
+                            <td>
+                                @firmaVerisi.FirmaKisis.FirstOrDefault().Tel
+                            </td>
+                            <td>
+                                @firmaVerisi.FirmaKisis.FirstOrDefault().Tel2
+                            </td>
+                            <td>
+                                @firmaVerisi.FirmaKisis.FirstOrDefault().Email
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        }
                         <td>
                             @firmaVerisi.Domains.Count
                         </td>
-
                         <td>
                             @firmaVerisi.Firma2.FirmaAdi
                         </td>
-
-
-                        <td>
-                            @firmaVerisi.Email
-                        </td>
-
-
-
                         <td>
                             <a href="@Url.Action("FirmaKaydet", new { controller = "Firmalar", id = firmaVerisi.FirmaID })">
                                Düzenle
                             </a>
-
                         </td>
                         <td align="right">
                             <a href="#" onclick="firmaSil(@firmaVerisi.FirmaID)">
@@ -115,12 +119,9 @@
                             </a>
                         </td>
                     </tr>
-
                 }
-               
             }
         </tbody>
-
     </table>
 </div>
 <div style="text-align:center">

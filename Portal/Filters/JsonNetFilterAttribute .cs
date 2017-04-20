@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Portal.Filters
 {
+    // JsonResult larda oluşan tarih sorununu düzeltiyor.
     public class JsonNetFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext filterContext)

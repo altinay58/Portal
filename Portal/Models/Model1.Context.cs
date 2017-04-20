@@ -41,7 +41,6 @@ namespace Portal.Models
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Domain> Domains { get; set; }
         public virtual DbSet<DomainKategori> DomainKategoris { get; set; }
-        public virtual DbSet<Firma> Firmas { get; set; }
         public virtual DbSet<GelinmeyenGun> GelinmeyenGuns { get; set; }
         public virtual DbSet<GidilenMusteri> GidilenMusteris { get; set; }
         public virtual DbSet<Hosting> Hostings { get; set; }
@@ -93,5 +92,6 @@ namespace Portal.Models
         public virtual DbSet<ToplantiyaKatilanlar> ToplantiyaKatilanlars { get; set; }
         public virtual DbSet<SatisFirsati> SatisFirsatis { get; set; }
         public virtual DbSet<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
+        public virtual DbSet<Firma> Firmas { get; set; }
     }
 }

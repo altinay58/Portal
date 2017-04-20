@@ -32,12 +32,12 @@ namespace Portal.Models
         public Nullable<System.DateTime> satisTarihi { get; set; }
         public Nullable<int> refSatisID { get; set; }
     
-        public virtual Firma Firma { get; set; }
-        public virtual Firma Firma1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sati> Satis1 { get; set; }
         public virtual Sati Sati1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CariHareket> CariHarekets { get; set; }
+        public virtual Firma Firma { get; set; }
+        public virtual Firma Firma1 { get; set; }
     }
 }

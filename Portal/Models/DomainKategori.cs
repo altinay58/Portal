@@ -19,11 +19,11 @@ namespace Portal.Models
         {
             this.Arayanlars = new HashSet<Arayanlar>();
             this.Domains = new HashSet<Domain>();
-            this.Firmas = new HashSet<Firma>();
             this.GidilenMusteris = new HashSet<GidilenMusteri>();
             this.Temas = new HashSet<Tema>();
             this.SatisGorusmes = new HashSet<SatisGorusme>();
             this.SatisFirsatis = new HashSet<SatisFirsati>();
+            this.Firmas = new HashSet<Firma>();
         }
     
         public int DomainKategoriID { get; set; }
@@ -34,8 +34,6 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Domain> Domains { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Firma> Firmas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GidilenMusteri> GidilenMusteris { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tema> Temas { get; set; }
@@ -43,5 +41,7 @@ namespace Portal.Models
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Firma> Firmas { get; set; }
     }
 }

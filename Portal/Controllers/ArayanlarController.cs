@@ -71,6 +71,7 @@ namespace Portal.Controllers
 
 
             ViewBag.Departmanlar = new SelectList(Db.Etikets.Where(a=>a.Kategori == "EtiketArayanDepartmanId").OrderBy(x=>x.Sira), "Value", "Text");
+            ViewBag.AramaYontemiId = new SelectList(Db.Etikets.Where(a=>a.Kategori == "AramaYontemiId").OrderBy(x=>x.Sira), "Value", "Text");
             ViewBag.arayanGrupID = new SelectList(Db.ArayanGrups, "arayanGrupID", "arayanGrupAdi");
             ViewBag.arayanRefKonumID = new SelectList(Db.Konums.OrderBy(x=>x.Konum1), "KonumID", "Konum1");
             ViewBag.arayanDomainKategoriID = new SelectList(Db.DomainKategoris, "DomainKategoriID", "DomainKategoriAdi");
@@ -104,6 +105,7 @@ namespace Portal.Controllers
                 arayan.arayanSehir = vmodel.arayanSehir;
                 arayan.arayanilce = vmodel.arayanilce;
                 arayan.arayanAdres = vmodel.arayanAdres;
+                arayan.AramaYontemiId = vmodel.AramaYontemiId;
                 if (vmodel.arayanRefKonumID.HasValue)
                 {
                     arayan.arayanRefKonumID = vmodel.arayanRefKonumID;

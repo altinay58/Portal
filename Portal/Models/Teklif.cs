@@ -35,10 +35,10 @@ namespace Portal.Models
         public string teklifDosyaAdi { get; set; }
     
         public virtual Arayanlar Arayanlar { get; set; }
-        public virtual Firma Firma { get; set; }
         public virtual TeklifSonuc TeklifSonuc { get; set; }
         public virtual TeklifTuru TeklifTuru { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeklifDetay> TeklifDetays { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

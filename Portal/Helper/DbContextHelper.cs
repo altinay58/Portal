@@ -5,7 +5,7 @@ using System.Web;
 using Portal.Models;
 namespace Portal.Helper
 {
-    public class DbContextHelper
+    public class DbContextHelper // her istekte bir adet portal entity oluşturuyor.
     {
         private const string contextKey = "MyContext";
 

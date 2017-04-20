@@ -134,17 +134,13 @@ namespace Portal.Controllers
             firma.FirmaVergiDairesi = model.FirmaVergiDairesi;
             firma.FirmaVergiNumarasi = model.FirmaVergiNumarasi;
             firma.FirmaAdres = model.FirmaAdres;
-            firma.YetkiliAdi = model.YetkiliAdi;
-            firma.YetkiliSoyAdi = model.YetkiliSoyAdi;
-            firma.YetkiliTelefon = model.YetkiliTelefon;
-            firma.YetkiliCepTelefon = model.YetkiliCepTelefon;
-            firma.Email = model.Email;
             firma.RefFirmaID = model.RefFirmaID;
             firma.RefKonumID = model.RefKonumID;
             firma.Araci = Request["araci"] != null ? true : false;
             firma.Musteri = Request["musteri"] != null ? true : false;
             firma.Personel = Request["personel"] != null ? true : false;
             firma.Araci = Request["kasa"] != null ? true : false;
+
             if (model.FirmaID == 0)
             {
                 firma.firmaKayitTarih = DateTime.Now;
@@ -158,14 +154,10 @@ namespace Portal.Controllers
                     IEnumerable<Arayanlar> arayanGecmisAramalari = Db.Arayanlars.GetirArayanGecmisAramalar(firmaAdi).ToList();
                     foreach (Arayanlar arayanim in arayanGecmisAramalari)
                     {
-
                         arayanim.arayanFirmaKayitDurum = true;
                         arayanim.arayanKayitliMusterimi = true;
                         arayanim.Firma = firma;
                     }
-
-                 
-
                 }
                 Db.Firmas.Add(firma);
             }
@@ -196,11 +188,19 @@ namespace Portal.Controllers
 
             firma.FirmaAdi = arayan.arayanFirmaAdi;
             firma.FirmaAdres = arayan.arayanAdres;
-            firma.YetkiliAdi = arayan.arayanAdi;
-            firma.YetkiliSoyAdi = arayan.arayanSoyadi;
-            firma.YetkiliCepTelefon = arayan.arayanCepTelNo;
-            firma.YetkiliTelefon = arayan.arayanTelefonNo;
-            firma.Email = arayan.arayanMailAdresi;
+
+            FirmaKisi yeniKisi = new FirmaKisi()
+            {
+                Ad = arayan.arayanAdi,
+                Soyad = arayan.arayanSoyadi,
+                Tel = arayan.arayanCepTelNo,
+                Tel2 = arayan.arayanTelefonNo,
+                Email = arayan.arayanMailAdresi,
+                Departman = "Yönetici"
+            };
+
+            firma.FirmaKisis.Add(yeniKisi);
+
             firma.RefKonumID = arayan.arayanRefKonumID;
             firma.firmaSektorID = arayan.arayanSektorID;
             firma.firmaDomainKategoriID = arayan.arayanDomainKategoriID;
@@ -249,32 +249,33 @@ namespace Portal.Controllers
             }
             return View(model);
         }
-        [ValidateInput(false)]
         [HttpPost]
         public ActionResult FirmaKisiEkle(FirmaKisi model)
         {
             FirmaKisi entity = new FirmaKisi();
-            if (model.Id>0)
-            {
-                entity = Db.FirmaKisis.SingleOrDefault(x => x.Id == model.Id);
-            }
+
             entity.Ad = model.Ad;
             entity.Soyad = model.Soyad;
             entity.Departman = model.Departman;
             entity.Email = model.Email;
             entity.FirmaId = model.FirmaId;
             entity.Tel = model.Tel;
-            if (model.Id > 0)
-            {
-                Db.Entry(entity).State = EntityState.Modified;
-            }
-            else
-            {
-                Db.FirmaKisis.Add(entity);
-            }
+            entity.Tel2 = model.Tel2;
+            Db.FirmaKisis.Add(entity);
             Db.SaveChanges();
             TempData[SUCESS] = "Firma Kisi Kaydedildi";
-            return View("FirmaKisiList");
+            return RedirectToAction("Detay", "CariHareket", new { id = model.FirmaId });
+        }
+
+        public ActionResult FirmaKisiSil(int id)
+        {
+            FirmaKisi entity = Db.FirmaKisis.FirstOrDefault(a => a.Id == id);
+
+            Db.FirmaKisis.Remove(entity);
+
+            Db.SaveChanges();
+            TempData[SUCESS] = "Firma Kisi Silindi";
+            return RedirectToAction("Detay", "CariHareket", new { id = entity.FirmaId });
         }
         #endregion
     }

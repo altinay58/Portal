@@ -1,7 +1,7 @@
-﻿
+﻿// Anasayfadaki işleri dolduruyor arama yapıyor. Dashboard daki işler ve iş planı kısmındaki işleride burası doldurur.
 var ss;
 angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
-    let self = $scope;
+    let self = $scope; // buradaki let javascript içerisinde aynı değişkenin iki kere tanımlanmasını engeller. Let dediğimiz zaman dışarıdan çağırılamıyor yani View dosyalarında çağıralıyor. Başına let yazmazsak dışarıdan erişime açmış oluyoruz.
     self.linkDeGoster = true;
     self.isler = [], self.yukleniyor = false;
     $scope.maxSize = 5;

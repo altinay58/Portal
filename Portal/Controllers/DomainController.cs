@@ -177,35 +177,7 @@ namespace Portal.Controllers
             
         }
         //Eski yeri MailSablonlariController
-        public ActionResult DomainUzatmaMailiGonder(int domainID, string ucret)
-        {
-            JsonCevap jsn = new JsonCevap();
-            try
-            {
 
-
-                Domain domainduzenle = Db.Domains.GetirDomain(domainID);
-
-                string mesaj = Db.MailSablonus.Find(1).MailSablonu1;
-
-                mesaj = mesaj.Replace("{FirmaAdi}", domainduzenle.Firma.FirmaAdi);
-                mesaj = mesaj.Replace("{MusteriAdiSoyadi}", domainduzenle.Firma.YetkiliAdi + " " + domainduzenle.Firma.YetkiliSoyAdi);
-                mesaj = mesaj.Replace("{AlanAdi}", domainduzenle.DomainAdi);
-                mesaj = mesaj.Replace("{UzatmaTarihi}", domainduzenle.UzatmaTarihi.ToString());
-                mesaj = mesaj.Replace("{FirmaAdi}", domainduzenle.Firma.FirmaAdi);
-                mesaj = mesaj.Replace("{MusteriNo}", domainduzenle.Firma.FirmaID.ToString());
-                mesaj = mesaj.Replace("{Ucret}", ucret);
-
-                Fonksiyonlar.MailGonder("info@karayeltasarim.com,satis@karayeltasarim.com", domainduzenle.DomainAdi + " Domain Süresi Dolum Bildirimi", mesaj);
-                jsn.Basarilimi = true;
-            }
-            catch
-            {
-                jsn.Basarilimi = false;
-                
-            }
-            return Json(jsn,JsonRequestBehavior.AllowGet);
-        }
 
         public ActionResult DomainUzat(int domainID)
         {

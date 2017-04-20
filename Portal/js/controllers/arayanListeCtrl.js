@@ -11,20 +11,22 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
       angular.element(document).ready(function () {        
           self.getirData();
       });
-      self.init = function () {
+      self.init = function () { // url de aşağıdaki değişkenleri bulup değerlerini alır
           //aryanListService.getListData(self.basTarih, self.bitisTarih);
           self.basTarih = qs("basTarih");
           self.bitisTarih = qs("bitisTarih");
           self.currentPage = qs("currentPage") === null ? 1 : parseInt(qs("currentPage"));
           self.adSoyad = qs("adSoyad");
           self.firma = qs("firma");
+          self.firmaid = qs("KayitliFirmaId");
+          self.kayitlimi = qs("KayitliMi");
           self.telNo = qs("telNo");
           self.note = qs("note");
       }
       self.getirData = function (model) {
           self.yukleniyor = true;
           if ((model===undefined || model==="") || model.length >= 3) {
-              arayanListService.getListData(qs("basTarih"), qs("bitisTarih"), qs("firma"), qs("telNo"), qs("note"), qs("adSoyad"),qs("currentPage"))
+              arayanListService.getListData(qs("basTarih"), qs("bitisTarih"), qs("firma"), qs("telNo"), qs("note"), qs("adSoyad"), qs("currentPage"), qs("KayitliFirmaId"), qs("KayitliMi"))
             .then(function (res) {
                 self.arayanlar = res.Data;
                 self.yukleniyor = false;
@@ -52,6 +54,15 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
               return "<span><a href='#'>Kayıtlı Firma</a></span>";            
           } else {
               return `<a href="/Firmalar/ArayaniFirmayaKaydet/${arayan.Id}" class="btn btn-default red" style="color:#fff !important">Firmayı Kaydet</a>`;
+              //return `<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet(${arayan.Id}))">Kaydet</button>`;
+              //.with(arayan.Id);
+          }
+      }
+      self.FirmaKayitliMi = function (arayan) {
+          if (arayan.KayitliMi) {
+              return `<a target="_blank" href="/CariHareket/Detay/${arayan.KayitliFirmaId}"> ${arayan.Firma} </a>`;
+          } else {
+              return arayan.Firma;
               //return `<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet(${arayan.Id}))">Kaydet</button>`;
               //.with(arayan.Id);
           }

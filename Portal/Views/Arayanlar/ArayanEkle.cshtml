@@ -15,12 +15,7 @@
                 </div>*@
                 <label class="control-label col-md-2">Geliş Yöntemi</label>
                 <div class="col-md-4">
-                    <select name="gelisYonetemi" class="form-control select2">
-                        <option selected="selected">Telefon</option>
-                        <option>Email</option>
-                        <option>Whatsapp</option>
-                        <option>Yüz yüze</option>
-                    </select>
+                    @Html.DropDownList("AramaYontemiId", ViewBag.AramaYontemiId as SelectList, new { @class = "form-control " })
                 </div>
             </div>
             <div class="form-group">
@@ -487,7 +482,7 @@
                     paramName: 'firmaAdi',
                     serviceUrl: '/Isler/FirmalariGetir',
                     onSelect: function (suggestion) {                      
-                        var data = firmalar.find(function (f) { return f[evalue] == suggestion.data });
+                        var data = firmalar.find(function (f) { return f[elabel] == suggestion.value });
                         ff = data;
                         setData(data);
                         yukleDomain(data.value);

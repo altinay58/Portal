@@ -24,7 +24,7 @@ namespace Portal.Models
         public Nullable<int> EtiketSatisGorusmeTypeId { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
-        public virtual Firma Firma { get; set; }
         public virtual FirmaKisi FirmaKisi { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

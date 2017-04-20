@@ -53,7 +53,6 @@ namespace Portal.Models
         public virtual ICollection<IsiYapacakKisi> IsiYapacakKisis { get; set; }
         public virtual Arayanlar Arayanlar { get; set; }
         public virtual Domain Domain { get; set; }
-        public virtual Firma Firma { get; set; }
         public virtual IstekTipi IstekTipi { get; set; }
         public virtual isKategori isKategori { get; set; }
         public virtual isOncelikSira isOncelikSira { get; set; }
@@ -65,5 +64,6 @@ namespace Portal.Models
         public virtual ICollection<ZamanI> ZamanIs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeknikRapor> TeknikRapors { get; set; }
+        public virtual Firma Firma { get; set; }
     }
 }

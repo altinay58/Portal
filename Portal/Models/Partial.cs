@@ -9,6 +9,48 @@ namespace Portal.Models
 {
     public static class Partial
     {
+        public static Etiket EtiketGetir(int id)
+        {
+            using (var db = new PortalEntities())
+            {
+                Etiket etiketim = db.Etikets.FirstOrDefault(a => a.Id == id);
+
+                if (etiketim != null)
+                {
+                    return etiketim;
+                }
+                else
+                {
+                    return new Etiket()
+                    {
+                        Id = 0,
+                        FontIcon = "fa-exclamation-triangle",
+                        Renk = "red",
+                        Sira = 1,
+                        Text = "Hatalı Id girdiniz!!",
+                        Value = 0
+
+                    };
+                }
+            }
+        }
+
+        public static IEnumerable<FirmaKisi> FirmaKisileri(int firmaID)
+        {
+            using (var db = new PortalEntities())
+            {
+                return db.FirmaKisis.Where(a => a.FirmaId == firmaID).ToList();
+            }
+        }
+
+
+        public static IEnumerable<Arayanlar> AramaveGorusmeler(int firmaID)
+        {
+            using (var db = new PortalEntities())
+            {
+                return db.Arayanlars.Where(a => a.arayanKayitliRefFirmaID == firmaID).OrderByDescending(a=>a.arayanKayitTarih).ToList();
+            }
+        }
 
         //#region Domain Sorguları
 

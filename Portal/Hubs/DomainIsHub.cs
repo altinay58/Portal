@@ -5,7 +5,7 @@ using System.Web;
 using Microsoft.AspNet.SignalR;
 namespace Portal.Hubs
 {
-    public class DomainIsHub:Hub
+    public class DomainIsHub:Hub // Domain işlerdeki işin durumu domain durumu yorum eklendiği sayfayı değiştirmeden güncellemesini sağlar.
     {
         public void GonderYorumEklendi(int indexDomainIs,string jsnYorum, string fromId, string toId)
         {            

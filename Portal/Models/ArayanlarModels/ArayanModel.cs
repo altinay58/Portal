@@ -20,6 +20,7 @@ namespace Portal.Models.ArayanlarModels
         public string arayanilce { get; set; }
         public string arayanAdres { get; set; }
         public Nullable<int> arayanRefKonumID { get; set; }
+        public Nullable<int> AramaYontemiId { get; set; }
         public string arayanKonu { get; set; }
         public string arayanNot { get; set; }
         public string arayanBegendigiWebSiteleri { get; set; }

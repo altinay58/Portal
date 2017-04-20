@@ -45,7 +45,7 @@ namespace Portal.Controllers
             entity.SatisNotu1 = model.SatisNotu1;
             entity.SatisNotlariTarih = DateTime.Now;
             //todo: DEFAULT_USER_ID login ekranından sonra kaldırılacak
-            entity.RefUserID = User.Identity.GetUserId()??DEFAULT_USER_ID;
+            entity.RefUserID = User.Identity.GetUserId();
             if (model.SatisNotlariID ==0)
             {
                 Db.SatisNotus.Add(entity);
@@ -113,7 +113,7 @@ namespace Portal.Controllers
             randevu.RandevuSilDurum = false;
             randevu.RandevuDetay = model.RandevuDetay;
             randevu.RandevuKayitTarihi = DateTime.Now;
-            randevu.RandevuEkleyenID = User.Identity.GetUserId()??DEFAULT_USER_ID;
+            randevu.RandevuEkleyenID = User.Identity.GetUserId();
             randevu.RandevuRefFirmaID = model.RandevuRefFirmaID;
             randevu.RandevuRefArayanID = model.RandevuRefArayanID;
             if (model.RandevuRefFirmaID != null)

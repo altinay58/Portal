@@ -21,6 +21,8 @@ namespace Portal.Models
             this.CariHarekets = new HashSet<CariHareket>();
             this.Domains = new HashSet<Domain>();
             this.Firma1 = new HashSet<Firma>();
+            this.FirmaKisis = new HashSet<FirmaKisi>();
+            this.IsPlanis = new HashSet<IsPlani>();
             this.islers = new HashSet<isler>();
             this.Koordinats = new HashSet<Koordinat>();
             this.OdemeBildirimis = new HashSet<OdemeBildirimi>();
@@ -28,22 +30,15 @@ namespace Portal.Models
             this.SanalPos = new HashSet<SanalPos>();
             this.Satis = new HashSet<Sati>();
             this.Satis1 = new HashSet<Sati>();
-            this.Teklifs = new HashSet<Teklif>();
-            this.FirmaKisis = new HashSet<FirmaKisi>();
-            this.SatisGorusmes = new HashSet<SatisGorusme>();
-            this.IsPlanis = new HashSet<IsPlani>();
             this.SatisFirsatis = new HashSet<SatisFirsati>();
+            this.SatisGorusmes = new HashSet<SatisGorusme>();
+            this.Teklifs = new HashSet<Teklif>();
         }
     
         public int FirmaID { get; set; }
         public string FirmaAdi { get; set; }
         public string FirmaAdres { get; set; }
-        public string YetkiliAdi { get; set; }
-        public string YetkiliSoyAdi { get; set; }
-        public string YetkiliTelefon { get; set; }
-        public string YetkiliCepTelefon { get; set; }
         public Nullable<int> RefFirmaID { get; set; }
-        public string Email { get; set; }
         public Nullable<bool> Araci { get; set; }
         public Nullable<bool> Musteri { get; set; }
         public Nullable<bool> Personel { get; set; }
@@ -77,6 +72,10 @@ namespace Portal.Models
         public virtual Konum Konum { get; set; }
         public virtual Sektorler Sektorler { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FirmaKisi> FirmaKisis { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IsPlani> IsPlanis { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<isler> islers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Koordinat> Koordinats { get; set; }
@@ -91,14 +90,10 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sati> Satis1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Teklif> Teklifs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FirmaKisi> FirmaKisis { get; set; }
+        public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<IsPlani> IsPlanis { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
+        public virtual ICollection<Teklif> Teklifs { get; set; }
     }
 }
