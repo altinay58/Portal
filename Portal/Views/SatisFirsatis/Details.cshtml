@@ -2,7 +2,6 @@
 @using Portal.Models.IslerModels;
 @using Portal.Models;
 @model object
-
 @{
     ViewBag.Title = "Satış Detay ";
     var butunEtiketler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS);
@@ -12,8 +11,7 @@
     var gorusmeEtiketleri = butunEtiketler.Where(x => x.Kategori == "EtiketSatisGorusmeTypeId");
     //var satisFirsati = Model;
     var satisFirsatiStr= JsonConvert.SerializeObject(Model, Formatting.Indented,
-        new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
- 
+    new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
  }
 <div ng-controller="satisFirsatlarDetailCtrl" ng-init="init(guncelKullanici='@JsonConvert.SerializeObject(guncelKullanici)',
      satisAsamaEtiketleri='@JsonConvert.SerializeObject(satisAsamaEtiketleri)',satisFirsati='@satisFirsatiStr',
@@ -33,7 +31,6 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-md-6 col-sm-12">
             <div class="portlet">
                 <div class="portlet-title">
@@ -60,7 +57,6 @@
                     <div class="row static-info">
                         <div class="col-md-5 name"> Fırsat Durumu: </div>
                         <div class="col-md-7 value">
-                       
                          <a href="javascript:;" ng-repeat="item in firsatDurumEtiketleri" ng-click="degistirFirsatDurum(item)">
                              <span class="label " ng-class="item.Value==satisFirsati.EtiketSatisFirsatDurumuId ? 'label-success':'label-default'">{{item.Text}} </span>
                          </a>
@@ -85,7 +81,6 @@
                         <div class="col-md-5 name"> Teklif Dosyası </div>
                         <div class="col-md-7 value"> <a ng-href="{{satisFirsati.DosyaYolu}}" class="btn purple-plum"> İndir </a> </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -138,8 +133,6 @@
             <!-- END SAMPLE TABLE PORTLET-->
         </div>
     </div>
-
-
     <div class="row">
         <div class="col-md-6 col-sm-6">
             <!-- BEGIN PORTLET-->
@@ -155,7 +148,6 @@
                     </div>
                     <div class="portlet-body">
                         <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
-
                             <div class="general-item-list">
                                 <div class="item" ng-repeat="item in satisFirsati.Gorusmeler">
                                     <div class="item-head">
@@ -173,13 +165,9 @@
                                     </div>
                                     <div class="item-body"> {{item.Gorusme.Note}} </div>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
-
-               
             </div>
             @*<div class="portlet light ">
 
@@ -273,9 +261,6 @@
                                         <span class="label label-success"> Satışa Dönüştü </span>*@
                                     </td>
                                 </tr>
-                              
-                             
-
                             </tbody>
                         </table>
                     </div>
@@ -309,8 +294,6 @@
                                     <td><a href="tel:{{item.Tel}}">{{item.Tel}}</a> </td>
                                     <td>{{item.Email}}</td>
                                 </tr>
-                       
-
                             </tbody>
                         </table>
                     </div>
@@ -319,7 +302,6 @@
             <!-- END SAMPLE TABLE PORTLET-->
         </div>
     </div>
-
 </div>   
     <p>
         @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
@@ -331,32 +313,26 @@
         font-size: 80px !important;
         right: initial !important;
     }
-
     .bg-green-steel {
         background-color: #26C281 !important;
         color: white !important;
     }
-
     .mt-step-number {
         color: white !important;
     }
-
     .mt-element-step .step-background-thin .mt-step-title {
         text-align: left !important;
         padding-right: initial !important;
         padding-left: 50px !important;
         font-size: 28px !important;
     }
-
     .mt-step-col {
         border-right: 2px solid #ffffff !important;
         border-bottom: 2px solid #ffffff !important;
     }
-
     .feeds li .col1 > .cont > .cont-col2 > .desc {
         color: black;
     }
-
     .feeds li .col2 > .date {
         color: black !important;
     }
@@ -365,5 +341,4 @@
 }
 @section scripts{
     <script src="~/js/controllers/satisFirsatlarDetailCtrl.js?v=9"></script>
-    
     }

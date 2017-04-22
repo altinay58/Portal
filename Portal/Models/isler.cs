@@ -51,7 +51,6 @@ namespace Portal.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IsiYapacakKisi> IsiYapacakKisis { get; set; }
-        public virtual Arayanlar Arayanlar { get; set; }
         public virtual Domain Domain { get; set; }
         public virtual IstekTipi IstekTipi { get; set; }
         public virtual isKategori isKategori { get; set; }
@@ -65,5 +64,6 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeknikRapor> TeknikRapors { get; set; }
         public virtual Firma Firma { get; set; }
+        public virtual Arayanlar Arayanlar { get; set; }
     }
 }

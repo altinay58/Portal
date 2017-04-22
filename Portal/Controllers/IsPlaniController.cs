@@ -76,7 +76,7 @@ namespace Portal.Controllers
         }
 
         [JsonNetFilter]
-        public JsonResult BorcluFirmalarAra(int? konumId,int? page,string firmaAdi,string telNo,string cepTelNo,string yetkili)
+        public JsonResult BorcluFirmalarAra(int? konumId,int? page,string firmaAdi,string telNo,string cepTelNo,string yetkili, string odeme)
         {
             Db.Configuration.ProxyCreationEnabled = false;
             int baslangic = ((page ?? 1) - 1) * PagerCount;

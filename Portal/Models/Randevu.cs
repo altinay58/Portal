@@ -28,8 +28,8 @@ namespace Portal.Models
         public Nullable<bool> RandevuSilDurum { get; set; }
         public string RandevuYeri { get; set; }
     
-        public virtual Arayanlar Arayanlar { get; set; }
         public virtual Konum Konum { get; set; }
         public virtual Firma Firma { get; set; }
+        public virtual Arayanlar Arayanlar { get; set; }
     }
 }

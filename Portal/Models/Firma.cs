@@ -17,7 +17,6 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Firma()
         {
-            this.Arayanlars = new HashSet<Arayanlar>();
             this.CariHarekets = new HashSet<CariHareket>();
             this.Domains = new HashSet<Domain>();
             this.Firma1 = new HashSet<Firma>();
@@ -33,6 +32,7 @@ namespace Portal.Models
             this.SatisFirsatis = new HashSet<SatisFirsati>();
             this.SatisGorusmes = new HashSet<SatisGorusme>();
             this.Teklifs = new HashSet<Teklif>();
+            this.Arayanlars = new HashSet<Arayanlar>();
         }
     
         public int FirmaID { get; set; }
@@ -58,9 +58,6 @@ namespace Portal.Models
         public bool FirmaSilindi { get; set; }
     
         public virtual ArayanGrup ArayanGrup { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
-        public virtual Arayanlar Arayanlar { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CariHareket> CariHarekets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -95,5 +92,8 @@ namespace Portal.Models
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teklif> Teklifs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
+        public virtual Arayanlar Arayanlar { get; set; }
     }
 }

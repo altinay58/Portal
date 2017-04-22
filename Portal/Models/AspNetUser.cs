@@ -17,7 +17,6 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AspNetUser()
         {
-            this.Arayanlars = new HashSet<Arayanlar>();
             this.AspNetUserClaims = new HashSet<AspNetUserClaim>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
             this.GelinmeyenGuns = new HashSet<GelinmeyenGun>();
@@ -35,6 +34,7 @@ namespace Portal.Models
             this.TeknikRapors = new HashSet<TeknikRapor>();
             this.IsPlanis = new HashSet<IsPlani>();
             this.ToplantiyaKatilanlars = new HashSet<ToplantiyaKatilanlar>();
+            this.Arayanlars = new HashSet<Arayanlar>();
         }
     
         public string Id { get; set; }
@@ -55,8 +55,6 @@ namespace Portal.Models
         public string SifreSifirlama { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -91,5 +89,7 @@ namespace Portal.Models
         public virtual ICollection<IsPlani> IsPlanis { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ToplantiyaKatilanlar> ToplantiyaKatilanlars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
     }
 }

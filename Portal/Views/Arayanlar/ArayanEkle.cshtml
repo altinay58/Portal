@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "ArayanEkle";
 }
-
 <form class="form-horizontal" id="arayanEkle" name="arayanEkle" method="post" action="@Url.Action("ArayanEkle","Arayanlar")">
  @Html.AntiForgeryToken()
     <div style="margin:0 auto;width:95%">
@@ -19,7 +18,6 @@
                 </div>
             </div>
             <div class="form-group">
-
                 <label class="control-label col-md-2">Firma Adı</label>
                 <div class="col-md-4">                
                     @Html.TextBoxFor(x=>x.arayanFirmaAdi,new {@class="form-control" })
@@ -46,13 +44,10 @@
             <div class="form-group">
                 <label class="control-label col-md-2">Aracı Varmı</label>
                 <div class="col-md-4">
-
-                
                     <div class="input-group">
                         <span class="input-group-btn">
                             <label class="input-group-btn mt-checkbox mt-checkbox-outline" >
                               @Html.CheckBoxFor(x=>x.araciVarmi,new { id = "cbAraciVarmi", onchange = "degistiAraci()" })
-                              
                                 <span></span>
                             </label>
                         </span>
@@ -60,18 +55,12 @@
                             <label class="control-label" style="float:left;padding-right:3px">Aracı Adı</label>
                             <input type="text" name="ArayanAraciAdi" id="ArayanAraciAdi" class="form-control" style="width:77%" >
                         </div>
-                       
-                       
-                           
-                           
                      </div>
                 </div>
                 <label class="control-label col-md-2">Telefon No</label>
                 <div class="col-md-3">
                     <input type="text" name="arayanTelefonNo" id="arayanTelefonNo" class="form-control phone_us" />
                 </div>
-
-
             </div>
             <div class="form-group">
 
@@ -117,8 +106,6 @@
             <div class="form-group">
                 <label class="control-label col-md-2">Tarih</label>
                 <div class="col-md-4">
-
-                
                     <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
                         <input type="text" is-date="1" class="form-control" name="arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
                         <span class="input-group-btn">
@@ -135,15 +122,12 @@
                                 </button>
                             </span>
                         </div>
-                    
                     </div>
                 </div>
                 <label class="control-label col-md-2">Proje Tipi</label>
                 <div class="col-md-3">
                     @Html.DropDownList("arayanDomainKategoriID", ViewBag.arayanDomainKategoriID as SelectList, new { @class = "form-control select2" })
                 </div>
-               
-               
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">Sektör Adı</label>
@@ -176,7 +160,6 @@
                         @Html.TextBoxFor(x => x.MailBaslik,new {id="MailBaslik" })
                     </div>
                 </div>
-                
             </div>
             <div class="form-group" style="margin-left:2px">               
                 <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline" style="float:left">  
@@ -190,18 +173,14 @@
                     <div class="col-md-offset-2 col-md-3">
                         <input name="isAdi" class="form-control" placeholder="iş adı" />
                     </div>
-
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <textarea class="ckeditor form-control"  name="isAciklama" rows="6"></textarea>
                     </div>
-
                 </div>
-                
                     <div class="col-md-offset-2 col-md-10">
                         <div class="row">
-                          
                                 <div class="col-md-3 box">
                                     <div class="form-group">
                                         <label class="">Yapacak Kişi</label>
@@ -249,10 +228,8 @@
                                                 <button class="btn default" type="button">
                                                     <i class="fa fa-calendar"></i>
                                                 </button>
-
                                             </span>
                                         </div>
-                                       
                                     </div>
                                 </div>
                             <div class="col-md-3 box">
@@ -268,8 +245,6 @@
                             </div>
                         </div>
                     </div>
-
-              
             </div>
             <div class="form-group">
                 <label class="col-md-offset-2 col-md-2">
