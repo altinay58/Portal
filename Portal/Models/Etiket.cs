@@ -14,12 +14,6 @@ namespace Portal.Models
     
     public partial class Etiket
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Etiket()
-        {
-            this.Arayanlars = new HashSet<Arayanlar>();
-        }
-    
         public int Id { get; set; }
         public string Kategori { get; set; }
         public string Text { get; set; }
@@ -27,8 +21,5 @@ namespace Portal.Models
         public string Renk { get; set; }
         public string FontIcon { get; set; }
         public int Value { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
     }
 }

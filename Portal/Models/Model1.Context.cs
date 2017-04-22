@@ -32,7 +32,6 @@ namespace Portal.Models
         public virtual DbSet<StandartProjeIsleri> StandartProjeIsleris { get; set; }
         public virtual DbSet<Arama> Aramas { get; set; }
         public virtual DbSet<ArayanGrup> ArayanGrups { get; set; }
-        public virtual DbSet<Arayanlar> Arayanlars { get; set; }
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
@@ -93,5 +92,6 @@ namespace Portal.Models
         public virtual DbSet<SatisFirsati> SatisFirsatis { get; set; }
         public virtual DbSet<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
         public virtual DbSet<Firma> Firmas { get; set; }
+        public virtual DbSet<Arayanlar> Arayanlars { get; set; }
     }
 }

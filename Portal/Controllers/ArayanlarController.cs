@@ -91,6 +91,7 @@ namespace Portal.Controllers
             if (ModelState.IsValid)
             {
                 Arayanlar arayan = new Arayanlar();
+                vmodel.arayanFirmaAdi = vmodel.arayanFirmaAdi.Replace("  Kayıtlı Değil", "").Trim();
                 arayan.arayanilkArama = vmodel.arayanKayitliRefFirmaID.HasValue ? false : true;
                 //TODO: login giris tamamlaninca aktif edilecek
                 arayan.arayanTelefonaBakanKisiID = User.Identity.GetUserId();

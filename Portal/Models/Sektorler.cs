@@ -17,19 +17,19 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Sektorler()
         {
-            this.Arayanlars = new HashSet<Arayanlar>();
             this.GidilenMusteris = new HashSet<GidilenMusteri>();
             this.Firmas = new HashSet<Firma>();
+            this.Arayanlars = new HashSet<Arayanlar>();
         }
     
         public int sektorID { get; set; }
         public string sektorAdi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GidilenMusteri> GidilenMusteris { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Firma> Firmas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
     }
 }

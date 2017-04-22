@@ -46,17 +46,43 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     self.getirData = function (model) {
         self.yukleniyor = true;
         if ((model === undefined || model === "") || model.length >= 3) {
-            anaSayfaService.getListData(qs("basTarih"), qs("bitisTarih"), qs("isAdi"), qs("page"), qs("firma"), qs("domain"),
-                qs("seciliKontrolEden"), qs("seciliYapacakKisi"), qs("seciliIsDurum"), qs("isId"), qs("seciliBolge"))
-             .then(function (res) {
-              self.isler = res.Data;
-              self.yukleniyor = false;
-              $scope.totalItems = res.ToplamSayi;
-              if (location.href.indexOf('SatisDashboard') > -1 && self.seciliIsDurum === "Yapiliyor") {
-                  $("a[href='#tab_yapilan_isler'] p.sayi").text(res.ToplamSayi);
-              }
+
+
+            commonAjaxService.getDataFromRemote(url = "/Home/ListIsAra", data = {
+                page: qs("page"), //  self.page ikisinin aradındaki tek fark self ile yazılan gidip inputun içersinden veriyi alırken qa ile yazdığımız self.$watchCollection  fonksiyonunu kullanarak URL den verileri alır.
+                basTarih: qs("basTarih"),
+                bitisTarih: qs("bitisTarih"),
+                isAdi: qs("isAdi"),
+                firma: qs("firma"),
+                domain: qs("domain"),
+                isiKontrolEden: qs("seciliKontrolEden"),
+                isiYapacakKisi: qs("seciliYapacakKisi"),
+                isinDurumu: qs("seciliIsDurum"),
+                isId: qs("isId"),
+                bolgeId: qs("seciliBolge")
+            }).done(res=> {
+                self.isler = res.Data;
+                self.yukleniyor = false;
+                $scope.totalItems = res.ToplamSayi;
+                if (location.href.indexOf('SatisDashboard') > -1 && self.seciliIsDurum === "Yapiliyor") {
+                    $("a[href='#tab_yapilan_isler'] p.sayi").text(res.ToplamSayi);
+                }
+                self.$apply();
+            });
+
+
+
+          //  anaSayfaService.getListData(qs("basTarih"), qs("bitisTarih"), qs("isAdi"), qs("page"), qs("firma"), qs("domain"),
+          //      qs("seciliKontrolEden"), qs("seciliYapacakKisi"), qs("seciliIsDurum"), qs("isId"), qs("seciliBolge"))
+          //   .then(function (res) {
+          //    self.isler = res.Data;
+          //    self.yukleniyor = false;
+          //    $scope.totalItems = res.ToplamSayi;
+          //    if (location.href.indexOf('SatisDashboard') > -1 && self.seciliIsDurum === "Yapiliyor") {
+          //        $("a[href='#tab_yapilan_isler'] p.sayi").text(res.ToplamSayi);
+          //    }
              
-          });
+          //});
             //self.$apply();
         } else {
             self.yukleniyor = false;
@@ -94,7 +120,9 @@ angModule.controller("anaSayfaCtrl", function ($scope, anaSayfaService) {
     function qs(name) {
         return portalApp.getParameterByName(name);
     }
-    self.$watchCollection('[page,basTarih,bitisTarih,isAdi,domain,firma,seciliKontrolEden,seciliYapacakKisi,seciliIsDurum,isId,seciliBolge]', function (nw, ov) {
+
+    // $watchCollection inputlardan biri değiştirildiği zaman içine girilen veriyi alıp url e yazar. sayfada her hangi bir değişikilik olmaz. 
+    self.$watchCollection ('[page,basTarih,bitisTarih,isAdi,domain,firma,seciliKontrolEden,seciliYapacakKisi,seciliIsDurum,isId,seciliBolge]', function (nw, ov) {
    
         console.log(nw[0] + "-" + ov[0]);
         let q = "";//`#?page=${nw[0]}`;

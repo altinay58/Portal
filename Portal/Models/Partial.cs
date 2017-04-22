@@ -9,6 +9,14 @@ namespace Portal.Models
 {
     public static class Partial
     {
+        public static IEnumerable<Etiket> Etiketler()
+        {
+            using (var db = new PortalEntities())
+            {
+                return db.Etikets.ToList();
+            }
+        }
+
         public static Etiket EtiketGetir(int id)
         {
             using (var db = new PortalEntities())

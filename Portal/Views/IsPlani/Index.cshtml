@@ -175,7 +175,7 @@
                                             <option ng-repeat="k in bolgeler" value="{{k.KonumID}}">{{k.Konum}}</option>
                                         </select>
                                     </td>                                 
-                                    <td>ödeme</td>
+                                    <td><input type="text" name="odeme" ng-model="odeme" ng-keyup="getirData(odeme)" placeholder="odeme" class="form-control"></td>
                                     <td> <input type="text" name="firma" ng-model="firmaAdi" ng-keyup="getirData(firmaAdi)" placeholder="Firma" class="form-control"></td>
                                     <td><input type="text" name="firma" ng-model="yetkiliAdi" ng-keyup="getirData(yetkiliAdi)" placeholder="Telefon No" class="form-control"></td>
                                     <td><input type="text" name="firma" ng-model="telNo" ng-keyup="getirData(telNo)" placeholder="Telefon No" class="form-control"></td>
@@ -184,7 +184,6 @@
                                     <td> </td>
                                     @*<td></td>*@
                                     <td><a href="/Firmalar/FirmaKaydet/6228">Düzenle</a></td>
-                                   
                                 </tr>
                                 <tr ng-repeat="x in firmalar">
                                     <td> {{x.konum}} </td>

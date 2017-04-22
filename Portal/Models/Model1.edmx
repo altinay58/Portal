@@ -883,18 +883,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Arayanlar_Etiket">
-          <End Role="Etiket" Type="Self.Etiket" Multiplicity="0..1" />
-          <End Role="Arayanlar" Type="Self.Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Etiket">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="AramaYontemiId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Arayanlar_Firma">
           <End Role="Firma" Type="Self.Firma" Multiplicity="0..1" />
           <End Role="Arayanlar" Type="Self.Arayanlar" Multiplicity="*" />
@@ -2035,10 +2023,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="DomainKategori" EntitySet="DomainKategori" />
             <End Role="Arayanlar" EntitySet="Arayanlar" />
           </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_Etiket" Association="Self.FK_Arayanlar_Etiket">
-            <End Role="Etiket" EntitySet="Etiket" />
-            <End Role="Arayanlar" EntitySet="Arayanlar" />
-          </AssociationSet>
           <AssociationSet Name="FK_Arayanlar_Firma" Association="Self.FK_Arayanlar_Firma">
             <End Role="Firma" EntitySet="Firma" />
             <End Role="Arayanlar" EntitySet="Arayanlar" />
@@ -2395,10 +2379,10 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="KonumID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Konum1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="KonumAciklama" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_Konum" FromRole="Konum" ToRole="Arayanlar" />
           <NavigationProperty Name="GidilenMusteris" Relationship="PortalModel.FK_GidilenMusteri_Konum" FromRole="Konum" ToRole="GidilenMusteri" />
           <NavigationProperty Name="Randevus" Relationship="PortalModel.FK_Randevu_Konum" FromRole="Konum" ToRole="Randevu" />
           <NavigationProperty Name="Firmas" Relationship="PortalModel.FK_Firma_Konum" FromRole="Konum" ToRole="Firma" />
+          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_Konum" FromRole="Konum" ToRole="Arayanlar" />
         </EntityType>
         <EntityContainer Name="PortalEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Ayars" EntityType="Self.Ayar" />
@@ -2412,7 +2396,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="StandartProjeIsleris" EntityType="PortalModel.StandartProjeIsleri" />
           <EntitySet Name="Aramas" EntityType="PortalModel.Arama" />
           <EntitySet Name="ArayanGrups" EntityType="PortalModel.ArayanGrup" />
-          <EntitySet Name="Arayanlars" EntityType="PortalModel.Arayanlar" />
           <EntitySet Name="AspNetRoles" EntityType="PortalModel.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="PortalModel.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="PortalModel.AspNetUserLogin" />
@@ -2455,42 +2438,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="Temas" EntityType="PortalModel.Tema" />
           <EntitySet Name="WebLogs" EntityType="PortalModel.WebLog" />
           <EntitySet Name="YorumDurums" EntityType="PortalModel.YorumDurum" />
-          <AssociationSet Name="FK_Arayanlar_ArayanGrup" Association="PortalModel.FK_Arayanlar_ArayanGrup">
-            <End Role="ArayanGrup" EntitySet="ArayanGrups" />
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_AspNetUsers" Association="PortalModel.FK_Arayanlar_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_DomainKategori" Association="PortalModel.FK_Arayanlar_DomainKategori">
-            <End Role="DomainKategori" EntitySet="DomainKategoris" />
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_Konum" Association="PortalModel.FK_Arayanlar_Konum">
-            <End Role="Konum" EntitySet="Konums" />
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_Sektorler" Association="PortalModel.FK_Arayanlar_Sektorler">
-            <End Role="Sektorler" EntitySet="Sektorlers" />
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_isler_Arayanlar" Association="PortalModel.FK_isler_Arayanlar">
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-            <End Role="isler" EntitySet="islers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Randevu_Arayanlar" Association="PortalModel.FK_Randevu_Arayanlar">
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-            <End Role="Randevu" EntitySet="Randevus" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Teklif_Arayanlar" Association="PortalModel.FK_Teklif_Arayanlar">
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-            <End Role="Teklif" EntitySet="Teklifs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TeklifDetay_TeklifDetay" Association="PortalModel.FK_TeklifDetay_TeklifDetay">
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-            <End Role="TeklifDetay" EntitySet="TeklifDetays" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="PortalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
@@ -2648,10 +2595,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="DomainKayitliFirma" EntitySet="DomainKayitliFirmas" />
             <End Role="Domain" EntitySet="Domains" />
           </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_MailSablanlari" Association="PortalModel.FK_Arayanlar_MailSablanlari">
-            <End Role="MailSablonu" EntitySet="MailSablonus" />
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-          </AssociationSet>
           <EntitySet Name="ArayanListesis" EntityType="PortalModel.ArayanListesi" />
           <EntitySet Name="DomainNots" EntityType="PortalModel.DomainNot" />
           <EntitySet Name="ZamanIs" EntityType="PortalModel.ZamanI" />
@@ -2733,14 +2676,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="ArayanGrup" EntitySet="ArayanGrups" />
             <End Role="Firma" EntitySet="Firmas" />
           </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_Firma" Association="PortalModel.FK_Arayanlar_Firma">
-            <End Role="Firma" EntitySet="Firmas" />
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Firma_Arayanlar" Association="PortalModel.FK_Firma_Arayanlar">
-            <End Role="Arayanlar" EntitySet="Arayanlars" />
-            <End Role="Firma" EntitySet="Firmas" />
-          </AssociationSet>
           <AssociationSet Name="FK_CariHareket_Firma" Association="PortalModel.FK_CariHareket_Firma">
             <End Role="Firma" EntitySet="Firmas" />
             <End Role="CariHareket" EntitySet="CariHarekets" />
@@ -2813,9 +2748,54 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="Firma" EntitySet="Firmas" />
             <End Role="Teklif" EntitySet="Teklifs" />
           </AssociationSet>
-          <AssociationSet Name="FK_Arayanlar_Etiket" Association="PortalModel.FK_Arayanlar_Etiket">
-            <End Role="Etiket" EntitySet="Etikets" />
+          <EntitySet Name="Arayanlars" EntityType="PortalModel.Arayanlar" />
+          <AssociationSet Name="FK_Arayanlar_ArayanGrup" Association="PortalModel.FK_Arayanlar_ArayanGrup">
+            <End Role="ArayanGrup" EntitySet="ArayanGrups" />
             <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_AspNetUsers" Association="PortalModel.FK_Arayanlar_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_DomainKategori" Association="PortalModel.FK_Arayanlar_DomainKategori">
+            <End Role="DomainKategori" EntitySet="DomainKategoris" />
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_Firma" Association="PortalModel.FK_Arayanlar_Firma">
+            <End Role="Firma" EntitySet="Firmas" />
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_Konum" Association="PortalModel.FK_Arayanlar_Konum">
+            <End Role="Konum" EntitySet="Konums" />
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_MailSablanlari" Association="PortalModel.FK_Arayanlar_MailSablanlari">
+            <End Role="MailSablonu" EntitySet="MailSablonus" />
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arayanlar_Sektorler" Association="PortalModel.FK_Arayanlar_Sektorler">
+            <End Role="Sektorler" EntitySet="Sektorlers" />
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Firma_Arayanlar" Association="PortalModel.FK_Firma_Arayanlar">
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+            <End Role="Firma" EntitySet="Firmas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_isler_Arayanlar" Association="PortalModel.FK_isler_Arayanlar">
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+            <End Role="isler" EntitySet="islers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Randevu_Arayanlar" Association="PortalModel.FK_Randevu_Arayanlar">
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+            <End Role="Randevu" EntitySet="Randevus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teklif_Arayanlar" Association="PortalModel.FK_Teklif_Arayanlar">
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+            <End Role="Teklif" EntitySet="Teklifs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeklifDetay_TeklifDetay" Association="PortalModel.FK_TeklifDetay_TeklifDetay">
+            <End Role="Arayanlar" EntitySet="Arayanlars" />
+            <End Role="TeklifDetay" EntitySet="TeklifDetays" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="isler">
@@ -2842,7 +2822,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="islerDosyaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="islerSira" Type="Int32" />
           <NavigationProperty Name="IsiYapacakKisis" Relationship="PortalModel.FK_IsiYapacakKisi_isler" FromRole="isler" ToRole="IsiYapacakKisi" />
-          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_isler_Arayanlar" FromRole="isler" ToRole="Arayanlar" />
           <NavigationProperty Name="Domain" Relationship="PortalModel.FK_isler_Domain" FromRole="isler" ToRole="Domain" />
           <NavigationProperty Name="IstekTipi" Relationship="PortalModel.FK_isler_IstekTipi" FromRole="isler" ToRole="IstekTipi" />
           <NavigationProperty Name="isKategori" Relationship="PortalModel.FK_isler_isKategori" FromRole="isler" ToRole="isKategori" />
@@ -2857,6 +2836,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="islerSiraNo" Type="Int32" />
           <NavigationProperty Name="TeknikRapors" Relationship="PortalModel.FK_TeknikRapor_isler" FromRole="isler" ToRole="TeknikRapor" />
           <NavigationProperty Name="Firma" Relationship="PortalModel.FK_isler_Firma" FromRole="isler" ToRole="Firma" />
+          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_isler_Arayanlar" FromRole="isler" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="IsiYapacakKisi">
           <Key>
@@ -2915,55 +2895,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           </Key>
           <Property Name="arayanGrupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="arayanGrupAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_ArayanGrup" FromRole="ArayanGrup" ToRole="Arayanlar" />
           <NavigationProperty Name="Firmas" Relationship="PortalModel.FK_Firma_ArayanGrup" FromRole="ArayanGrup" ToRole="Firma" />
-        </EntityType>
-        <EntityType Name="Arayanlar">
-          <Key>
-            <PropertyRef Name="arayanID" />
-          </Key>
-          <Property Name="arayanID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="arayanAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanSoyadi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanFirmaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanFirmaSahibiOzelligi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="arayanTelefonNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanCepTelNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanMailAdresi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanWebAdresi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanSehir" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanilce" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanAdres" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanRefKonumID" Type="Int32" />
-          <Property Name="arayanKonu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="arayanNot" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="arayanBegendigiWebSiteleri" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="arayanKayitTarih" Type="DateTime" Precision="3" />
-          <Property Name="arayanDomainKategoriID" Type="Int32" />
-          <Property Name="arayanTelefonaBakanKisiID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="arayanSektorID" Type="Int32" />
-          <Property Name="arayanGrupID" Type="Int32" />
-          <Property Name="arayanilkArama" Type="Boolean" />
-          <Property Name="arayanFirmaKayitDurum" Type="Boolean" />
-          <Property Name="arayanKayitliMusterimi" Type="Boolean" />
-          <Property Name="arayanKayitliRefFirmaID" Type="Int32" />
-          <NavigationProperty Name="ArayanGrup" Relationship="PortalModel.FK_Arayanlar_ArayanGrup" FromRole="Arayanlar" ToRole="ArayanGrup" />
-          <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_Arayanlar_AspNetUsers" FromRole="Arayanlar" ToRole="AspNetUser" />
-          <NavigationProperty Name="DomainKategori" Relationship="PortalModel.FK_Arayanlar_DomainKategori" FromRole="Arayanlar" ToRole="DomainKategori" />
-          <NavigationProperty Name="Konum" Relationship="PortalModel.FK_Arayanlar_Konum" FromRole="Arayanlar" ToRole="Konum" />
-          <NavigationProperty Name="Sektorler" Relationship="PortalModel.FK_Arayanlar_Sektorler" FromRole="Arayanlar" ToRole="Sektorler" />
-          <NavigationProperty Name="islers" Relationship="PortalModel.FK_isler_Arayanlar" FromRole="Arayanlar" ToRole="isler" />
-          <NavigationProperty Name="Randevus" Relationship="PortalModel.FK_Randevu_Arayanlar" FromRole="Arayanlar" ToRole="Randevu" />
-          <NavigationProperty Name="Teklifs" Relationship="PortalModel.FK_Teklif_Arayanlar" FromRole="Arayanlar" ToRole="Teklif" />
-          <NavigationProperty Name="TeklifDetays" Relationship="PortalModel.FK_TeklifDetay_TeklifDetay" FromRole="Arayanlar" ToRole="TeklifDetay" />
-          <Property Name="ArayanAraciAdi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="arayanMailSablonuId" Type="Int32" />
-          <NavigationProperty Name="MailSablonu" Relationship="PortalModel.FK_Arayanlar_MailSablanlari" FromRole="Arayanlar" ToRole="MailSablonu" />
-          <Property Name="EtiketArayanDepartmanId" Type="Int32" />
-          <NavigationProperty Name="Firma" Relationship="PortalModel.FK_Arayanlar_Firma" FromRole="Arayanlar" ToRole="Firma" />
-          <NavigationProperty Name="Firmas" Relationship="PortalModel.FK_Firma_Arayanlar" FromRole="Arayanlar" ToRole="Firma" />
-          <Property Name="AramaYontemiId" Type="Int32" />
-          <NavigationProperty Name="Etiket" Relationship="PortalModel.FK_Arayanlar_Etiket" FromRole="Arayanlar" ToRole="Etiket" />
+          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_ArayanGrup" FromRole="ArayanGrup" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -3015,7 +2948,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="SifreSifirlama" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_AspNetUsers" FromRole="AspNetUser" ToRole="Arayanlar" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="PortalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="PortalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="GelinmeyenGuns" Relationship="PortalModel.FK_GelinmeyenGun_AspNetUsers" FromRole="AspNetUser" ToRole="GelinmeyenGun" />
@@ -3033,6 +2965,7 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="TeknikRapors" Relationship="PortalModel.FK_TeknikRapor_AspNetUsers" FromRole="AspNetUser" ToRole="TeknikRapor" />
           <NavigationProperty Name="IsPlanis" Relationship="PortalModel.FK_IsPlani_AspNetUsers" FromRole="AspNetUser" ToRole="IsPlani" />
           <NavigationProperty Name="ToplantiyaKatilanlars" Relationship="PortalModel.FK_ToplantiyaKatilanlar_AspNetUsers" FromRole="AspNetUser" ToRole="ToplantiyaKatilanlar" />
+          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_AspNetUsers" FromRole="AspNetUser" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="CariHareket">
           <Key>
@@ -3104,13 +3037,13 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           </Key>
           <Property Name="DomainKategoriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DomainKategoriAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_DomainKategori" FromRole="DomainKategori" ToRole="Arayanlar" />
           <NavigationProperty Name="Domains" Relationship="PortalModel.FK_Domain_DomainKategori" FromRole="DomainKategori" ToRole="Domain" />
           <NavigationProperty Name="GidilenMusteris" Relationship="PortalModel.FK_GidilenMusteri_DomainKategori" FromRole="DomainKategori" ToRole="GidilenMusteri" />
           <NavigationProperty Name="Temas" Relationship="PortalModel.FK_Tema_DomainKategori" FromRole="DomainKategori" ToRole="Tema" />
           <NavigationProperty Name="SatisGorusmes" Relationship="PortalModel.FK_SatisGorusme_DomainKategori" FromRole="DomainKategori" ToRole="SatisGorusme" />
           <NavigationProperty Name="SatisFirsatis" Relationship="PortalModel.FK_SatisFirsati_DomainKategori" FromRole="DomainKategori" ToRole="SatisFirsati" />
           <NavigationProperty Name="Firmas" Relationship="PortalModel.FK_Firma_DomainKategori" FromRole="DomainKategori" ToRole="Firma" />
+          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_DomainKategori" FromRole="DomainKategori" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="GelinmeyenGun">
           <Key>
@@ -3336,9 +3269,9 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="RandevuSiraNo" Type="Int32" />
           <Property Name="RandevuSilDurum" Type="Boolean" />
           <Property Name="RandevuYeri" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_Randevu_Arayanlar" FromRole="Randevu" ToRole="Arayanlar" />
           <NavigationProperty Name="Konum" Relationship="PortalModel.FK_Randevu_Konum" FromRole="Randevu" ToRole="Konum" />
           <NavigationProperty Name="Firma" Relationship="PortalModel.FK_Randevu_Firma" FromRole="Randevu" ToRole="Firma" />
+          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_Randevu_Arayanlar" FromRole="Randevu" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="SanalPos">
           <Key>
@@ -3389,9 +3322,9 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           </Key>
           <Property Name="sektorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sektorAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_Sektorler" FromRole="Sektorler" ToRole="Arayanlar" />
           <NavigationProperty Name="GidilenMusteris" Relationship="PortalModel.FK_GidilenMusteri_Sektorler" FromRole="Sektorler" ToRole="GidilenMusteri" />
           <NavigationProperty Name="Firmas" Relationship="PortalModel.FK_Firma_Sektorler" FromRole="Sektorler" ToRole="Firma" />
+          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_Sektorler" FromRole="Sektorler" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="Seo">
           <Key>
@@ -3463,11 +3396,11 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="teklifDuzeltmeTarihi" Type="DateTime" Precision="3" />
           <Property Name="teklifFiyati" Type="Int32" />
           <Property Name="teklifDosyaAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_Teklif_Arayanlar" FromRole="Teklif" ToRole="Arayanlar" />
           <NavigationProperty Name="TeklifSonuc" Relationship="PortalModel.FK_Teklif_TeklifSonuc" FromRole="Teklif" ToRole="TeklifSonuc" />
           <NavigationProperty Name="TeklifTuru" Relationship="PortalModel.FK_Teklif_TeklifTuru" FromRole="Teklif" ToRole="TeklifTuru" />
           <NavigationProperty Name="TeklifDetays" Relationship="PortalModel.FK_TeklifDetay_Teklif" FromRole="Teklif" ToRole="TeklifDetay" />
           <NavigationProperty Name="Firma" Relationship="PortalModel.FK_Teklif_Firma" FromRole="Teklif" ToRole="Firma" />
+          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_Teklif_Arayanlar" FromRole="Teklif" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="TeklifDetay">
           <Key>
@@ -3480,8 +3413,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="teklifDetayEkleyenKisi" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="teklifDetayDuzenlemeTarihi" Type="DateTime" Precision="3" />
           <Property Name="teklifDetayArayanID" Type="Int32" />
-          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_TeklifDetay_TeklifDetay" FromRole="TeklifDetay" ToRole="Arayanlar" />
           <NavigationProperty Name="Teklif" Relationship="PortalModel.FK_TeklifDetay_Teklif" FromRole="TeklifDetay" ToRole="Teklif" />
+          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_TeklifDetay_TeklifDetay" FromRole="TeklifDetay" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="TeklifSonuc">
           <Key>
@@ -3532,114 +3465,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_YorumDurum_AspNetUsers" FromRole="YorumDurum" ToRole="AspNetUser" />
           <NavigationProperty Name="isler" Relationship="PortalModel.FK_YorumDurum_isYorum" FromRole="YorumDurum" ToRole="isler" />
         </EntityType>
-        <Association Name="FK_Arayanlar_ArayanGrup">
-          <End Type="PortalModel.ArayanGrup" Role="ArayanGrup" Multiplicity="0..1" />
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArayanGrup">
-              <PropertyRef Name="arayanGrupID" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="arayanGrupID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Arayanlar_AspNetUsers">
-          <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="arayanTelefonaBakanKisiID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Arayanlar_DomainKategori">
-          <End Type="PortalModel.DomainKategori" Role="DomainKategori" Multiplicity="0..1" />
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DomainKategori">
-              <PropertyRef Name="DomainKategoriID" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="arayanDomainKategoriID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Arayanlar_Konum">
-          <End Type="PortalModel.Konum" Role="Konum" Multiplicity="0..1" />
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Konum">
-              <PropertyRef Name="KonumID" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="arayanRefKonumID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Arayanlar_Sektorler">
-          <End Type="PortalModel.Sektorler" Role="Sektorler" Multiplicity="0..1" />
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sektorler">
-              <PropertyRef Name="sektorID" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="arayanSektorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_isler_Arayanlar">
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
-          <End Type="PortalModel.isler" Role="isler" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Arayanlar">
-              <PropertyRef Name="arayanID" />
-            </Principal>
-            <Dependent Role="isler">
-              <PropertyRef Name="islerRefArayanID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Randevu_Arayanlar">
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
-          <End Type="PortalModel.Randevu" Role="Randevu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Arayanlar">
-              <PropertyRef Name="arayanID" />
-            </Principal>
-            <Dependent Role="Randevu">
-              <PropertyRef Name="RandevuRefArayanID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Teklif_Arayanlar">
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
-          <End Type="PortalModel.Teklif" Role="Teklif" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Arayanlar">
-              <PropertyRef Name="arayanID" />
-            </Principal>
-            <Dependent Role="Teklif">
-              <PropertyRef Name="teklifRefArayanID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TeklifDetay_TeklifDetay">
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
-          <End Type="PortalModel.TeklifDetay" Role="TeklifDetay" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Arayanlar">
-              <PropertyRef Name="arayanID" />
-            </Principal>
-            <Dependent Role="TeklifDetay">
-              <PropertyRef Name="teklifDetayArayanID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
           <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4113,18 +3938,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Arayanlar_MailSablanlari">
-          <End Type="PortalModel.MailSablonu" Role="MailSablonu" Multiplicity="0..1" />
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MailSablonu">
-              <PropertyRef Name="MailSablonuID" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="arayanMailSablonuId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ArayanListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -4329,7 +4142,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="Renk" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="FontIcon" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_Etiket" FromRole="Etiket" ToRole="Arayanlar" />
         </EntityType>
         <EntityType Name="SatisGorusme">
           <Key>
@@ -4554,8 +4366,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <Property Name="FirmaVergiNumarasi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="FirmaSilindi" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ArayanGrup" Relationship="PortalModel.FK_Firma_ArayanGrup" FromRole="Firma" ToRole="ArayanGrup" />
-          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_Firma" FromRole="Firma" ToRole="Arayanlar" />
-          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_Firma_Arayanlar" FromRole="Firma" ToRole="Arayanlar" />
           <NavigationProperty Name="CariHarekets" Relationship="PortalModel.FK_CariHareket_Firma" FromRole="Firma" ToRole="CariHareket" />
           <NavigationProperty Name="Domains" Relationship="PortalModel.FK_Domain_Firma" FromRole="Firma" ToRole="Domain" />
           <NavigationProperty Name="DomainKategori" Relationship="PortalModel.FK_Firma_DomainKategori" FromRole="Firma" ToRole="DomainKategori" />
@@ -4575,6 +4385,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="SatisFirsatis" Relationship="PortalModel.FK_SatisFirsati_Firma" FromRole="Firma" ToRole="SatisFirsati" />
           <NavigationProperty Name="SatisGorusmes" Relationship="PortalModel.FK_SatisGorusme_Firma" FromRole="Firma" ToRole="SatisGorusme" />
           <NavigationProperty Name="Teklifs" Relationship="PortalModel.FK_Teklif_Firma" FromRole="Firma" ToRole="Teklif" />
+          <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_Firma" FromRole="Firma" ToRole="Arayanlar" />
+          <NavigationProperty Name="Arayanlar" Relationship="PortalModel.FK_Firma_Arayanlar" FromRole="Firma" ToRole="Arayanlar" />
         </EntityType>
         <Association Name="FK_Firma_ArayanGrup">
           <End Type="PortalModel.ArayanGrup" Role="ArayanGrup" Multiplicity="0..1" />
@@ -4585,30 +4397,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Principal>
             <Dependent Role="Firma">
               <PropertyRef Name="firmaAraciGrupID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Arayanlar_Firma">
-          <End Type="PortalModel.Firma" Role="Firma" Multiplicity="0..1" />
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Firma">
-              <PropertyRef Name="FirmaID" />
-            </Principal>
-            <Dependent Role="Arayanlar">
-              <PropertyRef Name="arayanKayitliRefFirmaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Firma_Arayanlar">
-          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
-          <End Type="PortalModel.Firma" Role="Firma" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Arayanlar">
-              <PropertyRef Name="arayanID" />
-            </Principal>
-            <Dependent Role="Firma">
-              <PropertyRef Name="firmaRefArayanID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4828,15 +4616,193 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Arayanlar_Etiket">
-          <End Type="PortalModel.Etiket" Role="Etiket" Multiplicity="0..1" />
+        <EntityType Name="Arayanlar">
+          <Key>
+            <PropertyRef Name="arayanID" />
+          </Key>
+          <Property Name="arayanID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="arayanAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanSoyadi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanFirmaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanFirmaSahibiOzelligi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="arayanTelefonNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanCepTelNo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanMailAdresi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanWebAdresi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanSehir" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanilce" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanAdres" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanRefKonumID" Type="Int32" />
+          <Property Name="arayanKonu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="arayanNot" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="arayanBegendigiWebSiteleri" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="arayanKayitTarih" Type="DateTime" Precision="3" />
+          <Property Name="arayanDomainKategoriID" Type="Int32" />
+          <Property Name="arayanTelefonaBakanKisiID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="arayanSektorID" Type="Int32" />
+          <Property Name="arayanGrupID" Type="Int32" />
+          <Property Name="arayanilkArama" Type="Boolean" />
+          <Property Name="arayanFirmaKayitDurum" Type="Boolean" />
+          <Property Name="arayanKayitliMusterimi" Type="Boolean" />
+          <Property Name="arayanKayitliRefFirmaID" Type="Int32" />
+          <Property Name="arayanMailSablonuId" Type="Int32" />
+          <Property Name="ArayanAraciAdi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EtiketArayanDepartmanId" Type="Int32" />
+          <Property Name="AramaYontemiId" Type="Int32" />
+          <NavigationProperty Name="ArayanGrup" Relationship="PortalModel.FK_Arayanlar_ArayanGrup" FromRole="Arayanlar" ToRole="ArayanGrup" />
+          <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_Arayanlar_AspNetUsers" FromRole="Arayanlar" ToRole="AspNetUser" />
+          <NavigationProperty Name="DomainKategori" Relationship="PortalModel.FK_Arayanlar_DomainKategori" FromRole="Arayanlar" ToRole="DomainKategori" />
+          <NavigationProperty Name="Firma" Relationship="PortalModel.FK_Arayanlar_Firma" FromRole="Arayanlar" ToRole="Firma" />
+          <NavigationProperty Name="Konum" Relationship="PortalModel.FK_Arayanlar_Konum" FromRole="Arayanlar" ToRole="Konum" />
+          <NavigationProperty Name="MailSablonu" Relationship="PortalModel.FK_Arayanlar_MailSablanlari" FromRole="Arayanlar" ToRole="MailSablonu" />
+          <NavigationProperty Name="Sektorler" Relationship="PortalModel.FK_Arayanlar_Sektorler" FromRole="Arayanlar" ToRole="Sektorler" />
+          <NavigationProperty Name="Firmas" Relationship="PortalModel.FK_Firma_Arayanlar" FromRole="Arayanlar" ToRole="Firma" />
+          <NavigationProperty Name="islers" Relationship="PortalModel.FK_isler_Arayanlar" FromRole="Arayanlar" ToRole="isler" />
+          <NavigationProperty Name="Randevus" Relationship="PortalModel.FK_Randevu_Arayanlar" FromRole="Arayanlar" ToRole="Randevu" />
+          <NavigationProperty Name="Teklifs" Relationship="PortalModel.FK_Teklif_Arayanlar" FromRole="Arayanlar" ToRole="Teklif" />
+          <NavigationProperty Name="TeklifDetays" Relationship="PortalModel.FK_TeklifDetay_TeklifDetay" FromRole="Arayanlar" ToRole="TeklifDetay" />
+        </EntityType>
+        <Association Name="FK_Arayanlar_ArayanGrup">
+          <End Type="PortalModel.ArayanGrup" Role="ArayanGrup" Multiplicity="0..1" />
           <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Etiket">
+            <Principal Role="ArayanGrup">
+              <PropertyRef Name="arayanGrupID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanGrupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arayanlar_AspNetUsers">
+          <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Arayanlar">
-              <PropertyRef Name="AramaYontemiId" />
+              <PropertyRef Name="arayanTelefonaBakanKisiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arayanlar_DomainKategori">
+          <End Type="PortalModel.DomainKategori" Role="DomainKategori" Multiplicity="0..1" />
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DomainKategori">
+              <PropertyRef Name="DomainKategoriID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanDomainKategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arayanlar_Firma">
+          <End Type="PortalModel.Firma" Role="Firma" Multiplicity="0..1" />
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firma">
+              <PropertyRef Name="FirmaID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanKayitliRefFirmaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arayanlar_Konum">
+          <End Type="PortalModel.Konum" Role="Konum" Multiplicity="0..1" />
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Konum">
+              <PropertyRef Name="KonumID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanRefKonumID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arayanlar_MailSablanlari">
+          <End Type="PortalModel.MailSablonu" Role="MailSablonu" Multiplicity="0..1" />
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MailSablonu">
+              <PropertyRef Name="MailSablonuID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanMailSablonuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arayanlar_Sektorler">
+          <End Type="PortalModel.Sektorler" Role="Sektorler" Multiplicity="0..1" />
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sektorler">
+              <PropertyRef Name="sektorID" />
+            </Principal>
+            <Dependent Role="Arayanlar">
+              <PropertyRef Name="arayanSektorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Firma_Arayanlar">
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
+          <End Type="PortalModel.Firma" Role="Firma" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arayanlar">
+              <PropertyRef Name="arayanID" />
+            </Principal>
+            <Dependent Role="Firma">
+              <PropertyRef Name="firmaRefArayanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_isler_Arayanlar">
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
+          <End Type="PortalModel.isler" Role="isler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arayanlar">
+              <PropertyRef Name="arayanID" />
+            </Principal>
+            <Dependent Role="isler">
+              <PropertyRef Name="islerRefArayanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Randevu_Arayanlar">
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
+          <End Type="PortalModel.Randevu" Role="Randevu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arayanlar">
+              <PropertyRef Name="arayanID" />
+            </Principal>
+            <Dependent Role="Randevu">
+              <PropertyRef Name="RandevuRefArayanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teklif_Arayanlar">
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
+          <End Type="PortalModel.Teklif" Role="Teklif" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arayanlar">
+              <PropertyRef Name="arayanID" />
+            </Principal>
+            <Dependent Role="Teklif">
+              <PropertyRef Name="teklifRefArayanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeklifDetay_TeklifDetay">
+          <End Type="PortalModel.Arayanlar" Role="Arayanlar" Multiplicity="0..1" />
+          <End Type="PortalModel.TeklifDetay" Role="TeklifDetay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arayanlar">
+              <PropertyRef Name="arayanID" />
+            </Principal>
+            <Dependent Role="TeklifDetay">
+              <PropertyRef Name="teklifDetayArayanID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4937,41 +4903,6 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
               <MappingFragment StoreEntitySet="ArayanGrup">
                 <ScalarProperty Name="arayanGrupAdi" ColumnName="arayanGrupAdi" />
                 <ScalarProperty Name="arayanGrupID" ColumnName="arayanGrupID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Arayanlars">
-            <EntityTypeMapping TypeName="PortalModel.Arayanlar">
-              <MappingFragment StoreEntitySet="Arayanlar">
-                <ScalarProperty Name="AramaYontemiId" ColumnName="AramaYontemiId" />
-                <ScalarProperty Name="EtiketArayanDepartmanId" ColumnName="EtiketArayanDepartmanId" />
-                <ScalarProperty Name="arayanMailSablonuId" ColumnName="arayanMailSablonuId" />
-                <ScalarProperty Name="ArayanAraciAdi" ColumnName="ArayanAraciAdi" />
-                <ScalarProperty Name="arayanKayitliRefFirmaID" ColumnName="arayanKayitliRefFirmaID" />
-                <ScalarProperty Name="arayanKayitliMusterimi" ColumnName="arayanKayitliMusterimi" />
-                <ScalarProperty Name="arayanFirmaKayitDurum" ColumnName="arayanFirmaKayitDurum" />
-                <ScalarProperty Name="arayanilkArama" ColumnName="arayanilkArama" />
-                <ScalarProperty Name="arayanGrupID" ColumnName="arayanGrupID" />
-                <ScalarProperty Name="arayanSektorID" ColumnName="arayanSektorID" />
-                <ScalarProperty Name="arayanTelefonaBakanKisiID" ColumnName="arayanTelefonaBakanKisiID" />
-                <ScalarProperty Name="arayanDomainKategoriID" ColumnName="arayanDomainKategoriID" />
-                <ScalarProperty Name="arayanKayitTarih" ColumnName="arayanKayitTarih" />
-                <ScalarProperty Name="arayanBegendigiWebSiteleri" ColumnName="arayanBegendigiWebSiteleri" />
-                <ScalarProperty Name="arayanNot" ColumnName="arayanNot" />
-                <ScalarProperty Name="arayanKonu" ColumnName="arayanKonu" />
-                <ScalarProperty Name="arayanRefKonumID" ColumnName="arayanRefKonumID" />
-                <ScalarProperty Name="arayanAdres" ColumnName="arayanAdres" />
-                <ScalarProperty Name="arayanilce" ColumnName="arayanilce" />
-                <ScalarProperty Name="arayanSehir" ColumnName="arayanSehir" />
-                <ScalarProperty Name="arayanWebAdresi" ColumnName="arayanWebAdresi" />
-                <ScalarProperty Name="arayanMailAdresi" ColumnName="arayanMailAdresi" />
-                <ScalarProperty Name="arayanCepTelNo" ColumnName="arayanCepTelNo" />
-                <ScalarProperty Name="arayanTelefonNo" ColumnName="arayanTelefonNo" />
-                <ScalarProperty Name="arayanFirmaSahibiOzelligi" ColumnName="arayanFirmaSahibiOzelligi" />
-                <ScalarProperty Name="arayanFirmaAdi" ColumnName="arayanFirmaAdi" />
-                <ScalarProperty Name="arayanSoyadi" ColumnName="arayanSoyadi" />
-                <ScalarProperty Name="arayanAdi" ColumnName="arayanAdi" />
-                <ScalarProperty Name="arayanID" ColumnName="arayanID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5745,6 +5676,41 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="FirmaAdres" ColumnName="FirmaAdres" />
                 <ScalarProperty Name="FirmaAdi" ColumnName="FirmaAdi" />
                 <ScalarProperty Name="FirmaID" ColumnName="FirmaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Arayanlars">
+            <EntityTypeMapping TypeName="PortalModel.Arayanlar">
+              <MappingFragment StoreEntitySet="Arayanlar">
+                <ScalarProperty Name="AramaYontemiId" ColumnName="AramaYontemiId" />
+                <ScalarProperty Name="EtiketArayanDepartmanId" ColumnName="EtiketArayanDepartmanId" />
+                <ScalarProperty Name="ArayanAraciAdi" ColumnName="ArayanAraciAdi" />
+                <ScalarProperty Name="arayanMailSablonuId" ColumnName="arayanMailSablonuId" />
+                <ScalarProperty Name="arayanKayitliRefFirmaID" ColumnName="arayanKayitliRefFirmaID" />
+                <ScalarProperty Name="arayanKayitliMusterimi" ColumnName="arayanKayitliMusterimi" />
+                <ScalarProperty Name="arayanFirmaKayitDurum" ColumnName="arayanFirmaKayitDurum" />
+                <ScalarProperty Name="arayanilkArama" ColumnName="arayanilkArama" />
+                <ScalarProperty Name="arayanGrupID" ColumnName="arayanGrupID" />
+                <ScalarProperty Name="arayanSektorID" ColumnName="arayanSektorID" />
+                <ScalarProperty Name="arayanTelefonaBakanKisiID" ColumnName="arayanTelefonaBakanKisiID" />
+                <ScalarProperty Name="arayanDomainKategoriID" ColumnName="arayanDomainKategoriID" />
+                <ScalarProperty Name="arayanKayitTarih" ColumnName="arayanKayitTarih" />
+                <ScalarProperty Name="arayanBegendigiWebSiteleri" ColumnName="arayanBegendigiWebSiteleri" />
+                <ScalarProperty Name="arayanNot" ColumnName="arayanNot" />
+                <ScalarProperty Name="arayanKonu" ColumnName="arayanKonu" />
+                <ScalarProperty Name="arayanRefKonumID" ColumnName="arayanRefKonumID" />
+                <ScalarProperty Name="arayanAdres" ColumnName="arayanAdres" />
+                <ScalarProperty Name="arayanilce" ColumnName="arayanilce" />
+                <ScalarProperty Name="arayanSehir" ColumnName="arayanSehir" />
+                <ScalarProperty Name="arayanWebAdresi" ColumnName="arayanWebAdresi" />
+                <ScalarProperty Name="arayanMailAdresi" ColumnName="arayanMailAdresi" />
+                <ScalarProperty Name="arayanCepTelNo" ColumnName="arayanCepTelNo" />
+                <ScalarProperty Name="arayanTelefonNo" ColumnName="arayanTelefonNo" />
+                <ScalarProperty Name="arayanFirmaSahibiOzelligi" ColumnName="arayanFirmaSahibiOzelligi" />
+                <ScalarProperty Name="arayanFirmaAdi" ColumnName="arayanFirmaAdi" />
+                <ScalarProperty Name="arayanSoyadi" ColumnName="arayanSoyadi" />
+                <ScalarProperty Name="arayanAdi" ColumnName="arayanAdi" />
+                <ScalarProperty Name="arayanID" ColumnName="arayanID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

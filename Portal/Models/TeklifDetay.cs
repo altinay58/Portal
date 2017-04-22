@@ -22,7 +22,7 @@ namespace Portal.Models
         public Nullable<System.DateTime> teklifDetayDuzenlemeTarihi { get; set; }
         public Nullable<int> teklifDetayArayanID { get; set; }
     
-        public virtual Arayanlar Arayanlar { get; set; }
         public virtual Teklif Teklif { get; set; }
+        public virtual Arayanlar Arayanlar { get; set; }
     }
 }
