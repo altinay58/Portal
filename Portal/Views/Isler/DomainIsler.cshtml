@@ -17,6 +17,7 @@
     string jsnDomain = JsonConvert.SerializeObject(domainBilgi);
 }
 
+
 <div style="margin-top:0px" ng-controller="domainIslerCtrl" ng-init="init('@jsnDomain','@JsonConvert.SerializeObject(ViewBag.guncelKullanici)',@Sorgular.DomainToplamZaman(Model.DomainID),@Model.RefDomainFirmaID)">
     <div class="clearfix" style="margin-bottom:5px">
         <div class="" style="display:inline-block;float:left;margin:0;font-size:20px">
@@ -259,7 +260,8 @@
                                                         <div class="timeline-body-content">
 
                                                             <div class="col-sm-10">
-                                                                <textarea name="Adres"  class="form-control" ng-model="x.yorumAciklamaModel"></textarea>                                                            
+                                                                <div ckeditor="options" class="ckeditor form-control" ng-model="x.yorumAciklamaModel"ready="onReady()"></div>                                                              
+                                                                                                                        
                                                             </div>
                                                             <div class="col-sm-2">
                                                                 <button class="btn btn-circle green btn-sm" ng-click="yorumEkle(x,$index)">
@@ -449,11 +451,12 @@ animation-name: fadeIn;
 </style>
 }
 @section scripts{
+<script src="/Content/assets/global/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.signalR-2.2.1.min.js"></script>
 @*<script src="/signalr/hubs"></script>*@
 <script src="@Url.Content("/signalr/hubs")"></script>
 <script src="/js/services/domainIslerService.js?v=1.0.72"></script>
-<script src="/js/controllers/domainIslerCtrl.js?v=1.0.85"></script>
+<script src="/js/controllers/domainIslerCtrl.js?v=1.0.86"></script>
 @*<script src="/Content/assets/global/plugins/moment.min.js" type="text/javascript"></script>*@
 
     <script>   

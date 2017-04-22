@@ -57,6 +57,16 @@ angModule.controller("domainIslerCtrl", function ($scope, $timeout, $window, dom
         BeklemeyeAl:1,YayinaAl:2,YayiniDurdur:3
     }
     self.yukleniyor = true;
+    $scope.options = {
+        language: 'en',
+        allowedContent: true,
+        entities: false
+    };
+
+    // Called when the editor is completely ready. 
+    $scope.onReady = function () {
+        // ... 
+    };
     angular.element(document).ready(function () {
         console.log(self.guncelDomainId);
         self.getirDomainIsler();

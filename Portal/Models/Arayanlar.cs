@@ -71,6 +71,5 @@ namespace Portal.Models
         public virtual Firma Firma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Firma> Firmas { get; set; }
-        public virtual Etiket Etiket { get; set; }
     }
 }
