@@ -15,10 +15,10 @@ namespace Portal.Controllers
         }
         #region carihareket
         [Authorize(Roles = "Muhasebe")]
-        public ActionResult List(int? p,string q)
+        public ActionResult List(int? p,string q,string s)
         {
             int baslangic = ((p ?? 1) - 1) * PagerCount;
-            var datas = Db.CariHarekets.GetirCariHareketler(PagerCount, baslangic,q);
+            var datas = Db.CariHarekets.GetirCariHareketler(PagerCount, baslangic,q,s);
 
             int totalCount = Db.CariHarekets.Where(c=>(string.IsNullOrEmpty(q) ? true : c.Firma.FirmaAdi.ToUpper().Contains(q.ToUpper())))
                             .Count();
@@ -116,20 +116,27 @@ namespace Portal.Controllers
             TempData[SUCESS] = "Kaydedildi";
             return RedirectToAction("List");
         }
-        [Authorize(Roles = "Muhasebe")]
-        public ActionResult CariHareketSil(int id)
-        {
-            CariHareket entity = Db.CariHarekets.SingleOrDefault(x => x.ChID == id);
-            Db.CariHarekets.Remove(entity);
-            Db.SaveChanges();
-            TempData[SUCESS] = "Kayıt silindi";
-            return RedirectToAction("List");
-        }
+
+        // Cari hareketi sildiğimizde satış kısmındaki veriler değişmiyor. Kasadan girişi siliyoruz. Satıştan düşmüyor. Satış ödenmiş gibi duruyor.
+        //[Authorize(Roles = "Muhasebe")]
+        //public ActionResult CariHareketSil(int id)
+        //{
+        //    CariHareket entity = Db.CariHarekets.SingleOrDefault(x => x.ChID == id);
+        //    Db.CariHarekets.Remove(entity);
+        //    Db.SaveChanges();
+        //    TempData[SUCESS] = "Kayıt silindi";
+        //    return RedirectToAction("List");
+        //}
         #endregion carihareket
         #region satislar
         [Authorize(Roles = "Muhasebe,Satis")]
         public ActionResult Satislar(int? p,string q)
         {
+            if(User.IsInRole("MusteriTemsilcisi"))
+            {
+                TempData[ERROR] = "Bu bölüme giriş yetkiniz bulunmuyor.";
+                return RedirectToAction("Index", "Home");
+            }
             int baslangic = ((p ?? 1) - 1) * PagerCount;
             var datas = Db.Satis.GetirSatislar(PagerCount, baslangic,q);
             int totalCount = Db.Satis.Where(x => x.refSatisID == null && (string.IsNullOrEmpty(q) ? true : x.Firma.FirmaAdi.ToUpper().Contains(q.ToUpper())))

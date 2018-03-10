@@ -4,12 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5807e76d4da146d0b033f6692acfa5bd" Name="Diagram1" ZoomLevel="57">
+      <Diagram DiagramId="5807e76d4da146d0b033f6692acfa5bd" Name="Diagram1" ZoomLevel="62">
         <EntityTypeShape EntityType="PortalModel.Ayar" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PortalModel.Konum" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PortalModel.isler" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="PortalModel.IsiYapacakKisi" Width="1.5" PointX="3" PointY="5.25" />
-        <AssociationConnector Association="PortalModel.FK_IsiYapacakKisi_isler" />
         <EntityTypeShape EntityType="PortalModel.StandartProjeIsleri" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="PortalModel.Arama" Width="1.5" PointX="18.125" PointY="9.25" />
         <EntityTypeShape EntityType="PortalModel.ArayanGrup" Width="1.5" PointX="3" PointY="10.625" />
@@ -19,7 +17,6 @@
         <EntityTypeShape EntityType="PortalModel.AspNetUser" Width="1.5" PointX="6" PointY="6.875" />
         <EntityTypeShape EntityType="PortalModel.CariHareket" Width="1.5" PointX="12.75" PointY="34.5" />
         <EntityTypeShape EntityType="PortalModel.Chat" Width="1.5" PointX="20.125" PointY="5.25" />
-        <EntityTypeShape EntityType="PortalModel.Domain" Width="1.5" PointX="8.25" PointY="17.125" />
         <EntityTypeShape EntityType="PortalModel.DomainKategori" Width="1.5" PointX="6" PointY="15.25" />
         <EntityTypeShape EntityType="PortalModel.GelinmeyenGun" Width="1.5" PointX="11.25" PointY="48.875" />
         <EntityTypeShape EntityType="PortalModel.GidilenMusteri" Width="1.5" PointX="15.75" PointY="8.875" />
@@ -67,23 +64,10 @@
         <AssociationConnector Association="PortalModel.FK_StandartProjeIsleri_AspNetUsers" />
         <AssociationConnector Association="PortalModel.FK_StandartProjeIsleri_AspNetUsers1" />
         <AssociationConnector Association="PortalModel.FK_YorumDurum_AspNetUsers" />
-        <AssociationConnector Association="PortalModel.FK_Domain_DomainKategori" />
-        <AssociationConnector Association="PortalModel.FK_Domain_Hosting" />
-        <AssociationConnector Association="PortalModel.FK_Domain_KayitliFirma" />
-        <AssociationConnector Association="PortalModel.FK_Istekler_Domain" />
-        <AssociationConnector Association="PortalModel.FK_isKategori_Domain" />
-        <AssociationConnector Association="PortalModel.FK_isler_Domain" />
-        <AssociationConnector Association="PortalModel.FK_Seo_Domain" />
-        <AssociationConnector Association="PortalModel.FK_SiteKontrolDomainBirlestir_Domain" />
         <AssociationConnector Association="PortalModel.FK_GidilenMusteri_DomainKategori" />
         <AssociationConnector Association="PortalModel.FK_Tema_DomainKategori" />
         <AssociationConnector Association="PortalModel.FK_GidilenMusteri_Konum" />
         <AssociationConnector Association="PortalModel.FK_GidilenMusteri_Sektorler" />
-        <AssociationConnector Association="PortalModel.FK_isler_IstekTipi" />
-        <AssociationConnector Association="PortalModel.FK_isler_isKategori" />
-        <AssociationConnector Association="PortalModel.FK_isler_isOncelikSira" />
-        <AssociationConnector Association="PortalModel.FK_isYorum_isler" />
-        <AssociationConnector Association="PortalModel.FK_YorumDurum_isYorum" />
         <AssociationConnector Association="PortalModel.FK_Randevu_Konum" />
         <AssociationConnector Association="PortalModel.FK_Makale_MakaleKategori" />
         <AssociationConnector Association="PortalModel.FK_ProjeIsi_Proje" />
@@ -94,13 +78,9 @@
         <AssociationConnector Association="PortalModel.FK_TeklifDetay_Teklif" />
         <AssociationConnector Association="PortalModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="PortalModel.DomainKayitliFirma" Width="1.5" PointX="7.375" PointY="0.75" />
-        <AssociationConnector Association="PortalModel.FK_Domain_DomainKayitliFirma" />
-        <EntityTypeShape EntityType="PortalModel.ArayanListesi" Width="1.5" PointX="10.375" PointY="5.75" />
         <EntityTypeShape EntityType="PortalModel.DomainNot" Width="1.5" PointX="8.25" PointY="25.5" />
         <EntityTypeShape EntityType="PortalModel.ZamanI" Width="1.5" PointX="12.375" PointY="5.75" />
         <AssociationConnector Association="PortalModel.FK_Domain_RefKayitYapanKullanici" />
-        <AssociationConnector Association="PortalModel.FK_Domain_RefIsId" />
-        <AssociationConnector Association="PortalModel.FK_Domain_RefDomainId" />
         <EntityTypeShape EntityType="PortalModel.FirmaKisi" Width="1.5" PointX="5.375" PointY="19.25" />
         <EntityTypeShape EntityType="PortalModel.RandevularView" Width="1.5" PointX="12.375" PointY="8.75" />
         <EntityTypeShape EntityType="PortalModel.IslerListesi" Width="1.5" PointX="13.625" PointY="0.75" />
@@ -108,7 +88,6 @@
         <EntityTypeShape EntityType="PortalModel.MesaiCizelgesi" Width="1.5" PointX="14.375" PointY="4.75" />
         <EntityTypeShape EntityType="PortalModel.ToDo" Width="1.5" PointX="16.375" PointY="0.75" />
         <EntityTypeShape EntityType="PortalModel.TeknikRapor" Width="1.5" PointX="3" PointY="24.5" />
-        <AssociationConnector Association="PortalModel.FK_TeknikRapor_isler" />
         <AssociationConnector Association="PortalModel.FK_TeknikRapor_AspNetUsers" />
         <EntityTypeShape EntityType="PortalModel.Etiket" Width="1.5" PointX="18.375" PointY="0.75" />
         <EntityTypeShape EntityType="PortalModel.SatisGorusme" Width="1.5" PointX="19.25" PointY="19.125" />
@@ -126,8 +105,46 @@
         <AssociationConnector Association="PortalModel.FK_SatisFirsati_FirmaKisi" />
         <AssociationConnector Association="PortalModel.FK_IsPlani_SatisFirsati" />
         <AssociationConnector Association="PortalModel.FK_SatisFirsatiFiyatRevizyon_SatisFirsati" />
-        <EntityTypeShape EntityType="PortalModel.Firma" Width="1.5" PointX="21.5" PointY="0.75" />
+        <EntityTypeShape EntityType="PortalModel.ArayanListesi" Width="1.5" PointX="8.375" PointY="7.75" />
+        <EntityTypeShape EntityType="PortalModel.DomainUrun" Width="1.5" PointX="8.625" PointY="12.875" />
+        <EntityTypeShape EntityType="PortalModel.Arayanlar" Width="1.5" PointX="28.875" PointY="3.875" />
+        <EntityTypeShape EntityType="PortalModel.Domain" Width="1.5" PointX="28.875" PointY="14.5" />
+        <EntityTypeShape EntityType="PortalModel.isler" Width="1.5" PointX="31.125" PointY="13.625" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_ArayanGrup" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_Etiket" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_FirmaKisi" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_Konum" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_MailSablanlari" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_Sektorler" />
+        <AssociationConnector Association="PortalModel.FK_isler_Arayanlar" />
+        <AssociationConnector Association="PortalModel.FK_Randevu_Arayanlar" />
+        <AssociationConnector Association="PortalModel.FK_Teklif_Arayanlar" />
+        <AssociationConnector Association="PortalModel.FK_TeklifDetay_TeklifDetay" />
+        <AssociationConnector Association="PortalModel.FK_Domain_DomainKategori" />
+        <AssociationConnector Association="PortalModel.FK_Domain_DomainKayitliFirma" />
+        <AssociationConnector Association="PortalModel.FK_Domain_DomainUrun" />
+        <AssociationConnector Association="PortalModel.FK_Domain_Hosting" />
+        <AssociationConnector Association="PortalModel.FK_Domain_KayitliFirma" />
+        <AssociationConnector Association="PortalModel.FK_Domain_RefDomainId" />
+        <AssociationConnector Association="PortalModel.FK_Istekler_Domain" />
+        <AssociationConnector Association="PortalModel.FK_isKategori_Domain" />
+        <AssociationConnector Association="PortalModel.FK_isler_Domain" />
+        <AssociationConnector Association="PortalModel.FK_Seo_Domain" />
+        <AssociationConnector Association="PortalModel.FK_SiteKontrolDomainBirlestir_Domain" />
+        <AssociationConnector Association="PortalModel.FK_IsiYapacakKisi_isler" />
+        <AssociationConnector Association="PortalModel.FK_isler_IstekTipi" />
+        <AssociationConnector Association="PortalModel.FK_isler_isKategori" />
+        <AssociationConnector Association="PortalModel.FK_Domain_RefIsId" />
+        <AssociationConnector Association="PortalModel.FK_isler_isOncelikSira" />
+        <AssociationConnector Association="PortalModel.FK_isYorum_isler" />
+        <AssociationConnector Association="PortalModel.FK_TeknikRapor_isler" />
+        <AssociationConnector Association="PortalModel.FK_YorumDurum_isYorum" />
+        <EntityTypeShape EntityType="PortalModel.Firma" Width="1.5" PointX="31.125" PointY="2" />
         <AssociationConnector Association="PortalModel.FK_Firma_ArayanGrup" />
+        <AssociationConnector Association="PortalModel.FK_Arayanlar_Firma" />
+        <AssociationConnector Association="PortalModel.FK_Firma_Arayanlar" />
         <AssociationConnector Association="PortalModel.FK_CariHareket_Firma" />
         <AssociationConnector Association="PortalModel.FK_Domain_Firma" />
         <AssociationConnector Association="PortalModel.FK_Firma_DomainKategori" />
@@ -146,20 +163,7 @@
         <AssociationConnector Association="PortalModel.FK_SatisFirsati_Firma" />
         <AssociationConnector Association="PortalModel.FK_SatisGorusme_Firma" />
         <AssociationConnector Association="PortalModel.FK_Teklif_Firma" />
-        <EntityTypeShape EntityType="PortalModel.Arayanlar" Width="1.5" PointX="24.75" PointY="4.875" />
-        <AssociationConnector Association="PortalModel.FK_Arayanlar_ArayanGrup" />
-        <AssociationConnector Association="PortalModel.FK_Arayanlar_AspNetUsers" />
-        <AssociationConnector Association="PortalModel.FK_Arayanlar_DomainKategori" />
-        <AssociationConnector Association="PortalModel.FK_Arayanlar_Firma" />
-        <AssociationConnector Association="PortalModel.FK_Arayanlar_Konum" />
-        <AssociationConnector Association="PortalModel.FK_Arayanlar_MailSablanlari" />
-        <AssociationConnector Association="PortalModel.FK_Arayanlar_Sektorler" />
-        <AssociationConnector Association="PortalModel.FK_Firma_Arayanlar" />
-        <AssociationConnector Association="PortalModel.FK_isler_Arayanlar" />
-        <AssociationConnector Association="PortalModel.FK_Randevu_Arayanlar" />
-        <AssociationConnector Association="PortalModel.FK_Teklif_Arayanlar" />
-        <AssociationConnector Association="PortalModel.FK_TeklifDetay_TeklifDetay" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

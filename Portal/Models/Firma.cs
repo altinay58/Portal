@@ -17,6 +17,7 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Firma()
         {
+            this.Arayanlars = new HashSet<Arayanlar>();
             this.CariHarekets = new HashSet<CariHareket>();
             this.Domains = new HashSet<Domain>();
             this.Firma1 = new HashSet<Firma>();
@@ -32,13 +33,17 @@ namespace Portal.Models
             this.SatisFirsatis = new HashSet<SatisFirsati>();
             this.SatisGorusmes = new HashSet<SatisGorusme>();
             this.Teklifs = new HashSet<Teklif>();
-            this.Arayanlars = new HashSet<Arayanlar>();
         }
     
         public int FirmaID { get; set; }
         public string FirmaAdi { get; set; }
         public string FirmaAdres { get; set; }
+        public string YetkiliAdi { get; set; }
+        public string YetkiliSoyAdi { get; set; }
+        public string YetkiliTelefon { get; set; }
+        public string YetkiliCepTelefon { get; set; }
         public Nullable<int> RefFirmaID { get; set; }
+        public string Email { get; set; }
         public Nullable<bool> Araci { get; set; }
         public Nullable<bool> Musteri { get; set; }
         public Nullable<bool> Personel { get; set; }
@@ -56,8 +61,14 @@ namespace Portal.Models
         public string FirmaVergiDairesi { get; set; }
         public string FirmaVergiNumarasi { get; set; }
         public bool FirmaSilindi { get; set; }
+        public string FirmaWebSitesi { get; set; }
+        public bool FirmaBorcluListesindeGizle { get; set; }
+        public string FirmaBorcNotu { get; set; }
     
         public virtual ArayanGrup ArayanGrup { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
+        public virtual Arayanlar Arayanlar { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CariHareket> CariHarekets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -92,8 +103,5 @@ namespace Portal.Models
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teklif> Teklifs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
-        public virtual Arayanlar Arayanlar { get; set; }
     }
 }

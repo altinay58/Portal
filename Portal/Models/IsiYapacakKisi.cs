@@ -18,7 +18,7 @@ namespace Portal.Models
         public string RefIsiYapacakKisiUserID { get; set; }
         public int RefIsID { get; set; }
     
-        public virtual isler isler { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual isler isler { get; set; }
     }
 }

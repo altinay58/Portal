@@ -30,65 +30,80 @@ namespace Portal.Controllers
             return View(satisFirsatis.ToList());
         }
         #region details
-        // GET: SatisFirsatis/Details/5
+
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Db.Configuration.ProxyCreationEnabled = false;
-            SatisFirsati satisFirsati = Db.SatisFirsatis.AsNoTracking().SingleOrDefault(x=>x.Id==id);
-
-
-            //var tarih = DateTime.Today;//satisFirsati.Tarih;
-            //tarih = tarih.AddDays(satisFirsati.GecerlilikSuresi);
-            //int kalanGun = (int)(tarih - satisFirsati.Tarih).TotalDays;
-       
-            var data = (from s in Db.SatisFirsatis.Include(s=>s.Firma) 
-                        where s.Id==id.Value
-                        let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderByDescending(x => x.Id).FirstOrDefault()
-                        let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderBy(x => x.Id).FirstOrDefault()
-                        //let fiyat=sonFiyat
-                        let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
-                        let kisi = s.Firma.FirmaKisis.FirstOrDefault()
-                        select new
-                        {
-                            Id=s.Id,
-                            Musteri= kisi.Ad + " "+ kisi.Soyad,
-                            DomainKategori = s.DomainKategori.DomainKategoriAdi,
-                            EtiketSatisAsamaId=s.EtiketSatisAsamaId,
-                            EtiketSatisFirsatDurumuId=s.EtiketSatisFirsatDurumuId,
-                            SonTeklif=sonKayit!=null ? sonKayit.Fiyat  : 0,
-                            KalanSure= DbFunctions.DiffDays(DateTime.Today, tarih),
-                            SatisFirsatiFiyatRevizyons=s.SatisFirsatiFiyatRevizyons.OrderByDescending(x=>x.Id),
-                            FirmaKisiler=s.Firma.FirmaKisis,
-                            DosyaYolu=s.DosyaYolu,
-                            FirmaAdi=s.Firma.FirmaAdi,
-                            Firma=new {Id=s.Firma.FirmaID,Ad=s.Firma.FirmaAdi},
-                            Teklif = ilkKayit != null ? ilkKayit.Fiyat  : 0,
-                            Gorusmeler=(from g in Db.SatisGorusmes
-                                        from e in Db.Etikets
-                                        where g.EtiketSatisGorusmeTypeId==e.Value && e.Kategori == "EtiketSatisGorusmeTypeId"
-                                        && g.RefFirmaId==s.RefFirmaId
-                                        orderby g.Tarih descending
-                                        select new
-                                        {                                       
-                                            ProjeAdi=g.DomainKategori.DomainKategoriAdi,
-                                            Gorusme=g,
-                                            Etiket=e                                            
-                                        }
-                                        ).ToList()
-                        }
-                        ).FirstOrDefault();
-         
-            if (satisFirsati == null)
+            SatisFirsati satfir = Db.SatisFirsatis.Find(id);
+            if (satfir == null)
             {
                 return HttpNotFound();
             }
-            Db.Configuration.ProxyCreationEnabled = true;
-            return View(data);
+            return View(satfir);
         }
+
+        // GET: SatisFirsatis/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Db.Configuration.ProxyCreationEnabled = false;
+        //    SatisFirsati satisFirsati = Db.SatisFirsatis.AsNoTracking().SingleOrDefault(x=>x.Id==id);
+
+
+        //    //var tarih = DateTime.Today;//satisFirsati.Tarih;
+        //    //tarih = tarih.AddDays(satisFirsati.GecerlilikSuresi);
+        //    //int kalanGun = (int)(tarih - satisFirsati.Tarih).TotalDays;
+
+        //    var data = (from s in Db.SatisFirsatis.Include(s=>s.Firma) 
+        //                where s.Id==id.Value
+        //                let sonKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderByDescending(x => x.Id).FirstOrDefault()
+        //                let ilkKayit = Db.SatisFirsatiFiyatRevizyons.Where(x => x.RefSatisFirsatiId == id).OrderBy(x => x.Id).FirstOrDefault()
+        //                //let fiyat=sonFiyat
+        //                let tarih = SqlFunctions.DateAdd("day", (double)s.GecerlilikSuresi, s.Tarih)// s.Tarih.AddDays(s.GecerlilikSuresi)
+        //                let kisi = s.Firma.FirmaKisis.FirstOrDefault()
+        //                select new
+        //                {
+        //                    Id=s.Id,
+        //                    Musteri= kisi.Ad + " "+ kisi.Soyad,
+        //                    DomainKategori = s.DomainKategori.DomainKategoriAdi,
+        //                    EtiketSatisAsamaId=s.EtiketSatisAsamaId,
+        //                    EtiketSatisFirsatDurumuId=s.EtiketSatisFirsatDurumuId,
+        //                    SonTeklif=sonKayit!=null ? sonKayit.Fiyat  : 0,
+        //                    KalanSure= DbFunctions.DiffDays(DateTime.Today, tarih),
+        //                    SatisFirsatiFiyatRevizyons=s.SatisFirsatiFiyatRevizyons.OrderByDescending(x=>x.Id),
+        //                    FirmaKisiler=s.Firma.FirmaKisis,
+        //                    DosyaYolu=s.DosyaYolu,
+        //                    FirmaAdi=s.Firma.FirmaAdi,
+        //                    Firma=new {Id=s.Firma.FirmaID,Ad=s.Firma.FirmaAdi},
+        //                    Teklif = ilkKayit != null ? ilkKayit.Fiyat  : 0,
+        //                    Gorusmeler=(from g in Db.SatisGorusmes
+        //                                from e in Db.Etikets
+        //                                where g.EtiketSatisGorusmeTypeId==e.Value && e.Kategori == "EtiketSatisGorusmeTypeId"
+        //                                && g.RefFirmaId==s.RefFirmaId
+        //                                orderby g.Tarih descending
+        //                                select new
+        //                                {                                       
+        //                                    ProjeAdi=g.DomainKategori.DomainKategoriAdi,
+        //                                    Gorusme=g,
+        //                                    Etiket=e                                            
+        //                                }
+        //                                ).ToList()
+        //                }
+        //                ).FirstOrDefault();
+
+        //    if (satisFirsati == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    Db.Configuration.ProxyCreationEnabled = true;
+        //    return View(data);
+        //}
         public JsonResult FirmaTeklifleri(int firmaId,int guncelTeklifId)
         {
             Db.Configuration.ProxyCreationEnabled = false;

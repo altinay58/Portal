@@ -72,8 +72,8 @@
                                 </select>
                                 <select name="year1" style="width: 100px;">
                                     @{
-                                        int basYil = 2012;
-                                        int sonYil = DateTime.Now.Year;
+                                        int basYil = DateTime.Now.Year-1;
+                                        int sonYil = DateTime.Now.Year+1;
                                         for (int i = basYil; i <=sonYil; i++)
                                         {
                                             <option value="@i" @if (Yil1 == i) { @MvcHtmlString.Create("selected=\"selected\"")       }>

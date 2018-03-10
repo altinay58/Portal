@@ -11,15 +11,15 @@ using Microsoft.AspNet.Identity;
 
 namespace Portal.Controllers
 {
-    [Authorize(Roles = "Yonetim")]
+    [Authorize(Roles = "Yonetim,MusteriTemsilcisi")]
     public class DomainController : BaseController
     {
         const int  sayfada_gosterilecek_domain_sayisi = 10;
         public DomainController()
         {
-            ViewBag.guncelMenu = "Domainler";
         }
-        // GET: Domain
+        // GET: Domain            ViewBag.guncelMenu = "Domainler";
+
         public ActionResult Index()
         {
             return View();
@@ -112,6 +112,7 @@ namespace Portal.Controllers
             ViewBag.DomainKayitliFirma = Db.DomainKayitliFirmas.OrderBy(x=>x.DomainKayitliFirmaAdi);
             ViewBag.HostingDetay = Db.Hostings.GetirHosting();
             ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
+            ViewBag.DomainUrunleri = Db.DomainUruns.OrderBy(x => x.DomainUrunAdi);
             if (Request.UrlReferrer != null)
             {
                 //var ary = Request.UrlReferrer.ToString().Split('/');
@@ -146,16 +147,6 @@ namespace Portal.Controllers
                 entity.Kontrol = domain.Kontrol;
                 Db.SaveChanges();
                 TempData[SUCESS] = "Kaydedildi";
-                if (Request["oncekiSayfa"] != "")
-                {
-                    string rd = Request["oncekiSayfa"].Trim();
-                    rd = Server.HtmlDecode(rd);
-                    return Redirect(rd);
-                }
-                else
-                {
-                    return RedirectToAction("Domainler");
-                }
                
             }
             else
@@ -165,8 +156,9 @@ namespace Portal.Controllers
                 ViewBag.HostingDetay = Db.Hostings.GetirHosting();
                 ViewBag.DomainKategorileri = Db.DomainKategoris.GetirDomainKategorileri();
                 TempData["Error"] = "Domain daha önce eklenmiş!";
-                return View();
+               
             }
+            return RedirectToAction("Duzenle", new { id = id });
         }
         public ActionResult DomainSorgula(string domain)
         {
@@ -399,6 +391,7 @@ namespace Portal.Controllers
             ViewBag.DomainKayitliFirmalar = Db.DomainKayitliFirmas.OrderBy(x => x.DomainKayitliFirmaAdi);
             ViewBag.Hostingler = Db.Hostings.OrderBy(x => x.HostingAdi);
             ViewBag.DomainKategorileri = Db.DomainKategoris.OrderBy(x => x.DomainKategoriAdi);
+            ViewBag.DomainUrunleri = Db.DomainUruns.OrderBy(x => x.DomainUrunAdi);
         }
         public static string Temizle(string Kelime)
         {

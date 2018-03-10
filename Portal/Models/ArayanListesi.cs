@@ -23,11 +23,11 @@ namespace Portal.Models
         public string MailDurum { get; set; }
         public Nullable<int> Ticket { get; set; }
         public Nullable<System.DateTime> Tarih { get; set; }
-        public Nullable<bool> KayitDurum { get; set; }
-        public string Bolge { get; set; }
         public string StrTarih { get; set; }
+        public string Bolge { get; set; }
         public string Konu { get; set; }
-        public Nullable<int> KayitliFirmaId { get; set; }
+        public int KayitliFirmaId { get; set; }
+        public Nullable<bool> KayitDurum { get; set; }
         public Nullable<bool> KayitliMi { get; set; }
     }
 }

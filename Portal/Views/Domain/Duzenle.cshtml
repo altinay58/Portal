@@ -86,7 +86,7 @@
                                     {
                                         if (h.HostingID == Model.RefHostingID)
                                         {
-                                            <option value="@(h.HostingID)">@(h.HostingAdi)</option>
+                                            <option value="@(h.HostingID)" selected="selected">@(h.HostingAdi)</option>
                                         }
                                         else
                                         {
@@ -126,11 +126,34 @@
                                     {
                                         if (h.DomainKategoriID == Model.RefDomainKategori)
                                         {
-                                            <option value="@(h.DomainKategoriID)">@(h.DomainKategoriAdi)</option>
+                                            <option value="@(h.DomainKategoriID)" selected="selected">@(h.DomainKategoriAdi)</option>
                                         }
                                         else
                                         {
                                             <option value="@(h.DomainKategoriID)">@(h.DomainKategoriAdi)</option>
+                                        }
+
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label class="control-label col-md-3">Kategori</label>
+                        <div class="col-md-7">
+                            <select name="RefDomainUrunID" class="form-control select2">
+                                @{
+                                    foreach (DomainUrun h in ViewBag.DomainUrunleri)
+                                    {
+                                        if (h.DomainUrunID== Model.RefDomainUrunID)
+                                        {
+                                            <option value="@(h.DomainUrunID)" selected="selected">@(h.DomainUrunAdi)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@(h.DomainUrunID)">@(h.DomainUrunAdi)</option>
                                         }
 
                                     }

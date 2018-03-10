@@ -17,12 +17,12 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Domain()
         {
+            this.DomainNots = new HashSet<DomainNot>();
             this.Isteklers = new HashSet<Istekler>();
             this.isKategoris = new HashSet<isKategori>();
             this.islers = new HashSet<isler>();
             this.Seos = new HashSet<Seo>();
             this.SiteKontrolDomainBirlestirs = new HashSet<SiteKontrolDomainBirlestir>();
-            this.DomainNots = new HashSet<DomainNot>();
         }
     
         public int DomainID { get; set; }
@@ -49,10 +49,15 @@ namespace Portal.Models
         public bool GuncellemeSozlesmesiVarmi { get; set; }
         public bool OdemesiAlindi { get; set; }
         public string Note { get; set; }
+        public int RefDomainUrunID { get; set; }
     
         public virtual DomainKategori DomainKategori { get; set; }
+        public virtual DomainKayitliFirma DomainKayitliFirma { get; set; }
+        public virtual DomainUrun DomainUrun { get; set; }
         public virtual Hosting Hosting { get; set; }
         public virtual KayitliFirma KayitliFirma { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DomainNot> DomainNots { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Istekler> Isteklers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -63,9 +68,6 @@ namespace Portal.Models
         public virtual ICollection<Seo> Seos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SiteKontrolDomainBirlestir> SiteKontrolDomainBirlestirs { get; set; }
-        public virtual DomainKayitliFirma DomainKayitliFirma { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DomainNot> DomainNots { get; set; }
         public virtual Firma Firma { get; set; }
     }
 }

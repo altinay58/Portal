@@ -17,20 +17,18 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DomainKategori()
         {
-            this.Domains = new HashSet<Domain>();
             this.GidilenMusteris = new HashSet<GidilenMusteri>();
             this.Temas = new HashSet<Tema>();
             this.SatisGorusmes = new HashSet<SatisGorusme>();
             this.SatisFirsatis = new HashSet<SatisFirsati>();
-            this.Firmas = new HashSet<Firma>();
             this.Arayanlars = new HashSet<Arayanlar>();
+            this.Domains = new HashSet<Domain>();
+            this.Firmas = new HashSet<Firma>();
         }
     
         public int DomainKategoriID { get; set; }
         public string DomainKategoriAdi { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Domain> Domains { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GidilenMusteri> GidilenMusteris { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -40,8 +38,10 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Firma> Firmas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arayanlar> Arayanlars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Domain> Domains { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Firma> Firmas { get; set; }
     }
 }

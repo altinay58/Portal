@@ -10,7 +10,7 @@ namespace Portal.Models
         public static IEnumerable<Domain> GetirUzatmasiGelenler(this IEnumerable<Domain> kaynakTablo)
         {
             return from a in kaynakTablo
-                   where a.DomainDurum == true && a.UzatmaTarihi <= DateTime.Now.AddMonths(2)
+                   where a.DomainDurum == true && (a.UzatmaTarihi.Date == DateTime.Now.AddMonths(1).Date || a.UzatmaTarihi.Date == DateTime.Now.AddMonths(10).Date || a.UzatmaTarihi.Date == DateTime.Now.AddMonths(20).Date || a.UzatmaTarihi.Date == DateTime.Now.AddMonths(30).Date || a.UzatmaTarihi.Date == DateTime.Now.AddMonths(45).Date)
                    orderby a.UzatmaTarihi ascending
                    select a;
         }
@@ -197,12 +197,23 @@ namespace Portal.Models
                     orderby d.arayanKayitTarih descending
                     select d);
         }
-        public static IEnumerable<CariHareket> GetirCariHareketler(this IQueryable<CariHareket> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic,string searchVal)
+        public static IEnumerable<CariHareket> GetirCariHareketler(this IQueryable<CariHareket> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic,string searchVal, string siralama)
         {
-            return (from q in kaynakTablo
-                    where (string.IsNullOrEmpty(searchVal)?true:q.Firma.FirmaAdi.ToUpper().Contains(searchVal.ToUpper()))
-                    orderby q.ChTarihi descending
-                    select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            if(siralama == "i")
+            {
+                return (from q in kaynakTablo
+                        where (string.IsNullOrEmpty(searchVal) ? true : q.Firma.FirmaAdi.ToUpper().Contains(searchVal.ToUpper()))
+                        orderby q.ChID descending
+                        select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            }
+            else
+            {
+                return (from q in kaynakTablo
+                        where (string.IsNullOrEmpty(searchVal) ? true : q.Firma.FirmaAdi.ToUpper().Contains(searchVal.ToUpper()))
+                        orderby q.ChTarihi descending
+                        select q).Skip(baslangic).Take(sayfadaGosterilecekDomainSayisi);
+            }
+            
         }
         public static IEnumerable<Sati> GetirSatislar(this IQueryable<Sati> kaynakTablo, int sayfadaGosterilecekDomainSayisi, int baslangic, string searchVal)
         {

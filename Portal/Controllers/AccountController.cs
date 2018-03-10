@@ -96,7 +96,7 @@ namespace Portal.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult KullaniciParolaSifirla(string dil, string sifirlamaSifresi, string userID) //ForgotPassword()
+        public ActionResult KullaniciParolaSifirla(string sifirlamaSifresi, string userID) //ForgotPassword()
         {
             ApplicationUser kullanici = UserManager.FindById(userID);
             if (kullanici.PhoneNumber == sifirlamaSifresi)

@@ -18,10 +18,10 @@ namespace Portal.Models
         public isler()
         {
             this.IsiYapacakKisis = new HashSet<IsiYapacakKisi>();
-            this.isYorums = new HashSet<isYorum>();
-            this.YorumDurums = new HashSet<YorumDurum>();
             this.ZamanIs = new HashSet<ZamanI>();
+            this.isYorums = new HashSet<isYorum>();
             this.TeknikRapors = new HashSet<TeknikRapor>();
+            this.YorumDurums = new HashSet<YorumDurum>();
         }
     
         public int islerID { get; set; }
@@ -43,27 +43,27 @@ namespace Portal.Models
         public string islerCalisanTipi { get; set; }
         public string islerDosyaAdi { get; set; }
         public Nullable<int> islerSira { get; set; }
-        public int islerIsinDurumu { get; set; }
         public string islerGelisYontemi { get; set; }
         public bool islerBitisTarihiVarmi { get; set; }
         public Nullable<System.DateTime> islerBitisTarihi { get; set; }
         public Nullable<int> islerSiraNo { get; set; }
+        public int islerIsinDurumu { get; set; }
     
+        public virtual Arayanlar Arayanlar { get; set; }
+        public virtual Domain Domain { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IsiYapacakKisi> IsiYapacakKisis { get; set; }
-        public virtual Domain Domain { get; set; }
         public virtual IstekTipi IstekTipi { get; set; }
         public virtual isKategori isKategori { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ZamanI> ZamanIs { get; set; }
         public virtual isOncelikSira isOncelikSira { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<isYorum> isYorums { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<YorumDurum> YorumDurums { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ZamanI> ZamanIs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeknikRapor> TeknikRapors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<YorumDurum> YorumDurums { get; set; }
         public virtual Firma Firma { get; set; }
-        public virtual Arayanlar Arayanlar { get; set; }
     }
 }

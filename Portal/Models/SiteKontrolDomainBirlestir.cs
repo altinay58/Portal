@@ -21,7 +21,7 @@ namespace Portal.Models
         public System.DateTime SiteKontrolDomainBirlestirTarih { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual Domain Domain { get; set; }
         public virtual SiteKontrol SiteKontrol { get; set; }
+        public virtual Domain Domain { get; set; }
     }
 }

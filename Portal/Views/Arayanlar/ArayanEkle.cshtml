@@ -4,259 +4,265 @@
     ViewBag.Title = "ArayanEkle";
 }
 <form class="form-horizontal" id="arayanEkle" name="arayanEkle" method="post" action="@Url.Action("ArayanEkle","Arayanlar")">
- @Html.AntiForgeryToken()
-    <div style="margin:0 auto;width:95%">
-        <div class="form-body">
-            <div class="form-group">
-                @*<label class="control-label col-md-2">Departman</label>
-                <div class="col-md-4">
-                    @Html.DropDownList("EtiketArayanDepartmanId", ViewBag.Departmanlar as SelectList, new { @class = "form-control " })
-                </div>*@
-                <label class="control-label col-md-2">Geliş Yöntemi</label>
-                <div class="col-md-4">
-                    @Html.DropDownList("AramaYontemiId", ViewBag.AramaYontemiId as SelectList, new { @class = "form-control " })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Firma Adı</label>
-                <div class="col-md-4">                
-                    @Html.TextBoxFor(x=>x.arayanFirmaAdi,new {@class="form-control" })
-                    <input type="hidden" name="arayanKayitliRefFirmaID" id="arayanKayitliRefFirmaID" />
-                    <input type="hidden" name="Kayitlimi" />
-                </div>
-                <label class="control-label col-md-2">Adı</label>
-                <div class="col-md-4">
-                   @Html.TextBoxFor(x => x.arayanAdi, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
+    @Html.AntiForgeryToken()
 
-                <label class="control-label col-md-2">Soyadı</label>
-                <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.arayanSoyadi, new { @class = "form-control" })
-                   
+    <div class="row ">
+        <div class="col-md-12">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-share font-dark"></i>
+                        <span class="caption-subject font-dark bold uppercase">Arayan Kayıt Ekranı</span>
+                    </div>
                 </div>
-                <label class="control-label col-md-2">Firma Sahibi Özellik</label>
-                <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.arayanFirmaSahibiOzelligi, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Aracı Varmı</label>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <label class="input-group-btn mt-checkbox mt-checkbox-outline" >
-                              @Html.CheckBoxFor(x=>x.araciVarmi,new { id = "cbAraciVarmi", onchange = "degistiAraci()" })
-                                <span></span>
-                            </label>
-                        </span>
-                        <div id="wrpAraci">
-                            <label class="control-label" style="float:left;padding-right:3px">Aracı Adı</label>
-                            <input type="text" name="ArayanAraciAdi" id="ArayanAraciAdi" class="form-control" style="width:77%" >
+                <div class="portlet-body">
+                    <h4>Firma Bilgileri</h4>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Firma Adı</label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.arayanFirmaAdi, new { @class = "form-control" })
+                            <input type="hidden" name="arayanKayitliRefFirmaID" id="arayanKayitliRefFirmaID" value="0" />
+                            <input type="hidden" name="Kayitlimi" />
                         </div>
-                     </div>
-                </div>
-                <label class="control-label col-md-2">Telefon No</label>
-                <div class="col-md-3">
-                    <input type="text" name="arayanTelefonNo" id="arayanTelefonNo" class="form-control phone_us" />
-                </div>
-            </div>
-            <div class="form-group">
-
-                <label class="control-label col-md-2">Cep Tel No</label>
-                <div class="col-md-4">
-                    @Html.TextBoxFor(x=>x.arayanCepTelNo,new {@class= "form-control phone_us" })
-                </div>
-                <label class="control-label col-md-2">Mail Adresi</label>
-                <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.arayanMailAdresi, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Web Adresi</label>
-                <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.arayanWebAdresi, new { @class = "form-control" })
-                </div>
-                <label class="control-label col-md-2">Tam Adresi</label>
-                <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.arayanAdres, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Şehir</label>
-                <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.arayanSehir, new { @class = "form-control" })
-                </div>
-                <label class="control-label col-md-2">İlçe</label>
-                <div class="col-md-4">
-                    @Html.TextBoxFor(x => x.arayanilce, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Bölge Adı</label>
-                <div class="col-md-4">
-                    @Html.DropDownList("arayanRefKonumID", ViewBag.arayanRefKonumID as SelectList, new { @class = "form-control select2" })
-                </div>
-                <label class="control-label col-md-2">Konu</label>
-                <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.arayanKonu, new { @class = "form-control" })
-                </div>
-            </div>            
-            <div class="form-group">
-                <label class="control-label col-md-2">Tarih</label>
-                <div class="col-md-4">
-                    <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
-                        <input type="text" is-date="1" class="form-control" name="arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
-                        <span class="input-group-btn">
-                            <button class="btn default" type="button">
-                                <i class="fa fa-calendar"></i>
-                            </button>
-                           
-                        </span>
-                        <div class="input-group">
-                            <input type="text" name="SaatDakika" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">
-                            <span class="input-group-btn">
-                                <button class="btn default" type="button">
-                                    <i class="fa fa-clock-o"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <label class="control-label col-md-2">Proje Tipi</label>
-                <div class="col-md-3">
-                    @Html.DropDownList("arayanDomainKategoriID", ViewBag.arayanDomainKategoriID as SelectList, new { @class = "form-control select2" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Sektör Adı</label>
-                <div class="col-md-4">
-                    @Html.DropDownList("arayanSektorID", ViewBag.arayanSektorID as SelectList, new { @class = "form-control select2" })
-                </div>
-                <label class="control-label col-md-2">Mail Şabşonları</label>
-                <div class="col-md-4">
-                    @Html.DropDownList("arayanMailSablonuId", ViewBag.mailSablonlari as SelectList,String.Empty, new { @class = "form-control select2" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Not</label>
-                <div class="col-md-10">
-                    @Html.TextAreaFor(x => x.arayanNot, new { @class = "ckeditor form-control" })
-                </div>
-                @*<label class="control-label col-md-2">Beğenilen Web Siteleri</label>
-                <div class="col-md-4">
-                    @Html.TextAreaFor(x => x.arayanBegendigiWebSiteleri, new { @class = "form-control" })
-                </div>*@
-            </div>
-            <div class="form-group clearfix" style="margin-left:2px">
-                <label class="tanitim-label col-md-offset-2 mt-checkbox mt-checkbox-outline">
-                    @Html.CheckBoxFor(x => x.TanitimMailiGonder,new { id="tanitimMail"})Tanıtım Maili Gönder                   
-                    <span></span>
-                </label>
-                <div id="divTanitimMail" class="div-tanitim-mail" style="">
-                    <label class="control-label">Mail Başılık</label>
-                    <div class="" style="display:inline-block">
-                        @Html.TextBoxFor(x => x.MailBaslik,new {id="MailBaslik" })
-                    </div>
-                </div>
-            </div>
-            <div class="form-group" style="margin-left:2px">               
-                <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline" style="float:left">  
-                    @Html.CheckBoxFor(x=>x.isEkle,new { id= "cbIsEkle" })İş Ekle                
-                    @*<input type="checkbox" name="isEkle"   id="cbIsEkle">İş ekle*@  
-                    <span></span>
-                </label>             
-            </div>
-            <div id="divIs" style="display:block">
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-3">
-                        <input name="isAdi" class="form-control" placeholder="iş adı" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <textarea class="ckeditor form-control"  name="isAciklama" rows="6"></textarea>
-                    </div>
-                </div>
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="row">
-                                <div class="col-md-3 box">
-                                    <div class="form-group">
-                                        <label class="">Yapacak Kişi</label>
-                                      
-                                        <select class="form-control select2" name="islerisiYapacakKisi">
-                                            @foreach (Portal.Models.AspNetUser user in ViewBag.kullanicilar)
-                                            {
-                                                <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 box">
-                                    <div class="form-group">
-                                        <label class="">Kontrol Eden</label>                                     
-                                        <select class="form-control select2" name="kontrolEdecekKisi">
-                                            @foreach (Portal.Models.AspNetUser user in ViewBag.kullanicilar)
-                                            {
-                                                <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 box">
-                                    <div class="form-group">
-                                        <label class="">Domain</label>
-                                        @*<input type="text" name="domainAdi" id="domainAdi" class="form-control" />*@
-                                        <select name="domainAdi" id="domainAdi" class="form-control select2"></select>
-                                        <input type="hidden" name="domainId" id="domainId"  />
-                                    </div>
-                                </div>
-                                <div class="col-md-3 box">
-                                    <div class="form-group">
-                                      @*<label class="">                   
-                        <input type="checkbox" value="" class="iCheck" id="cbDeadline" name="deadline">Bitirme Tarihi                      
-                    </label>*@
-                                        <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom:6px">
-                                            @*<input type="checkbox" name="BitirmeTarihiVarmi">Bitirme Tarihi*@
-                                            @Html.CheckBoxFor(x => x.BitirmeTarihiVarmi)Bitirme Tarihi
+                        <div class="form-group kayitlifirma">
+                            <label class="control-label col-md-2">Aracı Varmı</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <label class="input-group-btn mt-checkbox mt-checkbox-outline">
+                                            @Html.CheckBoxFor(x => x.araciVarmi, new { id = "cbAraciVarmi", onchange = "degistiAraci()" })
                                             <span></span>
                                         </label>
-                                        <div class="input-group">
-                                            <input type="text" is-date="1" class="form-control" name="bitirmeTarihi" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
-                                            <span class="input-group-btn">
-                                                <button class="btn default" type="button">
-                                                    <i class="fa fa-calendar"></i>
-                                                </button>
-                                            </span>
-                                        </div>
+                                    </span>
+                                    <div id="wrpAraci">
+                                        <label class="control-label" style="float:left;padding-right:3px">Aracı Adı</label>
+                                        <input type="text" name="ArayanAraciAdi" id="ArayanAraciAdi" class="form-control" style="width:77%">
                                     </div>
                                 </div>
-                            <div class="col-md-3 box">
-                                <div class="form-group">
-                                    <label class="">Geliş Yöntemi</label>
-                                    <select name="gelisYonetemi" class="form-control select2">
-                                        <option selected="selected">Telefon</option>
-                                        <option>Email</option>
-                                        <option>Whatsapp</option>
-                                        <option>Yüz yüze</option>
-                                    </select> 
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group kayitlifirma">
+                        <label class="control-label col-md-2">Web Adresi</label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.arayanWebAdresi, new { @class = "form-control" })
+                        </div>
+                        <label class="control-label col-md-2">Tam Adresi</label>
+                        <div class="col-md-4">
+                            @Html.TextAreaFor(x => x.arayanAdres, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group kayitlifirma">
+                        <label class="control-label col-md-2">Şehir</label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.arayanSehir, new { @class = "form-control" })
+                        </div>
+                        <label class="control-label col-md-2">İlçe</label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.arayanilce, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group kayitlifirma">
+                        <label class="control-label col-md-2">Bölge Adı</label>
+                        <div class="col-md-4">
+                            @Html.DropDownList("arayanRefKonumID", ViewBag.arayanRefKonumID as SelectList, new { @class = "form-control" })
+                        </div>
+                        <label class="control-label col-md-2">Geliş Yöntemi</label>
+                        <div class="col-md-4">
+                            @Html.DropDownList("AramaYontemiId", ViewBag.AramaYontemiId as SelectList, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <hr>
+                    <h4>Kişi Bilgileri</h4>
+                    <div id="kisilistesi">
+                        <div class="portlet blue-hoki box">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-cogs"></i>Firma Yetkili Kişiler
                                 </div>
+                            </div>
+                            <div class="portlet-body">
+                                <table class="table table-bordered table-hover" id="kisitablosu">
+                                    <thead>
+                                        <tr>
+                                            <th> # </th>
+                                            <th> İsim Soyisim</th>
+                                            <th> Telefon </th>
+                                            <th> Cep Telefonu </th>
+                                            <th> Email </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-offset-2 col-md-2">
-                    <button type="submit" class="btn green">Kaydet</button>
-                </label>
+                    <div class="kisisecildi">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Adı</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.arayanAdi, new { @class = "form-control" })
+                            </div>
+                            <label class="control-label col-md-2">Soyadı</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.arayanSoyadi, new { @class = "form-control" })
 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Ünvanı</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.arayanFirmaSahibiOzelligi, new { @class = "form-control" })
+                            </div>
+                            <label class="control-label col-md-2">Telefon No</label>
+                            <div class="col-md-4">
+                                <input type="text" name="arayanTelefonNo" id="arayanTelefonNo" class="form-control phone_us" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Cep Tel No</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.arayanCepTelNo, new { @class = "form-control phone_us" })
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Mail Adresi</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.arayanMailAdresi, new { @class = "form-control" })
+                            </div>
+                            <label class="tanitim-label col-md-offset-2 mt-checkbox mt-checkbox-outline">
+                                @Html.CheckBoxFor(x => x.TanitimMailiGonder, new { id = "tanitimMail" })Tanıtım Maili Gönder
+                                <span></span>
+                            </label>
+                        </div>
+                        <div id="divTanitimMail" class="form-group  div-tanitim-mail">
+                            <label class="control-label col-md-2">Mail Şabşonları</label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("arayanMailSablonuId", ViewBag.mailSablonlari as SelectList, String.Empty, new { @class = "form-control select2" })
+                            </div>
+                            <label class="control-label col-md-2">Mail Başılık</label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.MailBaslik, new { id = "MailBaslik", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h4>Arama Bilgileri</h4>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Konu</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(x => x.arayanKonu, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Tarih</label>
+                        <div class="col-md-4">
+                            <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
+                                <input type="text" is-date="1" class="form-control" name="arayanKayitTarih" id="Tarih" data-date-format="dd.mm.yyyy">
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+
+                                </span>
+                                <div class="input-group">
+                                    <input type="text" name="SaatDakika" class="form-control timepicker timepicker-24" style="width:50px;padding:2px">
+                                    <span class="input-group-btn">
+                                        <button class="btn default" type="button">
+                                            <i class="fa fa-clock-o"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="control-label col-md-2">Proje Tipi</label>
+                        <div class="col-md-3">
+                            @Html.DropDownList("arayanDomainKategoriID", ViewBag.arayanDomainKategoriID as SelectList, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Sektör Adı</label>
+                        <div class="col-md-4">
+                            @Html.DropDownList("arayanSektorID", ViewBag.arayanSektorID as SelectList, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Not</label>
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(x => x.arayanNot, new { @class = "ckeditor form-control" })
+                        </div>
+                        @*<label class="control-label col-md-2">Beğenilen Web Siteleri</label>
+            <div class="col-md-4">
+                @Html.TextAreaFor(x => x.arayanBegendigiWebSiteleri, new { @class = "form-control" })
+            </div>*@
+                    </div>
+                    <hr>
+                    <h4>İş Ekleme</h4>
+                    <div class="form-group">
+                        <label class="col-md-offset-2 mt-checkbox mt-checkbox-outline" style="float:left">
+                            @Html.CheckBoxFor(x => x.isEkle, new { id = "cbIsEkle" })İş Ekle
+                            <span></span>
+                        </label>
+                    </div>
+                    <div id="divIs">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Kontrol Eden</label>
+                            <div class="col-md-4">
+                                <select class="form-control  " name="kontrolEdecekKisi">
+                                    @foreach (Portal.Models.AspNetUser user in ViewBag.kullanicilar)
+                                    {
+                                        <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                                    }
+                                </select>
+                            </div>
+                            <label class="control-label col-md-2">Yapacak Kişi</label>
+                            <div class="col-md-4">
+                                <select class="form-control " name="islerisiYapacakKisi">
+                                    @foreach (Portal.Models.AspNetUser user in ViewBag.kullanicilar)
+                                    {
+                                        <option value="@user.Id"><text>@user.Isim</text>&nbsp;<text>@user.SoyIsim</text></option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Domain</label>
+                            <div class="col-md-4">
+                                <select name="domainAdi" id="domainAdi" class="form-control select2"></select>
+                                <input type="hidden" name="domainId" id="domainId" />
+                            </div>
+                            <label class="mt-checkbox mt-checkbox-outline col-md-2" style="margin-bottom:6px">
+                                @Html.CheckBoxFor(x => x.BitirmeTarihiVarmi)Bitirme Tarihi
+                                <span></span>
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" is-date="1" class="form-control" name="bitirmeTarihi" id="deadline" data-date-format="dd.mm.yyyy" style="width:100% !important">
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            </div>
+                       
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" class="btn green" value="Kaydet"/>
+                        </div>
+                    </div>
+                </div>
             </div>
-       
-          
+            <!-- END SAMPLE FORM PORTLET-->
         </div>
     </div>
 </form>
+
+
 
 @section css{
 <link href="/Content/assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
@@ -290,7 +296,7 @@
 .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-    @@media(min-width:768px){
+    /*@@media(min-width:768px){
         .div-tanitim-mail{
             float:left;bottom: 7px;margin-left: 15px;position: relative;display:none;
         }
@@ -305,7 +311,7 @@
         .tanitim-label{
             display:block;
         }
-    }
+    }*/
     </style>
 }
 @section scripts{
@@ -326,6 +332,12 @@
 @*<script src="/Scripts/jquery.autocomplete.min.js"></script>*@
 <script src="/js/jquery.autocomplete.js?v=12"></script>
     <script>
+        $(document).on('click', 'input[name=kisiid]', function (e) {
+            $(".kisisecildi").hide();
+        });
+
+     
+
         //auto complete olacak input name lerini tutar
         var aryAutoKeys = {},ff;
         //auto complete gelen degerleri tutar
@@ -354,9 +366,10 @@
             $("#wrpAraci").css("display", "none");
             $("#cbIsEkle").removeAttr("checked");
             $("#tanitimMail").removeAttr("checked");
-            $("#divTanitimMail").css("display", "none");
+            $("#divTanitimMail").hide();
         }
         $(function () {
+            $('#kisilistesi').hide();
             //$("input[type='text']").focus(function () {
             //    var input = this;
             //    setTimeout(function () { input.selectionStart = input.selectionEnd; }, 1);
@@ -388,9 +401,9 @@
             });
             $("#tanitimMail").change(function () {
                 if ($(this).is(":checked")) {
-                    $("#divTanitimMail").css("display", "block");
+                    $("#divTanitimMail").show();
                 } else {
-                    $("#divTanitimMail").css("display", "none");
+                    $("#divTanitimMail").hide();
                 }
             });
             init();
@@ -427,12 +440,11 @@
                 e.preventDefault();
                 $(this).parent('.input-group').find("input[is-date='1']").datepicker('show');
             });
-            var aryElm = ["arayanFirmaAdi", "arayanTelefonNo", "arayanCepTelNo", "arayanMailAdresi"];
+            var aryElm = ["arayanFirmaAdi", "arayanTelefonNo", "arayanCepTelNo"];
             aryAutoKeys = {
                 "arayanFirmaAdi": { val: "value", lab: "label" },
                 "arayanTelefonNo": { val: "Telefon1", lab: "Telefon1" },
-                "arayanCepTelNo": { val: "Telefon2", lab: "Telefon2" },
-                "arayanMailAdresi": { val: "Email", lab: "Email" }
+                "arayanCepTelNo": { val: "Telefon2", lab: "Telefon2" }
             }
         
             
@@ -461,6 +473,8 @@
                         ff = data;
                         setData(data);
                         yukleDomain(data.value);
+                       
+                        yukleKisiler(data.value);
                         init();
                     },
                     dataType: "json",
@@ -474,7 +488,28 @@
             $('#domainAdi').change(function () {
                 $('#domainId').val($('#domainAdi option:selected').val());
             });
+
         });
+
+
+
+
+        function yukleKisiler(firmaId) {
+            $('#kisitablosu tbody').empty();
+            $('#domainAdi').html("");
+            $("#domainAdi").select2("val", "");
+            $.ajax({
+                url: "/Isler/KisileriGetir",
+                method: "get",
+                data: { firmaId: firmaId },
+                dataType: "json",
+                cache: false
+            }).done(function (res) {
+                res.forEach(item=> {
+                    $('#kisitablosu tbody').append("<tr><td><input class=\"kisiclassi\" type=\"radio\" value=\"" + item.value + "\" name=\"kisiid\" /> </td><td>" + item.label + "</td><td>" + item.Telefon1 + "</td><td>" + item.Telefon2 + "</td><td> " + item.Email + " </td></tr>");
+                });
+            });
+        }
         function yukleDomain(firmaId) {
             $('#domainAdi').html("");
             $("#domainAdi").select2("val", "");
@@ -504,6 +539,8 @@
             var msj = "Yeni Firma";
             if (datum.Kayitlimi) {
                 $('#arayanKayitliRefFirmaID').val(datum.value);
+                $('.kayitlifirma').hide();
+                $('#kisilistesi').show();
                 $('#cbIsEkle').removeAttr("disabled");
                 msj = "Kayıtlı Firma";
             } else {
@@ -521,12 +558,12 @@
                 stackup_spacing: 10 // spacing between consecutively stacked growls.
             });
             $("#arayanFirmaAdi").val(datum.label.split("/")[0]);
-            $('#arayanAdi').val(datum.Adi);
-            $('#arayanSoyadi').val(datum.Soyadi);
-            $('#arayanFirmaSahibiOzelligi').val(datum.Adi);
-            $('#arayanTelefonNo').val(datum.Telefon1);
-            $('#arayanCepTelNo').val(datum.Telefon2);
-            $('#arayanMailAdresi').val(datum.Email);
+            //$('#arayanAdi').val(datum.Adi);
+            //$('#arayanSoyadi').val(datum.Soyadi);
+            //$('#arayanFirmaSahibiOzelligi').val(datum.Adi);
+            //$('#arayanTelefonNo').val(datum.Telefon1);
+            //$('#arayanCepTelNo').val(datum.Telefon2);
+            //$('#arayanMailAdresi').val(datum.Email);
             $('#arayanWebAdresi').val(datum.WebAdresi);
             $('#arayanAdres').val(datum.Adres);
 
@@ -600,38 +637,38 @@
                     arayanMailAdresi:"Email geçerli değil."
                 },
                 rules: {
-                    FirmaAdi: {
-                        minlength: 2,
-                        required: true
-                    },
-                    arayanAdi: {
-                        minlength: 2,
-                        required: true
-                    },
-                    arayanCepTelNo: {
-                        minlength: 9,
-                        required: true
-                    },
-                    arayanTelefonNo: {
-                        minlength: 9,
-                        required: true
-                    },
-                    isAdi: {
-                        isEkli: true
-                    },
-                    isAciklama: {
-                        isEkli: true
-                    },
-                    domainAdi: {
-                        isEkli: true
-                    },
-                    arayanMailAdresi: {
-                        required: false,
-                        email:true
-                    },
-                    MailBaslik: {
-                        mailBaslikEkli:true
-                    }
+                    //FirmaAdi: {
+                    //    minlength: 2,
+                    //    required: true
+                    //},
+                    //arayanAdi: {
+                    //    minlength: 2,
+                    //    required: true
+                    //},
+                    //arayanCepTelNo: {
+                    //    minlength: 9,
+                    //    required: true
+                    //},
+                    //arayanTelefonNo: {
+                    //    minlength: 9,
+                    //    required: true
+                    //},
+                    //isAdi: {
+                    //    isEkli: true
+                    //},
+                    //isAciklama: {
+                    //    isEkli: true
+                    //},
+                    //domainAdi: {
+                    //    isEkli: true
+                    //},
+                    //arayanMailAdresi: {
+                    //    required: false,
+                    //    email:true
+                    //},
+                    //MailBaslik: {
+                    //    mailBaslikEkli:true
+                    //}
 
                 },
 

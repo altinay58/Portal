@@ -19,6 +19,7 @@ namespace Portal.Models
         {
             this.SatisGorusmes = new HashSet<SatisGorusme>();
             this.SatisFirsatis = new HashSet<SatisFirsati>();
+            this.Arayanlars = new HashSet<Arayanlar>();
         }
     
         public int Id { get; set; }
@@ -34,6 +35,8 @@ namespace Portal.Models
         public virtual ICollection<SatisGorusme> SatisGorusmes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SatisFirsati> SatisFirsatis { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
         public virtual Firma Firma { get; set; }
     }
 }

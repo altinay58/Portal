@@ -27,7 +27,6 @@ namespace Portal.Models
     
         public virtual DbSet<Ayar> Ayars { get; set; }
         public virtual DbSet<Konum> Konums { get; set; }
-        public virtual DbSet<isler> islers { get; set; }
         public virtual DbSet<IsiYapacakKisi> IsiYapacakKisis { get; set; }
         public virtual DbSet<StandartProjeIsleri> StandartProjeIsleris { get; set; }
         public virtual DbSet<Arama> Aramas { get; set; }
@@ -38,7 +37,6 @@ namespace Portal.Models
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<CariHareket> CariHarekets { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
-        public virtual DbSet<Domain> Domains { get; set; }
         public virtual DbSet<DomainKategori> DomainKategoris { get; set; }
         public virtual DbSet<GelinmeyenGun> GelinmeyenGuns { get; set; }
         public virtual DbSet<GidilenMusteri> GidilenMusteris { get; set; }
@@ -75,7 +73,6 @@ namespace Portal.Models
         public virtual DbSet<WebLog> WebLogs { get; set; }
         public virtual DbSet<YorumDurum> YorumDurums { get; set; }
         public virtual DbSet<DomainKayitliFirma> DomainKayitliFirmas { get; set; }
-        public virtual DbSet<ArayanListesi> ArayanListesis { get; set; }
         public virtual DbSet<DomainNot> DomainNots { get; set; }
         public virtual DbSet<ZamanI> ZamanIs { get; set; }
         public virtual DbSet<FirmaKisi> FirmaKisis { get; set; }
@@ -91,7 +88,11 @@ namespace Portal.Models
         public virtual DbSet<ToplantiyaKatilanlar> ToplantiyaKatilanlars { get; set; }
         public virtual DbSet<SatisFirsati> SatisFirsatis { get; set; }
         public virtual DbSet<SatisFirsatiFiyatRevizyon> SatisFirsatiFiyatRevizyons { get; set; }
-        public virtual DbSet<Firma> Firmas { get; set; }
+        public virtual DbSet<ArayanListesi> ArayanListesis { get; set; }
+        public virtual DbSet<DomainUrun> DomainUruns { get; set; }
         public virtual DbSet<Arayanlar> Arayanlars { get; set; }
+        public virtual DbSet<Domain> Domains { get; set; }
+        public virtual DbSet<isler> islers { get; set; }
+        public virtual DbSet<Firma> Firmas { get; set; }
     }
 }

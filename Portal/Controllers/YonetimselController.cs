@@ -171,8 +171,8 @@ namespace Portal.Controllers
 
             // Define parameters of request.
             EventsResource.ListRequest request = service.Events.List("primary");
-            request.TimeMin = DateTime.Parse("01.01.2017");
-            request.TimeMax = DateTime.Parse("31.01.2017");
+            request.TimeMin = DateTime.Parse("01.01.2018");
+            request.TimeMax = DateTime.Parse("31.12.2018");
             request.ShowDeleted = false;
             request.SingleEvents = true;
             request.MaxResults = 10;
@@ -223,7 +223,8 @@ namespace Portal.Controllers
                     new EventReminder() { Method = "email", Minutes = 24 * 60 },
                     new EventReminder() { Method = "sms", Minutes = 10 },
                 }
-                }
+                },
+                Status =""
             };
 
             String calendarId = "primary";

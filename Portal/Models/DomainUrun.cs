@@ -12,24 +12,19 @@ namespace Portal.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Sektorler
+    public partial class DomainUrun
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Sektorler()
+        public DomainUrun()
         {
-            this.GidilenMusteris = new HashSet<GidilenMusteri>();
-            this.Arayanlars = new HashSet<Arayanlar>();
-            this.Firmas = new HashSet<Firma>();
+            this.Domains = new HashSet<Domain>();
         }
     
-        public int sektorID { get; set; }
-        public string sektorAdi { get; set; }
+        public int DomainUrunID { get; set; }
+        public string DomainUrunAdi { get; set; }
+        public int DomainUrunFiyati { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GidilenMusteri> GidilenMusteris { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arayanlar> Arayanlars { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Firma> Firmas { get; set; }
+        public virtual ICollection<Domain> Domains { get; set; }
     }
 }

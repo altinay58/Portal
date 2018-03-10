@@ -4,7 +4,7 @@ angModule.controller("satisFirsatlarDetailCtrl", function ($scope, $timeout) {
     
     angular.element(document).ready(function () {
         dd = self;
-        self.getirFirmaTeklifler();
+        //self.getirFirmaTeklifler();
     });
     self.init = function (guncelKullanici, satisAsamaEtiketleri, satisFirsati, firsatDurumEtiketleri, gorusmeEtiketleri) {
         self.guncelKullanici = JSON.parse(guncelKullanici);
@@ -13,10 +13,11 @@ angModule.controller("satisFirsatlarDetailCtrl", function ($scope, $timeout) {
         self.firsatDurumEtiketleri = JSON.parse(firsatDurumEtiketleri);
         self.gorusmeEtiketleri = JSON.parse(gorusmeEtiketleri);
     };
-    self.degistirEtiketSatisDurumu = function (etiket) {
-        commonAjaxService.getDataFromRemote(url = "/SatisFirsatis/DegistirEtiketSatisAsama", data = { satisId: self.satisFirsati.Id, yeniDurum: etiket.Value })
+    self.degistirEtiketSatisDurumu = function (etiketID,satisID) {
+        commonAjaxService.getDataFromRemote(url = "/SatisFirsatis/DegistirEtiketSatisAsama", data = { satisId: satisID, yeniDurum: etiketID })
         .done(function (res) {
-            self.satisFirsati.EtiketSatisAsamaId = etiket.Value;
+            console.log(res);
+            self.EtiketSatisAsamaId = etiketID;
             self.$apply();
             portalApp.mesajGoster("Durumu değişti");
         });
@@ -36,14 +37,14 @@ angModule.controller("satisFirsatlarDetailCtrl", function ($scope, $timeout) {
     self.tarihFormat = function (tarih) {
         return moment(tarih).format('DD.MM.YYYY');
     };
-    self.getirFirmaTeklifler = function () {
-        commonAjaxService.getDataFromRemote(url = "/SatisFirsatis/FirmaTeklifleri", data = { firmaId: self.satisFirsati.Firma.Id,guncelTeklifId:self.satisFirsati.Id })
-          .done(function (res) {
-              self.firmaTeklifler = res;
-              self.$apply();
+    //self.getirFirmaTeklifler = function () {
+    //    commonAjaxService.getDataFromRemote(url = "/SatisFirsatis/FirmaTeklifleri", data = { firmaId: self.satisFirsati.Firma.Id,guncelTeklifId:self.satisFirsati.Id })
+    //      .done(function (res) {
+    //          self.firmaTeklifler = res;
+    //          self.$apply();
              
-       });
-    };
+    //   });
+    //};
     self.teklifSatisFirsatiDurumuText = function (EtiketSatisFirsatDurumuId) {
         let durum = self.firsatDurumEtiketleri.find(x=> { return x.Value === EtiketSatisFirsatDurumuId });
         if (durum) {

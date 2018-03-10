@@ -28,11 +28,12 @@ namespace Portal.Models.ArayanlarModels
         public Nullable<int> arayanDomainKategoriID { get; set; }
         public string arayanTelefonaBakanKisiID { get; set; }
         public Nullable<int> arayanSektorID { get; set; }
+        public Nullable<int> kisiid { get; set; }
         public Nullable<int> arayanGrupID { get; set; }
         public Nullable<bool> arayanilkArama { get; set; }
         public Nullable<bool> arayanFirmaKayitDurum { get; set; }
         public Nullable<bool> arayanKayitliMusterimi { get; set; }
-        public Nullable<int> arayanKayitliRefFirmaID { get; set; }
+        public int arayanKayitliRefFirmaID { get; set; }
         public string ArayanAraciAdi { get; set; }
         public Nullable<int> arayanMailSablonuId { get; set; }
         //iş için

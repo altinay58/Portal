@@ -2,7 +2,7 @@
 @using Portal.Models;
 @{
     ViewBag.Title = "Satış Görüşme List";
-    List<Etiket> etiketler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS).Where(x=>x.Kategori== "EtiketSatisGorusmeTypeId").ToList();
+    List<Etiket> etiketler = Partial.Etiketler().Where(x=>x.Kategori== "EtiketSatisGorusmeTypeId").ToList();
 }
 
 <p>
@@ -49,9 +49,17 @@
                         @Html.DisplayFor(modelItem => item.FirmaKisi.Ad)
                     </td>
                     <td>                   
-                        @if (item.EtiketSatisGorusmeTypeId.HasValue)
+                        @if (item.EtiketSatisGorusmeTypeId!=null)
                         {
-                            @etiketler.SingleOrDefault(x => x.Value == item.EtiketSatisGorusmeTypeId).Text
+                            if(etiketler.SingleOrDefault(x => x.Value == item.EtiketSatisGorusmeTypeId)==null)
+                            {
+                                <p>Etiket Bulunamadı</p>
+                            }
+                            else
+                                {
+                                @etiketler.SingleOrDefault(x => x.Value == item.EtiketSatisGorusmeTypeId).Text
+
+                            }
                         }
                      
                     </td>  

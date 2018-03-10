@@ -19,8 +19,8 @@ namespace Portal.Models
         {
             this.GidilenMusteris = new HashSet<GidilenMusteri>();
             this.Randevus = new HashSet<Randevu>();
-            this.Firmas = new HashSet<Firma>();
             this.Arayanlars = new HashSet<Arayanlar>();
+            this.Firmas = new HashSet<Firma>();
         }
     
         public int KonumID { get; set; }
@@ -32,8 +32,8 @@ namespace Portal.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Randevu> Randevus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Firma> Firmas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arayanlar> Arayanlars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Firma> Firmas { get; set; }
     }
 }

@@ -49,25 +49,42 @@ namespace Portal.Controllers
         //   id:domain id
         //  
         [HttpPost]
-        public ActionResult TeknikRapor(string islerisiYapacakKisi,DateTime basTarih, DateTime bitisTarih)
+        public ActionResult TeknikRapor(string islerisiYapacakKisi, DateTime? basTarih, DateTime? bitisTarih)
         {
 
-            List<string> yeniisiYapacakKisiler = islerisiYapacakKisi.Split(',').ToList();
+            if (basTarih == null)
+            {
+                basTarih = DateTime.Now;
+            }
+
+            if (bitisTarih == null)
+            {
+                bitisTarih = DateTime.Now;
+            }
 
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
 
-            IEnumerable<TeknikRapor> rapor = Db.TeknikRapors.Where(a => basTarih != null ? a.TeknikRaporTarih >= basTarih : 1==1
-            && bitisTarih != null ? a.TeknikRaporTarih <= bitisTarih : 1 == 1
+            if (!String.IsNullOrEmpty(islerisiYapacakKisi))
+            {
+                List<string> yeniisiYapacakKisiler = islerisiYapacakKisi.Split(',').ToList();
+                IEnumerable<TeknikRapor> rapor = Db.TeknikRapors.Where(a => a.TeknikRaporTarih >= basTarih
+            && a.TeknikRaporTarih <= bitisTarih
             && yeniisiYapacakKisiler.Contains(a.RefTeknikRaporUserID)).OrderBy(x => x.RefTeknikRaporUserID).ToList();
-
-            return View(rapor);
+                return View(rapor);
+            }
+            else
+            {
+                IEnumerable<TeknikRapor> rapor = Db.TeknikRapors.Where(a => a.TeknikRaporTarih >= basTarih
+            && a.TeknikRaporTarih <= bitisTarih).OrderBy(x => x.RefTeknikRaporUserID).ToList();
+                return View(rapor);
+            }
         }
 
         public ActionResult TeknikRapor()
         {
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
             DateTime tarih = DateTime.Now.Date;
-           IEnumerable<TeknikRapor> rapor = Db.TeknikRapors.Where(a => a.TeknikRaporTarih == tarih).OrderBy(x=>x.RefTeknikRaporUserID).ToList();
+           IEnumerable<TeknikRapor> rapor = Db.TeknikRapors.Where(a => a.TeknikRaporTarih == tarih).OrderBy(x=>x.RefTeknikRaporUserID).ThenByDescending(x=>x.TeknikRaporTarih).ToList();
 
             return View(rapor);
         }
@@ -99,7 +116,8 @@ namespace Portal.Controllers
                         from zz in temp.DefaultIfEmpty()
                         let users = p.IsiYapacakKisis.Select(x=>x.RefIsiYapacakKisiUserID)
                         let isAdmin = adminMi
-                        where p.islerRefDomainID == domainId && (isAdmin || (p.islerisiVerenKisi == userId || users.Contains(userId)))
+                        where p.islerIsinDurumu != 5 && p.islerRefDomainID == domainId && (isAdmin || (p.islerisiVerenKisi == userId || users.Contains(userId)))
+                       // where p.islerRefDomainID == domainId && (isAdmin || (p.islerisiVerenKisi == userId || users.Contains(userId)))
                         orderby p.islerIsinDurumu ascending,p.islerID descending
                         select new DomainIs
                         {
@@ -529,18 +547,15 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 IEnumerable<int> integerDizi = Db.FirmaKisis.Where(a => a.Tel.Contains(firmaAdi) || a.Tel2.Contains(firmaAdi) || a.Email.Contains(firmaAdi) || a.Ad.Contains(firmaAdi)).Select(a => a.FirmaId);
 
                 var list = from sonuclar in Db.Firmas
-                           join  k in Db.FirmaKisis on sonuclar.FirmaID equals k.FirmaId
                        where integerDizi.Contains(sonuclar.FirmaID) || sonuclar.FirmaAdi.Contains(firmaAdi)
-                       select new { Firma=sonuclar,Kisi=k };
+                       select new { Firma = sonuclar };
 
                 foreach (var firma in list)
                 {
-                    
-
                     firmalar.Add(new
                     {
                         value = firma.Firma.FirmaID,
-                        label = firma.Kisi.Ad + " " + firma.Kisi.Soyad + " " + firma.Firma.FirmaAdi,
+                        label =  firma.Firma.FirmaAdi, // TODO : firma.Kisi.Ad + " " + firma.Kisi.Soyad + " " + İSİM SOYİSİM EKLENİYOR
                         Adres = firma.Firma.FirmaAdres,
                         Kayitlimi = true,
                         Sehir = firma.Firma.firmaSehir,
@@ -548,13 +563,13 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                         KonumId = firma.Firma.RefKonumID,
                         SektorId = firma.Firma.firmaSektorID,
                         DomainKategoriId = firma.Firma.firmaDomainKategoriID,
-                        Telefon1 = firma.Kisi.Tel,
-                        Telefon2 = firma.Kisi.Tel2,
-                        Email = firma.Kisi.Email,
+                        //Telefon1 = firma.Kisi.Tel,
+                        //Telefon2 = firma.Kisi.Tel2,
+                        //Email = firma.Kisi.Email,
                         WebAdresi = firma.Firma.FirmaAdres,
-                        Adi = firma.Kisi.Ad,
-                        Soyadi = firma.Kisi.Soyad,
-                        FirmaSahibiOzellik = firma.Kisi.Departman
+                        //Adi = firma.Kisi.Ad,
+                        //Soyadi = firma.Kisi.Soyad,
+                        //FirmaSahibiOzellik = firma.Kisi.Departman
                     });
                 }
             }
@@ -562,7 +577,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
 
             if (sadeceArayanlar)
             {
-                var diziArayanlar = Db.Arayanlars.Where(a => a.arayanKayitliMusterimi == false && a.arayanKayitliRefFirmaID == null && (a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi)
+                var diziArayanlar = Db.Arayanlars.Where(a => a.RefFirmaID == null && (a.arayanFirmaAdi.Contains(firmaAdi) || a.arayanCepTelNo.Contains(firmaAdi)
             || a.arayanTelefonNo.Contains(firmaAdi) || a.arayanMailAdresi.Contains(firmaAdi)));
 
                 List<int> listTemp = new List<int>();
@@ -581,7 +596,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                         firmalar.Add(new
                         {
                             value = arayan.arayanID,
-                            label = arayan.arayanFirmaAdi +" Kayıtlı Değil",
+                            label = arayan.arayanFirmaAdi,// +" Kayıtlı Değil",
                             Telefon1 = arayan.arayanTelefonNo,
                             Telefon2 = arayan.arayanCepTelNo,
                             Email = arayan.arayanMailAdresi,
@@ -606,7 +621,24 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
 
             return Json(firmalar, JsonRequestBehavior.AllowGet);
         }
-     
+        public JsonResult KisileriGetir(int? firmaId)
+        {
+            var listKisi = (from d in Db.FirmaKisis
+                              where (firmaId.HasValue ? d.FirmaId == firmaId.Value : true)
+                              select new
+                              {
+                                  value = d.Id,
+                                  label = d.Ad + " " + d.Soyad,
+                                  firmaId = d.FirmaId,
+                                  Telefon1 = d.Tel,
+                                  Telefon2 = d.Tel2,
+                                  Email = d.Email,
+                              }).ToList();
+
+
+
+            return Json(listKisi, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult DomainGetir(string domainAdi,int? firmaId)
         {
         
@@ -630,7 +662,7 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
         }
         #endregion içerik formu
         #region iş ekle
-        public ActionResult IsEkleDuzenle(int? id)
+        public ActionResult IsEkleDuzenle(int id)
         {
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
             ViewBag.isOncelikler = Db.isOncelikSiras;
@@ -641,11 +673,10 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
             {
                 ViewBag.oncekiSayfa = Request.UrlReferrer.ToString();
             }
-            if (id.HasValue)
-            {
+            
                 entity = Db.islers.SingleOrDefault(x => x.islerID == id);
                 ViewBag.domainler = Db.Domains.Where(x => x.RefDomainFirmaID == entity.islerRefFirmaID);
-            }
+            
             return View(entity);
         }
         [ValidateInput(false)]
@@ -673,8 +704,12 @@ WHERE   islerRefDomainID=@p0 and islerIsinDurumu=3",domainId);
                 }
                 entity.islerAdi = Fonksiyonlar.KarakterDuzenle(model.islerAdi);
                 entity.islerAciklama = Fonksiyonlar.KarakterDuzenle(model.islerAciklama);
-                var varmi = Db.islers.Where(x => x.islerAdi == entity.islerAdi && x.islerAciklama == entity.islerAciklama
-                && (entity.islerID>0 ? x.islerID==x.islerID : true)).Count() > 0;
+                var varmi = Db.islers.Where(x => 
+               // x.islerAdi == entity.islerAdi && 
+                x.islerRefDomainID == entity.islerRefDomainID &&
+                x.islerAciklama == entity.islerAciklama && 
+                (entity.islerID>0 ? x.islerID == x.islerID : true)
+                ).Count() > 0;
                 if (varmi)
                 {
                     TempData[ERROR] = "Bu iş daha önceden kayıt edilmiş";

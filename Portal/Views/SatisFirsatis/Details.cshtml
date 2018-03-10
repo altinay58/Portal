@@ -1,31 +1,31 @@
 ﻿@using Newtonsoft.Json;
 @using Portal.Models.IslerModels;
 @using Portal.Models;
-@model object
+@model SatisFirsati
 @{
     ViewBag.Title = "Satış Detay ";
-    var butunEtiketler = CacheManagement.Get<Etiket>(CacheKeys.ETIKETS);
+    var butunEtiketler = Partial.Etiketler();
     var guncelKullanici = Partial.GuncelKullanici();
     var satisAsamaEtiketleri = butunEtiketler.Where(x=>x.Kategori== "EtiketSatisAsamaId");
     var firsatDurumEtiketleri = butunEtiketler.Where(x => x.Kategori == "EtiketSatisFirsatDurumuId");
     var gorusmeEtiketleri = butunEtiketler.Where(x => x.Kategori == "EtiketSatisGorusmeTypeId");
-    //var satisFirsati = Model;
-    var satisFirsatiStr= JsonConvert.SerializeObject(Model, Formatting.Indented,
-    new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+    var i = 0;
+    IEnumerable<SatisFirsatiFiyatRevizyon> satifFirsatiTeklifRevizeleri = Partial.SatisFirmastiTeklifRevizeleri(Model.Id);
  }
-<div ng-controller="satisFirsatlarDetailCtrl" ng-init="init(guncelKullanici='@JsonConvert.SerializeObject(guncelKullanici)',
-     satisAsamaEtiketleri='@JsonConvert.SerializeObject(satisAsamaEtiketleri)',satisFirsati='@satisFirsatiStr',
-     firsatDurumEtiketleri='@JsonConvert.SerializeObject(firsatDurumEtiketleri)',gorusmeEtiketleri='@JsonConvert.SerializeObject(gorusmeEtiketleri)')">
+<div ng-controller="satisFirsatlarDetailCtrl">
     <div class="row">
         <div class="col-md-12">
             <div class="mt-element-step">
-                <div class="row step-background-thin">
-                    <a href="javascript:;" ng-repeat="item in satisAsamaEtiketleri" ng-click="degistirEtiketSatisDurumu(item)">
-                        <div  class="col-md-2  mt-step-col " ng-class="item.Value==satisFirsati.EtiketSatisAsamaId ? 'bg-green-steel': 'bg-grey-steel'">
-                            <div class="mt-step-number">{{$index+1}}</div>
-                            <div class="mt-step-title ">{{item.Text}}</div>
-                        </div>
-                    </a>      
+                <div class="row step-background-thin" ng-init="EtiketSatisAsamaId =@Model.EtiketSatisAsamaId">
+                        @foreach (Etiket etiketim in satisAsamaEtiketleri)
+                        {
+                            <a href="javascript:;" ng-click="degistirEtiketSatisDurumu(@etiketim.Id,@Model.Id)">
+                                <div class="col-md-2  mt-step-col" ng-class="@etiketim.Id == EtiketSatisAsamaId ? 'bg-green-steel': 'bg-grey-steel'">
+                                    <div class="mt-step-number">@(i++)</div>
+                                    <div class="mt-step-title ">@etiketim.Text</div>
+                                </div>
+                            </a>
+                        }
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
                         <i class="fa fa-cogs"></i>Fırsat Detayları
                     </div>
                     <div class="actions">
-                        <a href="/SatisFirsatis/Kaydet/{{satisFirsati.Id}}" class="btn btn-default btn-sm">
+                        <a href="/SatisFirsatis/Kaydet/@Model.Id" class="btn btn-default btn-sm">
                             <i class="fa fa-pencil"></i> Düzenle
                         </a>
                     </div>
@@ -47,39 +47,42 @@
                     <div class="row static-info">
                         <div class="col-md-5 name"> Müşteri </div>
                         <div class="col-md-7 value">
-                           {{satisFirsati.Musteri}} 
+                           @Model.Firma.FirmaAdi 
                         </div>
                     </div>
                     <div class="row static-info">
                         <div class="col-md-5 name"> Fırsat Adı: </div>
-                        <div class="col-md-7 value">{{satisFirsati.DomainKategori}}</div>
+                        <div class="col-md-7 value">@Model.DomainKategori.DomainKategoriAdi</div>
                     </div>
                     <div class="row static-info">
                         <div class="col-md-5 name"> Fırsat Durumu: </div>
                         <div class="col-md-7 value">
-                         <a href="javascript:;" ng-repeat="item in firsatDurumEtiketleri" ng-click="degistirFirsatDurum(item)">
-                             <span class="label " ng-class="item.Value==satisFirsati.EtiketSatisFirsatDurumuId ? 'label-success':'label-default'">{{item.Text}} </span>
-                         </a>
+                         
+                          @foreach (Etiket etiketim in firsatDurumEtiketleri)
+                          {<a href="javascript:;" ng-click="degistirFirsatDurum(item)">
+                                <span class="label  @if (etiketim.Id == Model.EtiketSatisFirsatDurumuId) { <text>label-success</text> } else { <text>label-default</text>}">@etiketim.Text</span>
+                            </a>
+                          }
                             @*<span class="label label-warning"> Açık </span>
                             <span class="label "> Satışa Dönüştü </span>*@
                         </div>
                     </div>
                     <div class="row static-info">
                         <div class="col-md-5 name"> İlk Teklif: </div>
-                        <div class="col-md-7 value"> {{satisFirsati.Teklif}} TL </div>
+                        <div class="col-md-7 value"> @(satifFirsatiTeklifRevizeleri.FirstOrDefault() != null ? satifFirsatiTeklifRevizeleri.FirstOrDefault().Fiyat : 0) TL </div>
                     </div>
                     <div class="row static-info">
                         <div class="col-md-5 name"> Son Teklif: </div>
-                        <div class="col-md-7 value"> {{satisFirsati.SonTeklif}} TL </div>
+                        <div class="col-md-7 value"> @(satifFirsatiTeklifRevizeleri.LastOrDefault() != null ? satifFirsatiTeklifRevizeleri.LastOrDefault().Fiyat : 0) TL </div>
                     </div>
                     <div class="row static-info">
                         <div class="col-md-5 name"> Kalan Süre: </div>
-                        <div class="col-md-7 value"> {{satisFirsati.KalanSure}} Gün </div>
+                        <div class="col-md-7 value"> @Model.Tarih Gün </div>
                     </div>
 
                     <div class="row static-info">
                         <div class="col-md-5 name"> Teklif Dosyası </div>
-                        <div class="col-md-7 value"> <a ng-href="{{satisFirsati.DosyaYolu}}" class="btn purple-plum"> İndir </a> </div>
+                        <div class="col-md-7 value"> <a ng-href="@Model.DosyaYolu" class="btn purple-plum"> İndir </a> </div>
                     </div>
                 </div>
             </div>
@@ -92,7 +95,7 @@
                         <i class="fa fa-bell-o"></i>Teklif Revizeleri
                     </div>
                     <div class="actions">
-                        <a href="/SatisFirsatiFiyatRevizyons/Kaydet?satisFirsatId={{satisFirsati.Id}}" class="btn btn-primary btn-sm">
+                        <a href="/SatisFirsatiFiyatRevizyons/Kaydet?satisFirsatId=@Model.Id" class="btn btn-primary btn-sm">
                             <i class="fa fa-plus"></i> Yeni Revize Fiyat
                         </a>
                     </div>
@@ -115,22 +118,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in satisFirsati.SatisFirsatiFiyatRevizyons">
-                                    <td class="highlight">
-                                        <div class="success"></div>
-                                        <a href="javascript:;">{{satisFirsati.FirmaAdi}} </a>
-                                    </td>
-                                    <td class="hidden-xs"> {{tarihFormat(item.Tarih)}} </td>
-                                    <td> {{item.Fiyat}} TL </td>
-                                    <td>{{item.Note}}</td>
-                                </tr>                              
-
+                                @foreach (SatisFirsatiFiyatRevizyon firsat in satifFirsatiTeklifRevizeleri)
+                                {
+                                    <tr>
+                                        <td class="highlight">
+                                            <div class="success"></div>
+                                            <a href="javascript:;">@Model.Firma.FirmaAdi </a>
+                                        </td>
+                                        <td class="hidden-xs"> @firsat.Tarih </td>
+                                        <td>@firsat.Fiyat TL </td>
+                                        <td>@firsat.Note</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- END SAMPLE TABLE PORTLET-->
         </div>
     </div>
     <div class="row">
@@ -247,29 +251,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in firmaTeklifler">
-                                    <td class="highlight">
-                                        <div class="success"></div>
-                                        <a href="/SatisFirsatis/Details/{{item.Id}}" target="_blank">{{item.DomainKategori}} </a>
-                                    </td>
-                                    <td class="hidden-xs"> {{item.Musteri}} </td>
-                                    <td> {{item.Teklif}} TL </td>
-                                    <td> {{item.SonTeklif}} TL </td>
-                                    <td>
-                                        <span class="label {{teklifSatisFirsatiDurumuRenk(item.EtiketSatisFirsatDurumuId)}}"> {{teklifSatisFirsatiDurumuText(item.EtiketSatisFirsatDurumuId)}} </span>
-                                        @*<span class="label label-warning"> Açık </span>
-                                        <span class="label label-success"> Satışa Dönüştü </span>*@
-                                    </td>
-                                </tr>
+                                @foreach (SatisFirsati teklifim in Partial.SatisFirmastiTeklifleri(Model.RefFirmaId??0))
+                                {
+                                    IEnumerable<SatisFirsatiFiyatRevizyon> revize = Partial.SatisFirmastiTeklifRevizeleri(teklifim.Id);
+                                    <tr>
+                                        <td class="highlight">
+                                            <div class="success"></div>
+                                            <a href="/SatisFirsatis/Details/@teklifim.Id" target="_blank">@Partial.DomainKategoriAdi(teklifim.RefDomainKategoriId ??0)</a>
+                                        </td>
+                                        <td class="hidden-xs">@Partial.FirmaKisiAdi(teklifim.RefYetkiliId??0)</td>
+                                        <td> @(revize.FirstOrDefault() != null ? revize.FirstOrDefault().Fiyat : 0) TL </td>
+                                        <td> @(revize.LastOrDefault() != null ? revize.LastOrDefault().Fiyat : 0) TL </td>
+                                        <td>
+                                            <span class="label @Partial.EtiketGetir(teklifim.EtiketSatisAsamaId??0).Renk"> @Partial.EtiketGetir(teklifim.EtiketSatisAsamaId??0).Text </span>
+                                        </td>
+                                    </tr>
+                                    
+                                }
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- END SAMPLE TABLE PORTLET-->
         </div>
         <div class="col-md-6">
-            <!-- BEGIN SAMPLE TABLE PORTLET-->
             <div class="portlet">
                 <div class="portlet-title">
                     <div class="caption">
@@ -288,12 +294,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in satisFirsati.FirmaKisiler">
-                                    <td class="hidden-xs">{{item.Ad}}&nbsp;{{item.Soyad}} </td>
-                                    <td>{{item.Departman}}</td>
-                                    <td><a href="tel:{{item.Tel}}">{{item.Tel}}</a> </td>
-                                    <td>{{item.Email}}</td>
-                                </tr>
+                                @foreach (FirmaKisi kisim in Partial.FirmaKisileri(Model.RefFirmaId ?? 0))
+                                {
+                                    <tr>
+                                        <td class="hidden-xs">@kisim.Ad @kisim.Soyad </td>
+                                        <td>@kisim.Departman</td>
+                                        <td><a href="tel:@Fonksiyonlar.TelefonDuzelt(kisim.Tel)">@Fonksiyonlar.TelefonDuzelt(kisim.Tel)</a> </td>
+                                        <td>@kisim.Email</td>
+                                    </tr>
+
+                                }
+                                
                             </tbody>
                         </table>
                     </div>

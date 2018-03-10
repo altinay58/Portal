@@ -199,14 +199,14 @@ namespace Portal.Controllers
             if (konumID != null)
             {
                 ViewBag.BolgeAdi = Fonksiyonlar.BolgeAdiGetir(konumID);
-                satisRoute.arayanlar = Db.Arayanlars.Where(m => m.arayanKayitliMusterimi == false && m.arayanRefKonumID == konumID).OrderByDescending(a => a.arayanID).ToList();
+                satisRoute.arayanlar = Db.Arayanlars.Where(m => m.arayanRefKonumID == konumID).OrderByDescending(a => a.arayanID).ToList();
                 satisRoute.firmalar = Db.Firmas.Where(m => m.RefKonumID == konumID && m.FirmaSilindi == false).OrderByDescending(a => a.FirmaID).ToList();
                 satisRoute.randevular = Db.Randevus.Where(m => m.RandevuKonumID == konumID && m.RandevuSilDurum == false).OrderBy(a => a.RandevuTarihi).ToList();
             }
             else
             {
                 ViewBag.BolgeAdi = Fonksiyonlar.BolgeAdiGetir(1005);
-                satisRoute.arayanlar = Db.Arayanlars.Where(m => m.arayanKayitliMusterimi == false && m.arayanRefKonumID == 1005).OrderByDescending(a => a.arayanID).ToList();
+                satisRoute.arayanlar = Db.Arayanlars.Where(m =>  m.arayanRefKonumID == 1005).OrderByDescending(a => a.arayanID).ToList();
                 satisRoute.firmalar = Db.Firmas.Where(m => m.RefKonumID == 1005 && m.FirmaSilindi == false).OrderByDescending(a => a.FirmaID).ToList();
                 satisRoute.randevular = Db.Randevus.Where(m => m.RandevuKonumID == 1005).OrderBy(a => a.RandevuTarihi).ToList();
             }

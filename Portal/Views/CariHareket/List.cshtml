@@ -82,7 +82,7 @@
     @if (ViewBag.Sayfalama.TotalCount > 0)
     {
         @Html.Pager(ViewBag.Sayfalama as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
-                        string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.List(page,queryData))))
+                        string.Format("{0}", this.Html.BuildUrlFromExpressionFG<CariHareketController>(c => c.List(page,queryData,"t"))))
     }
 </div>
 @section scripts{

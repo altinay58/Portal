@@ -12,10 +12,206 @@ namespace Portal.Controllers
 {
     public class HomeController : BaseController
     {
+        public int KisiEklimi(string telefon1, string telefon2)
+        {
+            int kisiid = 0;
+
+            if (!String.IsNullOrEmpty(telefon1))
+            {
+                using (var db = new PortalEntities())
+                {
+                    FirmaKisi kisi = db.FirmaKisis.FirstOrDefault(a => a.Tel == telefon1 || a.Tel2 == telefon1);
+
+                    if (kisi != null)
+                    {
+                        kisiid = kisi.Id;
+                    }
+                }
+            }
+            if (kisiid == 0)
+            {
+                if (!String.IsNullOrEmpty(telefon2))
+                {
+                    using (var db = new PortalEntities())
+                    {
+                        FirmaKisi kisi = db.FirmaKisis.FirstOrDefault(a => a.Tel == telefon2 || a.Tel2 == telefon2);
+
+                        if (kisi != null)
+                        {
+                            kisiid = kisi.Id;
+                        }
+                    }
+                }
+            }
+            return kisiid;
+        }
+    
+        public ActionResult Guncelle()
+        {
+            using (var db = new PortalEntities())
+            {
+                IEnumerable<Arayanlar> tumArayanKatilari = db.Arayanlars.OrderBy(a => a.arayanID).ToList();
+
+                foreach (Arayanlar arayan in tumArayanKatilari.ToList())
+                {
+                    int kisiid = KisiEklimi(arayan.arayanTelefonNo, arayan.arayanCepTelNo);
+
+                    if (kisiid == 0)
+                    {
+                        if (arayan != null)
+                        {
+                            FirmaKisi yeniKisi = new FirmaKisi()
+                            {
+                                Ad = arayan.arayanAdi,
+                                Departman = arayan.arayanFirmaSahibiOzelligi,
+                                Email = arayan.arayanMailAdresi,
+                                FirmaId = arayan.RefFirmaID,
+                                Soyad = arayan.arayanSoyadi,
+                                Tel = arayan.arayanTelefonNo,
+                                Tel2 = arayan.arayanCepTelNo
+                            };
+
+                            db.FirmaKisis.Add(yeniKisi);
+                            db.SaveChanges();
+
+                            arayan.RefFirmaKisiId = yeniKisi.Id;
+                            arayan.RefFirmaID = yeniKisi.FirmaId;
+                            db.SaveChanges();
+
+                        }
+                        else
+                        {
+                            Firma yeniFirma = new Firma()
+                            {
+                                FirmaAdi = arayan.arayanFirmaAdi,
+                                FirmaAdres = arayan.arayanAdres,
+                                Musteri = true,
+                                firmaSehir = arayan.arayanSehir,
+                                Araci = null,
+                                RefFirmaID = 6,
+                                Personel = null,
+                                Kasa = null,
+                                RefKonumID = 1005,
+                                FirmaSilindi = false,
+                                firmaKayitTarih = DateTime.Now
+                            };
+
+                            FirmaKisi yeniKisi = new FirmaKisi()
+                            {
+                                Ad = arayan.arayanAdi,
+                                Departman = arayan.arayanFirmaSahibiOzelligi,
+                                Email = arayan.arayanMailAdresi,
+                                FirmaId = yeniFirma.FirmaID,
+                                Soyad = arayan.arayanSoyadi,
+                                Tel = arayan.arayanTelefonNo,
+                                Tel2 = arayan.arayanCepTelNo
+                            };
+                            yeniFirma.FirmaKisis.Add(yeniKisi);
+
+                            db.Firmas.Add(yeniFirma);
+                            db.SaveChanges();
+
+                            arayan.RefFirmaKisiId = yeniKisi.Id;
+                            arayan.RefFirmaID = yeniKisi.FirmaId;
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        FirmaKisi eklikisi = db.FirmaKisis.FirstOrDefault(a => a.Id == kisiid);
+                        arayan.RefFirmaKisiId = eklikisi.Id;
+                        arayan.RefFirmaID = eklikisi.FirmaId;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            return View();
+        }
+
 
         public ActionResult Index()
         {
-          
+
+            //Fonksiyonlar.SuresiDolanDomainleriMailGonder();
+
+            //using (var db = new PortalEntities())
+            //{
+            //    IEnumerable<Arayanlar> tumArayanKatilari = db.Arayanlars.OrderBy(a => a.arayanID).ToList();
+
+            //    foreach (Arayanlar arayan in tumArayanKatilari.ToList())
+            //    {
+            //        int kisiid = KisiEklimi(arayan.arayanTelefonNo, arayan.arayanCepTelNo);
+
+            //        if (kisiid == 0)
+            //        {
+            //            if (arayan.RefFirmaID != null)
+            //            {
+            //                FirmaKisi yeniKisi = new FirmaKisi()
+            //                {
+            //                    Ad = arayan.arayanAdi,
+            //                    Departman = arayan.arayanFirmaSahibiOzelligi,
+            //                    Email = arayan.arayanMailAdresi,
+            //                    FirmaId = arayan.RefFirmaID??0,
+            //                    Soyad = arayan.arayanSoyadi,
+            //                    Tel = arayan.arayanTelefonNo,
+            //                    Tel2 = arayan.arayanCepTelNo
+            //                };
+
+            //                db.FirmaKisis.Add(yeniKisi);
+            //                db.SaveChanges();
+
+            //                arayan.RefFirmaKisiId = yeniKisi.Id;
+            //                arayan.RefFirmaID = yeniKisi.FirmaId;
+            //                db.SaveChanges();
+
+            //            }
+            //            else
+            //            {
+            //                Firma yeniFirma = new Firma()
+            //                {
+            //                    FirmaAdi = arayan.arayanFirmaAdi,
+            //                    FirmaAdres = arayan.arayanAdres,
+            //                    Musteri = true,
+            //                    firmaSehir = arayan.arayanSehir,
+            //                    Araci = null,
+            //                    RefFirmaID = 6,
+            //                    Personel = null,
+            //                    Kasa = null,
+            //                    RefKonumID = 1005,
+            //                    FirmaSilindi = false,
+            //                    firmaKayitTarih = DateTime.Now
+            //                };
+
+            //                FirmaKisi yeniKisi = new FirmaKisi()
+            //                {
+            //                    Ad = arayan.arayanAdi,
+            //                    Departman = arayan.arayanFirmaSahibiOzelligi,
+            //                    Email = arayan.arayanMailAdresi,
+            //                    FirmaId = yeniFirma.FirmaID,
+            //                    Soyad = arayan.arayanSoyadi,
+            //                    Tel = arayan.arayanTelefonNo,
+            //                    Tel2 = arayan.arayanCepTelNo
+            //                };
+            //                yeniFirma.FirmaKisis.Add(yeniKisi);
+
+            //                db.Firmas.Add(yeniFirma);
+            //                db.SaveChanges();
+
+            //                arayan.RefFirmaKisiId = yeniKisi.Id;
+            //                arayan.RefFirmaID = yeniKisi.FirmaId;
+            //                db.SaveChanges();
+            //            }
+            //        }
+            //        else
+            //        {
+            //            FirmaKisi eklikisi = db.FirmaKisis.FirstOrDefault(a => a.Id == kisiid);
+            //            arayan.RefFirmaKisiId = eklikisi.Id;
+            //            arayan.RefFirmaID = eklikisi.FirmaId;
+            //            db.SaveChanges();
+            //        }
+            //    }
+            //}
+
             return View();
         }
         public JsonResult ListIsAra(int? page, string basTarih, string bitisTarih, string isAdi,

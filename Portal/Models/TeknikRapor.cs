@@ -21,7 +21,7 @@ namespace Portal.Models
         public System.DateTime TeknikRaporTarih { get; set; }
         public string RefTeknikRaporUserID { get; set; }
     
-        public virtual isler isler { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual isler isler { get; set; }
     }
 }

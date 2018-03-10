@@ -24,6 +24,7 @@
                 <th>
                     No
                 </th>
+                <th>Kayıtlı Cari</th>
                 <th>Kalan Ödeme</th>
                 <th>
                     Firma
@@ -72,9 +73,21 @@
                     {
                         alinan = 0;
                     }
+                    int domainsayisi = firmaVerisi.Domains.Where(a => a.DomainDurum == true).Count();
                     <tr>
+                        
+                        
                         <td>@firmaVerisi.FirmaID</td>
-                        <td class="text-right"> @String.Format("{0:0,0}", (satis - alinan)) TL</td>
+                        @if (domainsayisi > 0)
+                        {
+                            <td>Kayıtlı Cari</td>}
+                        else {
+                            <td></td>}
+                        <td class="text-right">@if (!User.IsInRole("Yonetim") && firmaVerisi.FirmaBorcluListesindeGizle)
+                        {
+                            <text>Muhasebeciye Sorun</text>
+                        }
+                        else { @String.Format("{0:0,0}", (satis - alinan)) <text>TL</text> } </td>
                         <td>
                             <a href="@Url.Action("Detay", "CariHareket", new { id = firmaVerisi.FirmaID })">
                                 @firmaVerisi.FirmaAdi
@@ -103,10 +116,10 @@
                             <td></td>
                         }
                         <td>
-                            @firmaVerisi.Domains.Count
+                            @domainsayisi
                         </td>
                         <td>
-                            @firmaVerisi.Firma2.FirmaAdi
+                            @firmaVerisi.Araci
                         </td>
                         <td>
                             <a href="@Url.Action("FirmaKaydet", new { controller = "Firmalar", id = firmaVerisi.FirmaID })">

@@ -33,14 +33,14 @@ namespace Portal.Models
         public static string SifreSifirlamaMailiGonder(string mail, string sifirlamaKodu, string userID)
         {
 
-            string siteadresi = "http://portal.karayeltasarim.com/";
+            string siteadresi = "http://portal.karayeltasarim.com";
             string baslik = "Şifre Sıfırlama Maili";
             string Yazi = "Site : " + siteadresi + "<br /><br />";
             Yazi = Yazi + "Parola sıfırlama maili göndermediyseniz bu maili dikkate almayın.<br /><br /><br />";
             Yazi = Yazi + "Maili siz gönderdiyseniz!!!<br />";
             Yazi = Yazi + "Parolanızı sıfırlamak için aşağıdaki linke tıklayın.<br /><br />";
             Yazi = Yazi + "Yeni Parolanız Mail Adresinize Gönderilecektir!!!<br />";
-            Yazi = Yazi + "<a href=\"" + siteadresi + "kullanici/parola/sifirla/" + sifirlamaKodu + "/" + userID + "\" target=\"_blank\">Parola Sıfırlama</a><br />";
+            Yazi = Yazi + "<a href=\"" + siteadresi + "/kullanici/parola/sifirla/" + sifirlamaKodu + "/" + userID + "\" target=\"_blank\">Parola Sıfırlama</a><br />";
             Yazi = Yazi + "Saygilarimizla...<br />";
             Yazi = Yazi + "<br />";
 
@@ -49,23 +49,75 @@ namespace Portal.Models
 
         public static string SuresiDolanDomainleriMailGonder()
         {
-            string mesaj = "<table>";
 
             using (var db = new PortalEntities())
             {
-                IEnumerable<Domain> domainler = db.Domains.GetirUzatmasiGelenler();
+
+                DateTime birgun = DateTime.Now.AddDays(1).Date;
+                DateTime ongun = DateTime.Now.AddDays(10).Date;
+                DateTime yirmigun = DateTime.Now.AddDays(20).Date;
+                DateTime otuzgun = DateTime.Now.AddDays(30).Date;
+                DateTime kirkbesgun = DateTime.Now.AddDays(45).Date;
+
+                IEnumerable<Domain> domainler = db.Domains.Where(a => a.DomainDurum == true && (a.UzatmaTarihi == birgun || a.UzatmaTarihi == ongun || a.UzatmaTarihi == yirmigun || a.UzatmaTarihi == otuzgun || a.UzatmaTarihi == kirkbesgun));
 
                 foreach (Domain domain in domainler)
                 {
-                    mesaj = mesaj + "<tr><td>" + domain.Firma.FirmaAdi + "</td><td>" + domain.DomainAdi + "</td><td>" + Fonksiyonlar.DomainUzatmaSuresineKalanGun(domain.UzatmaTarihi) + "</td></tr>";
+               
+            string mesaj = "" +
+            "<p> Sayın Yetkili,</p><p> Aşağıdaki hizmetlerinizin süresi dolmak üzeredir.</p>" +
+            "<table border = \"1\" cellpadding = \"5\" cellspacing = \"0\" style = \"width:800px;\" width = \"800\">" +
+            "<tbody>" +
+            "<tr><td style = \"width:180px;\">Sipariş Tarihi</td><td style = \"width:620px;\">"+ domain.UzatmaTarihi.Date +"</td></tr>" +
+            "<tr><td style = \"width:180px;\">Müşteri</td><td style = \"width:620px;\">"+ domain.Firma.FirmaAdi +"</td></tr>" +
+            "<tr><td style = \"width:180px;\">Sipariş Bakiyesi</td><td style = \"width:620px;\">" + domain.DomainUrun.DomainUrunFiyati * 1.18 +"TL</td></tr>" +
+            "</tbody>" +
+            "</table>" +
+            "<p> &nbsp;</p>" +
+            "<table border = \"1\" cellpadding = \"5\" cellspacing = \"0\" style = \"width:800px;\" width = \"800\">" +
+            "<tbody>" +
+            "<tr><td>Hizmet</td><td>Fiyat</td><td>Servis Dönemi</td><td>+KDV 18.00 %</td><td>Toplam</td></tr>" +
+            "<tr><td>1 yıl için "+ domain.DomainAdi +" barındırma hizmeti</td><td> "+ domain.DomainUrun.DomainUrunFiyati + "TL</td><td><p> 1 yıl </p></td><td><p> " + ((domain.DomainUrun.DomainUrunFiyati * 1.18) - domain.DomainUrun.DomainUrunFiyati) + "TL </p></td><td>" + domain.DomainUrun.DomainUrunFiyati * 1.18 + "TL</td></tr>" +
+            "</tbody>" +
+            "</table>" +
+             "<p>Toplam Tutar: " + domain.DomainUrun.DomainUrunFiyati * 1.18 + "TL </p>" +
+             "<p>Ödemelerinizi aşağıda belirtilen banka hesap numaralarına Havale / Eft ile yapabilirsiniz. Ödemeniz alındıktan sonra faturanız adresinize gönderilecektir. Faturanızın kesilmesini istediğiniz firmanızın ünvan ve adres bilgilerinde değişiklik olması durumunda, ödemenizi yapmadan önce <a href = \"mailto:muhasebe@karayeltasarim.com\"> muhasebe@karayeltasarim.com </a> güncel bilgilerinizi göndermenizi rica ederiz.</p>" +
+             "<p><strong> Karayel Arge Tasarım Bil.Rek.Öz.Eğ.İnş.Taş.San.Ve Tic.Ltd.Şti.</strong><br />" +
+             "Ziraat Bankası <br />" +
+             "<strong> Şube:</strong>Özgürlük Bulvarı / Antalya Şubesi <br />" +
+             "<strong> Hesap Numarası:</strong> 2620 - 72735807 - 5001 <br />" +
+             "<strong> Iban Numarası:</strong> TR 4100 0100 2620 7273 5807 5001 </p>" +
+            "<p><br />" +
+            "<strong> Karayel Arge Tasarım Ltd.Şti.</strong><br />" +
+            "<br />" +
+            "<strong> Adres :</strong>Pınarbaşı Mah. H & uuml; rriyet Cad. Akdeniz & Uuml; niversitesi Teknokent Arge 1 Binası No:3 / B Kat: 1 / 5A & ndash; 07070 Konyaaltı / ANTALYA <br />" +
+            "<strong> Telefon :</strong> &nbsp; +90(242) 344 10 20 <br />" +
+            "<br />" +
+            "<strong> Adres :</strong> &nbsp; Hobyar Mah. Hocahanı Sk. Bahtiyar Han No: 14 Kat: 7 / 116 & nbsp;/ Fatih / İSTANBUL <br />" +
+            "<strong> Telefon :</strong> &nbsp; +90(212) 512 52 52 <br />" +
+            "<strong> Bilgi ve Destek :</strong> &nbsp;<a href = \"mailto:info@karayeltasarim.com\"> info@karayeltasarim.com </a><br />" +
+            "<strong> Web:</strong> &nbsp;<a href = \"http://www.karayeltasarim.com\"> www.karayeltasarim.com </a></p>";
+
+                    Fonksiyonlar.MailGonder("info@karayeltasarim.com", "Hizmet Süresi Dolum Bildirimi -- Son "+ DomainUzatmaSuresineKalanGun(domain.UzatmaTarihi) + " gün", mesaj);
                 }
             }
 
-            mesaj = mesaj + "</table>";
+            //string mesaj = "<table>";
+
+            //using (var db = new PortalEntities())
+            //{
+            //    IEnumerable<Domain> domainler = db.Domains.GetirUzatmasiGelenler();
+
+            //    foreach (Domain domain in domainler)
+            //    {
+            //        mesaj = mesaj + "<tr><td>" + domain.Firma.FirmaAdi + "</td><td>" + domain.DomainAdi + "</td><td>" + Fonksiyonlar.DomainUzatmaSuresineKalanGun(domain.UzatmaTarihi) + "</td></tr>";
+            //    }
+            //}
+
+            //mesaj = mesaj + "</table>";
 
 
-
-            Fonksiyonlar.MailGonder("info@karayeltasarim.com,satis@karayeltasarim.com", DateTime.Now.ToShortDateString() + " Domain Süresi Dolum Bildirimi", mesaj);
+            
 
             return "Gonderildi";
         }
@@ -174,9 +226,10 @@ namespace Portal.Models
                 message.IsBodyHtml = true;
 
                 SmtpClient client = new SmtpClient(SMTPAdresi, Convert.ToInt32(Port));
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(MailAdresi, MailSifresi);
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                
                 client.EnableSsl = MailSsl;
 
                 client.Send(message);
@@ -303,7 +356,7 @@ namespace Portal.Models
                 {
                     if (bulunduguSayfa == i)
                     {
-                        sayfalama = sayfalama + aktifLi + "<a class=\"" + aCSS + " " + activeCSS + "\" href=\"" + link + "/" + (bulunduguSayfa).ToString() + "\">" + bulunduguSayfa + "</a>" + liBitis;
+                        sayfalama = sayfalama + aktifLi + "<a class=\"" + aCSS + " " + activeCSS + "\" href=\"" + link + "/" + (bulunduguSayfa).ToString() + ">" + bulunduguSayfa + "</a>" + liBitis;
                     }
                     else
                     {
@@ -365,24 +418,25 @@ namespace Portal.Models
             return MvcHtmlString.Create(sayfalama);
 
         }
-        public static string TelefonDuzelt(string telefonNo)
+        public static string TelefonDuzelt(string TelefonNo)
         {
-            //Regex rgx = new Regex("[^0-9]");
-            //TelefonNo = rgx.Replace(TelefonNo, "");
+            if (!string.IsNullOrEmpty(TelefonNo))
+            {
+                Regex rgx = new Regex("[^0-9]");
+                TelefonNo = rgx.Replace(TelefonNo, "");
 
-            //if (TelefonNo.Length == 7)
-            //{
-            //    TelefonNo = "0242" + TelefonNo;
-            //}
+                if (TelefonNo.Length > 0 && TelefonNo.Substring(0, 1) != "0")
+                {
+                    TelefonNo = "0" + TelefonNo;
+                }
+                if(TelefonNo.Length > 10)
+                {
+                    TelefonNo = TelefonNo.Substring(TelefonNo.Length - 11);
+                    TelefonNo = TelefonNo.Substring(0, 4) + " " + TelefonNo.Substring(4, 3) + " " + TelefonNo.Substring(7, 2) + " " + TelefonNo.Substring(9, 2);
+                }
+            }
 
-            //if (TelefonNo.Substring(0, 1) != "0")
-            //{
-            //    TelefonNo = "0" + TelefonNo;
-            //}
-            //TelefonNo = TelefonNo.Substring(TelefonNo.Length - 11);
-            //TelefonNo = "(" + TelefonNo.Substring(0, 4) + ")-" + TelefonNo.Substring(4, 3) + "-" + TelefonNo.Substring(7, 2) + "-" + TelefonNo.Substring(9, 2);
-            telefonNo=Regex.Replace(telefonNo, @"[^\d]", "");
-            return telefonNo;
+            return TelefonNo;
         }
         public static string DomainAdiGetir(int DomainID)
         {
@@ -494,23 +548,7 @@ namespace Portal.Models
 
             return bolgeAdi;
         }
-        public static string telefonDuzelt(string TelefonNo)
-        {
-            if (!string.IsNullOrEmpty(TelefonNo))
-            {
-                Regex rgx = new Regex("[^0-9]");
-                TelefonNo = rgx.Replace(TelefonNo, "");
 
-                if (TelefonNo.Substring(0, 1) != "0")
-                {
-                    TelefonNo = "0" + TelefonNo;
-                }
-                TelefonNo = TelefonNo.Substring(TelefonNo.Length - 11);
-                TelefonNo = TelefonNo.Substring(0, 4) + " " + TelefonNo.Substring(4, 3) + " " + TelefonNo.Substring(7, 2) + " " + TelefonNo.Substring(9, 2);
-            }
-
-            return TelefonNo;
-        }
         public static string FirmaAdiGetir(int FirmaID)
         {
             string firmaAdi = string.Empty;

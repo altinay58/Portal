@@ -7,6 +7,7 @@ using System.Data.Entity;
 using Portal.Models;
 using AutoMapper;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Portal.Controllers
 {
@@ -16,16 +17,75 @@ namespace Portal.Controllers
         {
             ViewBag.guncelMenu = "Firmalar";
         }
-        #region firma tumu
+
+
+        
+        [HttpPost]
+        public ActionResult BorcNotEkle()
+        {
+
+            int firmaidsi = Convert.ToInt32(Request.Form["pk"]);
+            string not = Request.Form["value"];
+
+            JsonCevap jsn = new JsonCevap();
+
+            Firma firmanotu = Db.Firmas.FirstOrDefault(a => a.FirmaID == firmaidsi);
+
+            firmanotu.FirmaBorcNotu = not;
+
+            Db.SaveChanges();
+
+            jsn.Basarilimi = true;
+
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Yonetim")]
+        public JsonResult BorcluFirmalardaGoster(int id)
+        {
+            JsonCevap jsn = new JsonCevap();
+            Firma firmam = Db.Firmas.FirstOrDefault(x => x.FirmaID == id);
+
+            if(firmam.FirmaBorcluListesindeGizle)
+            {
+                firmam.FirmaBorcluListesindeGizle = false;
+                jsn.Data = false;
+            }
+            else
+            {
+                firmam.FirmaBorcluListesindeGizle = true;
+                jsn.Data = true;
+            }
+            Db.SaveChanges();
+            jsn.Basarilimi = true;
+            return Json(jsn, JsonRequestBehavior.AllowGet);
+        }
+
+
         [Authorize(Roles = "Satis,Muhasebe")]
+        public ActionResult BorcluFirmalar()
+        {
+
+            var firmaIDleri = Db.Satis.GroupBy(a => a.musteriFirmaID).Where(x => x.Sum(a => a.musteridenAlinanOdeme) != x.Sum(a => a.musteriSatis) ).Select(o => new { id = o.Key });
+
+            List<int?> idler = firmaIDleri.Select(a => a.id).ToList();
+
+            IEnumerable<Firma> result = Db.Firmas.TumFirmalar().Where( a => idler.Contains( a.FirmaID )).OrderBy(a => a.RefKonumID).ThenByDescending(x => x.Satis.Sum(c => c.musteriSatis) - x.Satis.Sum(c => c.musteridenAlinanOdeme));
+
+            return View(result);
+        }
+
+
+        #region firma tumu
+        [Authorize(Roles = "Satis,Muhasebe,MusteriTemsilcisi")]
         public ActionResult List(string durum,int? p,string q)
         {
-            if (!User.IsInRole("Muhasebe") && durum != "musteri")
-            {
+            //if (!User.IsInRole("Muhasebe") && durum != "musteri")
+            //{
 
-                TempData[ERROR] = "Bu bölüme giriş yetkiniz bulunmuyor.";
-                return RedirectToAction("Index", "Home");
-            }
+            //    TempData[ERROR] = "Bu bölüme giriş yetkiniz bulunmuyor.";
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             ViewBag.SayfaAdi = "Firmalar";
             ViewBag.Durum = durum;
@@ -40,7 +100,7 @@ namespace Portal.Controllers
                      .Where(a => (a.CariHarekets.Sum(c => c.ChSatisFiyati) - a.CariHarekets.Sum(c => c.ChAlinanOdeme)) > 0)
                      .Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true);
                 
-                if (!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))
+                if ((!User.IsInRole("Muhasebe") && User.IsInRole("Satis"))|| User.IsInRole("MusteriTemsilcisi")) 
                 {
                     list2 = list2.Where(x => (x.Personel != true && x.Kasa != true));
                 }
@@ -80,7 +140,10 @@ namespace Portal.Controllers
             else
             {
              IEnumerable<Firma> list =   Db.Firmas.GetirFirmalar(durum.ToLower()).Where(x => !string.IsNullOrEmpty(q) ? x.FirmaAdi.Contains(q) : true ).OrderByDescending(w => w.FirmaID);
-
+                if (User.IsInRole("MusteriTemsilcisi"))
+                {
+                    list = list.Where(x => (x.Personel != true && x.Kasa != true));
+                }
                 int totalCount = list.Count();
 
                 list = list.Skip(domainBaslangic).Take(PagerCount);
@@ -154,8 +217,6 @@ namespace Portal.Controllers
                     IEnumerable<Arayanlar> arayanGecmisAramalari = Db.Arayanlars.GetirArayanGecmisAramalar(firmaAdi).ToList();
                     foreach (Arayanlar arayanim in arayanGecmisAramalari)
                     {
-                        arayanim.arayanFirmaKayitDurum = true;
-                        arayanim.arayanKayitliMusterimi = true;
                         arayanim.Firma = firma;
                     }
                 }
@@ -249,33 +310,138 @@ namespace Portal.Controllers
             }
             return View(model);
         }
+
+        public string TelefonDuzelt(string TelefonNo)
+        {
+            if(String.IsNullOrEmpty(TelefonNo))
+            {
+                return TelefonNo;
+            }
+
+            Regex rgx = new Regex("[^0-9]");
+            TelefonNo = rgx.Replace(TelefonNo, "");
+
+            if(TelefonNo.Length == 7)
+            {
+                TelefonNo = "0242"+TelefonNo;
+            }
+
+            if(TelefonNo.Length>11)
+            {
+                TelefonNo = TelefonNo.Substring(TelefonNo.Length - 11, 11);
+            }
+
+            if (TelefonNo.Substring(0, 1) != "0")
+            {
+                TelefonNo = "0" + TelefonNo;
+            }
+
+            return TelefonNo;
+        }
+
         [HttpPost]
         public ActionResult FirmaKisiEkle(FirmaKisi model)
         {
-            FirmaKisi entity = new FirmaKisi();
 
-            entity.Ad = model.Ad;
-            entity.Soyad = model.Soyad;
-            entity.Departman = model.Departman;
-            entity.Email = model.Email;
-            entity.FirmaId = model.FirmaId;
-            entity.Tel = model.Tel;
-            entity.Tel2 = model.Tel2;
-            Db.FirmaKisis.Add(entity);
-            Db.SaveChanges();
-            TempData[SUCESS] = "Firma Kisi Kaydedildi";
+            if(model.Id == 0)
+            {
+                FirmaKisi entity = new FirmaKisi();
+                entity.Ad = model.Ad;
+                entity.Soyad = model.Soyad;
+                entity.Departman = model.Departman;
+                entity.Email = model.Email;
+                entity.FirmaId = model.FirmaId;
+                entity.Tel = TelefonDuzelt(model.Tel);
+                entity.Tel2 = TelefonDuzelt(model.Tel2);
+                Db.FirmaKisis.Add(entity);
+                Db.SaveChanges();
+                TempData[SUCESS] = "Firma Kisi Kaydedildi";
+            }
+            else if(model.Id > 0)
+            {
+                FirmaKisi entity = Db.FirmaKisis.FirstOrDefault(a=>a.Id == model.Id);
+                entity.Ad = model.Ad;
+                entity.Soyad = model.Soyad;
+                entity.Departman = model.Departman;
+                entity.Email = model.Email;
+                entity.FirmaId = model.FirmaId;
+                entity.Tel = TelefonDuzelt(model.Tel);
+                entity.Tel2 = TelefonDuzelt(model.Tel2);
+                Db.SaveChanges();
+                TempData[SUCESS] = "Firma Kisi Güncellendi";
+            }
+
             return RedirectToAction("Detay", "CariHareket", new { id = model.FirmaId });
         }
 
         public ActionResult FirmaKisiSil(int id)
         {
+            if(Db.Arayanlars.FirstOrDefault(a=>a.RefFirmaKisiId == id) != null)
+            {
+                return RedirectToAction("AramalariAktaripSil", "Firmalar", new { id = id });
+            }
+
             FirmaKisi entity = Db.FirmaKisis.FirstOrDefault(a => a.Id == id);
-
             Db.FirmaKisis.Remove(entity);
-
             Db.SaveChanges();
             TempData[SUCESS] = "Firma Kisi Silindi";
             return RedirectToAction("Detay", "CariHareket", new { id = entity.FirmaId });
+        }
+
+        public ActionResult AramalariAktaripSil(int id)
+        {
+            FirmaKisi kisi = Db.FirmaKisis.FirstOrDefault(a => a.Id == id);
+
+            ViewBag.Kisi = kisi;
+
+            IEnumerable<FirmaKisi> firmaKisileri = Db.FirmaKisis.Where(a => a.FirmaId == kisi.FirmaId);
+
+            return View(firmaKisileri);
+        }
+
+
+        
+        //public ActionResult FirmaKisiDuzenle(int id)
+        //{
+        //    FirmaKisi kisi = Db.FirmaKisis.FirstOrDefault(a => a.Id == id);
+
+        //    return View(kisi);
+        //}
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult FirmaKisiDuzenle(FirmaKisi kisi)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Db.Entry(kisi).State = EntityState.Modified;
+        //        Db.SaveChanges();
+        //        return RedirectToAction("Detay", "CariHareket", new { id = kisi.FirmaId });
+        //    }
+        //    return View(kisi);
+        //}
+
+
+        [HttpPost]
+        public ActionResult AramalariAktaripSil(int id, int aktarilacakkisi)
+        {
+            FirmaKisi eskiKisi = Db.FirmaKisis.FirstOrDefault(a => a.Id == id);
+            FirmaKisi yeniKisi = Db.FirmaKisis.FirstOrDefault(a => a.Id == aktarilacakkisi);
+
+            IEnumerable<Arayanlar> kayitlar = Db.Arayanlars.Where(a => a.RefFirmaKisiId == id);
+
+            foreach(Arayanlar kayit in kayitlar)
+            {
+                kayit.RefFirmaKisiId = aktarilacakkisi;
+                kayit.arayanKonu = eskiKisi.Ad + " " + eskiKisi.Soyad + " --> " + yeniKisi.Ad + " " + yeniKisi.Soyad + " : " + kayit.arayanKonu; 
+            }
+
+            Db.SaveChanges();
+
+            TempData["Success"] = "Tüm arama kayıtları " + eskiKisi.Ad + " " + eskiKisi.Soyad + "'dan " + yeniKisi.Ad + " " + yeniKisi.Soyad + " a aktarılmıştır." + eskiKisi.Ad + " " + eskiKisi.Soyad + "'i silebilirsiniz.";
+
+            return RedirectToAction("Detay", "CariHareket", new { id = eskiKisi.FirmaId });
         }
         #endregion
     }

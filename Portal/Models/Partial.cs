@@ -9,6 +9,31 @@ namespace Portal.Models
 {
     public static class Partial
     {
+
+        public static IEnumerable<SatisFirsati> SatisFirmastiTeklifleri(int firmaID)
+        {
+            using (var db = new PortalEntities())
+            {
+                IEnumerable<SatisFirsati> firsatlar = db.SatisFirsatis.Where(a => a.RefFirmaId == firmaID).OrderBy(a => a.Id).ToList();
+
+                return firsatlar;
+            }
+        }
+
+        public static IEnumerable<SatisFirsatiFiyatRevizyon> SatisFirmastiTeklifRevizeleri(int satiID)
+        {
+            using (var db = new PortalEntities())
+            {
+                return db.SatisFirsatiFiyatRevizyons.Where(a=> a.RefSatisFirsatiId == satiID).OrderBy(a => a.Id).ToList();
+            }
+        }
+        public static string KacSaatCalismaYapildi(long saniye)
+        {
+            long saat = saniye / 3600;
+            long dakika = (saniye - (saat * 3600))/60;
+            return saat + ":" + dakika;
+        }
+
         public static IEnumerable<Etiket> Etiketler()
         {
             using (var db = new PortalEntities())
@@ -16,6 +41,7 @@ namespace Portal.Models
                 return db.Etikets.ToList();
             }
         }
+        
 
         public static Etiket EtiketGetir(int id)
         {
@@ -56,7 +82,7 @@ namespace Portal.Models
         {
             using (var db = new PortalEntities())
             {
-                return db.Arayanlars.Where(a => a.arayanKayitliRefFirmaID == firmaID).OrderByDescending(a=>a.arayanKayitTarih).ToList();
+                return db.Arayanlars.Where(a => a.RefFirmaID == firmaID).OrderByDescending(a=>a.arayanKayitTarih).ToList();
             }
         }
 
@@ -110,7 +136,7 @@ namespace Portal.Models
         {
             using (var dbc = new PortalEntities())
             {
-                DateTime uTarih = DateTime.Now.AddMonths(2);
+                DateTime uTarih = DateTime.Now.AddDays(45);
                 return (from a in dbc.Domains
                        where a.DomainDurum == true && a.UzatmaTarihi <= uTarih
                        orderby a.UzatmaTarihi ascending
@@ -157,6 +183,22 @@ namespace Portal.Models
                 else
                 {
                     return isimiz.islerRefDomainID ?? 0;
+                }
+            }
+        }
+
+        public static string FirmaKisiAdi(int id)
+        {
+            using (var dbc = new PortalEntities())
+            {
+                FirmaKisi isimiz = dbc.FirmaKisis.FirstOrDefault(a => a.Id == id);
+                if (isimiz == null)
+                {
+                    return "Kişi Bulunamadı";
+                }
+                else
+                {
+                    return isimiz.Ad +" "+ isimiz.Soyad;
                 }
             }
         }
@@ -287,15 +329,25 @@ namespace Portal.Models
 
         }
 
+
+        
+
+
         public static string DomainKategoriAdi(int id)
         {
             using (var dbc = new PortalEntities())
             {
-                return dbc.DomainKategoris.FirstOrDefault(a => a.DomainKategoriID == id).DomainKategoriAdi;
+                DomainKategori isimiz = dbc.DomainKategoris.FirstOrDefault(a => a.DomainKategoriID == id);
+                if (isimiz == null)
+                {
+                    return "Domain Kategorisi Bulunamadı";
+                }
+                else
+                {
+                    return isimiz.DomainKategoriAdi;
+                }
             }
-
         }
-
 
         public static IEnumerable<Firma> FirmalariGoruntule()
         {
@@ -313,7 +365,7 @@ namespace Portal.Models
             List<Arayanlar> items;
             using (var dbc = new PortalEntities())
             {
-                items = dbc.Arayanlars.Where(m => m.arayanFirmaKayitDurum == false).ToList();
+                items = dbc.Arayanlars.ToList();
 
                 return items;
             }

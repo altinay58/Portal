@@ -118,11 +118,7 @@
         <td>
             <a href="@Url.Action("DomainIsler", "Isler",new { id= Partial.DomainIdGetirIsId(item.RefTeknikRaporIsID)})#is@(item.RefTeknikRaporIsID)">@Partial.IsinAdi(item.RefTeknikRaporIsID)</a> 
 </td>
-        <td>
-            @{ 
-                TimeSpan result = TimeSpan.FromMinutes(item.TeknikRaporZaman);
-                @result.ToString("hh':'mm");
-            }
+        <td>@Partial.KacSaatCalismaYapildi(item.TeknikRaporZaman)
         </td>
         <td>
             @item.TeknikRaporTarih.ToShortDateString()

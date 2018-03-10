@@ -1,9 +1,6 @@
 ﻿/// <reference path="C:\Projects\Portal\Portal\Scripts/angular.min.js" />
 /// <reference path="../services/arayanListService.js" />
 
-
-
-
 angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $timeout) {
       var self = $scope; 
       self.arayanlar = [], self.yukleniyor = true;
@@ -46,31 +43,24 @@ angModule.controller('arayanListeCtrl', function ($scope, arayanListService, $ti
           }
       }
       self.firmaKaydet = function (index) {
-
           alert(index);
       }
       self.kontrolKayitDurumu = function (arayan) {         
           if (arayan.KayitDurum) {
-              return "<span><a href='#'>Kayıtlı Firma</a></span>";            
+              return `<a href="/SatisFirsatis/Kaydet" class="btn btn-default blue" style="color:#fff !important">Teklif</a>`;  //"<span><a href='#'>Kayıtlı Firma</a></span>";
+              //return `<a href="/SatisFirsatis/Kaydet/${arayan.KayitliFirmaId}" class="btn btn-default blue" style="color:#fff !important">Teklif</a>`;  //"<span><a href='#'>Kayıtlı Firma</a></span>";
           } else {
-              return `<a href="/Firmalar/ArayaniFirmayaKaydet/${arayan.Id}" class="btn btn-default red" style="color:#fff !important">Firmayı Kaydet</a>`;
+              //return `<a href="/SatisFirsatis/Kaydet/${arayan.KayitliFirmaId}" class="btn btn-default blue" style="color:#fff !important">Teklif</a>`;
+              return `<a href="/SatisFirsatis/Kaydet" class="btn btn-default blue" style="color:#fff !important">Teklif</a>`;
               //return `<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet(${arayan.Id}))">Kaydet</button>`;
               //.with(arayan.Id);
           }
       }
       self.FirmaKayitliMi = function (arayan) {
-          if (arayan.KayitliMi) {
               return `<a target="_blank" href="/CariHareket/Detay/${arayan.KayitliFirmaId}"> ${arayan.Firma} </a>`;
-          } else {
-              return arayan.Firma;
-              //return `<button type="button" class="btn btn-default red" onclick="angular.element($(this).scope().firmaKaydet(${arayan.Id}))">Kaydet</button>`;
-              //.with(arayan.Id);
-          }
       }
       self.pageChanged = function () {
           console.log(self.currentPage);
-        
-         
       }
       function setIfEmpty(obj) {
           if (obj===null || typeof obj === 'undefined') {

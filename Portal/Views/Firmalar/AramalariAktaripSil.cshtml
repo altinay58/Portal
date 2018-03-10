@@ -1,0 +1,45 @@
+﻿@using Portal.Models
+@model IEnumerable<Portal.Models.FirmaKisi>
+@{
+    FirmaKisi kisi = ViewBag.Kisi;
+}
+@using (@Html.BeginForm("AramalariAktaripSil", "Firmalar", FormMethod.Post,
+                                                                 new { id = "ekleForm" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(x => kisi.Id)
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                @kisi.Ad @kisi.Soyad 
+            </label>
+            <div class="col-md-4">
+                Adlı kişi silinecek arayan kayıtların kime aktarılacağını seçin.
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Aktarılak Kişi
+            </label>
+            <div class="col-md-4">
+                <select name="aktarilacakkisi">
+                    @foreach(var m in ViewData.Model)
+                    {
+                        <option value="@m.Id">@m.Ad @m.Soyad @m.Departman</option>
+                    }
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <button type="submit" class="btn green">Kaydet</button>
+            </div>
+        </div>
+    </div>
+}

@@ -73,15 +73,17 @@
                             <a href="/Arayanlar/ArayanGecmisAramaGetir?firmaAdi=@item.arayanFirmaAdi">@item.arayanFirmaAdi</a>
                         </td>
                         <td>
-                            <a href="tel:@Fonksiyonlar.telefonDuzelt(item.arayanTelefonNo)">@Fonksiyonlar.telefonDuzelt(item.arayanTelefonNo)</a>
+                            <a href="tel:@Fonksiyonlar.TelefonDuzelt(item.arayanTelefonNo)">@Fonksiyonlar.TelefonDuzelt(item.arayanTelefonNo)</a>
 
                         </td>
                         <td>
-                            <a href="tel:@Fonksiyonlar.telefonDuzelt(item.arayanCepTelNo)">@Fonksiyonlar.telefonDuzelt(item.arayanCepTelNo)</a>
+                            <a href="tel:@Fonksiyonlar.TelefonDuzelt(item.arayanCepTelNo)">@Fonksiyonlar.TelefonDuzelt(item.arayanCepTelNo)</a>
 
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.arayanKonu)
+                            <br />
+                            @item.arayanAdres / @item.arayanSehir / @item.arayanilce
                         </td>
 
                         <td>
@@ -253,7 +255,7 @@
                                 </td>
 
                                 <td>
-                                    @firmaVerisi.Firma2.FirmaAdi
+                                    @*@firmaVerisi.Firma2.FirmaAdi*@
                                 </td>
 
 
