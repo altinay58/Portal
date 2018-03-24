@@ -20,10 +20,7 @@ namespace Portal.Controllers
     //    public string MailDurumu { get; set; }
     //    public int? Ticket { get; set; }
     //}
-    //test rt ert ert ert ert ert
-    //falan filan
-    //asdasdasd
-    //pğoğowekrjsf hf sdjfhhdsjfh dhsfjksdhf dh fdshfdsj fhdshfsd dsdfsdf
+    //çalışıyor 1
     public class ArayanlarController : BaseController
     {
         public ArayanlarController()
