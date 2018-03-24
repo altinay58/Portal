@@ -20,7 +20,8 @@ namespace Portal.Controllers
     //    public string MailDurumu { get; set; }
     //    public int? Ticket { get; set; }
     //}
-    //test
+    //test rt ert ert ert ert ert
+    //falan filan
     public class ArayanlarController : BaseController
     {
         public ArayanlarController()
