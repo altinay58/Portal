@@ -22,6 +22,8 @@ namespace Portal.Controllers
     //}
     //test rt ert ert ert ert ert
     //falan filan
+    //asdasdasd
+    //pğoğowekrjsf hf sdjfhhdsjfh dhsfjksdhf dh fdshfdsj fhdshfsd dsdfsdf
     public class ArayanlarController : BaseController
     {
         public ArayanlarController()
