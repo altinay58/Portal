@@ -22,7 +22,7 @@ namespace Portal.Controllers
     //}
     //çalışıyor 1
     //çalışıyor 2 
-    //24.03.208 18:07 de test edildi visual studio ile
+    //24.03.208 18:07 de test edildi visual studio ile 2
     public class ArayanlarController : BaseController
     {
         public ArayanlarController()
