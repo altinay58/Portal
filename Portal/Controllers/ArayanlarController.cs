@@ -21,7 +21,7 @@ namespace Portal.Controllers
     //    public int? Ticket { get; set; }
     //}
     //çalışıyor 1
-    //çalışıyor 2
+    //çalışıyor 2 
     public class ArayanlarController : BaseController
     {
         public ArayanlarController()
