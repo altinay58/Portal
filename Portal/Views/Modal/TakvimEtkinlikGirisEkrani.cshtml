@@ -1,0 +1,119 @@
+﻿@using Portal.Models;
+@{
+    Layout = null;
+
+    var kullanicilar = ViewBag.Kullanicilar as List<AspNetUser>;
+}
+
+<!--
+    TAKVİM ETKİNLİK BİLGİ GİRİŞİ EKRANIDIR.
+    "/Takvim/Index.cshtml" de kullanılmaktadır.
+-->
+<div class="modal fade bs-modal-lg" id="modal-takvim-bilgi-giris" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Etkinlik Bilgi Giriş Ekranı</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frm1" class="inline-form" action="/Takvim/Index" method="post">
+                    <input id="etkinlikId" name="etkinlikId" value="" type="hidden" />
+                    <div class="form-body">
+                        <div class="row mb5">
+                            <div class="form-group">
+                                <label for="modalUserId" class="control-label col-md-2">Kullanıcı</label>
+                                <div class="col-md-10">
+                                    <select id="modalUserId" name="userId" class="form-control">
+                                        @foreach (var a in kullanicilar)
+                                        {
+                                            <option value="@a.Id" @(a.UserName == User.Identity.Name ? "selected" : "")>@a.UserName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="cariKodu" class="control-label col-md-2">Başlık</label>
+                                <div class="col-md-7">
+                                    <input id="takvimBaslik" name="takvimBaslik" type="text" value="" class="form-control margin-bottom-10" placeholder="*Başlık..." />
+                                </div>
+                                <div class="col-md-3">
+                                    <input id="lokasyon" name="lokasyon" type="text" value="" class="form-control" placeholder="Lokasyon..." data-toggle="modal" href="#modal-takvim-google-harita" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="cariKodu" class="control-label col-md-2">Açıklama</label>
+                                <div class="col-md-10">
+                                    <textarea id="takvimIcerik" name="takvimIcerik" type="text" value="" class="form-control margin-bottom-10" placeholder="Açıklama..." rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="cariKodu" class="control-label col-md-2"></label>
+                                <div class="col-md-10">
+                                    <div class="mt-checkbox-list">
+                                        <label class="mt-checkbox" style="font-size:12px;">
+                                            Gün Boyu
+                                            <input type="checkbox" id="tumGunMu" name="tumGunMu" value="true" />
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="cariKodu" class="control-label col-md-2">Başlangıç</label>
+                                <div class="col-md-4">
+                                    <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
+                                        <input id="takvimBasTar" name="takvimBasTar" is-date="1" class="form-control" data-date-format="dd.mm.yyyy" type="text" />
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-calendar"></i>
+                                            </button>
+                                        </span>
+                                        <div class="input-group">
+                                            <input id="takvimBasSaat" name="takvimBasSaat" class="form-control timepicker timepicker-24" style="width:50px;padding:2px" type="text" />
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group  date date-picker" data-date-format="dd.MM.yyyy">
+                                        <input id="takvimBitTar" name="takvimBitTar" is-date="1" class="form-control" data-date-format="dd.mm.yyyy" type="text" />
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-calendar"></i>
+                                            </button>
+                                        </span>
+                                        <div class="input-group">
+                                            <input id="takvimBitSaat" name="takvimBitSaat" class="form-control timepicker timepicker-24" style="width:50px;padding:2px" type="text" />
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer right">
+                <button type="button" class="btn-takvim-etkinliksil  btn btn-danger">Sil</button>
+                <button type="button" class="btn-takvim-etkinlikkaydet  btn btn-success">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

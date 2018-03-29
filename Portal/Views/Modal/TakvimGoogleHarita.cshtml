@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+
+<!--
+    GOOGLE MAP(LOKASYON SEÇİMİ) İÇİN KULLANILAN MODALDIR
+    "/Takvim/Index.cshtml" de kullanılmaktadır.
+-->
+<div class="modal fade bs-modal-lg" id="modal-takvim-google-harita" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Etkinliğin Bulunduğu Konumu Seçiniz.</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="margin-bottom-10" action="#">
+                            <div class="input-group">
+                                <input type="text" class="form-control col-md-12" id="araLokasyon" placeholder="Adres, sokak no, firma adı...">
+                                <span class="input-group-btn">
+                                    <button class="btn blue" id="gmap_geocoding_btn">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="gmap_geocoding" class="gmaps"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="current"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green" data-dismiss="modal">Seç</button>
+            </div>
+        </div>
+    </div>
+</div>
