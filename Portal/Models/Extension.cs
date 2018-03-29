@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.SqlServer;
 using System.Linq;
@@ -19,6 +20,26 @@ namespace Portal.Models
         public static bool ContainsNullControl(this string source,string value)
         {
             return (!string.IsNullOrEmpty(value) ? SqlFunctions.PatIndex("%"+value+"%",source)>0 : true);
+        }
+
+        /// <summary>
+        /// Hata varsa hatayı html formatında string tipinde döner.
+        /// <para>Fluent validation kontrollerinde ki hatayı getirir.</para>
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static string GetHtmlErrors(this ValidationResult result)
+        {
+            if (!result.IsValid)
+            {
+                string sonuc = "";
+                foreach (var err in result.Errors)
+                    sonuc += $"{err.ErrorMessage}<br/>";
+
+                return sonuc;
+            }
+
+            return "";
         }
     }
 }

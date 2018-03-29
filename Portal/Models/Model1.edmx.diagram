@@ -163,6 +163,10 @@
         <AssociationConnector Association="PortalModel.FK_SatisFirsati_Firma" />
         <AssociationConnector Association="PortalModel.FK_SatisGorusme_Firma" />
         <AssociationConnector Association="PortalModel.FK_Teklif_Firma" />
+        <EntityTypeShape EntityType="PortalModel.Takvim" Width="1.5" PointX="8.25" PointY="15.75" />
+        <EntityTypeShape EntityType="PortalModel.TakvimAyar" Width="1.5" PointX="8.25" PointY="19.625" />
+        <AssociationConnector Association="PortalModel.FK_Takvim_AspNetUsers" />
+        <AssociationConnector Association="PortalModel.FK_TakvimAyar_AspNetUsers" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

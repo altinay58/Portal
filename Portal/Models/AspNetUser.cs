@@ -35,6 +35,8 @@ namespace Portal.Models
             this.IsPlanis = new HashSet<IsPlani>();
             this.ToplantiyaKatilanlars = new HashSet<ToplantiyaKatilanlar>();
             this.Arayanlars = new HashSet<Arayanlar>();
+            this.Takvims = new HashSet<Takvim>();
+            this.TakvimAyars = new HashSet<TakvimAyar>();
         }
     
         public string Id { get; set; }
@@ -91,5 +93,9 @@ namespace Portal.Models
         public virtual ICollection<ToplantiyaKatilanlar> ToplantiyaKatilanlars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arayanlar> Arayanlars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Takvim> Takvims { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TakvimAyar> TakvimAyars { get; set; }
     }
 }

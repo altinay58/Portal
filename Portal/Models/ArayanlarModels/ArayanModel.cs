@@ -49,11 +49,29 @@ namespace Portal.Models.ArayanlarModels
         public bool araciVarmi { get; set; }
         public string SaatDakika { get; set; }
         public bool isEkle { get; set; }
-       
+
 
         public bool? Kayitlimi { get; set; }
         public bool TanitimMailiGonder { get; set; }
         public string MailBaslik { get; set; }
-       
+
+
+        //Takvime ekleme işlemleri için kullanılır.
+        public bool takvimeEkle { get; set; } //Bu parametre seçildiyse kullanıcının google takvim hesabında etkinlik oluşturulur.
+        public string takvimUserId { get; set; }
+        public string takvimBaslik { get; set; }
+        public string takvimIcerik { get; set; }
+        public string takvimBasTar { get; set; }
+        public string takvimBasSaat { get; set; }
+        public string takvimBitTar { get; set; }
+        public string takvimBitSaat { get; set; }
+
+        public bool takvimTumGunMu { get; set; }
+        //public bool pTakvimTumGunMu { get { return this.takvimTumGunMu ?? false; } }
+
+        public string[] takvimKatilimcilar { get; set; }
+        public string takvimLokasyon { get; set; }
+
+        public string MesajTarihKontrol { get; set; }
     }
 }

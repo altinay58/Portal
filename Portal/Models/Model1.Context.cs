@@ -94,5 +94,7 @@ namespace Portal.Models
         public virtual DbSet<Domain> Domains { get; set; }
         public virtual DbSet<isler> islers { get; set; }
         public virtual DbSet<Firma> Firmas { get; set; }
+        public virtual DbSet<Takvim> Takvims { get; set; }
+        public virtual DbSet<TakvimAyar> TakvimAyars { get; set; }
     }
 }

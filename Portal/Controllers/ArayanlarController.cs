@@ -20,9 +20,7 @@ namespace Portal.Controllers
     //    public string MailDurumu { get; set; }
     //    public int? Ticket { get; set; }
     //}
-    //çalışıyor 1
-    //çalışıyor 2 
-    //24.03.208 18:07 de test edildi visual studio ile 2
+
     public class ArayanlarController : BaseController
     {
         public ArayanlarController()
@@ -84,6 +82,11 @@ namespace Portal.Controllers
             ViewBag.mailSablonlari = new SelectList(Db.MailSablonus, "MailSablonuID", "MailSablonuAdi");
             //ViewBag.islerisiYapacakKisi = new SelectList(Db.AspNetUsers, "Id", "UserName");
             ViewBag.kullanicilar = Db.AspNetUsers.Where(x => x.LockoutEnabled == false).ToList();
+            ViewBag.takvimKullanicilar = (
+                                            from u in Db.AspNetUsers.AsNoTracking()
+                                            join ta in Db.TakvimAyars.AsNoTracking() on u.Id equals ta.RefUserId
+                                            select u
+                                         ).ToList();
             return View(arayanlar);
         }
 
@@ -93,15 +96,33 @@ namespace Portal.Controllers
         [ValidateInput(false)]
         public ActionResult ArayanEkle(ArayanModel vmodel)
         {
-            const int ARACI_VAR = 1;
-            const int ARACI_YOK = 2;
-            if (ModelState.IsValid)
+            #region DEĞİŞKEN TANIMLAMA İŞLEMLERİ
+            Cevap c = new Cevap();
+
+            #endregion
+            #region MODEL KONTROLÜ
+
+            ///Modele ait tüm validasyon işlemleri aşağıda ki kod ile gerçekleştirilmektedir.
+            c.Mesaj.KontrolEt(new Models.Arayanlar.ArayanEkleValidator().Validate(vmodel).GetHtmlErrors());
+
+            #endregion
+            #region SON KONTROLLER
+            if (c.MesajVarMi)
             {
+                TempData[ERROR] = c.HtmlMesaj;
+                return RedirectToAction("ArayanEkle");
+            }
+            #endregion
+            #region İŞLEMLER
+            {
+                const int ARACI_VAR = 1;
+                const int ARACI_YOK = 2;
+
                 string userid = User.Identity.GetUserId();
 
                 if (vmodel.arayanKayitliRefFirmaID == 0) // firma kayıtlı mı diye kontrol ediyoruz.
                 {
-                    if(String.IsNullOrEmpty(vmodel.arayanFirmaAdi))
+                    if (String.IsNullOrEmpty(vmodel.arayanFirmaAdi))
                     {
                         TempData[SUCESS] = "Firma Adını Girin";
                         return RedirectToAction("ArayanEkle");
@@ -111,7 +132,7 @@ namespace Portal.Controllers
                     {
                         FirmaAdi = vmodel.arayanFirmaAdi,
                         FirmaWebSitesi = vmodel.arayanWebAdresi,
-                        firmaSehir =  vmodel.arayanSehir,
+                        firmaSehir = vmodel.arayanSehir,
                         FirmaAdres = vmodel.arayanAdres,
                         firmailce = vmodel.arayanilce,
                         RefKonumID = vmodel.arayanRefKonumID,
@@ -141,7 +162,7 @@ namespace Portal.Controllers
                     vmodel.arayanKayitliMusterimi = true;
                 }
 
-                if(vmodel.kisiid == null)
+                if (vmodel.kisiid == null)
                 {
                     FirmaKisi yeniKisi = new FirmaKisi()
                     {
@@ -243,11 +264,40 @@ namespace Portal.Controllers
                     }
                 }
                 Db.Arayanlars.Add(arayan);
+
+
+                #region TAKVİME EKLEME İŞLEMLERİ
+                {
+                    bool tumGunMu = vmodel.takvimTumGunMu;// ?? false;
+                    DateTime basTar = Convert.ToDateTime(vmodel.takvimBasTar + " " + vmodel.takvimBasSaat);
+
+                    //tüm gün ise başlangıç gününü bitiş günü olarak ayarlıyoruz yoksa girilen bitiş tarihi ayarlıyoruz.
+                    DateTime bitTar = tumGunMu ? basTar : Convert.ToDateTime(vmodel.takvimBitTar + " " + vmodel.takvimBitSaat);
+
+                    //Api ile bağlantı kuruyoruz.
+                    TakvimApi takvimApi = new TakvimApi(vmodel.takvimUserId, Db);
+                    takvimApi.EtkinlikKaydet(new TakvimEtkinlik
+                    {
+                        Baslik = vmodel.takvimBaslik,
+                        Icerik = vmodel.takvimIcerik,
+                        BasTar = basTar,
+                        BitTar = bitTar,
+                        TumGunMu = tumGunMu,
+
+                        Katilimcilar = vmodel.takvimKatilimcilar,
+                        Lokasyon = vmodel.takvimLokasyon
+                    });
+
+                    c.Durum = true;
+                    c.Mesaj.Add("Etkinlik kaydedilmiştir.");
+                }
+                #endregion
+
                 Db.SaveChanges();
                 TempData[SUCESS] = "Kayıt eklendi";
-                return RedirectToAction("ArayanEkle");
-
             }
+            #endregion
+
             return RedirectToAction("ArayanEkle");
         }
 

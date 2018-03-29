@@ -689,6 +689,33 @@
           <Property Name="StandartProjeIsleriIdAnahtarIsmi" Type="nvarchar" MaxLength="100" />
           <Property Name="StandartProjeIsleriIdKontrol" Type="bit" />
         </EntityType>
+        <EntityType Name="Takvim">
+          <Key>
+            <PropertyRef Name="TakvimId" />
+          </Key>
+          <Property Name="TakvimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="TakvimBasTar" Type="datetime" Nullable="false" />
+          <Property Name="TakvimBitTar" Type="datetime" Nullable="false" />
+          <Property Name="TakvimBaslik" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TakvimIcerik" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="KayitTarihi" Type="datetime" Nullable="false" />
+          <Property Name="RefKayitKul" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DuzeltmeTarihi" Type="datetime" />
+          <Property Name="RefDuzeltmeKul" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="TakvimAyar">
+          <Key>
+            <PropertyRef Name="TakvimAyarId" />
+          </Key>
+          <Property Name="TakvimAyarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ApiTakvimId" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ApiKullaniciId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ApiAdi" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ApiKimlikId" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ApiGuvenlikAnahtari" Type="nvarchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
         <EntityType Name="Teklif">
           <Key>
             <PropertyRef Name="teklifID" />
@@ -812,7 +839,7 @@
           <Property Name="GecenZamanSaniye" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'KARAYEL1.dbo.ArayanListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ArayanListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -835,7 +862,7 @@ warning 6002: The table/view 'Karayel.dbo.ArayanListesi' does not have a primary
           <Property Name="KayitliMi" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'KARAYEL1.dbo.IslerListesi' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="IslerListesi">
           <Key>
             <PropertyRef Name="Id" />
@@ -853,7 +880,7 @@ warning 6002: The table/view 'Karayel.dbo.IslerListesi' does not have a primary 
           <Property Name="KonumId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'KARAYEL1.dbo.RandevularView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RandevularView">
           <Key>
             <PropertyRef Name="RandevuID" />
@@ -1786,6 +1813,30 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Takvim_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Takvim" Type="Self.Takvim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Takvim">
+              <PropertyRef Name="RefUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TakvimAyar_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="TakvimAyar" Type="Self.TakvimAyar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TakvimAyar">
+              <PropertyRef Name="RefUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Teklif_Arayanlar">
           <End Role="Arayanlar" Type="Self.Arayanlar" Multiplicity="0..1" />
           <End Role="Teklif" Type="Self.Teklif" Multiplicity="*" />
@@ -1998,6 +2049,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <EntitySet Name="SiteKontrol" EntityType="Self.SiteKontrol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteKontrolDomainBirlestir" EntityType="Self.SiteKontrolDomainBirlestir" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StandartProjeIsleri" EntityType="Self.StandartProjeIsleri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Takvim" EntityType="Self.Takvim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TakvimAyar" EntityType="Self.TakvimAyar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teklif" EntityType="Self.Teklif" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeklifDetay" EntityType="Self.TeklifDetay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeklifSonuc" EntityType="Self.TeklifSonuc" Schema="dbo" store:Type="Tables" />
@@ -2358,6 +2411,14 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <AssociationSet Name="FK_StandartProjeIsleri_AspNetUsers1" Association="Self.FK_StandartProjeIsleri_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="StandartProjeIsleri" EntitySet="StandartProjeIsleri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Takvim_AspNetUsers" Association="Self.FK_Takvim_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Takvim" EntitySet="Takvim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TakvimAyar_AspNetUsers" Association="Self.FK_TakvimAyar_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="TakvimAyar" EntitySet="TakvimAyar" />
           </AssociationSet>
           <AssociationSet Name="FK_Teklif_Arayanlar" Association="Self.FK_Teklif_Arayanlar">
             <End Role="Arayanlar" EntitySet="Arayanlar" />
@@ -2862,6 +2923,16 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             <End Role="Firma" EntitySet="Firmas" />
             <End Role="Teklif" EntitySet="Teklifs" />
           </AssociationSet>
+          <EntitySet Name="Takvims" EntityType="PortalModel.Takvim" />
+          <EntitySet Name="TakvimAyars" EntityType="PortalModel.TakvimAyar" />
+          <AssociationSet Name="FK_Takvim_AspNetUsers" Association="PortalModel.FK_Takvim_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Takvim" EntitySet="Takvims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TakvimAyar_AspNetUsers" Association="PortalModel.FK_TakvimAyar_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="TakvimAyar" EntitySet="TakvimAyars" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="IsiYapacakKisi">
           <Key>
@@ -2979,6 +3050,8 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
           <NavigationProperty Name="IsPlanis" Relationship="PortalModel.FK_IsPlani_AspNetUsers" FromRole="AspNetUser" ToRole="IsPlani" />
           <NavigationProperty Name="ToplantiyaKatilanlars" Relationship="PortalModel.FK_ToplantiyaKatilanlar_AspNetUsers" FromRole="AspNetUser" ToRole="ToplantiyaKatilanlar" />
           <NavigationProperty Name="Arayanlars" Relationship="PortalModel.FK_Arayanlar_AspNetUsers" FromRole="AspNetUser" ToRole="Arayanlar" />
+          <NavigationProperty Name="Takvims" Relationship="PortalModel.FK_Takvim_AspNetUsers" FromRole="AspNetUser" ToRole="Takvim" />
+          <NavigationProperty Name="TakvimAyars" Relationship="PortalModel.FK_TakvimAyar_AspNetUsers" FromRole="AspNetUser" ToRole="TakvimAyar" />
         </EntityType>
         <EntityType Name="CariHareket">
           <Key>
@@ -4932,6 +5005,59 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Takvim">
+          <Key>
+            <PropertyRef Name="TakvimId" />
+          </Key>
+          <Property Name="TakvimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefUserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TakvimBasTar" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TakvimBitTar" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TakvimBaslik" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TakvimIcerik" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="KayitTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RefKayitKul" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DuzeltmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="RefDuzeltmeKul" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_Takvim_AspNetUsers" FromRole="Takvim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="TakvimAyar">
+          <Key>
+            <PropertyRef Name="TakvimAyarId" />
+          </Key>
+          <Property Name="TakvimAyarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefUserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ApiTakvimId" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ApiKullaniciId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ApiAdi" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ApiKimlikId" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ApiGuvenlikAnahtari" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="PortalModel.FK_TakvimAyar_AspNetUsers" FromRole="TakvimAyar" ToRole="AspNetUser" />
+        </EntityType>
+        <Association Name="FK_Takvim_AspNetUsers">
+          <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="PortalModel.Takvim" Role="Takvim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Takvim">
+              <PropertyRef Name="RefUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TakvimAyar_AspNetUsers">
+          <End Type="PortalModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="PortalModel.TakvimAyar" Role="TakvimAyar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TakvimAyar">
+              <PropertyRef Name="RefUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5856,6 +5982,35 @@ warning 6002: The table/view 'Karayel.dbo.RandevularView' does not have a primar
                 <ScalarProperty Name="FirmaAdres" ColumnName="FirmaAdres" />
                 <ScalarProperty Name="FirmaAdi" ColumnName="FirmaAdi" />
                 <ScalarProperty Name="FirmaID" ColumnName="FirmaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Takvims">
+            <EntityTypeMapping TypeName="PortalModel.Takvim">
+              <MappingFragment StoreEntitySet="Takvim">
+                <ScalarProperty Name="RefDuzeltmeKul" ColumnName="RefDuzeltmeKul" />
+                <ScalarProperty Name="DuzeltmeTarihi" ColumnName="DuzeltmeTarihi" />
+                <ScalarProperty Name="RefKayitKul" ColumnName="RefKayitKul" />
+                <ScalarProperty Name="KayitTarihi" ColumnName="KayitTarihi" />
+                <ScalarProperty Name="TakvimIcerik" ColumnName="TakvimIcerik" />
+                <ScalarProperty Name="TakvimBaslik" ColumnName="TakvimBaslik" />
+                <ScalarProperty Name="TakvimBitTar" ColumnName="TakvimBitTar" />
+                <ScalarProperty Name="TakvimBasTar" ColumnName="TakvimBasTar" />
+                <ScalarProperty Name="RefUserId" ColumnName="RefUserId" />
+                <ScalarProperty Name="TakvimId" ColumnName="TakvimId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TakvimAyars">
+            <EntityTypeMapping TypeName="PortalModel.TakvimAyar">
+              <MappingFragment StoreEntitySet="TakvimAyar">
+                <ScalarProperty Name="ApiGuvenlikAnahtari" ColumnName="ApiGuvenlikAnahtari" />
+                <ScalarProperty Name="ApiKimlikId" ColumnName="ApiKimlikId" />
+                <ScalarProperty Name="ApiAdi" ColumnName="ApiAdi" />
+                <ScalarProperty Name="ApiKullaniciId" ColumnName="ApiKullaniciId" />
+                <ScalarProperty Name="ApiTakvimId" ColumnName="ApiTakvimId" />
+                <ScalarProperty Name="RefUserId" ColumnName="RefUserId" />
+                <ScalarProperty Name="TakvimAyarId" ColumnName="TakvimAyarId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
